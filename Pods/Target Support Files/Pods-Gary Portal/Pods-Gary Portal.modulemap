@@ -1,0 +1,6 @@
+framework module Pods_Gary_Portal {
+  umbrella header "Pods-Gary Portal-umbrella.h"
+
+  export *
+  module * { export * }
+}

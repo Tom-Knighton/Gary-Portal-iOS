@@ -1,0 +1,164 @@
+PODS:
+  - AAPhotoCircleCrop (1.3.0)
+  - Alamofire (4.5.1)
+  - AlamofireImage (3.3.0):
+    - Alamofire (~> 4.5)
+  - BetterSegmentedControl (0.9)
+  - ChameleonFramework/Default (2.1.0)
+  - ChameleonFramework/Swift (2.1.0):
+    - ChameleonFramework/Default
+  - EZSwipeController (0.6.1)
+  - Firebase (4.11.0):
+    - Firebase/Core (= 4.11.0)
+  - Firebase/Auth (4.11.0):
+    - Firebase/Core
+    - FirebaseAuth (= 4.5.0)
+  - Firebase/Core (4.11.0):
+    - FirebaseAnalytics (= 4.1.0)
+    - FirebaseCore (= 4.0.18)
+  - Firebase/Database (4.11.0):
+    - Firebase/Core
+    - FirebaseDatabase (= 4.1.5)
+  - Firebase/Storage (4.11.0):
+    - Firebase/Core
+    - FirebaseStorage (= 2.1.3)
+  - FirebaseAnalytics (4.1.0):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseAuth (4.5.0):
+    - FirebaseAnalytics (~> 4.1)
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseCore (4.0.18):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseDatabase (4.1.5):
+    - FirebaseAnalytics (~> 4.1)
+    - FirebaseCore (~> 4.0)
+    - leveldb-library (~> 1.18)
+  - FirebaseInstanceID (2.0.10):
+    - FirebaseCore (~> 4.0)
+  - FirebaseStorage (2.1.3):
+    - FirebaseAnalytics (~> 4.1)
+    - FirebaseCore (~> 4.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FLAnimatedImage (1.0.12)
+  - Google-Mobile-Ads-SDK (7.31.0)
+  - GoogleToolboxForMac/DebugUtils (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/NSData+zlib (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
+  - GTMSessionFetcher/Core (1.1.14)
+  - IQKeyboardManagerSwift (5.0.8)
+  - leveldb-library (1.20)
+  - MGSwipeTableCell (1.6.4)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
+  - NYTPhotoViewer (1.1.0):
+    - NYTPhotoViewer/AnimatedGifSupport (= 1.1.0)
+    - NYTPhotoViewer/Core (= 1.1.0)
+  - NYTPhotoViewer/AnimatedGifSupport (1.1.0):
+    - FLAnimatedImage (~> 1.0.8)
+    - NYTPhotoViewer/Core
+  - NYTPhotoViewer/Core (1.1.0)
+  - OneSignal (2.8.2)
+  - paper-onboarding (4.1.0)
+  - PinchToZoomImageView (1.1.2)
+  - PryntTrimmerView (2.0.1)
+  - RSKImageCropper (1.6.3)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
+  - SendBirdSDK (3.0.99)
+  - SteviaLayout (4.2.0)
+  - SwiftyTimer (2.0.0)
+  - TextFieldEffects (1.4.0)
+  - TTTAttributedLabel (2.0.0)
+  - YPImagePicker (3.1.0):
+    - PryntTrimmerView (~> 2.0)
+    - SteviaLayout (~> 4.2.0)
+
+DEPENDENCIES:
+  - AAPhotoCircleCrop
+  - AlamofireImage
+  - BetterSegmentedControl
+  - ChameleonFramework/Swift (from `https://github.com/ViccAlexander/Chameleon.git`)
+  - EZSwipeController
+  - Firebase
+  - Firebase/Auth
+  - Firebase/Database
+  - Firebase/Storage
+  - FLAnimatedImage (~> 1.0)
+  - Google-Mobile-Ads-SDK
+  - IQKeyboardManagerSwift
+  - MGSwipeTableCell
+  - NYTPhotoViewer (~> 1.1.0)
+  - OneSignal (< 3.0, >= 2.6.2)
+  - paper-onboarding
+  - PinchToZoomImageView
+  - RSKImageCropper
+  - SDWebImage
+  - SendBirdSDK
+  - SwiftyTimer
+  - TextFieldEffects
+  - TTTAttributedLabel
+  - YPImagePicker
+
+EXTERNAL SOURCES:
+  ChameleonFramework:
+    :git: https://github.com/ViccAlexander/Chameleon.git
+
+CHECKOUT OPTIONS:
+  ChameleonFramework:
+    :commit: 6dd284bde21ea2e7f9fd89bc36f40df16e16369d
+    :git: https://github.com/ViccAlexander/Chameleon.git
+
+SPEC CHECKSUMS:
+  AAPhotoCircleCrop: 9ad008dbe3f86c61032b0888f01a95055c346c20
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
+  BetterSegmentedControl: 40b2b6a08bbc59663149624d1b5235efa8d43a3c
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  EZSwipeController: 255b0f8aed31963b0236802c926e27dd006a2532
+  Firebase: cc13dfab1038c8b45d7903e01fc690451d6d0b24
+  FirebaseAnalytics: 3dfae28d4a5e06f86c4fae830efc2ad3fadb19bc
+  FirebaseAuth: 147bf340a0706b44ca1753d6b41ebafd9687cfe6
+  FirebaseCore: b981f47e5254cbcfdeb483355300d743f6fcab2c
+  FirebaseDatabase: 5f0bc6134c5c237cf55f9e1249d406770a75eafd
+  FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
+  FirebaseStorage: 9a863a2bb96c406958eeff7c2f1dfa9f44c44a13
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  Google-Mobile-Ads-SDK: 6e529e748b45507a2ca904e0b5a52669ba3920c4
+  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
+  GTMSessionFetcher: 390ea358e5a0d0133153806f744662dad933d06b
+  IQKeyboardManagerSwift: 2e7dc7f98c111458c1ea2b373f893e8cf95e2b97
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  MGSwipeTableCell: 8b422e0c1c0b6f1adb49265be86bf4a474b6b516
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
+  OneSignal: ab5c509192ca8390bdd3570a6261e6decf4c79c1
+  paper-onboarding: 344780cbb0bfc229cd1862f5b9bba446b23c5185
+  PinchToZoomImageView: c743d831ac886f22900ccd8e38b3033c89ac8603
+  PryntTrimmerView: 4260ae497a2f3e1bbfc0b71247eb74ab92bf0490
+  RSKImageCropper: 356e36fc58c57c371b5d8b23d603936d6a73df6c
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  SendBirdSDK: 6e9212f86ebd2b95bb98b670332b1b59b0e7ca2c
+  SteviaLayout: 0d2112caea45707695e8c718262c8ea3dd37ef17
+  SwiftyTimer: 2efd74b060d69ad4f1496baf5bbedbe132125fcf
+  TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
+  YPImagePicker: 724a4004e62db927deaaa2371cb7bde4e3b36708
+
+PODFILE CHECKSUM: 644e85df2a559cc1782e663ba6d1c460e55876bc
+
+COCOAPODS: 1.4.0
