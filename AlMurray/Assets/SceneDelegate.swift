@@ -7,17 +7,37 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        if scene as? UIWindowScene == nil { return }
+        print("before auth")
+        if Auth.auth().currentUser != nil && UserDefaults.standard.bool(forKey: "hasLoggedIn") { //If user exists in keychain and userdefaults set
+            let userService = UserService()
+            print("Auth started")
+            userService.getUserById(userId: Auth.auth().currentUser?.uid ?? "") { (user) in
+                DispatchQueue.main.async {
+                    if user != nil {
+                        print("Opening HostController")
+                        GaryPortal.shared.user = user
+                        self.window?.rootViewController = HostController()
+                    } else {
+                        print("to l/s")
+                        self.window?.rootViewController = UIStoryboard(name: "LoginSignup", bundle: nil).instantiateViewController(identifier: "LoginSignupNav")
+                    }
+                }
+            }
+        } else {
+            print("init l/s")
+            self.window?.rootViewController = UIStoryboard(name: "LoginSignup", bundle: nil).instantiateViewController(identifier: "LoginSignupNav")
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -45,9 +65,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+        // To restore the scene back to its current state.
     }
 
-
 }
-
