@@ -75,10 +75,12 @@ struct APIClient {
     
     typealias APIClientCompletion = (APIResult<Data?>) -> Void
     private let session = URLSession.shared
-    private let BASEURL = URL(string: "https://us-central1-gary-portal.cloudfunctions.net/api/")!
+    private let BASEURL = URL(string: GaryPortalConstants.APIBaseUrl)
     
     func perform(_ request: APIRequest, _ completion: @escaping APIClientCompletion) {
         var urlComponents = URLComponents()
+        guard let BASEURL = BASEURL else { return }
+        
         urlComponents.scheme = BASEURL.scheme; urlComponents.host = BASEURL.host
         urlComponents.path = BASEURL.path; urlComponents.queryItems = request.queryItems
         
@@ -92,7 +94,7 @@ struct APIClient {
         urlRequest.httpBody = request.body
         request.headers?.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.field) }
         
-        let task = session.dataTask(with: url) { (data, response, _) in
+        let task = session.dataTask(with: urlRequest) { (data, response, _) in
             guard let httpResponse = response as? HTTPURLResponse else {
                 completion(.failure(.networkFail))
                 return

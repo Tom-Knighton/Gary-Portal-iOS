@@ -64,6 +64,8 @@ struct GaryPortalConstants {
                             """
     static let PasswordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}"
     
+    static let APIBaseUrl = "https://us-central1-gary-portal.cloudfunctions.net/api/"
+    
     // Errors:
     struct Errors {
         

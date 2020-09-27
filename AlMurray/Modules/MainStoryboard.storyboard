@@ -79,6 +79,9 @@
                                                             </constraints>
                                                             <color key="tintColor" systemColor="labelColor"/>
                                                             <state key="normal" image="heart" catalog="system"/>
+                                                            <connections>
+                                                                <action selector="likeButtonTapped:" destination="y9a-b6-D0k" eventType="touchUpInside" id="g8C-Td-D5Z"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x9p-mf-xEf">
                                                             <rect key="frame" x="80" y="8" width="34" height="34"/>
@@ -237,6 +240,9 @@
                                                             </constraints>
                                                             <color key="tintColor" systemColor="labelColor"/>
                                                             <state key="normal" image="heart" catalog="system"/>
+                                                            <connections>
+                                                                <action selector="likeButtonTapped:" destination="Y4y-4a-f9F" eventType="touchUpInside" id="HHA-ea-ZdS"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKX-6z-ePp">
                                                             <rect key="frame" x="80" y="8" width="34" height="34"/>
@@ -371,9 +377,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="181"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="130" id="czl-wx-ylW"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="czl-wx-ylW"/>
                                             </constraints>
-                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="5" minimumInteritemSpacing="5" id="zUq-wS-i5F">
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="5" id="zUq-wS-i5F">
                                                 <size key="itemSize" width="100" height="150"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -396,11 +402,11 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tom Knighton" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8b-v4-puV">
-                                                                <rect key="frame" x="8" y="92" width="84" height="50"/>
+                                                                <rect key="frame" x="8" y="96" width="84" height="46"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="59" id="QhV-rV-Z6W"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="13"/>
+                                                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="13"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
@@ -410,7 +416,7 @@
                                                             <constraint firstItem="Y6y-yx-X9l" firstAttribute="top" secondItem="igu-jK-84k" secondAttribute="top" constant="8" id="Xpb-j7-rH6"/>
                                                             <constraint firstAttribute="bottom" secondItem="H8b-v4-puV" secondAttribute="bottom" constant="8" id="cSG-mb-kEt"/>
                                                             <constraint firstAttribute="trailing" secondItem="Y6y-yx-X9l" secondAttribute="trailing" constant="8" id="fn8-hl-go9"/>
-                                                            <constraint firstItem="H8b-v4-puV" firstAttribute="top" secondItem="Y6y-yx-X9l" secondAttribute="bottom" id="sJl-Sl-l9m"/>
+                                                            <constraint firstItem="H8b-v4-puV" firstAttribute="top" secondItem="Y6y-yx-X9l" secondAttribute="bottom" constant="4" id="sJl-Sl-l9m"/>
                                                             <constraint firstItem="H8b-v4-puV" firstAttribute="leading" secondItem="igu-jK-84k" secondAttribute="leading" constant="8" id="vH5-Ju-l8C"/>
                                                         </constraints>
                                                     </collectionViewCellContentView>
@@ -442,6 +448,9 @@
                             <outlet property="delegate" destination="XDV-ja-SdG" id="YSX-mo-dJh"/>
                         </connections>
                     </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="GfN-Sd-FuO">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1kV-Vq-JqY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

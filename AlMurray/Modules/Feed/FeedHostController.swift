@@ -21,21 +21,37 @@ class FeedHostController: UITableViewController {
         
         FeedService().getFeedPosts { (posts) in
             if let posts = posts {
-                DispatchQueue.main.async {
-                    self.postsToDisplay = posts
-                    self.tableView.reloadData()
+                self.postsToDisplay = posts
+                FeedService().getAditLogs { (aditlogs) in
+                    if let aditlogs = aditlogs {
+                        self.aditLogs = aditlogs
+                        DispatchQueue.main.async {
+                            self.refreshControl?.endRefreshing()
+                            self.tableView.reloadData()
+                        }
+                    }
                 }
             }
         }
-        
-        FeedService().getAditLogs { (aditlogs) in
-            if let aditlogs = aditlogs {
-                DispatchQueue.main.async {
-                    self.aditLogs = aditlogs
-                    self.tableView.reloadData()
+        self.refreshControl?.addTarget(self, action: #selector(self.refreshStats), for: .valueChanged)
+    }
+    
+    @objc
+    func refreshStats() {
+        FeedService().getFeedPosts { (posts) in
+            if let posts = posts {
+                self.postsToDisplay = posts
+                FeedService().getAditLogs { (aditlogs) in
+                    if let aditlogs = aditlogs {
+                        self.aditLogs = aditlogs
+                        DispatchQueue.main.async {
+                            self.refreshControl?.endRefreshing()
+                            self.tableView.reloadData()
+                        }
+                    }
                 }
             }
-        }
+        } 
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

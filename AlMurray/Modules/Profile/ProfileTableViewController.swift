@@ -24,7 +24,6 @@ class ProfileTableViewController: UITableViewController {
     @objc
     func refreshStats() {
         let userService = UserService()
-        print("refresh")
         userService.getUserById(userId: GaryPortal.shared.user?.userId ?? "") { (user) in
             if let user = user {
                 DispatchQueue.main.async {
@@ -34,8 +33,6 @@ class ProfileTableViewController: UITableViewController {
                     self.refreshControl?.endRefreshing()
                     self.tableView.reloadData()
                 }
-            } else {
-                print("no uiser")
             }
         }
     }

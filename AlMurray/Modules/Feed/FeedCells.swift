@@ -86,6 +86,11 @@ class FeedPostMediaCell: UITableViewCell {
             }
         }
     }
+    
+    @IBAction func likeButtonTapped(_ sender: Any) {
+        FeedService().toggleLike(for: self.post, GaryPortal.shared.user?.userId ?? "")
+    }
+    
 }
 
 class FeedPostPollCell: UITableViewCell {
@@ -170,6 +175,11 @@ class FeedPostPollCell: UITableViewCell {
         view.addSubview(percentageView)
         view.sendSubviewToBack(percentageView)
     }
+    
+    @IBAction func likeButtonTapped(_ sender: Any) {
+        FeedService().toggleLike(for: self.post, GaryPortal.shared.user?.userId ?? "")
+    }
+    
 }
 
 class FeedAditLogContainerCell: UITableViewCell {
@@ -187,26 +197,34 @@ class FeedAditLogContainerCell: UITableViewCell {
     }
 }
 
-class FeedAditLogCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
+class FeedAditLogCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     private var aditLogs: [UserDTO: [AditLog]] = [:]
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.aditLogs.keys.count
+        return self.aditLogs.keys.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = self.dequeueReusableCell(withReuseIdentifier: "FeedAditLogCell", for: indexPath) as? AditLogCell else { return UICollectionViewCell() }
-        let aditLogArray = Array(self.aditLogs)[indexPath.row]
-        cell.setup(for: [aditLogArray.key: aditLogArray.value])
+        
+        if indexPath.row == 0 {
+            cell.setupAsCreateButton()
+        } else {
+            let aditLogArray = Array(self.aditLogs)[indexPath.row - 1]
+            cell.setup(for: [aditLogArray.key: aditLogArray.value])
+        }
         return cell
     }
-
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 150)
+    }
+    
     func setup(for aditLogs: [UserDTO: [AditLog]]) {
         self.delegate = self
         self.dataSource = self
         self.aditLogs = aditLogs
-        
     }
 }
 
@@ -217,8 +235,10 @@ class AditLogCell: UICollectionViewCell {
     
     func setup(for userAditLogs: [UserDTO: [AditLog]]) {
         let previewAditLog = userAditLogs.values.first?.last
+        self.aditLogPosterLabel.font = UIFont(name: "Montserrat-Regular", size: 13)
         self.aditLogPosterLabel.text = previewAditLog?.poster?.userFullName ?? ""
 
+        self.aditLogPreviewImage?.contentMode = .scaleAspectFill
         if previewAditLog?.postType ?? "" == "Image" {
             if let postURL = URL(string: previewAditLog?.postURL ?? "") {
                 Nuke.loadImage(with: postURL, into: self.aditLogPreviewImage ?? UIImageView())
@@ -229,6 +249,16 @@ class AditLogCell: UICollectionViewCell {
             }
         }
         
+        self.aditLogPreviewImage?.layer.cornerRadius = 25
+        self.aditLogPreviewImage?.layer.masksToBounds = true
+        self.aditLogPreviewImage?.addGradientBorder(colours: [UIColor(hexString: "#3494E6"), UIColor(hexString: "#EC6EAD")])
+    }
+    
+    func setupAsCreateButton() {
+        self.aditLogPreviewImage?.contentMode = .center
+        self.aditLogPosterLabel.text = "Upload ADit LoG"
+        self.aditLogPosterLabel.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        self.aditLogPreviewImage?.image = UIImage(named: "upload-glyph")
         self.aditLogPreviewImage?.layer.cornerRadius = 25
         self.aditLogPreviewImage?.layer.masksToBounds = true
         self.aditLogPreviewImage?.addGradientBorder(colours: [UIColor(hexString: "#3494E6"), UIColor(hexString: "#EC6EAD")])

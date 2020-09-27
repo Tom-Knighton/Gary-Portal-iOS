@@ -41,4 +41,10 @@ struct FeedService {
             }
         }
     }
+    
+    func toggleLike(for post: FeedPost?, _ userId: String) {
+        let reqType = post?.postType == "Image" || post?.postType == "Video" ? "feed" : "poll"
+        let request = APIRequest(method: .put, path: "feed/togglelike/\(userId)/\(String(describing: post?.postId ?? 0))/\(reqType)")
+        APIClient().perform(request) { (_) in }        
+    }
 }

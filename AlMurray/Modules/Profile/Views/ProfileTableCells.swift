@@ -40,6 +40,7 @@ class ProfileHeaderCell: UITableViewCell {
         if let url = URL(string: user.userProfileImageUrl ?? "") {
             Nuke.loadImage(with: url, into: self.profileImageView ?? UIImageView())
         }
+        self.profileImageView?.addGradientBorder(colours: [UIColor(hexString: "#3494E6"), UIColor(hexString: "#EC6EAD")])
     }
 }
 
