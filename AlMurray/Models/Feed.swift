@@ -31,7 +31,7 @@ class FeedPost: Codable {
     let datePosted: Date?
     let postType: String?
     let postTeam: String?
-    var likes: [String: String]?
+    var likes: [String: String]? = [String: String]()
     var likesCount: Int?
     
     let poster: UserDTO?
@@ -39,11 +39,11 @@ class FeedPost: Codable {
     public init?(posterId: String, postType: String, postTeam: String) {
         self.postId = 0; self.posterId = posterId; self.datePosted = nil; self.postType = postType; self.postTeam = postTeam
         self.poster = nil
-        self.likes = nil
+        self.likes = [:]
     }
     
     func hasBeenLikedByUser(userName: String) -> Bool {
-        return self.likes?.contains { $0.key == userName } ?? false
+        return self.likes?.contains { $0.value == userName } ?? false
     }
 }
 

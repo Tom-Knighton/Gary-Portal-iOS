@@ -10,6 +10,11 @@ import UIKit
 import Nuke
 import AVKit
 
+protocol FeedListControllerDelegate: class {
+    
+    func toggleLikeForPost(postId: Int, liked: Bool)
+}
+
 class FeedPostMediaCell: UITableViewCell {
 
     @IBOutlet private weak var postContainer: UIView?
@@ -18,7 +23,7 @@ class FeedPostMediaCell: UITableViewCell {
     @IBOutlet private weak var posterPictureView: UIImageView?
     @IBOutlet private weak var posterNameLabel: UILabel?
     @IBOutlet private weak var postDescriptionLabel: UILabel?
-    @IBOutlet private weak var postVideoView: UIView!
+    @IBOutlet private weak var postVideoView: UIView?
     
     @IBOutlet private weak var heartButton: UIButton?
     @IBOutlet private weak var likesCountButton: UIButton?
@@ -29,6 +34,7 @@ class FeedPostMediaCell: UITableViewCell {
     var avPlayerLayer: AVPlayerLayer?
     
     private var post: FeedMediaPost?
+    weak var delegate: FeedListControllerDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,25 +45,28 @@ class FeedPostMediaCell: UITableViewCell {
         
     func setup(for post: FeedMediaPost) {
         self.post = post
-        
+        let hasLikedPost = post.hasBeenLikedByUser(userName: GaryPortal.shared.user?.userFullName ?? "")
+
         Nuke.loadImage(with: URL(string: post.poster?.userProfileImageUrl ?? "") ?? URL(string: "")!, into: self.posterPictureView ?? UIImageView())
         self.posterPictureView?.roundCorners(radius: 25)
         
         self.posterNameLabel?.text = post.poster?.userFullName ?? ""
         self.postDescriptionLabel?.text = "\(post.poster?.userFullName ?? ""): \(post.postDescription ?? "")"
         
-        self.heartButton?.setImage(UIImage(systemName: post.hasBeenLikedByUser(userName: GaryPortal.shared.user?.userFullName ?? "") ? "heart.fill" : "heart"), for: .normal)
+        self.heartButton?.setImage(UIImage(systemName: hasLikedPost ? "heart.fill" : "heart"), for: .normal)
         self.likesCountButton?.setTitle(String(describing: post.likes?.count ?? 0), for: .normal)
         self.commentButton?.setImage(UIImage(systemName: "bubble.middle.bottom"), for: .normal)
         self.shareButton?.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
         
         if post.postType == "Image" {
             self.postMediaView?.isHidden = false
-            self.postVideoView.isHidden = true
-            Nuke.loadImage(with: URL(string: post.postURL ?? "") ?? URL(string: "https://google.co.uk")!, into: self.postMediaView ?? UIImageView())
+            self.postVideoView?.isHidden = true
+            if let url = URL(string: post.postURL ?? "") {
+                Nuke.loadImage(with: url, into: self.postMediaView ?? UIImageView())
+            }
         } else if post.postType == "Video" {
             self.postMediaView?.isHidden = true
-            self.postVideoView.isHidden = false
+            self.postVideoView?.isHidden = false
             self.setupVideoPlayer()
         }
     }
@@ -76,9 +85,9 @@ class FeedPostMediaCell: UITableViewCell {
         if let videoURL = URL(string: self.post?.postURL ?? "") {
             self.avPlayer = AVPlayer(url: videoURL)
             let playerLayer = AVPlayerLayer(player: self.avPlayer)
-            playerLayer.frame = self.postVideoView.bounds
+            playerLayer.frame = self.postVideoView?.bounds ?? CGRect()
             playerLayer.backgroundColor = UIColor.clear.cgColor
-            self.postVideoView.layer.addSublayer(playerLayer)
+            self.postVideoView?.layer.addSublayer(playerLayer)
             self.playVideo()
             _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer?.currentItem, queue: nil) { _ in
                 self.avPlayer?.seek(to: CMTime.zero)
@@ -88,7 +97,8 @@ class FeedPostMediaCell: UITableViewCell {
     }
     
     @IBAction func likeButtonTapped(_ sender: Any) {
-        FeedService().toggleLike(for: self.post, GaryPortal.shared.user?.userId ?? "")
+        let isCurrentlyLiked = self.post?.hasBeenLikedByUser(userName: GaryPortal.shared.user?.userFullName ?? "") ?? false
+        delegate?.toggleLikeForPost(postId: self.post?.postId ?? 0, liked: !isCurrentlyLiked)
     }
     
 }
@@ -108,6 +118,7 @@ class FeedPostPollCell: UITableViewCell {
     @IBOutlet private weak var pollOption2: UIButton?
     
     var post: FeedPollPost?
+    weak var delegate: FeedListControllerDelegate?
     
     override func awakeFromNib() {
        super.awakeFromNib()
@@ -126,6 +137,7 @@ class FeedPostPollCell: UITableViewCell {
     
     func setup(for post: FeedPollPost) {
         self.post = post
+        let hasLikedPost = post.hasBeenLikedByUser(userName: GaryPortal.shared.user?.userFullName ?? "")
         if let profileUrl = URL(string: post.poster?.userProfileImageUrl ?? "") {
             Nuke.loadImage(with: profileUrl, into: self.posterProfileImageView ?? UIImageView())
         }
@@ -141,7 +153,7 @@ class FeedPostPollCell: UITableViewCell {
         self.pollOption1?.roundCorners(radius: 15, masksToBounds: true)
         self.pollOption2?.roundCorners(radius: 15, masksToBounds: true)
         
-        self.heartButton?.setImage(UIImage(systemName: post.hasBeenLikedByUser(userName: GaryPortal.shared.user?.userFullName ?? "") ? "heart.fill" : "heart"), for: .normal)
+        self.heartButton?.setImage(UIImage(systemName: hasLikedPost ? "heart.fill" : "heart"), for: .normal)
         self.likesLabel?.setTitle(String(describing: post.likes?.count ?? 0), for: .normal)
         self.commentsButton?.setImage(UIImage(systemName: "bubble.middle.bottom"), for: .normal)
         self.shareButton?.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
@@ -177,7 +189,8 @@ class FeedPostPollCell: UITableViewCell {
     }
     
     @IBAction func likeButtonTapped(_ sender: Any) {
-        FeedService().toggleLike(for: self.post, GaryPortal.shared.user?.userId ?? "")
+        let isCurrentlyLiked = self.post?.hasBeenLikedByUser(userName: GaryPortal.shared.user?.userFullName ?? "") ?? false
+        delegate?.toggleLikeForPost(postId: self.post?.postId ?? 0, liked: !isCurrentlyLiked)
     }
     
 }

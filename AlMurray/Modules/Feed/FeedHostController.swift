@@ -85,12 +85,15 @@ class FeedHostController: UITableViewController {
             guard let post = post as? FeedMediaPost else { return UITableViewCell() }
             
             cell.setup(for: post)
+            cell.delegate = self
             return cell
+            
         } else if post is FeedPollPost {
             guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "FeedPollCell", for: indexPath) as? FeedPostPollCell else { return UITableViewCell() }
             guard let post = post as? FeedPollPost else { return UITableViewCell() }
             
             cell.setup(for: post)
+            cell.delegate = self
             return cell
         }
         
@@ -152,4 +155,27 @@ class FeedHostController: UITableViewController {
         }
     }
 
+}
+
+extension FeedHostController: FeedListControllerDelegate {
+    
+    func toggleLikeForPost(postId: Int, liked: Bool) {
+        let index = self.postsToDisplay.firstIndex(where: { $0.postId == postId }) ?? -1
+        if index == -1 { return }
+        
+        if liked {
+            if var dict = self.postsToDisplay[index].likes {
+                dict.updateValue(GaryPortal.shared.user?.userFullName ?? "", forKey: GaryPortal.shared.user?.userFullName ?? "")
+                self.postsToDisplay[index].likes = dict
+            } else {
+                self.postsToDisplay[index].likes = [GaryPortal.shared.user?.userFullName ?? "": GaryPortal.shared.user?.userFullName ?? ""]
+            }
+        } else {
+            self.postsToDisplay[index].likes?.removeValue(forKey: GaryPortal.shared.user?.userFullName ?? "")
+        }
+        FeedService().toggleLike(for: self.postsToDisplay[index], GaryPortal.shared.user?.userId ?? "")
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
 }

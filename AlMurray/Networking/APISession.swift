@@ -19,8 +19,7 @@ extension APIResponse where Body == Data? {
         }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
-        // swiftlint:disable:next force_try
-        let decoded = try! decoder.decode(BodyType.self, from: data)
+        let decoded = try decoder.decode(BodyType.self, from: data)
         return APIResponse<BodyType>(statusCode: self.statusCode, body: decoded)
         
     }
