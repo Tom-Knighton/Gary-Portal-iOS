@@ -15,19 +15,18 @@
 		E2300B27250CF430000E3AD2 /* FeedHostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300B26250CF430000E3AD2 /* FeedHostController.swift */; };
 		E2300B2B250D3CF9000E3AD2 /* FeedCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300B2A250D3CF9000E3AD2 /* FeedCells.swift */; };
 		E2300B2D250D443B000E3AD2 /* PostMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300B2C250D443B000E3AD2 /* PostMediaView.swift */; };
-		E2350EAB250918850037468A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E2350EAA250918850037468A /* GoogleService-Info.plist */; };
 		E2350EAD250941940037468A /* UIColor+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2350EAC250941940037468A /* UIColor+GaryPortal.swift */; };
-		E2350EAF25098D320037468A /* PrayerRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2350EAE25098D320037468A /* PrayerRoomViewController.swift */; };
+		E24A24AA2561F21800DD17AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E24A24A92561F21800DD17AF /* GoogleService-Info.plist */; };
 		E25AEEB524F0A13000D5BFD5 /* SignupController_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB424F0A13000D5BFD5 /* SignupController_Extensions.swift */; };
 		E25AEEB724F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB624F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift */; };
 		E25AEEB924F3C45000D5BFD5 /* UITextField+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */; };
+		E2797A72256459AD008F90F8 /* PrayerRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */; };
 		E27C1651251D135A007E2BF3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1650251D135A007E2BF3 /* FirebaseFunctions */; };
 		E27C1653251D135A007E2BF3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1652251D135A007E2BF3 /* FirebaseAuth */; };
 		E27C1655251D135A007E2BF3 /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1654251D135A007E2BF3 /* FirebaseDynamicLinks */; };
 		E27C1657251D135A007E2BF3 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1656251D135A007E2BF3 /* FirebaseDatabase */; };
 		E27C165B251D13CD007E2BF3 /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = E27C165A251D13CD007E2BF3 /* CropViewController */; };
 		E289001E24EDD87A00B7DD83 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E289001D24EDD87A00B7DD83 /* GaryPortal.swift */; };
-		E289002124EDDA8300B7DD83 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E289002024EDDA8300B7DD83 /* MainStoryboard.storyboard */; };
 		E289002424EDE48200B7DD83 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E289002324EDE48200B7DD83 /* ProfileTableViewController.swift */; };
 		E289002624EDE49C00B7DD83 /* ProfileTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E289002524EDE49C00B7DD83 /* ProfileTableDataSource.swift */; };
 		E289002924EE749000B7DD83 /* ProfileTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = E289002824EE749000B7DD83 /* ProfileTableCells.swift */; };
@@ -49,6 +48,10 @@
 		E2BA041D24E8734C00305AEC /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2BA041924E8734C00305AEC /* Montserrat-Regular.ttf */; };
 		E2BA041E24E8734C00305AEC /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2BA041A24E8734C00305AEC /* Montserrat-ExtraLight.ttf */; };
 		E2BA041F24E8734C00305AEC /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2BA041B24E8734C00305AEC /* Montserrat-SemiBold.ttf */; };
+		E2C76FF02562E85700F26902 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2C76FEF2562E85700F26902 /* MainStoryboard.storyboard */; };
+		E2C770132563181100F26902 /* SettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C770122563181100F26902 /* SettingsTableView.swift */; };
+		E2C770162563185800F26902 /* SettingsTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C770152563185800F26902 /* SettingsTableCells.swift */; };
+		E2C7701925631B3C00F26902 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C7701825631B3C00F26902 /* SettingsTableViewController.swift */; };
 		E2D95641251CEAF400AB53D0 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = E2D95640251CEAF400AB53D0 /* Nuke */; };
 /* End PBXBuildFile section */
 
@@ -61,14 +64,13 @@
 		E2300B26250CF430000E3AD2 /* FeedHostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHostController.swift; sourceTree = "<group>"; };
 		E2300B2A250D3CF9000E3AD2 /* FeedCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCells.swift; sourceTree = "<group>"; };
 		E2300B2C250D443B000E3AD2 /* PostMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMediaView.swift; sourceTree = "<group>"; };
-		E2350EAA250918850037468A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E2350EAC250941940037468A /* UIColor+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+GaryPortal.swift"; sourceTree = "<group>"; };
-		E2350EAE25098D320037468A /* PrayerRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomViewController.swift; sourceTree = "<group>"; };
+		E24A24A92561F21800DD17AF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E25AEEB424F0A13000D5BFD5 /* SignupController_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupController_Extensions.swift; sourceTree = "<group>"; };
 		E25AEEB624F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Primitive+GaryPortal.swift"; sourceTree = "<group>"; };
 		E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+GaryPortal.swift"; sourceTree = "<group>"; };
+		E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomViewController.swift; sourceTree = "<group>"; };
 		E289001D24EDD87A00B7DD83 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
-		E289002024EDDA8300B7DD83 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		E289002324EDE48200B7DD83 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		E289002524EDE49C00B7DD83 /* ProfileTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableDataSource.swift; sourceTree = "<group>"; };
 		E289002824EE749000B7DD83 /* ProfileTableCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableCells.swift; sourceTree = "<group>"; };
@@ -93,6 +95,10 @@
 		E2BA041924E8734C00305AEC /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		E2BA041A24E8734C00305AEC /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
 		E2BA041B24E8734C00305AEC /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		E2C76FEF2562E85700F26902 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		E2C770122563181100F26902 /* SettingsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableView.swift; sourceTree = "<group>"; };
+		E2C770152563185800F26902 /* SettingsTableCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableCells.swift; sourceTree = "<group>"; };
+		E2C7701825631B3C00F26902 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,19 +143,28 @@
 				E2300B25250CF3A9000E3AD2 /* Feed */,
 				E289001F24EDDA7400B7DD83 /* Profile */,
 				E2BA041324E8706400305AEC /* Login & Signup */,
-				E289002024EDDA8300B7DD83 /* MainStoryboard.storyboard */,
+				E2C76FEF2562E85700F26902 /* MainStoryboard.storyboard */,
 				E2300B23250CEE37000E3AD2 /* HostController.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		E2797A7025645993008F90F8 /* Prayers */ = {
+			isa = PBXGroup;
+			children = (
+				E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */,
+			);
+			path = Prayers;
+			sourceTree = "<group>";
+		};
 		E289001F24EDDA7400B7DD83 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				E2797A7025645993008F90F8 /* Prayers */,
+				E2C76FF325630F4F00F26902 /* Settings */,
 				E289002724EE748000B7DD83 /* Views */,
 				E289002324EDE48200B7DD83 /* ProfileTableViewController.swift */,
 				E289002524EDE49C00B7DD83 /* ProfileTableDataSource.swift */,
-				E2350EAE25098D320037468A /* PrayerRoomViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -267,7 +282,7 @@
 		E2BA041624E8732000305AEC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				E2350EAA250918850037468A /* GoogleService-Info.plist */,
+				E24A24A92561F21800DD17AF /* GoogleService-Info.plist */,
 				E2BA041724E8732E00305AEC /* Fonts */,
 				E2BA03FD24E86F7E00305AEC /* AppDelegate.swift */,
 				E2BA03FF24E86F7E00305AEC /* SceneDelegate.swift */,
@@ -285,6 +300,16 @@
 				E2BA041B24E8734C00305AEC /* Montserrat-SemiBold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		E2C76FF325630F4F00F26902 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E2C770122563181100F26902 /* SettingsTableView.swift */,
+				E2C770152563185800F26902 /* SettingsTableCells.swift */,
+				E2C7701825631B3C00F26902 /* SettingsTableViewController.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,11 +386,11 @@
 			files = (
 				E2BA041D24E8734C00305AEC /* Montserrat-Regular.ttf in Resources */,
 				E2BA041C24E8734C00305AEC /* Montserrat-Light.ttf in Resources */,
-				E2350EAB250918850037468A /* GoogleService-Info.plist in Resources */,
+				E24A24AA2561F21800DD17AF /* GoogleService-Info.plist in Resources */,
 				E2BA041524E8709F00305AEC /* LoginSignup.storyboard in Resources */,
 				E2BA041E24E8734C00305AEC /* Montserrat-ExtraLight.ttf in Resources */,
 				E2BA040A24E86F8000305AEC /* LaunchScreen.storyboard in Resources */,
-				E289002124EDDA8300B7DD83 /* MainStoryboard.storyboard in Resources */,
+				E2C76FF02562E85700F26902 /* MainStoryboard.storyboard in Resources */,
 				E2BA040724E86F8000305AEC /* Assets.xcassets in Resources */,
 				E2BA041F24E8734C00305AEC /* Montserrat-SemiBold.ttf in Resources */,
 			);
@@ -399,12 +424,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E289002B24EEF91400B7DD83 /* SignupController.swift in Sources */,
+				E2797A72256459AD008F90F8 /* PrayerRoomViewController.swift in Sources */,
 				E2B31FB32511162D00B9A3F8 /* Feed.swift in Sources */,
 				E25AEEB524F0A13000D5BFD5 /* SignupController_Extensions.swift in Sources */,
 				E289002924EE749000B7DD83 /* ProfileTableCells.swift in Sources */,
 				E2300B24250CEE37000E3AD2 /* HostController.swift in Sources */,
 				E2B7435A24ED7670007AC93E /* ActivityIndicatorController.swift in Sources */,
 				E28ACF0F24E9FF97005B4194 /* FirstPageController.swift in Sources */,
+				E2C770162563185800F26902 /* SettingsTableCells.swift in Sources */,
 				E2350EAD250941940037468A /* UIColor+GaryPortal.swift in Sources */,
 				E2B7435824ED69CA007AC93E /* UIView+GaryPortal.swift in Sources */,
 				E2300B2D250D443B000E3AD2 /* PostMediaView.swift in Sources */,
@@ -412,6 +439,7 @@
 				E2B7435C24ED76F9007AC93E /* UIViewController+GaryPortal.swift in Sources */,
 				E2BA03FE24E86F7E00305AEC /* AppDelegate.swift in Sources */,
 				E22FA57024ED7F6B006553ED /* User.swift in Sources */,
+				E2C770132563181100F26902 /* SettingsTableView.swift in Sources */,
 				E22FA57224ED80E1006553ED /* UserService.swift in Sources */,
 				E2BA040024E86F7E00305AEC /* SceneDelegate.swift in Sources */,
 				E289002424EDE48200B7DD83 /* ProfileTableViewController.swift in Sources */,
@@ -420,8 +448,8 @@
 				E289001E24EDD87A00B7DD83 /* GaryPortal.swift in Sources */,
 				E2300B2B250D3CF9000E3AD2 /* FeedCells.swift in Sources */,
 				E22FA57424ED812C006553ED /* APISession.swift in Sources */,
-				E2350EAF25098D320037468A /* PrayerRoomViewController.swift in Sources */,
 				E28ACF0B24E9A9B7005B4194 /* AuthenticationService.swift in Sources */,
+				E2C7701925631B3C00F26902 /* SettingsTableViewController.swift in Sources */,
 				E25AEEB724F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift in Sources */,
 				E25AEEB924F3C45000D5BFD5 /* UITextField+GaryPortal.swift in Sources */,
 				E2300B22250CEC5B000E3AD2 /* GaryPortalSwipeController.swift in Sources */,
@@ -628,7 +656,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
-				branch = "6.33-spm-beta";
+				branch = "6.34-spm-beta";
 				kind = branch;
 			};
 		};

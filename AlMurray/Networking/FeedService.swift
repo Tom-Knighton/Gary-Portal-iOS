@@ -11,7 +11,9 @@ import Foundation
 struct FeedService {
     
     func getFeedPosts(startingFrom: Date? = Date(), limit: Int? = 10, _ completion: @escaping(([FeedPost]?) -> Void)) {
+        let timefrom = String(describing: Int((startingFrom?.timeIntervalSince1970.rounded() ?? 0) * 1000))
         let request = APIRequest(method: .get, path: "feed")
+        request.queryItems = [URLQueryItem(name: "startfrom", value: timefrom)]
         APIClient().perform(request) { (result) in
             switch result {
             case .success(let response):

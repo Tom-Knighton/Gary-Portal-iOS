@@ -42,6 +42,12 @@ class ProfileHeaderCell: UITableViewCell {
         }
         self.profileImageView?.addGradientBorder(colours: [UIColor(hexString: "#3494E6"), UIColor(hexString: "#EC6EAD")])
     }
+    
+    @IBAction func userActionButtonPressed(_ sender: UIButton) {
+        if let url = URL(string: GaryPortalConstants.URLs.WebsiteURL) {
+            UIApplication.shared.open(url)
+        }
+    }
 }
 
 class ProfilePointsCell: UITableViewCell {
@@ -99,9 +105,7 @@ class ProfileMiscCell: UITableViewCell {
     @IBOutlet private weak var computerDatingButton: UIButton?
     @IBOutlet private weak var settingsButton: UIButton?
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    func design() {        
         self.miscContainer?.roundCorners(radius: 20)
         
         self.prayerRoomButton?.roundCorners(radius: 10)
@@ -118,6 +122,23 @@ class ProfileMiscCell: UITableViewCell {
     }
     
     func updateStats() {
-        //
+        self.design()
+    }
+    
+    @IBAction func rulesButtonTapped(_ sender: UIButton) {
+        
+        if sender == self.rulesButton {
+            if let url = URL(string: GaryPortalConstants.URLs.RulesURL) {
+                UIApplication.shared.open(url)
+            }
+        } else if sender == self.computerDatingButton {
+            if let url = URL(string: GaryPortalConstants.URLs.ComputerDatingURL) {
+                UIApplication.shared.open(url)
+            }
+        } else if sender == self.feedbackButton {
+            if let url = URL(string: GaryPortalConstants.URLs.FeedbackURL) {
+                UIApplication.shared.open(url)
+            }
+        }
     }
 }

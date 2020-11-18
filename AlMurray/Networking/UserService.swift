@@ -25,14 +25,42 @@ struct UserService {
                 if let response = try? response.decode(to: User.self) {
                     completion(response.body)
                 } else {
-                    print("api fail")
                     completion(nil)
                 }
             case .failure:
-                print("fail res")
                 completion(nil)
             }
         }
     }
+    
+    func getPrayers(userId: String, completion: @escaping (UserPoints?) -> Void) {
+        let request = APIRequest(method: .get, path: "users/getprayers/\(userId)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: UserPoints.self) {
+                    completion(response.body)
+                } else {
+                    return completion(nil)
+                }
+            case .failure:
+                return completion(nil)
+            }
+            
+        }
+    }
+    
+    func updatePrayers(userId: String, simplePrayers: Int, meaningfulPrayers: Int) {
+        let request = APIRequest(method: .put, path: "users/updateprayers/\(userId)/\(simplePrayers)/\(meaningfulPrayers)")
+        APIClient().perform(request, nil)
+        GaryPortal.shared.user?.updatePrayers(simple: simplePrayers, meaningful: meaningfulPrayers)
+    }
+    
+    func clearAllPrayers() {
+        let request = APIRequest(method: .put, path: "users/clearallprayers")
+        APIClient().perform(request, nil)
+        GaryPortal.shared.user?.updatePrayers(simple: 0, meaningful: 0)
+    }
+    
     
 }

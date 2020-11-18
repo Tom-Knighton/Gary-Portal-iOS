@@ -12,6 +12,16 @@ class FeedHostController: UITableViewController {
     
     var aditLogs: [AditLog] = []
     var postsToDisplay: [FeedPost] = []
+    var isFetchInProgress = false
+    
+    lazy var createPostButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .black
+        button.roundCorners(radius: 25)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "upload-glyph"), for: .normal)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,39 +29,54 @@ class FeedHostController: UITableViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        FeedService().getFeedPosts { (posts) in
-            if let posts = posts {
-                self.postsToDisplay = posts
-                FeedService().getAditLogs { (aditlogs) in
-                    if let aditlogs = aditlogs {
-                        self.aditLogs = aditlogs
+        fetchPosts()
+        
+        self.refreshControl?.addTarget(self, action: #selector(self.refreshStats), for: .valueChanged)
+        self.view.addSubview(self.createPostButton)
+        self.view.bringSubviewToFront(self.createPostButton)
+        self.createPostButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: 0).isActive = true
+        self.createPostButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0).isActive = true
+        self.createPostButton.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        self.createPostButton.widthAnchor.constraint(equalToConstant: 75).isActive = true
+
+    }
+    
+    override func viewDidLayoutSubviews() {
+        self.createPostButton.addGradient(colours: [UIColor(hexString: "#4e54c8"), UIColor(hexString: "#8f94fb")], locations: nil)
+        self.createPostButton.bringSubviewToFront(self.createPostButton.imageView ?? UIImageView())
+    }
+    
+    @objc
+    func refreshStats() {
+        fetchPosts()
+    }
+    
+    func fetchPosts(startFrom: Date = Date()) {
+        if isFetchInProgress { return }
+        
+        isFetchInProgress = true
+        DispatchQueue.global().async {
+            FeedService().getFeedPosts(startingFrom: startFrom) { (posts) in
+                if let posts = posts {
+                    posts.forEach { (post) in
+                        if !self.postsToDisplay.contains(where: { $0.postId == post.postId }) {
+                            self.postsToDisplay.append(post)
+                        }
+                    }
+                    FeedService().getAditLogs { (aditlogs) in
+                        if let aditlogs = aditlogs {
+                            self.aditLogs = aditlogs
+                        }
                         DispatchQueue.main.async {
                             self.refreshControl?.endRefreshing()
                             self.tableView.reloadData()
+                            self.isFetchInProgress = false
                         }
                     }
                 }
             }
         }
-        self.refreshControl?.addTarget(self, action: #selector(self.refreshStats), for: .valueChanged)
-    }
-    
-    @objc
-    func refreshStats() {
-        FeedService().getFeedPosts { (posts) in
-            if let posts = posts {
-                self.postsToDisplay = posts
-                FeedService().getAditLogs { (aditlogs) in
-                    if let aditlogs = aditlogs {
-                        self.aditLogs = aditlogs
-                        DispatchQueue.main.async {
-                            self.refreshControl?.endRefreshing()
-                            self.tableView.reloadData()
-                        }
-                    }
-                }
-            }
-        } 
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -155,6 +180,18 @@ class FeedHostController: UITableViewController {
         }
     }
 
+}
+
+extension FeedHostController {
+    
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView == self.tableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height - 150 && !isFetchInProgress {
+                print((self.postsToDisplay.last?.datePosted?.timeIntervalSince1970 ?? 0) * 1000)
+                self.fetchPosts(startFrom: self.postsToDisplay.last?.datePosted ?? Date())
+            }
+        }
+    }
 }
 
 extension FeedHostController: FeedListControllerDelegate {

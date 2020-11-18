@@ -26,8 +26,13 @@ struct User: Codable {
     
     let userTeam: UserTeam?
     let userRanks: UserRanks?
-    let userPoints: UserPoints?
+    var userPoints: UserPoints?
     let userBans: UserBans?
+    
+    mutating func updatePrayers(simple: Int, meaningful: Int) {
+        userPoints?.prayers = simple
+        userPoints?.meaningfulPrayers = meaningful
+    }
     
 }
 
@@ -57,8 +62,8 @@ struct UserPoints: Codable {
     let amigoPoints: Int?
     let positivityPoints: Int?
     let bowelsRelieved: Int?
-    let prayers: Int?
-    let meaningfulPrayers: Int?
+    var prayers: Int?
+    var meaningfulPrayers: Int?
 }
 
 struct UserBans: Codable {

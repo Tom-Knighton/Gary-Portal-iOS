@@ -23,12 +23,13 @@ extension UIView {
     
     func addGradient(colours: [UIColor], locations: [NSNumber]?) {
         let gradient = CAGradientLayer()
-        gradient.frame = self.bounds
         gradient.colors = colours.map { $0.cgColor }
         gradient.locations = locations
         gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.0)
         self.layer.addSublayer(gradient)
+        gradient.frame = self.layer.bounds
+        gradient.sendToBack()
     }
     
     func addGradientBorder(colours: [UIColor]) {
@@ -99,5 +100,21 @@ extension CALayer {
         gradientLayer.mask = shapeLayer
 
         self.addSublayer(gradientLayer)
+    }
+    
+    func bringToFront() {
+       guard let sLayer = superlayer else {
+          return
+       }
+       removeFromSuperlayer()
+       sLayer.insertSublayer(self, at: UInt32(sLayer.sublayers?.count ?? 0))
+    }
+
+    func sendToBack() {
+       guard let sLayer = superlayer else {
+          return
+       }
+       removeFromSuperlayer()
+       sLayer.insertSublayer(self, at: 0)
     }
 }

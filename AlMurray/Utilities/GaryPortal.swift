@@ -64,7 +64,13 @@ struct GaryPortalConstants {
                             """
     static let PasswordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}"
     
-    static let APIBaseUrl = "https://us-central1-gary-portal.cloudfunctions.net/api/"
+    static let APIBaseUrl = "https://us-central1-garyportal4.cloudfunctions.net/api/"
+    
+    struct Prayers {
+        
+        static let SimpleCount = "Your Simple Prayers: "
+        static let MeaningfulCount = "Your Meaningful Prayers: "
+    }
     
     // Errors:
     struct Errors {
@@ -76,6 +82,14 @@ struct GaryPortalConstants {
         static let InvalidPassword = """
             Your password is too weak, your password should contain one upper case character, one lower case character, one number and one special character and should be over 8 characters in length
             """
+    }
+    
+    struct URLs {
+        
+        static let WebsiteURL = "https://garyportal.tomk.online"
+        static let RulesURL = "https://garyportal.tomk.online/rules"
+        static let FeedbackURL = "https://form.jotform.com/202855831651356"
+        static let ComputerDatingURL = "https://garyportal.tomk.online/computerdating"
     }
     
 }

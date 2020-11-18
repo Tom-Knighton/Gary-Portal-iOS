@@ -76,7 +76,7 @@ struct APIClient {
     private let session = URLSession.shared
     private let BASEURL = URL(string: GaryPortalConstants.APIBaseUrl)
     
-    func perform(_ request: APIRequest, _ completion: @escaping APIClientCompletion) {
+    func perform(_ request: APIRequest, _ completion: APIClientCompletion?) {
         var urlComponents = URLComponents()
         guard let BASEURL = BASEURL else { return }
         
@@ -84,7 +84,7 @@ struct APIClient {
         urlComponents.path = BASEURL.path; urlComponents.queryItems = request.queryItems
         
         guard let url = urlComponents.url?.appendingPathComponent(request.path) else {
-            completion(.failure(.invalidUrl))
+            completion?(.failure(.invalidUrl))
             return
         }
         
@@ -95,10 +95,10 @@ struct APIClient {
         
         let task = session.dataTask(with: urlRequest) { (data, response, _) in
             guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(.networkFail))
+                completion?(.failure(.networkFail))
                 return
-            }
-            completion(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
+            }	
+            completion?(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
         }
         task.resume()
     }

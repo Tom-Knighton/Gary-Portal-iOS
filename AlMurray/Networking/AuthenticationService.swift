@@ -20,12 +20,14 @@ struct AuthenticationService {
     func authenticateUser(_ authenticator: String, _ password: String, completion: @escaping((AuthenticationResult, User?) -> Void)) {
         Auth.auth().signIn(withEmail: authenticator, password: password) { (result, error) in
             if error != nil {
+                print(error.debugDescription)
                 completion(AuthenticationResult.error, nil)
             } else {
                 UserService().getUserById(userId: result?.user.uid ?? "") { (user) in
                     if let user = user {
                         completion(AuthenticationResult.success, user)
                     } else {
+                        print("Failed to decode user")
                         completion(AuthenticationResult.error, nil)
                     }
                 }
