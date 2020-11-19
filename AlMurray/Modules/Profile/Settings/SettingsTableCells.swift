@@ -10,8 +10,9 @@ import UIKit
 import Nuke
 import StoreKit
 import FirebaseAuth
+import TOCropViewController
 
-class SettingsAccountCell: UITableViewCell {
+class SettingsAccountCell: UITableViewCell, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate {
 
     @IBOutlet private weak var usernameTextField: UITextField?
     @IBOutlet private weak var emailTextField: UITextField?
@@ -20,7 +21,10 @@ class SettingsAccountCell: UITableViewCell {
     @IBOutlet private weak var emailView: UIView?
     @IBOutlet private weak var fullNameView: UIView!
     
+    @IBOutlet private weak var changeUserImageButton: UIButton?
     @IBOutlet private weak var userImageView: UIImageView?
+    
+    private let imagePicker = UIImagePickerController()
     
     weak var delegate: SettingsTableDelegate?
     
@@ -40,12 +44,35 @@ class SettingsAccountCell: UITableViewCell {
         self.emailView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
         self.fullNameView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
         
+        self.changeUserImageButton?.roundCorners(radius: 40)
         self.userImageView?.roundCorners(radius: 40)
         self.userImageView?.addGradientBorder(colours: [UIColor(hexString: "#3494E6"), UIColor(hexString: "#EC6EAD")])
         if let url = URL(string: user?.userProfileImageUrl ?? "") {
             Nuke.loadImage(with: url, into: self.userImageView ?? UIImageView())
         }
     }
+    
+    @IBAction func changeUserImagePressed(_ sender: Any) {
+        self.imagePicker.delegate = self
+        self.delegate?.presentView(viewcontroller: imagePicker)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let image = info[.originalImage] as? UIImage else { return }
+        picker.dismiss(animated: true) {
+            let crop = TOCropViewController(croppingStyle: .circular, image: image)
+            crop.delegate = self
+            crop.modalPresentationStyle = .currentContext
+            self.delegate?.presentView(viewcontroller: crop)
+        }
+    }
+    
+    func cropViewController(_ cropViewController: TOCropViewController, didCropToCircularImage image: UIImage, with cropRect: CGRect, angle: Int) {
+        self.userImageView?.image = image
+        cropViewController.dismiss(animated: true, completion: nil)
+        self.delegate?.updateImage(newImage: image)
+    }
+    
 }
 
 extension SettingsAccountCell: UITextFieldDelegate {

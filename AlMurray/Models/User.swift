@@ -76,7 +76,8 @@ struct UserBans: Codable {
 
 struct UserDetails: Codable {
     
-    let username: String?
-    let email: String?
-    let fullName: String?
+    var username: String?
+    var email: String?
+    var fullName: String?
+    var profilePictureUrl: String?
 }

@@ -1156,6 +1156,12 @@
                                                         <constraint firstItem="TBZ-yr-PRA" firstAttribute="top" secondItem="vUd-Rg-iW7" secondAttribute="top" id="oKm-zr-Eer"/>
                                                     </constraints>
                                                 </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMp-F1-A1b">
+                                                    <rect key="frame" x="127" y="227.00000000000003" width="80" height="80.333333333333343"/>
+                                                    <connections>
+                                                        <action selector="changeUserImagePressed:" destination="Ahv-yN-v12" eventType="touchUpInside" id="EcZ-xA-3QN"/>
+                                                    </connections>
+                                                </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9zH-1w-UaI">
                                                     <rect key="frame" x="127" y="227.00000000000003" width="80" height="80.333333333333343"/>
                                                     <constraints>
@@ -1181,10 +1187,14 @@
                                                 <constraint firstItem="vUd-Rg-iW7" firstAttribute="top" secondItem="7qE-xj-g3Y" secondAttribute="bottom" constant="4" id="VQQ-aA-uek"/>
                                                 <constraint firstItem="9zH-1w-UaI" firstAttribute="top" secondItem="vUd-Rg-iW7" secondAttribute="bottom" constant="8" id="VSB-a1-nln"/>
                                                 <constraint firstAttribute="trailing" secondItem="vlO-rs-70D" secondAttribute="trailing" constant="12" id="WCh-Tz-5gd"/>
+                                                <constraint firstItem="WMp-F1-A1b" firstAttribute="top" secondItem="vUd-Rg-iW7" secondAttribute="bottom" constant="8" id="aP4-Fu-JZn"/>
                                                 <constraint firstItem="fRB-27-wmM" firstAttribute="top" secondItem="yo1-TC-2eB" secondAttribute="bottom" constant="8" id="c6j-c0-0AS"/>
                                                 <constraint firstItem="Wsj-i0-4i4" firstAttribute="leading" secondItem="gYy-LL-3pm" secondAttribute="leading" constant="12" id="cg2-D3-0mA"/>
                                                 <constraint firstItem="Wsj-i0-4i4" firstAttribute="top" secondItem="FaU-gR-KRd" secondAttribute="bottom" constant="4" id="gHW-NG-qo8"/>
+                                                <constraint firstItem="WMp-F1-A1b" firstAttribute="height" secondItem="9zH-1w-UaI" secondAttribute="height" id="hCI-9M-80Y"/>
+                                                <constraint firstItem="WMp-F1-A1b" firstAttribute="centerX" secondItem="gYy-LL-3pm" secondAttribute="centerX" id="l3I-6e-8cA"/>
                                                 <constraint firstAttribute="trailing" secondItem="yo1-TC-2eB" secondAttribute="trailing" constant="8" id="lNy-av-6Yv"/>
+                                                <constraint firstItem="WMp-F1-A1b" firstAttribute="width" secondItem="9zH-1w-UaI" secondAttribute="width" id="pRN-Vn-XP7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="fRB-27-wmM" secondAttribute="trailing" constant="8" id="u8J-RW-rfU"/>
                                                 <constraint firstItem="yo1-TC-2eB" firstAttribute="leading" secondItem="gYy-LL-3pm" secondAttribute="leading" constant="12" id="vRj-i8-NbF"/>
                                                 <constraint firstItem="7qE-xj-g3Y" firstAttribute="top" secondItem="Wsj-i0-4i4" secondAttribute="bottom" constant="4" id="wDl-2s-QH3"/>
@@ -1193,6 +1203,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="changeUserImageButton" destination="WMp-F1-A1b" id="aWV-zv-4IJ"/>
                                             <outlet property="emailTextField" destination="LI9-3A-7a9" id="WHU-Na-oGx"/>
                                             <outlet property="emailView" destination="Wsj-i0-4i4" id="kYy-gj-0qK"/>
                                             <outlet property="fullNameTextField" destination="TBZ-yr-PRA" id="e9L-Wp-3qz"/>

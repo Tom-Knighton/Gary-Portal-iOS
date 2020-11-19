@@ -79,7 +79,7 @@ struct APIClient {
     private let session = URLSession.shared
     private let BASEURL = URL(string: GaryPortalConstants.APIBaseUrl)
     
-    func perform(_ request: APIRequest, _ completion: APIClientCompletion?) {
+    func perform(_ request: APIRequest, contentType: String = "application/json", _ completion: APIClientCompletion?) {
         var urlComponents = URLComponents()
         guard let BASEURL = BASEURL else { return }
         
@@ -92,7 +92,7 @@ struct APIClient {
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.httpBody = request.body

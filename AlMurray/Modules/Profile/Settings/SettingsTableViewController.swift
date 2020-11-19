@@ -13,6 +13,8 @@ protocol SettingsTableDelegate: class {
     func updateEmail(email: String)
     func updateUsername(username: String)
     func updateFullName(fullName: String)
+    func updateImage(newImage: UIImage)
+    func presentView(viewcontroller: UIViewController)
     func displayMessage(title: String, message: String)
 }
 
@@ -25,6 +27,8 @@ class SettingsTableViewController: UIViewController, SettingsTableDelegate {
     internal var newEmail: String?
     internal var newUsername: String?
     internal var newFullName: String?
+    internal var newProfileImage: UIImage?
+    internal var hasUserChosenNewImage: Bool? = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +56,6 @@ class SettingsTableViewController: UIViewController, SettingsTableDelegate {
         let email = self.newEmail ?? GaryPortal.shared.user?.userEmail ?? ""
         let username = self.newUsername ?? GaryPortal.shared.user?.userName ?? ""
         let fullName = self.newFullName ?? GaryPortal.shared.user?.userFullName ?? ""
-        let newUserDetails = UserDetails(username: username, email: email, fullName: fullName)
         
         self.toggleActivityIndicator(enable: true)
         AuthenticationService().isEmailFree(email) { (isEmailFree) in
@@ -69,13 +72,27 @@ class SettingsTableViewController: UIViewController, SettingsTableDelegate {
                     return
                 }
                 
-                UserService().updateUserSettings(userId: GaryPortal.shared.user?.userId ?? "", userDetails: newUserDetails) { (user) in
-                    GaryPortal.shared.user = user
-                    self.toggleActivityIndicator(enable: false)
+                var newUserDetails = UserDetails(username: username, email: email, fullName: fullName, profilePictureUrl: GaryPortal.shared.user?.userProfileImageUrl ?? "")
+                
+                if self.hasUserChosenNewImage ?? false {
+                    UserService().updateUserProfileImage(userId: GaryPortal.shared.user?.userId ?? "", newImage: self.newProfileImage ?? UIImage()) { (newImageUrl) in
+                        newUserDetails.profilePictureUrl = newImageUrl
+                        self.updateSettings(with: newUserDetails)
+                    }
+                } else {
+                    self.updateSettings(with: newUserDetails)
                 }
             }
         }
-       
+    }
+    
+    func updateSettings(with userDetails: UserDetails) {
+        UserService().updateUserSettings(userId: GaryPortal.shared.user?.userId ?? "", userDetails: userDetails) { (newUser) in
+            self.toggleActivityIndicator(enable: false)
+            GaryPortal.shared.user = newUser
+            print(newUser?.userEmail ?? "email blank")
+            self.displayBasicAlert(title: "Success", message: "Settings saved successfully")
+        }
     }
     
     func updateEmail(email: String) {
@@ -90,8 +107,18 @@ class SettingsTableViewController: UIViewController, SettingsTableDelegate {
         self.newFullName = fullName
     }
     
+    func updateImage(newImage: UIImage) {
+        self.newProfileImage = newImage
+        self.hasUserChosenNewImage = true
+    }
+    
+    func presentView(viewcontroller: UIViewController) {
+        self.present(viewcontroller, animated: true, completion: nil)
+    }
+    
     func displayMessage(title: String, message: String) {
         self.displayBasicAlert(title: title, message: message)
     }
+    
     
 }

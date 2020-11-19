@@ -6,7 +6,7 @@
 //  Copyright © 2020 Tom Knighton. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum UserServiceError {
     case userNotFound
@@ -30,6 +30,38 @@ struct UserService {
             case .failure:
                 completion(nil)
             }
+        }
+    }
+    
+    func updateUserProfileImage(userId: String, newImage: UIImage, completion: @escaping((String?) -> Void)) {
+        let imgData = newImage.jpegData(compressionQuality: 0.5)
+        
+        if let imgData = imgData {
+            let boundary = "Boundary-\(UUID().uuidString)"
+            let paramName = "image"
+            let fileName = "image.jpg"
+            let request = APIRequest(method: .post, path: "users/updateuserpicture/\(userId)")
+            var data = Data()
+            data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+            data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+            data.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            data.append(imgData)
+            data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+            request.body = data
+            APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+                switch result {
+                case .success(let response):
+                    if let response = try? response.decode(to: String.self) {
+                        completion(response.body)
+                    } else {
+                        completion(nil)
+                    }
+                case .failure:
+                    completion(nil)
+                }
+            }
+        } else {
+            completion(nil)
         }
     }
         

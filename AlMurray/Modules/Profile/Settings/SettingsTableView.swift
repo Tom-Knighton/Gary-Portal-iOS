@@ -57,6 +57,14 @@ extension SettingsTableView: SettingsTableDelegate {
         settingsDelegate?.updateFullName(fullName: fullName)
     }
     
+    func updateImage(newImage: UIImage) {
+        settingsDelegate?.updateImage(newImage: newImage)
+    }
+    
+    func presentView(viewcontroller: UIViewController) {
+        settingsDelegate?.presentView(viewcontroller: viewcontroller)
+    }
+    
     func displayMessage(title: String, message: String) {
         settingsDelegate?.displayMessage(title: title, message: message)
     }
