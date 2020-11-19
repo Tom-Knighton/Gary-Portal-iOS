@@ -822,6 +822,9 @@
                                                     <state key="normal" title="APP FEEDBACK">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="rulesButtonTapped:" destination="zcK-uu-7Bx" eventType="touchUpInside" id="c5D-o7-IB1"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0c-9I-M1q">
                                                     <rect key="frame" x="16" y="270" width="318" height="50"/>
