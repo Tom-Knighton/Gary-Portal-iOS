@@ -73,3 +73,10 @@ struct UserBans: Codable {
     let isFeedBanned: Bool?
     let banReason: String?
 }
+
+struct UserDetails: Codable {
+    
+    let username: String?
+    let email: String?
+    let fullName: String?
+}

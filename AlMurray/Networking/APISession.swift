@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import FirebaseAuth
+
 enum Result<T> {
     case success(T)
     case error(APIError)
@@ -19,6 +21,7 @@ extension APIResponse where Body == Data? {
         }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
+        // swiftlint:disable force_try
         let decoded = try decoder.decode(BodyType.self, from: data)
         return APIResponse<BodyType>(statusCode: self.statusCode, body: decoded)
         
@@ -89,18 +92,38 @@ struct APIClient {
         }
         
         var urlRequest = URLRequest(url: url)
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.httpBody = request.body
-        request.headers?.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.field) }
         
-        let task = session.dataTask(with: urlRequest) { (data, response, _) in
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion?(.failure(.networkFail))
-                return
-            }	
-            completion?(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
+        request.headers?.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.field) }
+        if Auth.auth().currentUser != nil {
+            var authToken = ""
+            Auth.auth().currentUser?.getIDToken(completion: { (token, _) in
+                authToken = token ?? ""
+                urlRequest.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+                let task = session.dataTask(with: urlRequest) { (data, response, _) in
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        completion?(.failure(.networkFail))
+                        return
+                    }
+                    completion?(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
+                }
+                task.resume()
+            })
+        } else {
+            
+            let task = session.dataTask(with: urlRequest) { (data, response, _) in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    completion?(.failure(.networkFail))
+                    return
+                }
+                completion?(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
+            }
+            task.resume()
         }
-        task.resume()
+        
     }
 }
 

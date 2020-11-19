@@ -8,17 +8,90 @@
 
 import UIKit
 
-class SettingsTableViewController: UIViewController {
+protocol SettingsTableDelegate: class {
+    
+    func updateEmail(email: String)
+    func updateUsername(username: String)
+    func updateFullName(fullName: String)
+    func displayMessage(title: String, message: String)
+}
+
+class SettingsTableViewController: UIViewController, SettingsTableDelegate {
 
     @IBOutlet private weak var settingsTable: SettingsTableView?
+    @IBOutlet private weak var closeButton: UIButton?
+    @IBOutlet private weak var saveButton: UIButton?
+    
+    internal var newEmail: String?
+    internal var newUsername: String?
+    internal var newFullName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.endEditingWhenTappedAround()
+        self.settingsTable?.endEditingWhenTappedAround()
+        
+        self.settingsTable?.settingsDelegate = self
+        
         self.settingsTable?.delegate = self.settingsTable
         self.settingsTable?.dataSource = self.settingsTable
         self.settingsTable?.rowHeight = UITableView.automaticDimension
         self.settingsTable?.estimatedRowHeight = 270
         self.settingsTable?.reloadData()
+        
+        self.closeButton?.roundCorners(radius: 5)
+        self.saveButton?.roundCorners(radius: 5)
     }
+    
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func saveButtonTapped(_ sender: Any) {
+        let email = self.newEmail ?? GaryPortal.shared.user?.userEmail ?? ""
+        let username = self.newUsername ?? GaryPortal.shared.user?.userName ?? ""
+        let fullName = self.newFullName ?? GaryPortal.shared.user?.userFullName ?? ""
+        let newUserDetails = UserDetails(username: username, email: email, fullName: fullName)
+        
+        self.toggleActivityIndicator(enable: true)
+        AuthenticationService().isEmailFree(email) { (isEmailFree) in
+            if !isEmailFree && email != GaryPortal.shared.user?.userEmail ?? "" {
+                self.displayBasicAlert(title: "Error", message: "That email address is already in use, please try another one")
+                self.toggleActivityIndicator(enable: false)
+                return
+            }
+            
+            AuthenticationService().isUsernameFree(username) { (isUsernameFree) in
+                if !isUsernameFree && username != GaryPortal.shared.user?.userName ?? "" {
+                    self.toggleActivityIndicator(enable: false)
+                    self.displayBasicAlert(title: "Error", message: "That username is already in use, please try another one")
+                    return
+                }
+                
+                UserService().updateUserSettings(userId: GaryPortal.shared.user?.userId ?? "", userDetails: newUserDetails) { (user) in
+                    GaryPortal.shared.user = user
+                    self.toggleActivityIndicator(enable: false)
+                }
+            }
+        }
+       
+    }
+    
+    func updateEmail(email: String) {
+        self.newEmail = email
+    }
+    
+    func updateUsername(username: String) {
+        self.newUsername = username
+    }
+    
+    func updateFullName(fullName: String) {
+        self.newFullName = fullName
+    }
+    
+    func displayMessage(title: String, message: String) {
+        self.displayBasicAlert(title: title, message: message)
+    }
+    
 }

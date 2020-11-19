@@ -1021,7 +1021,38 @@
                             <navigationBar contentMode="scaleToFill" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QYE-kM-qja">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="108"/>
                                 <items>
-                                    <navigationItem title="Settings" id="Pl7-uS-a0Y"/>
+                                    <navigationItem title="Settings" id="Pl7-uS-a0Y">
+                                        <rightBarButtonItems>
+                                            <barButtonItem style="plain" id="It0-Kx-syn">
+                                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="dzM-2B-OzV">
+                                                    <rect key="frame" x="257" y="13" width="117" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" name="Section"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                    <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                                                    <state key="normal" title="Save Settings">
+                                                        <color key="titleColor" systemColor="labelColor"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="saveButtonTapped:" destination="Hyw-E4-RzU" eventType="touchUpInside" id="HO0-1s-EcH"/>
+                                                    </connections>
+                                                </button>
+                                            </barButtonItem>
+                                            <barButtonItem style="plain" id="wKP-hV-0hV">
+                                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="f1V-Mx-lm4">
+                                                    <rect key="frame" x="163" y="13" width="86" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" name="Section"/>
+                                                    <state key="normal" title="Cancel">
+                                                        <color key="titleColor" systemColor="labelColor"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="closeButtonTapped:" destination="Hyw-E4-RzU" eventType="touchUpInside" id="pvQ-hC-pho"/>
+                                                    </connections>
+                                                </button>
+                                            </barButtonItem>
+                                        </rightBarButtonItems>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xik-HM-BKf" customClass="SettingsTableView" customModule="AlMurray" customModuleProvider="target">
@@ -1201,6 +1232,9 @@
                                                             <real key="value" value="15"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="resetPasswordPressed:" destination="zK9-dS-uHu" eventType="touchUpInside" id="ApY-fr-vCW"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOX-9T-w2F">
                                                     <rect key="frame" x="32" y="105.99999999999999" width="270" height="51.333333333333329"/>
@@ -1216,6 +1250,9 @@
                                                             <real key="value" value="15"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="logoutButtonPressed:" destination="zK9-dS-uHu" eventType="touchUpInside" id="5A9-Gx-TKG"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" name="Section"/>
@@ -1308,6 +1345,9 @@
                                                             <real key="value" value="15"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="rateAppPressed:" destination="U8w-A3-FgX" eventType="touchUpInside" id="Cgu-lX-XKR"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gary Portal Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPm-AW-vlh">
                                                     <rect key="frame" x="28" y="246" width="278" height="21"/>
@@ -1366,6 +1406,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="ojR-YL-Gsg"/>
                     <connections>
+                        <outlet property="closeButton" destination="f1V-Mx-lm4" id="wj1-wA-zHY"/>
+                        <outlet property="saveButton" destination="dzM-2B-OzV" id="gMq-hw-zV1"/>
                         <outlet property="settingsTable" destination="Xik-HM-BKf" id="fAR-wL-Nid"/>
                     </connections>
                 </viewController>

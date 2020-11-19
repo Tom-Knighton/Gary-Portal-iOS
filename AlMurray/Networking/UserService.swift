@@ -32,6 +32,23 @@ struct UserService {
             }
         }
     }
+        
+    func updateUserSettings(userId: String, userDetails: UserDetails, completion: @escaping((User?) -> Void)) {
+        let request = APIRequest(method: .put, path: "users/updateuserdetails/\(userId)")
+        request.body = try? JSONEncoder().encode(userDetails)
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: User.self) {
+                    completion(response.body)
+                } else {
+                    completion(nil)
+                }
+            case .failure:
+                completion(nil)
+            }
+        }
+    }
     
     func getPrayers(userId: String, completion: @escaping (UserPoints?) -> Void) {
         let request = APIRequest(method: .get, path: "users/getprayers/\(userId)")
@@ -61,6 +78,5 @@ struct UserService {
         APIClient().perform(request, nil)
         GaryPortal.shared.user?.updatePrayers(simple: 0, meaningful: 0)
     }
-    
     
 }

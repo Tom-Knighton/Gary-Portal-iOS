@@ -8,6 +8,8 @@
 
 import UIKit
 import Nuke
+import StoreKit
+import FirebaseAuth
 
 class SettingsAccountCell: UITableViewCell {
 
@@ -20,10 +22,15 @@ class SettingsAccountCell: UITableViewCell {
     
     @IBOutlet private weak var userImageView: UIImageView?
     
+    weak var delegate: SettingsTableDelegate?
+    
     func setup(for user: User?) {
         self.usernameTextField?.text = user?.userName ?? ""
         self.emailTextField?.text = user?.userEmail ?? ""
         self.fullNameTextField?.text = user?.userFullName ?? ""
+        self.usernameTextField?.delegate = self
+        self.emailTextField?.delegate = self
+        self.fullNameTextField?.delegate = self
         
         self.usernameView?.roundCorners(radius: 5, masksToBounds: false)
         self.emailView?.roundCorners(radius: 5, masksToBounds: false)
@@ -41,20 +48,62 @@ class SettingsAccountCell: UITableViewCell {
     }
 }
 
+extension SettingsAccountCell: UITextFieldDelegate {
+    
+    func filtered(range: String, text: String) -> Bool {
+        let charset = NSCharacterSet(charactersIn: range).inverted
+        let filtered = text.components(separatedBy: charset).joined(separator: "")
+        return text == filtered
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.emailTextField {
+            let ACCEPTABLE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_@-."
+            return filtered(range: ACCEPTABLE_CHARACTERS, text: string)
+        }
+        
+        if textField == self.usernameTextField {
+            let ACCEPTABLE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+            return filtered(range: ACCEPTABLE_CHARACTERS, text: string)
+        }
+        
+        if textField == self.fullNameTextField {
+            let ACCEPTABLE_CHARACTERS = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+            return filtered(range: ACCEPTABLE_CHARACTERS, text: string)
+        }
+
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        delegate?.updateEmail(email: self.emailTextField?.text ?? "")
+        delegate?.updateUsername(username: self.usernameTextField?.text ?? "")
+        delegate?.updateFullName(fullName: self.fullNameTextField?.text ?? "")
+    }
+}
+
 class SettingsSecurityCell: UITableViewCell {
     
     @IBOutlet private weak var logOutButton: UIButton?
     @IBOutlet private weak var resetPasswordButton: UIButton?
+    
+    weak var delegate: SettingsTableDelegate?
     
     @IBAction func logoutButtonPressed(_ sender: UIButton?) {
         // TODO: Log Out
     }
     
     @IBAction func resetPasswordPressed(_ sender: UIButton?) {
-        // TODO: RESET API
+        Auth.auth().sendPasswordReset(withEmail: GaryPortal.shared.user?.userEmail ?? "", completion: nil)
+        self.delegate?.displayMessage(title: "Password Reset", message: "Please check your e-mail address for a password reset link")
     }
 }
 
 class SettingsAppCell: UITableViewCell {
     
+    @IBAction func rateAppPressed(_ sender: UIButton?) {
+        if let url = URL(string: GaryPortalConstants.AppReviewUrl) {
+            UIApplication.shared.open(url)
+        }
+    }
 }

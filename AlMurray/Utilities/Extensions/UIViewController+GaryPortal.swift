@@ -15,21 +15,27 @@ extension UIViewController {
     }
     
     func toggleActivityIndicator(enable: Bool = true) {
-        if enable {
-            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-            self.view.isUserInteractionEnabled = false
-            activityView.tag = 999
-            self.view.addSubview(activityView)
-        } else {
-            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-            self.view.isUserInteractionEnabled = true
-            self.view.viewWithTag(999)?.removeFromSuperview()
+        DispatchQueue.main.async {
+            if enable {
+                self.isModalInPresentation = true
+                self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                self.view.isUserInteractionEnabled = false
+                self.activityView.tag = 999
+                self.view.addSubview(self.activityView)
+            } else {
+                self.isModalInPresentation = false
+                self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                self.view.isUserInteractionEnabled = true
+                self.view.viewWithTag(999)?.removeFromSuperview()
+            }
         }
     }
     
     func displayBasicAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
