@@ -80,8 +80,7 @@ class FirstPageController: UIViewController {
                 if let user = user {
                     self.toggleActivityIndicator(enable: false)
                     GaryPortal.shared.user = user
-                    UserDefaults.standard.set(true, forKey: "hasLoggedIn")
-                    UIStoryboard(name: "MainStoryboard", bundle: nil).instantiateInitialViewController()
+                    GaryPortal.shared.loginUser()
                 } else {
                     self.toggleActivityIndicator(enable: false)
                     self.displayBasicAlert(title: "Error", message: "Your email or password was unrecognised!")

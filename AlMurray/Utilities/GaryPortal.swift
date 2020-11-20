@@ -25,6 +25,42 @@ class GaryPortal {
     
     var user: User?
     
+    /// Logs a user in and presents the main storyboard
+    public func loginUser() {
+        UserDefaults.standard.set(true, forKey: "hasLoggedIn")
+        DispatchQueue.main.async {
+            let mainScreens = HostController()
+            mainScreens.modalPresentationStyle = .fullScreen
+            let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
+
+            if var topController = keyWindow?.rootViewController {
+                while let presentedViewController = topController.presentedViewController {
+                    topController = presentedViewController
+                }
+                
+                topController.present(mainScreens, animated: false, completion: nil)
+            }
+        }
+    }
+    
+    /// Logs a user out and presents the sign-in/up navigation flow
+    public func logoutUser() {
+        UserDefaults.standard.set(false, forKey: "hasLoggedIn")
+        DispatchQueue.main.async {
+            let mainScreens = UIStoryboard(name: "LoginSignup", bundle: nil).instantiateViewController(identifier: "LoginSignupNav")
+            mainScreens.modalPresentationStyle = .fullScreen
+            let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
+
+            if var topController = keyWindow?.rootViewController {
+                while let presentedViewController = topController.presentedViewController {
+                    topController = presentedViewController
+                }
+                
+                topController.present(mainScreens, animated: false, completion: nil)
+            }
+        }
+    }
+    
     private init(user: User? = nil) {
         self.user = user
     }

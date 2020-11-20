@@ -909,7 +909,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hml-4s-I6h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1033.3333333333335" y="25.446428571428569"/>
+            <point key="canvasLocation" x="-1033.8461538461538" y="24.881516587677723"/>
         </scene>
         <!--Prayer Room View Controller-->
         <scene sceneID="TLS-2A-2ja">

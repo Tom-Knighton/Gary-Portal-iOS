@@ -117,7 +117,7 @@ class SettingsSecurityCell: UITableViewCell {
     weak var delegate: SettingsTableDelegate?
     
     @IBAction func logoutButtonPressed(_ sender: UIButton?) {
-        // TODO: Log Out
+        GaryPortal.shared.logoutUser()
     }
     
     @IBAction func resetPasswordPressed(_ sender: UIButton?) {
