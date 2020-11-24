@@ -134,7 +134,9 @@ class FeedHostController: UITableViewController {
             let visibleCells = self.tableView.visibleCells
             let minIndex = visibleCells.startIndex
             if visibleCells.firstIndex(of: cell) == minIndex {
-                videoCell.avPlayer?.play()
+                if GaryPortal.shared.localAppSettings.autoPlayVideos {
+                    videoCell.avPlayer?.play()
+                }
             }
         }
     }
@@ -175,7 +177,9 @@ class FeedHostController: UITableViewController {
             if post is FeedMediaPost && post.postType == "Video" {
                 guard let videoCell = cell as? FeedPostMediaCell else { return }
                 
-                videoCell.playVideo()
+                if GaryPortal.shared.localAppSettings.autoPlayVideos {
+                    videoCell.playVideo()
+                }
             }
         }
     }

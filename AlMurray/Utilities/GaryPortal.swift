@@ -104,11 +104,8 @@ struct GaryPortalConstants {
     static let PasswordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}"
     
     static let APIBaseUrl = "https://us-central1-garyportal4.cloudfunctions.net/"
-    // static let APIBaseUrl = "https://dda6b2b7c50c.ngrok.io/garyportal4/us-central1/api/"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
-    
-    
-    
+
     static let LatestWhatsNew = WhatsNew(version: WhatsNew.Version(major: 4, minor: 0, patch: 0), title: "Gary Portal 4.0.0", items: [
         WhatsNew.Item(title: "Version 4.0", subtitle: "The app has generally improved in this update :) Well done us", image: nil),
         WhatsNew.Item(title: "UI Fixes", subtitle: "The app should now look great on all phone sizes ❤️", image: nil),

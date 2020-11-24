@@ -88,11 +88,30 @@ class FeedPostMediaCell: UITableViewCell {
             playerLayer.frame = self.postVideoView?.bounds ?? CGRect()
             playerLayer.backgroundColor = UIColor.clear.cgColor
             self.postVideoView?.layer.addSublayer(playerLayer)
+            
+            if GaryPortal.shared.localAppSettings.autoPlayVideos {
+                self.playVideo()
+                _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer?.currentItem, queue: nil) { _ in
+                    self.avPlayer?.seek(to: CMTime.zero)
+                    self.avPlayer?.play()
+                }
+            }
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapPostVideo))
+            self.postVideoView?.addGestureRecognizer(tapGesture)
+        }
+    }
+    
+    @objc
+    func tapPostVideo() {
+        if self.avPlayer?.timeControlStatus == AVPlayer.TimeControlStatus.paused {
             self.playVideo()
             _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer?.currentItem, queue: nil) { _ in
                 self.avPlayer?.seek(to: CMTime.zero)
                 self.avPlayer?.play()
             }
+        } else {
+            self.avPlayer?.pause()
         }
     }
     
