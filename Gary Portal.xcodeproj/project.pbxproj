@@ -22,6 +22,7 @@
 		E25AEEB924F3C45000D5BFD5 /* UITextField+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */; };
 		E261566A256D80EE00CB7E0A /* Bundle+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2615669256D80EE00CB7E0A /* Bundle+GaryPortal.swift */; };
 		E261567F256DA84400CB7E0A /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = E261567E256DA84400CB7E0A /* WhatsNewKit */; };
+		E2615684256DC8FC00CB7E0A /* PollPercentageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2615683256DC8FC00CB7E0A /* PollPercentageView.swift */; };
 		E2797A72256459AD008F90F8 /* PrayerRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */; };
 		E27C1651251D135A007E2BF3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1650251D135A007E2BF3 /* FirebaseFunctions */; };
 		E27C1653251D135A007E2BF3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1652251D135A007E2BF3 /* FirebaseAuth */; };
@@ -72,6 +73,7 @@
 		E25AEEB624F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Primitive+GaryPortal.swift"; sourceTree = "<group>"; };
 		E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+GaryPortal.swift"; sourceTree = "<group>"; };
 		E2615669256D80EE00CB7E0A /* Bundle+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+GaryPortal.swift"; sourceTree = "<group>"; };
+		E2615683256DC8FC00CB7E0A /* PollPercentageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollPercentageView.swift; sourceTree = "<group>"; };
 		E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomViewController.swift; sourceTree = "<group>"; };
 		E289001D24EDD87A00B7DD83 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E289002324EDE48200B7DD83 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				E2300B26250CF430000E3AD2 /* FeedHostController.swift */,
 				E2300B2A250D3CF9000E3AD2 /* FeedCells.swift */,
 				E2300B2C250D443B000E3AD2 /* PostMediaView.swift */,
+				E2615683256DC8FC00CB7E0A /* PollPercentageView.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				E289002B24EEF91400B7DD83 /* SignupController.swift in Sources */,
 				E2797A72256459AD008F90F8 /* PrayerRoomViewController.swift in Sources */,
 				E2B31FB32511162D00B9A3F8 /* Feed.swift in Sources */,
+				E2615684256DC8FC00CB7E0A /* PollPercentageView.swift in Sources */,
 				E289002924EE749000B7DD83 /* ProfileTableCells.swift in Sources */,
 				E2300B24250CEE37000E3AD2 /* HostController.swift in Sources */,
 				E2B7435A24ED7670007AC93E /* ActivityIndicatorController.swift in Sources */,

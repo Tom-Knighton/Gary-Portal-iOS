@@ -133,8 +133,8 @@ class FeedPostPollCell: UITableViewCell {
     @IBOutlet private weak var shareButton: UIButton?
     
     @IBOutlet private weak var pollQuestionLabel: UILabel?
-    @IBOutlet private weak var pollOption1: UIButton?
-    @IBOutlet private weak var pollOption2: UIButton?
+    @IBOutlet private weak var pollOption1: PollPercentageView?
+    @IBOutlet private weak var pollOption2: PollPercentageView?
     
     var post: FeedPollPost?
     weak var delegate: FeedListControllerDelegate?
@@ -180,31 +180,24 @@ class FeedPostPollCell: UITableViewCell {
         let hasVotedOn = self.post?.hasBeenVotedOn(by: GaryPortal.shared.user?.userId ?? "") ?? false
         if hasVotedOn {
             let totalVotes = (self.post?.pollAnswers?[0].responses?.count ?? 0) + (self.post?.pollAnswers?[1].responses?.count ?? 0)
-            let vote1Percentage = Double(self.post?.pollAnswers?[0].responses?.count ?? 0).percentage(of: totalVotes)
-            let vote2Percentage = Double(self.post?.pollAnswers?[1].responses?.count ?? 0).percentage(of: totalVotes)
-            self.pollOption1?.setTitle("\(self.post?.pollAnswers?[0].answer ?? ""): \(Int(vote1Percentage.rounded()))%", for: .normal)
+            let votes1 = self.post?.pollAnswers?[0].responses?.count ?? 0
+            let votes2 = self.post?.pollAnswers?[1].responses?.count ?? 0
+            let vote1Percentage = CGFloat(votes1) / CGFloat(totalVotes)
+            let vote2Percentage = CGFloat(votes2) / CGFloat(totalVotes)
+    
+            self.pollOption1?.setTitle("\(self.post?.pollAnswers?[0].answer ?? ""): \(Int(vote1Percentage * 100))%", for: .normal)
             self.pollOption1?.isUserInteractionEnabled = false
-            self.pollOption2?.setTitle("\(self.post?.pollAnswers?[1].answer ?? ""): \(Int(vote2Percentage.rounded()))%", for: .normal)
+            self.pollOption2?.setTitle("\(self.post?.pollAnswers?[1].answer ?? ""): \(Int(vote2Percentage * 100))%", for: .normal)
             self.pollOption2?.isUserInteractionEnabled = false
-            addPercentageBar(vote1Percentage, to: self.pollOption1 ?? UIView())
-            addPercentageBar(vote2Percentage, to: self.pollOption2 ?? UIView())
+            self.pollOption1?.setProgess(progress: vote1Percentage)
+            self.pollOption2?.setProgess(progress: vote2Percentage)
+            
         } else {
-            self.pollOption1?.subviews.forEach { $0.removeFromSuperview() }
-            self.pollOption2?.subviews.forEach { $0.removeFromSuperview() }
+            self.pollOption1?.setProgess(progress: 0)
+            self.pollOption2?.setProgess(progress: 0)
             self.pollOption1?.setTitle(post.pollAnswers?[0].answer ?? "", for: .normal)
             self.pollOption2?.setTitle(post.pollAnswers?[1].answer ?? "", for: .normal)
         }
-
-    }
-    
-    func addPercentageBar(_ percentage: Double, to view: UIView) {
-        let percentageView = UIView()
-        let width = CGFloat(view.frame.width * CGFloat(percentage / 100))
-        percentageView.frame = CGRect(x: 0, y: 0, width: width, height: view.frame.height)
-        percentageView.backgroundColor = UIColor(red: 0.67, green: 0.67, blue: 0.67, alpha: 0.3)
-        percentageView.tag = 10
-        view.addSubview(percentageView)
-        view.sendSubviewToBack(percentageView)
     }
     
     @IBAction func likeButtonTapped(_ sender: Any) {

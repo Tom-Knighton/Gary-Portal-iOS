@@ -28,13 +28,13 @@
         <!--Feed Host Controller-->
         <scene sceneID="qmJ-5J-XTN">
             <objects>
-                <tableViewController storyboardIdentifier="FeedHost" id="XDV-ja-SdG" customClass="FeedHostController" customModule="AlMurray" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FeedHost" id="XDV-ja-SdG" customClass="FeedHostController" customModule="Gary_Portal" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0hV-rN-b0S">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedPostCell" rowHeight="599" id="y9a-b6-D0k" customClass="FeedPostMediaCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedPostCell" rowHeight="599" id="y9a-b6-D0k" customClass="FeedPostMediaCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="390" height="599"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y9a-b6-D0k" id="nsS-Fk-6rw">
@@ -195,7 +195,7 @@
                                     <outlet property="shareButton" destination="Qmg-qv-lRD" id="sI8-RU-aSa"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedPollCell" rowHeight="402" id="Y4y-4a-f9F" customClass="FeedPostPollCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedPollCell" rowHeight="402" id="Y4y-4a-f9F" customClass="FeedPostPollCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="627" width="390" height="402"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y4y-4a-f9F" id="Qhs-lt-Vri">
@@ -295,7 +295,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T7v-Me-V45">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T7v-Me-V45" customClass="PollPercentageView" customModule="Gary_Portal" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="216" width="318" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="45" id="PfQ-47-OLI"/>
@@ -311,7 +311,7 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dDa-XZ-Dfl">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dDa-XZ-Dfl" customClass="PollPercentageView" customModule="Gary_Portal" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="269" width="319" height="45"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="45" id="c1H-gn-XFI"/>
@@ -368,14 +368,14 @@
                                     <outlet property="shareButton" destination="DmH-Ed-yXZ" id="AX9-bN-1SA"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedAditLogContainerCell" rowHeight="181" id="OTc-YA-r6e" customClass="FeedAditLogContainerCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedAditLogContainerCell" rowHeight="181" id="OTc-YA-r6e" customClass="FeedAditLogContainerCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="1029" width="390" height="181"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OTc-YA-r6e" id="cPe-jv-bCp">
                                     <rect key="frame" x="0.0" y="0.0" width="390" height="181"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="K0D-8Q-XJU" customClass="FeedAditLogCollectionView" customModule="AlMurray" customModuleProvider="target">
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="K0D-8Q-XJU" customClass="FeedAditLogCollectionView" customModule="Gary_Portal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="181"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -388,7 +388,7 @@
                                                 <inset key="sectionInset" minX="5" minY="5" maxX="5" maxY="5"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeedAditLogCell" id="4m6-1Z-H2o" customClass="AditLogCell" customModule="AlMurray" customModuleProvider="target">
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeedAditLogCell" id="4m6-1Z-H2o" customClass="AditLogCell" customModule="Gary_Portal" customModuleProvider="target">
                                                     <rect key="frame" x="5" y="15.666666666666666" width="100" height="150"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="igu-jK-84k">
@@ -462,13 +462,13 @@
         <!--Profile Table View Controller-->
         <scene sceneID="VQb-cs-qHn">
             <objects>
-                <tableViewController storyboardIdentifier="ProfileHost" id="21j-pz-pWf" customClass="ProfileTableViewController" customModule="AlMurray" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ProfileHost" id="21j-pz-pWf" customClass="ProfileTableViewController" customModule="Gary_Portal" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="rMl-F6-LTS">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileHeaderCell" rowHeight="378" id="TXk-Yh-OWG" customClass="ProfileHeaderCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileHeaderCell" rowHeight="378" id="TXk-Yh-OWG" customClass="ProfileHeaderCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="390" height="378"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TXk-Yh-OWG" id="ElR-4U-ltr">
@@ -549,7 +549,7 @@
                                     <outlet property="userSpanishNameLabel" destination="qBi-Jk-MRt" id="4BC-Db-mWo"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfilePointsCell" rowHeight="210" id="uxx-WY-7zY" customClass="ProfilePointsCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfilePointsCell" rowHeight="210" id="uxx-WY-7zY" customClass="ProfilePointsCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="406" width="390" height="210"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uxx-WY-7zY" id="xOb-1l-nJ7">
@@ -616,7 +616,7 @@
                                     <outlet property="positivityPointsLabel" destination="rug-f2-m0I" id="Wxj-e7-bNg"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileStatsCell" rowHeight="631" id="ouh-9x-7Xv" customClass="ProfileStatsCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileStatsCell" rowHeight="631" id="ouh-9x-7Xv" customClass="ProfileStatsCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="616" width="390" height="631"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ouh-9x-7Xv" id="94Q-4T-oLd">
@@ -765,7 +765,7 @@
                                     <outlet property="teamStandingLabel" destination="ycp-hr-2pe" id="b8L-4M-10g"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileMiscCell" id="zcK-uu-7Bx" customClass="ProfileMiscCell" customModule="AlMurray" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileMiscCell" id="zcK-uu-7Bx" customClass="ProfileMiscCell" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="1247" width="390" height="440"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zcK-uu-7Bx" id="kKR-mV-KTS">
@@ -914,7 +914,7 @@
         <!--Prayer Room View Controller-->
         <scene sceneID="TLS-2A-2ja">
             <objects>
-                <viewController id="Arm-yi-KxF" customClass="PrayerRoomViewController" customModule="AlMurray" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Arm-yi-KxF" customClass="PrayerRoomViewController" customModule="Gary_Portal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yBe-uh-cYf">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="790"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -950,13 +950,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Simple Prayers:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNe-c3-BJl">
-                                <rect key="frame" x="8" y="463" width="374" height="21"/>
+                                <rect key="frame" x="8" y="463" width="374" height="22"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Meaningful Prayers:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiY-PO-qbc">
-                                <rect key="frame" x="8" y="492" width="374" height="21"/>
+                                <rect key="frame" x="8" y="493" width="374" height="22"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1016,7 +1016,7 @@
         <!--Settings Table View Controller-->
         <scene sceneID="vVN-hW-W33">
             <objects>
-                <viewController id="Hyw-E4-RzU" customClass="SettingsTableViewController" customModule="AlMurray" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Hyw-E4-RzU" customClass="SettingsTableViewController" customModule="Gary_Portal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cvr-Ar-oxE">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="790"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1058,11 +1058,11 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xik-HM-BKf" customClass="SettingsTableView" customModule="AlMurray" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Xik-HM-BKf" customClass="SettingsTableView" customModule="Gary_Portal" customModuleProvider="target">
                                 <rect key="frame" x="8" y="116" width="374" height="632"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="accountCell" id="Ahv-yN-v12" customClass="SettingsAccountCell" customModule="AlMurray" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="accountCell" id="Ahv-yN-v12" customClass="SettingsAccountCell" customModule="Gary_Portal" customModuleProvider="target">
                                         <rect key="frame" x="20" y="55.333332061767578" width="334" height="315.33334350585938"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ahv-yN-v12" id="gYy-LL-3pm">
@@ -1216,7 +1216,7 @@
                                             <outlet property="usernameView" destination="vlO-rs-70D" id="Rwf-D4-9XD"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="securityCell" id="zK9-dS-uHu" customClass="SettingsSecurityCell" customModule="AlMurray" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="securityCell" id="zK9-dS-uHu" customClass="SettingsSecurityCell" customModule="Gary_Portal" customModuleProvider="target">
                                         <rect key="frame" x="20" y="370.66667556762695" width="334" height="176.33332824707031"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zK9-dS-uHu" id="A2n-QU-h95">
@@ -1288,7 +1288,7 @@
                                             <outlet property="resetPasswordButton" destination="ZwP-Ue-mcg" id="9nv-7z-iQ6"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="appCell" id="U8w-A3-FgX" customClass="SettingsAppCell" customModule="AlMurray" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="appCell" id="U8w-A3-FgX" customClass="SettingsAppCell" customModule="Gary_Portal" customModuleProvider="target">
                                         <rect key="frame" x="20" y="547.00000381469727" width="334" height="270"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U8w-A3-FgX" id="ncO-FO-kQJ">
