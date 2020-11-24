@@ -18,7 +18,7 @@ enum UserServiceError {
 struct UserService {    
 
     func getUserById(userId: String, completion: @escaping ((User?) -> Void)) {
-        let request = APIRequest(method: .get, path: "users/\(userId)")
+        let request = APIRequest(method: .get, path: "api/users/\(userId)")
         APIClient().perform(request) { (result) in
             switch result {
             case .success(let response):
@@ -40,7 +40,7 @@ struct UserService {
             let boundary = "Boundary-\(UUID().uuidString)"
             let paramName = "image"
             let fileName = "image.jpg"
-            let request = APIRequest(method: .post, path: "users/updateuserpicture/\(userId)")
+            let request = APIRequest(method: .post, path: "api/users/updateuserpicture/\(userId)")
             var data = Data()
             data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
             data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
@@ -66,7 +66,7 @@ struct UserService {
     }
         
     func updateUserSettings(userId: String, userDetails: UserDetails, completion: @escaping((User?) -> Void)) {
-        let request = APIRequest(method: .put, path: "users/updateuserdetails/\(userId)")
+        let request = APIRequest(method: .put, path: "api/users/updateuserdetails/\(userId)")
         request.body = try? JSONEncoder().encode(userDetails)
         APIClient().perform(request) { (result) in
             switch result {
@@ -83,7 +83,7 @@ struct UserService {
     }
     
     func getPrayers(userId: String, completion: @escaping (UserPoints?) -> Void) {
-        let request = APIRequest(method: .get, path: "users/getprayers/\(userId)")
+        let request = APIRequest(method: .get, path: "api/users/getprayers/\(userId)")
         APIClient().perform(request) { (result) in
             switch result {
             case .success(let response):
@@ -100,13 +100,13 @@ struct UserService {
     }
     
     func updatePrayers(userId: String, simplePrayers: Int, meaningfulPrayers: Int) {
-        let request = APIRequest(method: .put, path: "users/updateprayers/\(userId)/\(simplePrayers)/\(meaningfulPrayers)")
+        let request = APIRequest(method: .put, path: "api/users/updateprayers/\(userId)/\(simplePrayers)/\(meaningfulPrayers)")
         APIClient().perform(request, nil)
         GaryPortal.shared.user?.updatePrayers(simple: simplePrayers, meaningful: meaningfulPrayers)
     }
     
     func clearAllPrayers() {
-        let request = APIRequest(method: .put, path: "users/clearallprayers")
+        let request = APIRequest(method: .put, path: "api/users/clearallprayers")
         APIClient().perform(request, nil)
         GaryPortal.shared.user?.updatePrayers(simple: 0, meaningful: 0)
     }

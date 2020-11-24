@@ -18,26 +18,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         if scene as? UIWindowScene == nil { return }
-        print("before auth")
         if Auth.auth().currentUser != nil && UserDefaults.standard.bool(forKey: "hasLoggedIn") { //If user exists in keychain and userdefaults set
             let userService = UserService()
-            print("Auth started")
             userService.getUserById(userId: Auth.auth().currentUser?.uid ?? "") { (user) in
                 DispatchQueue.main.async {
                     if user != nil {
-                        print("Opening HostController")
                         GaryPortal.shared.user = user
                         self.window?.rootViewController = HostController()
                     } else {
-                        print("to l/s")
                         self.window?.rootViewController = UIStoryboard(name: "LoginSignup", bundle: nil).instantiateViewController(identifier: "LoginSignupNav")
                     }
                 }
             }
         } else {
-            print("init l/s")
             self.window?.rootViewController = UIStoryboard(name: "LoginSignup", bundle: nil).instantiateViewController(identifier: "LoginSignupNav")
         }
+        
+        UserDefaults.standard.register(defaults: [
+            GaryPortalConstants.UserDefaults.autoPlayVideos: true,
+            GaryPortalConstants.UserDefaults.notifications: true
+        ])
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

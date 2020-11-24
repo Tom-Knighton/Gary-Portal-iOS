@@ -31,6 +31,7 @@ class SignupController: UIViewController {
     @IBOutlet private weak var genderTextField: UITextField?
 
     @IBOutlet private weak var profileImageView: UIImageView?
+    @IBOutlet private weak var signupButton: UIButton?
     
     let authService = AuthenticationService()
     let genderPickerView = UIPickerView()
@@ -74,6 +75,7 @@ class SignupController: UIViewController {
     }
     
     @IBAction func signupButtonPressed(_ sender: Any) {
+        self.toggleActivityIndicator(enable: true)
         let email = self.emailTextField?.text?.trim() ?? ""
         let username = self.usernameTextField?.text?.trim() ?? ""
         let fullName = self.fullnameTextField?.text?.trim() ?? ""
@@ -85,41 +87,56 @@ class SignupController: UIViewController {
         let allFields = [email, username, fullName, password, confirmPassword, school, dateOfBirth, gender]
         
         if allFields.contains(where: { $0.isEmptyOrWhitespace() }) || !hasChosenImage {
+            self.toggleActivityIndicator(enable: false)
             self.displayBasicAlert(title: GaryPortalConstants.Errors.Error, message: GaryPortalConstants.Errors.SignupFieldsNotCompleted)
             return
         }
         
         if password != confirmPassword {
+            self.toggleActivityIndicator(enable: false)
             self.displayBasicAlert(title: GaryPortalConstants.Errors.Error, message: GaryPortalConstants.Errors.PasswordsDoNotMatch)
             return
         }
         
         if !email.isValidEmail {
+            self.toggleActivityIndicator(enable: false)
             self.displayBasicAlert(title: GaryPortalConstants.Errors.Error, message: GaryPortalConstants.Errors.InvalidEmail)
             return
         }
         
         if !password.isValidPassword {
+            self.toggleActivityIndicator(enable: false)
             self.displayBasicAlert(title: GaryPortalConstants.Errors.Error, message: GaryPortalConstants.Errors.InvalidPassword)
             return
         }
         
-/* let newUser = User(UserId: "", UserEmail: email, UserFullName: fullName, UserSpanishName: "TBA", UserName: username, UserProfileImageUrl: "TBA", UserPassword: password, UserQuote: "TBA", UserBio: "TBA", UserIsStaff: false, UserIsAdmin: false, UserStanding: "Good", IsQueued: true, UserTeam: UserTeam(TeamName: "TBA", TeamRank: "Good"), UserRanks: UserRanks(AmigoRank: "TBA", PositivityRank: "TBA"), UserPoints: UserPoints(AmigoPoints: 0, PositivityPoints: 0, BowelsRelieved: 0, Prayers: 0, MeaningfulPrayers: 0), UserBans: UserBans(IsBanned: false, IsChatBanned: false, IsFeedBanned: false, BanReason: ""))
-        self.authService.CreateNewUser(user: newUser) { (finalUser, error) in
-            DispatchQueue.main.async {
-                if let error = error {
-                    if error == .EmailInUse {
-                        self.displayBasicAlert(title: "Error", message: "That email address is already in use!")
-                        return
+        let newUserRanks = UserRanks(amigoRank: "TBA", positivityRank: "TBA")
+        let newUserTeam = UserTeam(teamName: "TBA", teamRank: "TBA")
+        let newUserPoints = UserPoints(amigoPoints: 0, positivityPoints: 0, bowelsRelieved: 0, prayers: 0, meaningfulPrayers: 0)
+        let newUserBans = UserBans(isBanned: false, isChatBanned: false, isFeedBanned: false, banReason: "")
+        
+        let newUser = User(userId: "", userEmail: email, userFullName: fullName, userSpanishName: "TBA", userName: username, userProfileImageUrl: "TBA", userPassword: password, userQuote: "TBA", userBio: "TBA", userIsStaff: false, userIsAdmin: false, userStanding: "TBA", isQueued: true, userTeam: newUserTeam, userRanks: newUserRanks, userPoints: newUserPoints, userBans: newUserBans)
+        
+        AuthenticationService().createNewUser(from: newUser) { (createdUser) in
+            if let createdUser = createdUser {
+                UserService().updateUserProfileImage(userId: createdUser.userId ?? "", newImage: self.chosenProfilePicture ?? UIImage()) { (imageURL) in
+                    if let imageURL = imageURL {
+                        let userDetails = UserDetails(username: createdUser.userName ?? "", email: createdUser.userEmail ?? "", fullName: createdUser.userFullName ?? "", profilePictureUrl: imageURL)
+                        UserService().updateUserSettings(userId: createdUser.userId ?? "", userDetails: userDetails) { (finalUser) in
+                            self.toggleActivityIndicator(enable: false)
+                            GaryPortal.shared.user = finalUser
+                            GaryPortal.shared.loginUser()
+                        }
+                    } else {
+                        self.toggleActivityIndicator(enable: false)
+                        self.displayBasicAlert(title: "Error", message: "Your account was created successfully but an error occurred uploading your profile image :( Please try again later")
                     }
-                    self.displayBasicAlert(title: "Error", message: "An error occurred creating your account")
-                    return
                 }
-                self.displayBasicAlert(title: "Success", message: finalUser?.UserName ?? "" )
+            } else {
+                self.toggleActivityIndicator(enable: false)
+                self.displayBasicAlert(title: "Error", message: "An error occurred creating your user, please try again")
             }
-            
         }
-*/
     }
 
     func setupUI() {
@@ -132,6 +149,7 @@ class SignupController: UIViewController {
         self.schoolInputView?.roundCorners(radius: 20, masksToBounds: false)
         self.dobInputView?.roundCorners(radius: 20, masksToBounds: false)
         self.genderInputView.roundCorners(radius: 20, masksToBounds: false)
+        self.signupButton?.roundCorners(radius: 20, masksToBounds: false)
         
         self.profileImageView?.roundCorners(radius: (self.profileImageView?.frame.width ?? 180) / 2, masksToBounds: false)
         self.profileImageView?.layer.borderColor = UIColor.white.cgColor
@@ -146,6 +164,7 @@ class SignupController: UIViewController {
         self.dobInputView?.addShadow(opacity: 0.5, radius: 3)
         self.profileImageView?.addShadow(opacity: 0.5, radius: 3)
         self.genderInputView.addShadow(opacity: 0.5, radius: 3)
+        self.signupButton?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
         
         self.emailTextField?.delegate = self
         self.usernameTextField?.delegate = self
@@ -171,6 +190,10 @@ class SignupController: UIViewController {
         self.dobPickerView.maximumDate = Calendar.current.date(byAdding: .year, value: -13, to: Date())
         self.dobPickerView.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
         self.dobTextField?.inputView = self.dobPickerView
+        if #available(iOS 14, *) {
+            self.dobPickerView.preferredDatePickerStyle = .wheels
+            self.dobPickerView.sizeToFit()
+        }
         
         self.imagePicker.delegate = self
         self.imagePicker.allowsEditing = false

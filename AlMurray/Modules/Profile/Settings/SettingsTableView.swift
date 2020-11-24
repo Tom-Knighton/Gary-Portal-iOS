@@ -38,6 +38,8 @@ class SettingsTableView: UITableView, UITableViewDataSource, UITableViewDelegate
             return cell
         case .appCell:
             guard let cell = self.dequeueReusableCell(withIdentifier: "appCell", for: indexPath) as? SettingsAppCell else { return UITableViewCell() }
+            cell.setup()
+            cell.delegate = self
             return cell
         }
     }

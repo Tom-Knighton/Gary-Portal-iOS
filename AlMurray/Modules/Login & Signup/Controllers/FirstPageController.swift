@@ -30,38 +30,30 @@ class FirstPageController: UIViewController {
         self.setupUI()
         self.view.endEditingWhenTappedAround()
         self.originalFieldsY = self.fieldsView?.frame.origin.y
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self.view.window)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self.view.window)
     }
-
-    @objc
-    func keyboardWillShow(_ sender: NSNotification) {
-        if self.view.frame.origin.y == 0 {
-            self.view.frame.origin.y -= 100
-        }
-    }
     
-    @objc
-    func keyboardWillHide(_ notification: NSNotification) {
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
+    @IBAction func resetPassPressed(_ sender: UIButton?) {
+        let email = (self.emailInputField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if email == "" {
+            self.displayBasicAlert(title: "Error", message: "Please enter an email in the email field to reset your password")
+            return
         }
+        
+        AuthenticationService().sendUserPasswordReset(to: email)
+        self.displayBasicAlert(title: "Password Reset", message: "Please check your email for your password reset link, please note this email will only be sent if you have a valid Gary Portal account with this email, and remember to check your spam folder!")
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
@@ -90,8 +82,8 @@ class FirstPageController: UIViewController {
     }
     
     func setupUI() {
-        self.authenticatiorView?.roundCorners(radius: 5, masksToBounds: false)
-        self.passView?.roundCorners(radius: 5, masksToBounds: false)
+        self.authenticatiorView?.roundCorners(radius: 20, masksToBounds: false)
+        self.passView?.roundCorners(radius: 20, masksToBounds: false)
         
         self.authenticatiorView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
         self.passView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)

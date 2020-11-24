@@ -950,13 +950,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Simple Prayers:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNe-c3-BJl">
-                                <rect key="frame" x="8" y="463" width="374" height="22"/>
+                                <rect key="frame" x="8" y="463" width="374" height="21"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Meaningful Prayers:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiY-PO-qbc">
-                                <rect key="frame" x="8" y="493" width="374" height="22"/>
+                                <rect key="frame" x="8" y="492" width="374" height="21"/>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1316,6 +1316,9 @@
                                                         <constraint firstAttribute="height" constant="31" id="Qd1-BY-rf0"/>
                                                         <constraint firstAttribute="width" constant="47" id="amG-Qp-X4l"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <action selector="settingsSwitchChanged:" destination="U8w-A3-FgX" eventType="valueChanged" id="1Em-ia-MKf"/>
+                                                    </connections>
                                                 </switch>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N75-to-8zI">
                                                     <rect key="frame" x="259" y="89" width="49" height="31"/>
@@ -1344,6 +1347,9 @@
                                                             <real key="value" value="15"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="viewChangelogPressed:" destination="U8w-A3-FgX" eventType="touchUpInside" id="iE3-th-kwJ"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p8T-gs-hJe">
                                                     <rect key="frame" x="32" y="187" width="270" height="51"/>
@@ -1402,6 +1408,11 @@
                                                 <constraint firstItem="y1p-M9-epT" firstAttribute="top" secondItem="msF-Cj-Hye" secondAttribute="bottom" constant="8" id="sd7-2a-j0h"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="automaticPlaySwitch" destination="9Rj-25-8ch" id="XfN-57-bJs"/>
+                                            <outlet property="notificationsSwitch" destination="N75-to-8zI" id="iAA-AN-bzA"/>
+                                            <outlet property="versionLabel" destination="gPm-AW-vlh" id="u68-OZ-jnf"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

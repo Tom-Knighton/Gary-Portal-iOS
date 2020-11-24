@@ -16,10 +16,12 @@
 		E2300B2B250D3CF9000E3AD2 /* FeedCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300B2A250D3CF9000E3AD2 /* FeedCells.swift */; };
 		E2300B2D250D443B000E3AD2 /* PostMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300B2C250D443B000E3AD2 /* PostMediaView.swift */; };
 		E2350EAD250941940037468A /* UIColor+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2350EAC250941940037468A /* UIColor+GaryPortal.swift */; };
+		E2394CAC2569C3D400C9D92F /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2394CAB2569C3D400C9D92F /* AppSettings.swift */; };
 		E24A24AA2561F21800DD17AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E24A24A92561F21800DD17AF /* GoogleService-Info.plist */; };
-		E25AEEB524F0A13000D5BFD5 /* SignupController_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB424F0A13000D5BFD5 /* SignupController_Extensions.swift */; };
 		E25AEEB724F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB624F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift */; };
 		E25AEEB924F3C45000D5BFD5 /* UITextField+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */; };
+		E261566A256D80EE00CB7E0A /* Bundle+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2615669256D80EE00CB7E0A /* Bundle+GaryPortal.swift */; };
+		E261567F256DA84400CB7E0A /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = E261567E256DA84400CB7E0A /* WhatsNewKit */; };
 		E2797A72256459AD008F90F8 /* PrayerRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */; };
 		E27C1651251D135A007E2BF3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1650251D135A007E2BF3 /* FirebaseFunctions */; };
 		E27C1653251D135A007E2BF3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E27C1652251D135A007E2BF3 /* FirebaseAuth */; };
@@ -65,10 +67,11 @@
 		E2300B2A250D3CF9000E3AD2 /* FeedCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCells.swift; sourceTree = "<group>"; };
 		E2300B2C250D443B000E3AD2 /* PostMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMediaView.swift; sourceTree = "<group>"; };
 		E2350EAC250941940037468A /* UIColor+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+GaryPortal.swift"; sourceTree = "<group>"; };
+		E2394CAB2569C3D400C9D92F /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		E24A24A92561F21800DD17AF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E25AEEB424F0A13000D5BFD5 /* SignupController_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupController_Extensions.swift; sourceTree = "<group>"; };
 		E25AEEB624F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Primitive+GaryPortal.swift"; sourceTree = "<group>"; };
 		E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+GaryPortal.swift"; sourceTree = "<group>"; };
+		E2615669256D80EE00CB7E0A /* Bundle+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+GaryPortal.swift"; sourceTree = "<group>"; };
 		E2797A71256459AD008F90F8 /* PrayerRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomViewController.swift; sourceTree = "<group>"; };
 		E289001D24EDD87A00B7DD83 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E289002324EDE48200B7DD83 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
@@ -84,7 +87,7 @@
 		E2B7435724ED69CA007AC93E /* UIView+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GaryPortal.swift"; sourceTree = "<group>"; };
 		E2B7435924ED7670007AC93E /* ActivityIndicatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorController.swift; sourceTree = "<group>"; };
 		E2B7435B24ED76F9007AC93E /* UIViewController+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+GaryPortal.swift"; sourceTree = "<group>"; };
-		E2BA03FA24E86F7E00305AEC /* AlMurray.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlMurray.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2BA03FA24E86F7E00305AEC /* Gary Portal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gary Portal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2BA03FD24E86F7E00305AEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2BA03FF24E86F7E00305AEC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E2BA040624E86F8000305AEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,6 +113,7 @@
 				E27C1653251D135A007E2BF3 /* FirebaseAuth in Frameworks */,
 				E289002E24F05EB900B7DD83 /* AuthenticationServices.framework in Frameworks */,
 				E27C1651251D135A007E2BF3 /* FirebaseFunctions in Frameworks */,
+				E261567F256DA84400CB7E0A /* WhatsNewKit in Frameworks */,
 				E27C165B251D13CD007E2BF3 /* CropViewController in Frameworks */,
 				E27C1657251D135A007E2BF3 /* FirebaseDatabase in Frameworks */,
 				E27C1655251D135A007E2BF3 /* FirebaseDynamicLinks in Frameworks */,
@@ -177,19 +181,11 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E28ACF1224EA9837005B4194 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		E28ACF1324EA983C005B4194 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				E28ACF0E24E9FF97005B4194 /* FirstPageController.swift */,
 				E289002A24EEF91400B7DD83 /* SignupController.swift */,
-				E25AEEB424F0A13000D5BFD5 /* SignupController_Extensions.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -213,6 +209,7 @@
 				E25AEEB624F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift */,
 				E25AEEB824F3C45000D5BFD5 /* UITextField+GaryPortal.swift */,
 				E2350EAC250941940037468A /* UIColor+GaryPortal.swift */,
+				E2615669256D80EE00CB7E0A /* Bundle+GaryPortal.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -229,7 +226,7 @@
 		E2BA03FB24E86F7E00305AEC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E2BA03FA24E86F7E00305AEC /* AlMurray.app */,
+				E2BA03FA24E86F7E00305AEC /* Gary Portal.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -254,6 +251,7 @@
 			children = (
 				E22FA56F24ED7F6B006553ED /* User.swift */,
 				E2B31FB22511162D00B9A3F8 /* Feed.swift */,
+				E2394CAB2569C3D400C9D92F /* AppSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -273,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				E28ACF1324EA983C005B4194 /* Controllers */,
-				E28ACF1224EA9837005B4194 /* Views */,
 				E2BA041424E8709F00305AEC /* LoginSignup.storyboard */,
 			);
 			path = "Login & Signup";
@@ -315,12 +312,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E2BA03F924E86F7E00305AEC /* AlMurray */ = {
+		E2BA03F924E86F7E00305AEC /* Gary Portal */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2BA040E24E86F8000305AEC /* Build configuration list for PBXNativeTarget "AlMurray" */;
+			buildConfigurationList = E2BA040E24E86F8000305AEC /* Build configuration list for PBXNativeTarget "Gary Portal" */;
 			buildPhases = (
 				E2BA03F624E86F7E00305AEC /* Sources */,
 				E2BA03F724E86F7E00305AEC /* Frameworks */,
+				E2615679256D8C5900CB7E0A /* ShellScript */,
 				E2BA03F824E86F7E00305AEC /* Resources */,
 				E2D9563E251CD6BA00AB53D0 /* ShellScript */,
 			);
@@ -328,7 +326,7 @@
 			);
 			dependencies = (
 			);
-			name = AlMurray;
+			name = "Gary Portal";
 			packageProductDependencies = (
 				E2D95640251CEAF400AB53D0 /* Nuke */,
 				E27C1650251D135A007E2BF3 /* FirebaseFunctions */,
@@ -336,9 +334,10 @@
 				E27C1654251D135A007E2BF3 /* FirebaseDynamicLinks */,
 				E27C1656251D135A007E2BF3 /* FirebaseDatabase */,
 				E27C165A251D13CD007E2BF3 /* CropViewController */,
+				E261567E256DA84400CB7E0A /* WhatsNewKit */,
 			);
 			productName = AlMurray;
-			productReference = E2BA03FA24E86F7E00305AEC /* AlMurray.app */;
+			productReference = E2BA03FA24E86F7E00305AEC /* Gary Portal.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -356,7 +355,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E2BA03F524E86F7E00305AEC /* Build configuration list for PBXProject "AlMurray" */;
+			buildConfigurationList = E2BA03F524E86F7E00305AEC /* Build configuration list for PBXProject "Gary Portal" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -369,12 +368,13 @@
 				E2D9563F251CEAF400AB53D0 /* XCRemoteSwiftPackageReference "Nuke" */,
 				E27C164F251D135A007E2BF3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E27C1659251D13CD007E2BF3 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
+				E261567D256DA84400CB7E0A /* XCRemoteSwiftPackageReference "WhatsNewKit" */,
 			);
 			productRefGroup = E2BA03FB24E86F7E00305AEC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E2BA03F924E86F7E00305AEC /* AlMurray */,
+				E2BA03F924E86F7E00305AEC /* Gary Portal */,
 			);
 		};
 /* End PBXProject section */
@@ -399,6 +399,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E2615679256D8C5900CB7E0A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"----\"\necho \"Info.plist for target: ${PRODUCT_SETTINGS_PATH}\"\n\nbuildNum=$(/usr/libexec/Plistbuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\necho \"Current build #: $buildNum\"\n\nif [ -z \"$buildNum\" ]; then\necho \"No build number found in $PRODUCT_SETTINGS_PATH\"\nexit 2\nfi\n\nbuildNum=$(expr $buildNum + 1)\necho \"Build # incremented to: $buildNum\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNum\" \"$PRODUCT_SETTINGS_PATH\"\necho \"----\"\nexit 0 \n";
+		};
 		E2D9563E251CD6BA00AB53D0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -426,12 +443,12 @@
 				E289002B24EEF91400B7DD83 /* SignupController.swift in Sources */,
 				E2797A72256459AD008F90F8 /* PrayerRoomViewController.swift in Sources */,
 				E2B31FB32511162D00B9A3F8 /* Feed.swift in Sources */,
-				E25AEEB524F0A13000D5BFD5 /* SignupController_Extensions.swift in Sources */,
 				E289002924EE749000B7DD83 /* ProfileTableCells.swift in Sources */,
 				E2300B24250CEE37000E3AD2 /* HostController.swift in Sources */,
 				E2B7435A24ED7670007AC93E /* ActivityIndicatorController.swift in Sources */,
 				E28ACF0F24E9FF97005B4194 /* FirstPageController.swift in Sources */,
 				E2C770162563185800F26902 /* SettingsTableCells.swift in Sources */,
+				E2394CAC2569C3D400C9D92F /* AppSettings.swift in Sources */,
 				E2350EAD250941940037468A /* UIColor+GaryPortal.swift in Sources */,
 				E2B7435824ED69CA007AC93E /* UIView+GaryPortal.swift in Sources */,
 				E2300B2D250D443B000E3AD2 /* PostMediaView.swift in Sources */,
@@ -450,6 +467,7 @@
 				E22FA57424ED812C006553ED /* APISession.swift in Sources */,
 				E28ACF0B24E9A9B7005B4194 /* AuthenticationService.swift in Sources */,
 				E2C7701925631B3C00F26902 /* SettingsTableViewController.swift in Sources */,
+				E261566A256D80EE00CB7E0A /* Bundle+GaryPortal.swift in Sources */,
 				E25AEEB724F3C0ED00D5BFD5 /* Primitive+GaryPortal.swift in Sources */,
 				E25AEEB924F3C45000D5BFD5 /* UITextField+GaryPortal.swift in Sources */,
 				E2300B22250CEC5B000E3AD2 /* GaryPortalSwipeController.swift in Sources */,
@@ -592,6 +610,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AlMurray/AlMurray.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = AlMurray/Assets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -599,6 +618,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "4.0.0 ALPHA";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = online.tomk.GaryPortal4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -613,6 +633,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AlMurray/AlMurray.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 100;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = AlMurray/Assets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -620,6 +641,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "4.0.0 ALPHA";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = online.tomk.GaryPortal4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -631,7 +653,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E2BA03F524E86F7E00305AEC /* Build configuration list for PBXProject "AlMurray" */ = {
+		E2BA03F524E86F7E00305AEC /* Build configuration list for PBXProject "Gary Portal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2BA040C24E86F8000305AEC /* Debug */,
@@ -640,7 +662,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2BA040E24E86F8000305AEC /* Build configuration list for PBXNativeTarget "AlMurray" */ = {
+		E2BA040E24E86F8000305AEC /* Build configuration list for PBXNativeTarget "Gary Portal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2BA040F24E86F8000305AEC /* Debug */,
@@ -652,6 +674,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E261567D256DA84400CB7E0A /* XCRemoteSwiftPackageReference "WhatsNewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/WhatsNewKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.7;
+			};
+		};
 		E27C164F251D135A007E2BF3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -679,6 +709,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E261567E256DA84400CB7E0A /* WhatsNewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E261567D256DA84400CB7E0A /* XCRemoteSwiftPackageReference "WhatsNewKit" */;
+			productName = WhatsNewKit;
+		};
 		E27C1650251D135A007E2BF3 /* FirebaseFunctions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E27C164F251D135A007E2BF3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

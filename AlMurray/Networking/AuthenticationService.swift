@@ -37,7 +37,7 @@ struct AuthenticationService {
     }
     
     func isEmailFree(_ email: String, completion: @escaping((Bool) -> Void)) {
-        let request = APIRequest(method: .get, path: "users/IsEmailFree/\(email)")
+        let request = APIRequest(method: .get, path: "api/users/IsEmailFree/\(email)")
         APIClient().perform(request) { (result) in
             switch result {
             case .success(let response):
@@ -53,7 +53,7 @@ struct AuthenticationService {
     }
     
     func isUsernameFree(_ username: String, completion: @escaping((Bool) -> Void)) {
-        let request = APIRequest(method: .get, path: "users/IsUsernameFree/\(username)")
+        let request = APIRequest(method: .get, path: "api/users/IsUsernameFree/\(username)")
         APIClient().perform(request) { (result) in
             switch result {
             case .success(let response):
@@ -68,28 +68,30 @@ struct AuthenticationService {
         }
     }
     
-    /*func CreateNewUser(user: User, completion: @escaping ((User?, UserServiceError?) -> Void)) {
-           var user = user
-           Auth.auth().createUser(withEmail: user.UserEmail ?? "", password: user.UserPassword ?? "") { (res, err) in
-               if let error = err {
-                   print(error.localizedDescription)
-                   completion(nil, UserServiceError.UserCreationFailed)
-                   return
-               }
-               
-               user.UserId = res?.user.uid
-               UserService().CreateNewUser(user: user) { (finalUser, error)  in
-                   if let error = error {
-                       completion(nil, UserServiceError.EmailInUse)
-                   }
-                   
-                   self.userService.GetUserById(UserId: user.UserId ?? "") { (usr) in
-                       if let usr = usr {
-                           completion(usr, nil)
-                       }
-                       else { completion(nil, UserServiceError.UserCreationFailed) }
-                   }
-               }
-           }
-       }*/
+    func createNewUser(from user: User, completion: @escaping((User?) -> Void)) {
+        let request = APIRequest(method: .post, path: "public/users/createnewuser/")
+        request.body = try? JSONEncoder().encode(user)
+        APIClient().perform(request) { (result) in
+            switch result {
+            case.success(let response):
+                if let response = try? response.decode(to: User.self) {
+                    completion(response.body)
+                } else {
+                    completion(nil)
+                }
+            case .failure:
+                completion(nil)
+            }
+        }
+    }
+    
+    func sendUserPasswordReset(for user: User?) {
+        let request = APIRequest(method: .post, path: "public/users/postreset/\(user?.userId ?? "")")
+        APIClient().perform(request, nil)
+    }
+    
+    func sendUserPasswordReset(to email: String?) {
+        let request = APIRequest(method: .post, path: "public/users/postreset2/\(email ?? "")")
+        APIClient().perform(request, nil)
+    }
 }

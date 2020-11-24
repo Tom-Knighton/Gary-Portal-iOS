@@ -120,5 +120,4 @@ class SettingsTableViewController: UIViewController, SettingsTableDelegate {
         self.displayBasicAlert(title: title, message: message)
     }
     
-    
 }

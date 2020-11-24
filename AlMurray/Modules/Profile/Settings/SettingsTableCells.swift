@@ -11,6 +11,7 @@ import Nuke
 import StoreKit
 import FirebaseAuth
 import TOCropViewController
+import WhatsNewKit
 
 class SettingsAccountCell: UITableViewCell, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate {
 
@@ -43,6 +44,10 @@ class SettingsAccountCell: UITableViewCell, UIImagePickerControllerDelegate, UIN
         self.usernameView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
         self.emailView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
         self.fullNameView?.addShadow(colour: UIColor.black, opacity: 0.5, offset: .zero, radius: 2)
+        
+        self.usernameTextField?.maxLength = 32
+        self.emailTextField?.maxLength = 240
+        self.fullNameTextField?.maxLength = 32
         
         self.changeUserImageButton?.roundCorners(radius: 40)
         self.userImageView?.roundCorners(radius: 40)
@@ -121,16 +126,43 @@ class SettingsSecurityCell: UITableViewCell {
     }
     
     @IBAction func resetPasswordPressed(_ sender: UIButton?) {
-        Auth.auth().sendPasswordReset(withEmail: GaryPortal.shared.user?.userEmail ?? "", completion: nil)
+        AuthenticationService().sendUserPasswordReset(for: GaryPortal.shared.user)
         self.delegate?.displayMessage(title: "Password Reset", message: "Please check your e-mail address for a password reset link")
     }
 }
 
 class SettingsAppCell: UITableViewCell {
     
+    @IBOutlet private weak var automaticPlaySwitch: UISwitch?
+    @IBOutlet private weak var notificationsSwitch: UISwitch?
+    @IBOutlet private weak var versionLabel: UILabel?
+    
+    weak var delegate: SettingsTableDelegate?
+
+    func setup() {
+        self.automaticPlaySwitch?.isOn = GaryPortal.shared.localAppSettings.autoPlayVideos
+        self.notificationsSwitch?.isOn = GaryPortal.shared.localAppSettings.notificationsEnabled
+        
+        self.versionLabel?.text = "\(Bundle.main.appName) v\(Bundle.main.versionNumber) (Build \(Bundle.main.buildNumber))"
+    }
+    
+    @IBAction func settingsSwitchChanged(_ sender: UISwitch) {
+        if sender == self.automaticPlaySwitch {
+            GaryPortal.shared.localAppSettings.saveSettings(autoPlayVideos: sender.isOn)
+        } else if sender == self.notificationsSwitch {
+            GaryPortal.shared.localAppSettings.saveSettings(notificationsEnabled: sender.isOn)
+        }
+    }
+    
     @IBAction func rateAppPressed(_ sender: UIButton?) {
         if let url = URL(string: GaryPortalConstants.AppReviewUrl) {
             UIApplication.shared.open(url)
         }
     }
+    
+    @IBAction func viewChangelogPressed(_ sender: UIButton?) {
+        let whatsNewController = WhatsNewViewController(whatsNew: GaryPortalConstants.LatestWhatsNew, theme: .purple)
+        self.delegate?.presentView(viewcontroller: whatsNewController)
+    }
+    
 }

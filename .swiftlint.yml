@@ -9,6 +9,7 @@ disabled_rules: # rule identifiers to exclude from running
 #  - cyclomatic_complexity
   - trailing_whitespace
   - object_literal
+  - line_length
 
 opt_in_rules:
   - empty_count
@@ -38,11 +39,6 @@ file_header:
                     \/\/  Created by .*? on \d{1,2}\/\d{1,2}\/\d{2}\.
                     \/\/  Copyright © \d{4} <Author Name>\. All rights reserved\.
                     \/\/
-
-line_length: 
-  warning: 250
-  ignores_comments: true
-  ignores_interpolated_strings: true
 
 number_separator:
   minimum_length: 5
