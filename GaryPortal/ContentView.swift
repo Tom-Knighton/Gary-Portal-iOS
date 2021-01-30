@@ -18,7 +18,7 @@ struct ContentView: View {
                     .tag(0)
                 ProfileView().environmentObject(garyportal)
                     .tag(1)
-                NewFeedView().environmentObject(garyportal)
+                ProfileView().environmentObject(garyportal)
                     .tag(2)
             }
             .tabViewStyle(PageTabViewStyle())

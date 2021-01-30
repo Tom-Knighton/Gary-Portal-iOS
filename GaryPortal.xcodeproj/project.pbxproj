@@ -17,13 +17,11 @@
 		E23100B325AF6F8F00739E9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23100B225AF6F8F00739E9E /* Assets.xcassets */; };
 		E23100B625AF6F8F00739E9E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E23100B525AF6F8F00739E9E /* Preview Assets.xcassets */; };
 		E23100B925AF6F8F00739E9E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E23100B725AF6F8F00739E9E /* LaunchScreen.storyboard */; };
-		E23B21DB25C354B5007E0629 /* ASCollectionView in Frameworks */ = {isa = PBXBuildFile; productRef = E23B21DA25C354B5007E0629 /* ASCollectionView */; };
 		E23B907925B9C4AF00C0C201 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B907825B9C4AF00C0C201 /* Misc.swift */; };
 		E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B907D25B9CB3E00C0C201 /* FeedView.swift */; };
 		E23B908225BA048000C0C201 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908125BA048000C0C201 /* FeedService.swift */; };
 		E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908425BB1DCB00C0C201 /* PlayerView.swift */; };
 		E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */; };
-		E255ABC325C5B13000DA41D0 /* VideoPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = E255ABC225C5B13000DA41D0 /* VideoPlayer */; };
 		E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25C1DAA25B1AAC90046EA6C /* AdminService.swift */; };
 		E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25C1DAD25B1AC360046EA6C /* ProfileSettingsView.swift */; };
 		E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25CC1B125AF702B00B1FA55 /* Team.swift */; };
@@ -45,8 +43,6 @@
 		E26C629625B0569900FC2D0D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */; };
 		E26C629725B0569900FC2D0D /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */; };
 		E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */; };
-		E278BF2625B0E0B800DE8D44 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = E278BF2525B0E0B800DE8D44 /* Nuke */; };
-		E278BF2B25B0E0D900DE8D44 /* FetchImage in Frameworks */ = {isa = PBXBuildFile; productRef = E278BF2A25B0E0D900DE8D44 /* FetchImage */; };
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
@@ -130,12 +126,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E23B21DB25C354B5007E0629 /* ASCollectionView in Frameworks */,
-				E255ABC325C5B13000DA41D0 /* VideoPlayer in Frameworks */,
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
-				E278BF2625B0E0B800DE8D44 /* Nuke in Frameworks */,
-				E278BF2B25B0E0D900DE8D44 /* FetchImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,10 +328,6 @@
 			packageProductDependencies = (
 				E2BB737725B090C800CDB422 /* CropViewController */,
 				E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */,
-				E278BF2525B0E0B800DE8D44 /* Nuke */,
-				E278BF2A25B0E0D900DE8D44 /* FetchImage */,
-				E23B21DA25C354B5007E0629 /* ASCollectionView */,
-				E255ABC225C5B13000DA41D0 /* VideoPlayer */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
@@ -371,10 +359,6 @@
 			packageReferences = (
 				E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
-				E278BF2425B0E0B800DE8D44 /* XCRemoteSwiftPackageReference "Nuke" */,
-				E278BF2925B0E0D900DE8D44 /* XCRemoteSwiftPackageReference "FetchImage" */,
-				E23B21D925C354B5007E0629 /* XCRemoteSwiftPackageReference "ASCollectionView" */,
-				E255ABC125C5B13000DA41D0 /* XCRemoteSwiftPackageReference "VideoPlayer" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -655,38 +639,6 @@
 				minimumVersion = 4.0.1;
 			};
 		};
-		E23B21D925C354B5007E0629 /* XCRemoteSwiftPackageReference "ASCollectionView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apptekstudios/ASCollectionView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.7.1;
-			};
-		};
-		E255ABC125C5B13000DA41D0 /* XCRemoteSwiftPackageReference "VideoPlayer" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/wxxsw/VideoPlayer";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.7;
-			};
-		};
-		E278BF2425B0E0B800DE8D44 /* XCRemoteSwiftPackageReference "Nuke" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Nuke";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.2.3;
-			};
-		};
-		E278BF2925B0E0D900DE8D44 /* XCRemoteSwiftPackageReference "FetchImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/FetchImage";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.0;
-			};
-		};
 		E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
@@ -702,26 +654,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
 			productName = SwiftKeychainWrapper;
-		};
-		E23B21DA25C354B5007E0629 /* ASCollectionView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E23B21D925C354B5007E0629 /* XCRemoteSwiftPackageReference "ASCollectionView" */;
-			productName = ASCollectionView;
-		};
-		E255ABC225C5B13000DA41D0 /* VideoPlayer */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E255ABC125C5B13000DA41D0 /* XCRemoteSwiftPackageReference "VideoPlayer" */;
-			productName = VideoPlayer;
-		};
-		E278BF2525B0E0B800DE8D44 /* Nuke */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E278BF2425B0E0B800DE8D44 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
-		};
-		E278BF2A25B0E0D900DE8D44 /* FetchImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E278BF2925B0E0D900DE8D44 /* XCRemoteSwiftPackageReference "FetchImage" */;
-			productName = FetchImage;
 		};
 		E2BB737725B090C800CDB422 /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;

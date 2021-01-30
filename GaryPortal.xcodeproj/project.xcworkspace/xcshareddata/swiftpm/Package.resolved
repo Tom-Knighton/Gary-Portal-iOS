@@ -2,51 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "ASCollectionView",
-        "repositoryURL": "https://github.com/apptekstudios/ASCollectionView",
-        "state": {
-          "branch": null,
-          "revision": "4550cd5b5cfc3f437f8ff838939c6be21edfe992",
-          "version": "1.7.1"
-        }
-      },
-      {
-        "package": "DifferenceKit",
-        "repositoryURL": "https://github.com/ra1028/DifferenceKit",
-        "state": {
-          "branch": null,
-          "revision": "14c66681e12a38b81045f44c6c29724a0d4b0e72",
-          "version": "1.1.5"
-        }
-      },
-      {
-        "package": "FetchImage",
-        "repositoryURL": "https://github.com/kean/FetchImage",
-        "state": {
-          "branch": null,
-          "revision": "3b68b12f25d6060ed102523ebff394c4f8e31cec",
-          "version": "0.3.0"
-        }
-      },
-      {
-        "package": "GSPlayer",
-        "repositoryURL": "https://github.com/wxxsw/GSPlayer.git",
-        "state": {
-          "branch": null,
-          "revision": "bce715b60427935902ae2adaa173b594338ca202",
-          "version": "0.2.19"
-        }
-      },
-      {
-        "package": "Nuke",
-        "repositoryURL": "https://github.com/kean/Nuke",
-        "state": {
-          "branch": null,
-          "revision": "fdde04a80497b54e2773c5e5d02dfbb9bdbe99a9",
-          "version": "9.2.3"
-        }
-      },
-      {
         "package": "SwiftKeychainWrapper",
         "repositoryURL": "https://github.com/jrendel/SwiftKeychainWrapper",
         "state": {
@@ -62,15 +17,6 @@
           "branch": null,
           "revision": "dad97167bf1be16aeecd109130900995dd01c515",
           "version": "2.6.0"
-        }
-      },
-      {
-        "package": "VideoPlayer",
-        "repositoryURL": "https://github.com/wxxsw/VideoPlayer",
-        "state": {
-          "branch": null,
-          "revision": "c79852f86c8e89e6917646be957d1a737d186d5d",
-          "version": "1.1.7"
         }
       }
     ]
