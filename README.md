@@ -7,9 +7,9 @@ Gary Portal is a social media application that mimicks popular features from top
 
   - Vast and significant codebase improvements
     - Strongly typed obects!
-  - Move from Firebase RTDB access to calling API (Cloud Functions)
+  - Move from Firebase RTDB access to calling hosted API
   - Staff Powers
-  - AutoLayout support
+  - SwiftUI
   - Dark mode support
  
 # Features:
@@ -24,14 +24,13 @@ Gary Portal is a social media application that mimicks popular features from top
 
 Gary Portal uses a number of open source projects to work properly:
 
-* [Firebase]()
 * [TOCropViewController](https://github.com/TimOliver/TOCropViewController)
-* [Nuke](https://github.com/kean/Nuke)
-* [Sendbird](https://sendbird.com/)
+* [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
 
 ### Setup
 
-Gary Portal comes with the require GoogleService-info.json required to run. The API is hosted in the cloud however the base urls used within the application can easily be swapped out for locally/externally hosted ones, from Networking/APISesson.swift
+Gary Portal comes with the required files and API client to run. The API is hosted at [https://api.garyportal.tomk.online/api/](https://api.garyportal.tomk.online/api/]) however the base urls used within the application can easily be swapped out for locally/externally hosted ones, from Network/APISesson.swift
+The app relies on a JWT token from the API server to authenticate
 
 ### Development
 
