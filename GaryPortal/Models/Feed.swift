@@ -151,7 +151,7 @@ struct FeedPollAnswer: Codable {
     let pollAnswerId: Int?
     let pollId: Int?
     let answer: String?
-    let votes: [FeedAnswerVote]?
+    var votes: [FeedAnswerVote]?
 }
 
 struct FeedAnswerVote: Codable {

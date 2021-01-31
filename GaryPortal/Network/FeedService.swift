@@ -47,4 +47,9 @@ struct FeedService {
         let request = APIRequest(method: .put, path: "feed/togglelike/\(postId)/\(userUUID)")
         APIClient().perform(request, nil)
     }
+    
+    static func voteOnPoll(for answerId: Int, userUUID: String) {
+        let request = APIRequest(method: .put, path: "feed/votefor/\(answerId)/\(userUUID)")
+        APIClient().perform(request, nil)
+    }
 }

@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import Nuke
-import FetchImage
 
 struct ProfileView: View {
     

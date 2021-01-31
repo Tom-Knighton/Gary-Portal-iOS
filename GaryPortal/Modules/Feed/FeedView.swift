@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AVKit
-import VideoPlayer
 
 struct FeedView: View {
     
@@ -172,7 +171,14 @@ struct FeedPostTable: View {
     var body: some View {
         ForEach(dataSource.posts, id: \.postId) { post in
             if post is FeedMediaPost {
-                PostMediaView(post: post as! FeedMediaPost, dataSource: dataSource)
+                PostMediaView(post: post as! FeedMediaPost)
+                    .onAppear {
+                        self.dataSource.loadMoreContentIfNeeded(currentPost: post)
+                    }
+                    .padding(.all, 4)
+                    .shadow(color: Color.black, radius: 15)
+            } else if post is FeedPollPost {
+                PostPollView(pollModel: PollPostViewModel(post: post as! FeedPollPost))
                     .onAppear {
                         self.dataSource.loadMoreContentIfNeeded(currentPost: post)
                     }
@@ -188,7 +194,6 @@ struct PostMediaView: View {
     
     var post: FeedMediaPost
     @State var isPlaying = false
-    @StateObject var dataSource: FeedPostsDataSource = FeedPostsDataSource()
     @AppStorage(GaryPortalConstants.UserDefaults.autoPlayVideos) var autoPlayVideos = false
 
     
@@ -197,7 +202,7 @@ struct PostMediaView: View {
     
     var body: some View {
         VStack {
-            PostHeaderView(post: post, dataSource: dataSource)
+            PostHeaderView(post: post)
             
             if post.isVideo == true {
                 PlayerView(url: post.postUrl ?? "", play: $isPlaying)
@@ -224,7 +229,7 @@ struct PostMediaView: View {
                     .shadow(radius: 3)
             }
             
-            PostActionView(post: post, dataSource: dataSource)
+            PostActionView(post: post)
             Text(getDescText())
                 .font(.custom("Montserrat-Light", size: 15))
                 .frame(maxHeight: 100)
@@ -247,10 +252,113 @@ struct PostMediaView: View {
     }
 }
 
+class PollPostViewModel: ObservableObject {
+    @Published var post: FeedPollPost
+    @Published var totalVotes: Int
+    @Published var hasVoted = false
+    
+    init(post: FeedPollPost) {
+        self.post = post
+        self.totalVotes = post.pollAnswers?.map({ $0.votes?.count ?? 0 }).reduce(0, +) ?? -1
+        self.hasVoted = post.hasBeenVotedOn(by: GaryPortal.shared.currentUser?.userUUID ?? "")
+    }
+}
+
+struct PostPollView: View {
+    
+    @ObservedObject var pollModel: PollPostViewModel
+    
+    var body: some View {
+        VStack {
+            PostHeaderView(post: pollModel.post)
+            
+            HStack {
+                Text(pollModel.post.pollQuestion ?? "")
+                    .font(.custom("Montserrat-SemiBold", size: 19))
+                    .padding()
+                Spacer()
+            }
+            
+            LazyVStack {
+                ForEach(pollModel.post.pollAnswers ?? [], id: \.pollAnswerId) { answer in
+                    PollPostVoteButton(pollModel: self.pollModel, pollAnswer: answer)
+                }
+            }
+            
+            PostActionView(post: pollModel.post)
+            
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color(UIColor.secondarySystemBackground))
+        .cornerRadius(15)
+    }
+}
+
+struct PollPostVoteButton: View {
+    
+    @ObservedObject var pollModel: PollPostViewModel
+    var pollAnswer: FeedPollAnswer?
+   
+    
+    var body: some View {
+        HStack {
+            Spacer().frame(width: 16)
+            Button(action: { vote() }, label: {
+                Text(getTitleText())
+                    .font(.custom("Montserrat-SemiBold", size: 19))
+                    .foregroundColor(Color.blue)
+                    .padding(.all, 8)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 45)
+            })
+            .background(
+                GeometryReader { geometry in
+                    if !getVotePercentage().isNaN {
+                        RoundedRectangle(cornerRadius: 0).foregroundColor(Color(red: 0.67, green: 0.67, blue: 0.67, opacity: 0.3))
+                            .frame(width: geometry.size.width * CGFloat(getVotePercentage()), alignment: .leading)
+                            .animation(.linear)
+                    }
+                }
+            )
+            .overlay(
+                GeometryReader { geometry in
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(pollModel.hasVoted ? Color.black : Color.blue, lineWidth: 1)
+                }
+            )
+            .cornerRadius(15)
+            .clipped()
+            
+            .buttonStyle(PlainButtonStyle())
+            
+            .disabled(pollModel.hasVoted)
+            Spacer().frame(width: 16)
+        }
+        
+    }
+    
+    func vote() {
+        DispatchQueue.main.async {
+            let newVote = FeedAnswerVote(pollAnswerId: self.pollAnswer?.pollAnswerId ?? 0, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", isDeleted: false)
+            FeedService.voteOnPoll(for: self.pollAnswer?.pollAnswerId ?? 0, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "")
+            let indexOf = self.pollModel.post.pollAnswers?.firstIndex(where: { $0.pollAnswerId == self.pollAnswer?.pollAnswerId ?? 0 }) ?? 0
+            self.pollModel.post.pollAnswers?[indexOf].votes?.append(newVote)
+            self.pollModel.hasVoted = true
+            self.pollModel.totalVotes += 1
+        }
+    }
+    
+    func getTitleText() -> String {
+        return pollModel.hasVoted ? "\(self.pollAnswer?.answer ?? ""): \(Int(getVotePercentage() * 100))%" : self.pollAnswer?.answer ?? ""
+    }
+    
+    func getVotePercentage() -> CGFloat {
+        return CGFloat((CGFloat(pollAnswer?.votes?.count ?? 0) / CGFloat(pollModel.totalVotes)))
+    }
+}
+
 struct PostHeaderView: View {
     
     @ObservedObject var post: FeedPost
-    @StateObject var dataSource: FeedPostsDataSource
     
     var body: some View {
         HStack{
@@ -274,7 +382,6 @@ struct PostActionView: View {
     
     @ObservedObject var post: FeedPost
     @EnvironmentObject var garyportal: GaryPortal
-    @StateObject var dataSource: FeedPostsDataSource
     
     @State var isLiked = false
     @State var likeCount = 0
@@ -331,9 +438,8 @@ struct PostActionView: View {
     }
 }
 
-struct FeedView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostMediaView(post: FeedMediaPost(posterUUID: "7b8288185c0c4cb5bc896d49aa159566", postType: "media", teamId: 2, postURL: "https://res.cloudinary.com/garyportal/image/upload/v1599778023/pj3srxw0yjsg1ezrc6ny.jpg", isVideo: false, postDescription: "Lorem")!, dataSource: FeedPostsDataSource())
-            .environmentObject(GaryPortal.shared)
-    }
-}
+//struct FeedView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PostPollView(post: FeedPollPost(posterUUID: "", postType: "poll", teamId: 2, postDescription: "Description", question: "Are you going to uni or are you shit?", answers: [FeedPollAnswer(pollAnswerId: 0, pollId: 1, answer: "Uni", votes: nil), FeedPollAnswer(pollAnswerId: 1, pollId: 1, answer: "SHIIIIIIIIT", votes: nil)])!, hasVoted: false).environmentObject(GaryPortal.shared)
+//    }
+//}
