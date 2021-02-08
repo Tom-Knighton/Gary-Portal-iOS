@@ -105,7 +105,7 @@ struct ProfilePointsView: View {
                     Text("AMIGO POINTS: \(garyportal.currentUser?.userPoints?.amigoPoints ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
                     Spacer().frame(height: 16)
-                    Text("AMIGO POINTS: \(garyportal.currentUser?.userPoints?.amigoPoints ?? 0)")
+                    Text("POSITIVE POINTS: \(garyportal.currentUser?.userPoints?.positivityPoints ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
                     Spacer().frame(height: 16)
                 }
