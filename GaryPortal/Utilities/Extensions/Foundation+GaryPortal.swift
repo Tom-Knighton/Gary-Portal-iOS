@@ -52,3 +52,17 @@ extension UIColor {
         self.init(red: CGFloat(rVal) / 255, green: CGFloat(gVal) / 255, blue: CGFloat(bVal) / 255, alpha: CGFloat(aVal) / 255)
     }
 }
+
+extension Date {
+    func minutesBetweenDates(_ newDate: Date) -> CGFloat {
+
+        let oldDate = self
+        //get both times sinces refrenced date and divide by 60 to get minutes
+        let newDateMinutes = newDate.timeIntervalSinceReferenceDate/60
+        let oldDateMinutes = oldDate.timeIntervalSinceReferenceDate/60
+
+        //then return the difference
+        return CGFloat(newDateMinutes - oldDateMinutes)
+    }
+}
+

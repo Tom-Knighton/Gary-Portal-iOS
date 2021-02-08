@@ -25,9 +25,6 @@ struct ProfileView: View {
             }
             .frame(width: geometry.size.width)
         }
-        .edgesIgnoringSafeArea(.bottom)
-        .edgesIgnoringSafeArea(.leading)
-        .edgesIgnoringSafeArea(.trailing)
     }
     
 }

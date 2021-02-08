@@ -33,7 +33,7 @@ struct UserService {
         let request = APIRequest(method: .get, path: "users/\(uuid)")
         APIClient().perform(request) { (result) in
             switch result {
-            case .failure(let error):
+            case .failure(_):
                 completion(nil)
             case.success(let response):
                 if let response = try? response.decode(to: User.self) {

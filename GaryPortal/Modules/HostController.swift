@@ -7,6 +7,26 @@
 import UIKit
 import SwiftUI
 
+class HostNavigation: UINavigationController {
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.pushViewController(HostController(), animated: false)
+    }
+}
+
+struct HostControllerRepresentable: UIViewControllerRepresentable {
+    
+    func makeUIViewController(context: Context) -> some UIViewController {
+        let hostController = HostController()
+        return hostController
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        
+    }
+}
+
+
 class HostController: GaryPortalSwipeController {
     
     func indexOfStartingPage() -> Int {
@@ -56,7 +76,7 @@ extension HostController: GPSwipeControllerDataSource {
         
         let profileView = UIHostingController(rootView: ProfileView().environmentObject(GaryPortal.shared))
         let feedView = UIHostingController(rootView: FeedView().environmentObject(GaryPortal.shared))
-        let newFeedView = UIHostingController(rootView: ProfileView().environmentObject(GaryPortal.shared))
+        let newFeedView = UIHostingController(rootView: ChatRootView().environmentObject(GaryPortal.shared))
         feedView.view.backgroundColor = .clear
         profileView.view.backgroundColor = .clear
         newFeedView.view.backgroundColor = .clear

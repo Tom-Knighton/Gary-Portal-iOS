@@ -43,10 +43,14 @@
 		E26C629625B0569900FC2D0D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */; };
 		E26C629725B0569900FC2D0D /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */; };
 		E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */; };
+		E28DC01925C707E800A6EBEB /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01825C707E800A6EBEB /* Chat.swift */; };
+		E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01A25C7090000A6EBEB /* ChatService.swift */; };
+		E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */; };
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
 		E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */; };
+		E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */; };
 		E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */; };
 		E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736B25B06DCD00CDB422 /* GPTextField.swift */; };
 		E2BB736F25B0897F00CDB422 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736E25B0897F00CDB422 /* ImagePicker.swift */; };
@@ -108,10 +112,14 @@
 		E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		E28DC01825C707E800A6EBEB /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		E28DC01A25C7090000A6EBEB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
+		E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRootView.swift; sourceTree = "<group>"; };
 		E2930CC025B6089700186364 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		E2930CC825B60C3400186364 /* toilet.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toilet.mp3; sourceTree = "<group>"; };
 		E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffManageUserViews.swift; sourceTree = "<group>"; };
 		E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPNavigation.swift; sourceTree = "<group>"; };
 		E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+GaryPortal.swift"; sourceTree = "<group>"; };
 		E2BB736B25B06DCD00CDB422 /* GPTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPTextField.swift; sourceTree = "<group>"; };
 		E2BB736E25B0897F00CDB422 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -178,6 +186,7 @@
 		E23100C125AF6F9600739E9E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				E28DC01C25C7097500A6EBEB /* Chat */,
 				E23B907C25B9CB3300C0C201 /* Feed */,
 				E2ABC7B825B0CE7400EB1B22 /* Profile */,
 				E25CC1BE25AF70E400B1FA55 /* Login & Signup */,
@@ -189,6 +198,7 @@
 		E23100C225AF6F9C00739E9E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E2BB736525B062CC00CDB422 /* Extensions */,
 				E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */,
 				E2BB737A25B0946F00CDB422 /* GaryPortal.swift */,
 				E2930CC025B6089700186364 /* Sounds.swift */,
@@ -201,7 +211,6 @@
 			children = (
 				E2930CC725B60C2B00186364 /* Sounds */,
 				E2BB736A25B06DC000CDB422 /* Views */,
-				E2BB736525B062CC00CDB422 /* Extensions */,
 				E26C628F25B0568600FC2D0D /* Fonts */,
 				E23100AC25AF6F8E00739E9E /* AppDelegate.swift */,
 				E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */,
@@ -226,6 +235,7 @@
 				E25C1DAA25B1AAC90046EA6C /* AdminService.swift */,
 				E26A68A625B2D08800CD0662 /* StaffService.swift */,
 				E23B908125BA048000C0C201 /* FeedService.swift */,
+				E28DC01A25C7090000A6EBEB /* ChatService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -241,6 +251,7 @@
 				E25CC1B625AF702B00B1FA55 /* UserAuthentication.swift */,
 				E26A68A925B2D0C200CD0662 /* StaffRoomAnnouncement.swift */,
 				E23B907825B9C4AF00C0C201 /* Misc.swift */,
+				E28DC01825C707E800A6EBEB /* Chat.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -263,6 +274,14 @@
 				E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		E28DC01C25C7097500A6EBEB /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */,
+			);
+			path = Chat;
 			sourceTree = "<group>";
 		};
 		E2930CC725B60C2B00186364 /* Sounds */ = {
@@ -304,6 +323,7 @@
 				E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */,
 				E26A68A025B22C5C00CD0662 /* SafariView.swift */,
 				E23B908425BB1DCB00C0C201 /* PlayerView.swift */,
+				E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -395,8 +415,10 @@
 				E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
+				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
+				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
 				E25CC1BB25AF702B00B1FA55 /* Rank.swift in Sources */,
 				E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */,
@@ -405,6 +427,8 @@
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,
 				E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */,
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,
+				E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */,
+				E28DC01925C707E800A6EBEB /* Chat.swift in Sources */,
 				E25CC1B925AF702B00B1FA55 /* User.swift in Sources */,
 				E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */,
 				E25CC1BA25AF702B00B1FA55 /* Feed.swift in Sources */,

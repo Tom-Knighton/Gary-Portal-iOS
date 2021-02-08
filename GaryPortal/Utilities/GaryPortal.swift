@@ -26,8 +26,8 @@ class GaryPortal: NSObject, ObservableObject {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
-                let vc = HostController()
-                //let vc = UIHostingController(rootView: ContentView().environmentObject(GaryPortal.shared))
+                //let vc = HostController()
+                let vc = UIHostingController(rootView: ContentView().environmentObject(GaryPortal.shared))
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)
             }

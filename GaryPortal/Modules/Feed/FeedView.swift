@@ -17,7 +17,6 @@ struct FeedView: View {
     init(){
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
-        loadAditLogs()
     }
 
     
@@ -120,6 +119,7 @@ class FeedPostsDataSource: ObservableObject {
     @Published var posts = [FeedPost]()
     @Published var isLoadingPage = false
     @Published var canLoadMore = true
+    private var isFirstLoad = true
     private var lastDateFrom = Date()
     
     init() {
@@ -156,6 +156,11 @@ class FeedPostsDataSource: ObservableObject {
                     self.isLoadingPage = false
                     if (newPosts?.count ?? 0) < 9 {
                         self.canLoadMore = false
+                    }
+                    
+                    if self.isFirstLoad {
+                        NotificationCenter.default.post(name: .movedFromFeed, object: nil)
+                        self.isFirstLoad = false
                     }
                 }
             }
