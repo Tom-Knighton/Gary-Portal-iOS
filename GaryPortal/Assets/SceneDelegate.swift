@@ -51,12 +51,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             GaryPortalConstants.UserDefaults.autoPlayVideos: true,
             GaryPortalConstants.UserDefaults.notifications: true,
         ])
-    
-        let tapGesture = AnyGestureRecognizer(target: self.window, action:#selector(UIView.endEditing))
-        tapGesture.requiresExclusiveTouchType = false
-        tapGesture.cancelsTouchesInView = false
-        tapGesture.delegate = self //I don't use window as delegate to minimize possible side effects
-        self.window?.addGestureRecognizer(tapGesture)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import Combine
+import Introspect
+import ActionClosurable
 
 struct ChatRootView: View {
     
@@ -20,12 +23,18 @@ struct ChatRootView: View {
 class ChatListDataSource: ObservableObject {
     @Published var chats = [Chat]()
     
-    init() {
+    func loadChats() {
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
             DispatchQueue.main.async {
                 self.chats = newChats ?? []
             }
         }
+    }
+    
+    @objc
+    func refresh(_ sender: UIRefreshControl) {
+        loadChats()
+        sender.endRefreshing()
     }
 }
 
@@ -44,6 +53,19 @@ struct ChatListView: View {
                     }
                 }
             }
+            .introspectScrollView { (scrollView) in
+                scrollView.refreshControl = UIRefreshControl { refreshControl in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.dataSource.loadChats()
+                        refreshControl.endRefreshing()
+                    }
+                }
+                
+            }
+        }
+
+        .onAppear {
+            self.dataSource.loadChats()
         }
         .background(Color.clear)
     }
@@ -63,6 +85,9 @@ class ChatMessagesDataSource: ObservableObject {
     }
     
     func loadMoreContentIfNeeded(currentMessage message: ChatMessage?) {
+        
+        guard hasLoadedFirst else { return }
+        
         guard let message = message else {
             loadMoreContent()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
@@ -107,8 +132,21 @@ class ChatMessagesDataSource: ObservableObject {
                     if (newMessages?.count ?? 0) < 20 {
                         self.canLoadMore = false
                     }
+                    
+                    if !self.hasLoadedFirst { self.hasLoadedFirst = true }
                 }
                 
+            }
+        }
+    }
+    
+    func postNewMessage(message: ChatMessage) {
+        ChatService.postNewMessage(message, to: self.chatUUID) { (newMessage, error) in
+            guard let newMessage = newMessage else { return }
+            
+            DispatchQueue.main.async {
+                self.messages.append(newMessage)
+                self.lastMessageUUID = newMessage.chatMessageUUID ?? ""
             }
         }
     }
@@ -120,40 +158,67 @@ struct ChatView: View {
     var chat: Chat
     @ObservedObject var datasource: ChatMessagesDataSource
     @Environment(\.presentationMode) var presentationMode
+    @State var textMessage: String = ""
     
     init(chat: Chat) {
         self.chat = chat
         self.datasource = ChatMessagesDataSource(chatUUID: chat.chatUUID ?? "")
+        self.datasource.loadMoreContentIfNeeded(currentMessage: nil)
     }
     
     var body: some View {
         NavigationView {
-            ScrollView(.vertical) {
-                ScrollViewReader { reader in
-                    LazyVStack(spacing: 0) {
-                        ForEach(datasource.messages, id: \.chatMessageUUID) { message in
-                            let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
-                            let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
-                            let nextMessage = index == datasource.messages.count - 1 ? nil : self.datasource.messages[(index ?? 0) + 1]
-                            ChatMessageView(chatMessage: message, nextMessage: nextMessage, lastMessage: lastMessage)
-                                .id(message.chatMessageUUID)
-                                .onAppear(perform: {
-                                    datasource.loadMoreContentIfNeeded(currentMessage: message)
-                                })
+            VStack {
+                ScrollView(.vertical) {
+                    ScrollViewReader { reader in
+                        LazyVStack(spacing: 0) {
+                            ForEach(datasource.messages, id: \.chatMessageUUID) { message in
+                                let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
+                                let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
+                                let nextMessage = index == datasource.messages.count - 1 ? nil : self.datasource.messages[(index ?? 0) + 1]
+                                ChatMessageView(chatMessage: message, nextMessage: nextMessage, lastMessage: lastMessage)
+                                    .id(message.chatMessageUUID)
+                                    .onAppear(perform: {
+                                        datasource.loadMoreContentIfNeeded(currentMessage: message)
+                                    })
+                            }
+                            
                         }
-                        
-                    }
-                    .onAppear {
-                        reader.scrollTo(datasource.messages.last?.chatMessageUUID ?? "", anchor: .bottom)
-                    }
-                    .onChange(of: datasource.lastMessageUUID) { (newValue) in
-                        reader.scrollTo(newValue, anchor: .bottom)
-                        self.datasource.lastMessageUUID = ""
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            self.datasource.isLoadingPage = false
+                        .onAppear {
+                            reader.scrollTo(datasource.messages.last?.chatMessageUUID, anchor: .bottom)
+                            if self.datasource.messages.isEmpty {
+                                self.datasource.loadMoreContent()
+                            }
                         }
+                        .onDisappear {
+                            self.datasource.hasLoadedFirst = false
+                        }
+                        .onChange(of: datasource.lastMessageUUID) { (newValue) in
+                            if datasource.hasLoadedFirst {
+                                withAnimation(.easeInOut) {
+                                    reader.scrollTo(newValue, anchor: .bottom)
+                                    self.datasource.lastMessageUUID = ""
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                        self.datasource.isLoadingPage = false
+                                    }
+                                }
+                                
+                            }
+                        }
+                        .onChange(of: self.textMessage, perform: { value in
+                            withAnimation(.easeInOut) {
+                                reader.scrollTo(self.datasource.messages.last?.chatMessageUUID, anchor: .bottom)
+                            }
+                        })
                     }
                 }
+                
+                ChatMessageBarView(content: $textMessage) {
+                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                    self.datasource.postNewMessage(message: message)
+                    self.textMessage = ""
+                }
+                    
             }
             .navigationTitle(chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
             .navigationBarItems(leading:
@@ -161,8 +226,78 @@ struct ChatView: View {
                    Image(systemName: "chevron.backward")
             })
         }
+    }
+}
+
+struct ChatMessageBarView: View {
+    
+    @Binding var text: String
+    var onSendAction: () -> ()
+    
+    init(content: Binding<String>, _ onSend: @escaping () -> ()) {
+        self.onSendAction = onSend
+        _text = content
+    }
+    
+    var body: some View {
+        HStack {
+            HStack(spacing: 8) {
+                
+                TextEditor(text: $text)
+                    .frame(maxHeight: 100)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .background(
+                        ZStack {
+                            if self.text.isEmpty {
+                                HStack {
+                                    Spacer().frame(width: 1)
+                                    Text("Your message...")
+                                        .foregroundColor(.gray)
+                                        .disabled(true)
+                                    Spacer()
+                                }
+                            }
+                        }
+                    )
+                
+                Button(action: {}) {
+                    Image(systemName: "camera.fill")
+                        .font(.body)
+                }
+                .foregroundColor(.gray)
+                
+            }
+            .padding(.horizontal, 8)
+            .background(Color("Section"))
+            .cornerRadius(10)
+            .shadow(radius: 3)
+            
+            if !text.isEmpty {
+                withAnimation(.easeIn) {
+                    Button(action: { self.onSendAction() }) {
+                        Image(systemName: "paperplane.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 15, height: 23)
+                            .padding(13)
+                            .shadow(radius: 3)
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                            .clipShape(Circle())
+
+                    }
+                    .foregroundColor(.gray)
+                }
+               
+            }
+        }
+        .transition(.slide)
+        .animation(.easeInOut)
+        .padding(.horizontal, 15)
+        .padding(.bottom, 8)
+        .background(Color.clear)
         .onAppear {
-            self.datasource.loadMoreContentIfNeeded(currentMessage: nil)
+            UITextView.appearance().backgroundColor = .clear
         }
     }
 }
@@ -177,9 +312,19 @@ struct ChatMessageView: View {
     
     var body: some View {
         let ownMessage = chatMessage.userUUID == GaryPortal.shared.currentUser?.userUUID ?? ""
-        let isWithinLastMessage = chatMessage.isWithinMessage(lastMessage)
+        let isWithinLastMessage = lastMessage?.isWithinMessage(chatMessage) ?? false
         let isWithinNextMessage = chatMessage.isWithinMessage(nextMessage)
+        let shouldDisplayDate = chatMessage.shouldDisplayDate(from: lastMessage)
         VStack {
+            
+            if shouldDisplayDate {
+                HStack {
+                    Spacer().frame(width: 8)
+                    Text(chatMessage.messageCreatedAt?.niceDateAndTime() ?? "")
+                    Spacer().frame(width: 8)
+                }
+            }
+            
             if !ownMessage && ((isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage)) {
                 HStack {
                     Spacer().frame(width: 55)
@@ -208,7 +353,7 @@ struct ChatMessageView: View {
                 Text(chatMessage.messageContent ?? "")
                     .padding()
                     .background(msgBG)
-                    .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage, isWithinNextMessage: isWithinNextMessage))
+                    .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
                     .foregroundColor(.white)
                 
 
@@ -234,7 +379,6 @@ struct msgTail : Shape {
     
     var mymsg : Bool
     var isWithinLastMessage: Bool
-    var isWithinNextMessage: Bool
     
     let myMessageCorners: UIRectCorner = [.topLeft, .topRight, .bottomLeft]
     let otherMessageCorners: UIRectCorner = [.topLeft, .topRight, .bottomRight]
@@ -291,6 +435,6 @@ struct ChatListItem: View {
 
 struct ChatListView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatRootView()
+        ChatMessageBarView(content: .constant("")) {}
     }
 }

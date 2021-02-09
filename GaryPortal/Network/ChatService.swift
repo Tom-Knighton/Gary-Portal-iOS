@@ -42,4 +42,21 @@ struct ChatService {
             }
         }
     }
+    
+    static func postNewMessage(_ message: ChatMessage, to chatUUID: String, completion: @escaping((ChatMessage?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "chat/\(chatUUID)/newmessage")
+        request.body = message.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: ChatMessage.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
 }

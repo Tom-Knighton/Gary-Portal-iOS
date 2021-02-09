@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftDate
 
 extension String {
     
@@ -63,6 +64,44 @@ extension Date {
 
         //then return the difference
         return CGFloat(newDateMinutes - oldDateMinutes)
+    }
+    
+    func niceDateAndTime() -> String {
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.doesRelativeDateFormatting = true
+        
+        if isToday {
+            dateFormatterPrint.timeStyle = .short
+            dateFormatterPrint.dateStyle = .none
+            return "Today at \(dateFormatterPrint.string(from: self))"
+        } else if isYesterday {
+            dateFormatterPrint.timeStyle = .none
+            dateFormatterPrint.dateStyle = .medium
+            return "Yesterday at \(dateFormatterPrint.string(from: self))"
+        } else if self.compareCloseTo(Date(), precision: 6.days.timeInterval) {
+            return dateFormatterPrint.weekdaySymbols[weekday - 1]
+        } else {
+            dateFormatterPrint.timeStyle = .none
+            dateFormatterPrint.dateStyle = .short
+        }
+        return dateFormatterPrint.string(from: self)
+    }
+}
+
+extension UIApplication {
+    func addTapGestureRecognizer() {
+        guard let window = windows.first else { return }
+        let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
+        tapGesture.requiresExclusiveTouchType = false
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
+        window.addGestureRecognizer(tapGesture)
+    }
+}
+
+extension UIApplication: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false // set to `false` if you don't want to detect tap during other gestures
     }
 }
 

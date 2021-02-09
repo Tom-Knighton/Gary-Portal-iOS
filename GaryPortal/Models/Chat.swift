@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftDate
 
 struct Chat: Codable {
     
@@ -86,6 +87,14 @@ struct ChatMessage: Codable, Identifiable {
         let isSameSender = self.userUUID == otherMessage?.userUUID ?? ""
         let isValidDateDistance = (self.messageCreatedAt?.minutesBetweenDates(otherMessage?.messageCreatedAt ?? Date()) ?? CGFloat(0)) <= CGFloat(7)
         return isSameSender && isValidDateDistance
+    }
+    
+    func shouldDisplayDate(from lastMessage: ChatMessage?) -> Bool {
+        let thisDate = self.messageCreatedAt
+        let lastDate = lastMessage?.messageCreatedAt
+        let overTwoHours = !(thisDate?.compareCloseTo(lastDate ?? Date(), precision: 2.hours.timeInterval) ?? false)
+        let sameDay = thisDate?.day == lastDate?.day
+        return !sameDay || overTwoHours
     }
 }
 
