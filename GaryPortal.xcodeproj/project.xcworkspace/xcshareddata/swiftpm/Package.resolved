@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "SignalRClient",
+        "repositoryURL": "https://github.com/moozzyk/SignalR-Client-Swift",
+        "state": {
+          "branch": null,
+          "revision": "a998729a4a525d30228bd0893bb3200304726289",
+          "version": "0.8.0"
+        }
+      },
+      {
         "package": "SwiftDate",
         "repositoryURL": "https://github.com/malcommac/SwiftDate",
         "state": {

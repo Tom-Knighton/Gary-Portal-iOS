@@ -10,4 +10,6 @@ import Foundation
 extension NSNotification.Name {
     static let movedFromFeed = Notification.Name("movedFromFeed")
     static let goneToFeed = Notification.Name("goneBackToFeed")
+    
+    static let newChatMessage = Notification.Name("newChatMessage")
 }

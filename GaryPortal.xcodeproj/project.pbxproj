@@ -63,6 +63,8 @@
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
 		E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F925D2C62F007A0775 /* ActionClosurable */; };
 		E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492FF25D2D08C007A0775 /* SwiftDate */; };
+		E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = E2F4930225D2F140007A0775 /* SignalRClient */; };
+		E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4930425D2F1C7007A0775 /* ChatHub.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -132,6 +134,7 @@
 		E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomView.swift; sourceTree = "<group>"; };
 		E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPGradientButton.swift; sourceTree = "<group>"; };
 		E2F492F625D2C193007A0775 /* RefreshScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshScrollView.swift; sourceTree = "<group>"; };
+		E2F4930425D2F1C7007A0775 /* ChatHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +144,7 @@
 			files = (
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2F492F525D2BEED007A0775 /* Introspect in Frameworks */,
+				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
 				E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
@@ -244,6 +248,7 @@
 				E26A68A625B2D08800CD0662 /* StaffService.swift */,
 				E23B908125BA048000C0C201 /* FeedService.swift */,
 				E28DC01A25C7090000A6EBEB /* ChatService.swift */,
+				E2F4930425D2F1C7007A0775 /* ChatHub.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -360,6 +365,7 @@
 				E2F492F425D2BEED007A0775 /* Introspect */,
 				E2F492F925D2C62F007A0775 /* ActionClosurable */,
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
+				E2F4930225D2F140007A0775 /* SignalRClient */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
@@ -394,6 +400,7 @@
 				E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
+				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -454,6 +461,7 @@
 				E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */,
 				E25CC1C025AF724400B1FA55 /* ZeroPage.swift in Sources */,
 				E25CC1BC25AF702B00B1FA55 /* UserAuthentication.swift in Sources */,
+				E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */,
 				E26C628A25B053BD00FC2D0D /* UserService.swift in Sources */,
 				E26C628725B053B400FC2D0D /* APISession.swift in Sources */,
 				E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */,
@@ -711,6 +719,14 @@
 				minimumVersion = 6.3.1;
 			};
 		};
+		E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/moozzyk/SignalR-Client-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -738,6 +754,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */;
 			productName = SwiftDate;
+		};
+		E2F4930225D2F140007A0775 /* SignalRClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */;
+			productName = SignalRClient;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

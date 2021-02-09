@@ -16,12 +16,15 @@ struct ChatRootView: View {
 
     var body: some View {
         ChatListView(dataSource: dataSource)
-        
     }
 }
 
 class ChatListDataSource: ObservableObject {
     @Published var chats = [Chat]()
+    
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
+    }
     
     func loadChats() {
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
@@ -36,13 +39,31 @@ class ChatListDataSource: ObservableObject {
         loadChats()
         sender.endRefreshing()
     }
+    
+    @objc
+    func onNewMessage(_ notification: NSNotification) {
+        if let messageUUID = notification.userInfo?["messageUUID"] as? String, let chatUUID = notification.userInfo?["chatUUID"] as? String {
+            let index = self.chats.firstIndex(where: { $0.chatUUID == chatUUID }) ?? -1
+            guard index != -1 else { return }
+            
+            ChatService.getChatMessage(by: messageUUID) { (message, error) in
+                if error == nil {
+                    DispatchQueue.main.async {
+                        var old = self.chats[index]
+                        old.lastChatMessage = message
+                        self.chats[index] = old
+                    }
+                }
+            }
+        }
+    }
 }
 
 
 
 struct ChatListView: View {
     
-    @ObservedObject var dataSource: ChatListDataSource
+    @ObservedObject var dataSource: ChatListDataSource = ChatListDataSource()
     
     var body: some View {
         ScrollView {
@@ -71,17 +92,68 @@ struct ChatListView: View {
     }
 }
 
+
+struct ChatListItem: View {
+    
+    @State var chat: Chat
+    
+    var body: some View {
+        HStack {
+            Spacer().frame(width: 16)
+            VStack {
+                HStack {
+                    Spacer().frame(width: 16)
+                    
+                    chat.profilePicToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "")
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+                    
+                    Spacer().frame(width: 16)
+                    Text(chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
+                        .font(.custom("Montserrat-SemiBold", size: 19))
+                    Spacer()
+                    
+                    // TODO: unread logic
+                    Spacer().frame(width: 16)
+                }
+                Spacer().frame(height: 8)
+                HStack {
+                    Spacer().frame(width: 70)
+                    Text(chat.lastChatMessage?.messageContent ?? "")
+                        .font(.custom("Montserrat-Light", size: 14))
+                        .multilineTextAlignment(.leading)
+                    Spacer()
+                }
+                
+                
+            }
+            .padding(.top, 16)
+            .padding(.bottom, 16)
+            .background(Color(UIColor.secondarySystemGroupedBackground))
+            .cornerRadius(20)
+            .shadow(radius: 10)
+            
+            Spacer().frame(width: 16)
+        }
+    }
+}
+
+
 class ChatMessagesDataSource: ObservableObject {
     @Published var messages = [ChatMessage]()
     @Published var isLoadingPage = false
     @Published var canLoadMore = true
     @Published var lastMessageUUID = ""
     @Published var hasLoadedFirst = false
+    
+    var shouldRespondToNewMessages = false
     var chatUUID: String = ""
     private var lastDateFrom = Date()
     
     init(chatUUID: String) {
         self.chatUUID = chatUUID
+        NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
     }
     
     func loadMoreContentIfNeeded(currentMessage message: ChatMessage?) {
@@ -147,6 +219,27 @@ class ChatMessagesDataSource: ObservableObject {
             DispatchQueue.main.async {
                 self.messages.append(newMessage)
                 self.lastMessageUUID = newMessage.chatMessageUUID ?? ""
+                GaryPortal.shared.chatConnection?.sendMessage(newMessage.chatMessageUUID ?? "", to: newMessage.chatUUID ?? "", from: newMessage.userUUID ?? "")
+            }
+        }
+    }
+    
+    @objc func onNewMessage(_ notification: NSNotification) {
+        guard shouldRespondToNewMessages else { return }
+        
+        if let messageUUID = notification.userInfo?["messageUUID"] as? String, let chatUUID = notification.userInfo?["chatUUID"] as? String {
+            
+            guard chatUUID == self.chatUUID else { return }
+            
+            ChatService.getChatMessage(by: messageUUID) { (message, error) in
+                if let message = message {
+                    DispatchQueue.main.async {
+                        if !self.messages.contains(where: { $0.chatMessageUUID == message.chatMessageUUID }) {
+                            self.messages.append(message)
+                            self.lastMessageUUID = message.chatMessageUUID ?? ""
+                        } 
+                    }
+                }
             }
         }
     }
@@ -189,8 +282,10 @@ struct ChatView: View {
                             if self.datasource.messages.isEmpty {
                                 self.datasource.loadMoreContent()
                             }
+                            self.datasource.shouldRespondToNewMessages = true
                         }
                         .onDisappear {
+                            self.datasource.shouldRespondToNewMessages = false
                             self.datasource.hasLoadedFirst = false
                         }
                         .onChange(of: datasource.lastMessageUUID) { (newValue) in
@@ -206,7 +301,7 @@ struct ChatView: View {
                             }
                         }
                         .onChange(of: self.textMessage, perform: { value in
-                            withAnimation(.easeInOut) {
+                            withAnimation(.easeInOut(duration: 0.5)) {
                                 reader.scrollTo(self.datasource.messages.last?.chatMessageUUID, anchor: .bottom)
                             }
                         })
@@ -393,43 +488,6 @@ struct msgTail : Shape {
         
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: cornersToRound, cornerRadii: CGSize(width: 25, height: 25))
         return Path(path.cgPath)
-    }
-}
-
-struct ChatListItem: View {
-    
-    @State var chat: Chat
-    
-    var body: some View {
-        HStack {
-            Spacer().frame(width: 16)
-            VStack {
-                HStack {
-                    Spacer().frame(width: 16)
-                    
-                    chat.profilePicToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "")
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
-                    
-                    Spacer().frame(width: 16)
-                    Text(chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
-                        .font(.custom("Montserrat-SemiBold", size: 19))
-                    Spacer()
-                    
-                    // TODO: unread logic
-                    Spacer().frame(width: 16)
-                }
-                
-            }
-            .padding(.top, 16)
-            .padding(.bottom, 16)
-            .background(Color(UIColor.secondarySystemGroupedBackground))
-            .cornerRadius(20)
-            .shadow(radius: 10)
-            
-            Spacer().frame(width: 16)
-        }
     }
 }
 

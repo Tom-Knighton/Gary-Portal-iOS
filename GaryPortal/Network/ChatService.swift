@@ -25,6 +25,22 @@ struct ChatService {
         }
     }
     
+    static func getChatMessage(by messageUUID: String, completion: @escaping ((ChatMessage?, APIError?) -> Void)) {
+        let request = APIRequest(method: .get, path: "chat/message/\(messageUUID)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: ChatMessage.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
     static func getChatMessages(for chatUUID: String, startingFrom: Date? = Date(), limit: Int = 10, completion: @escaping (([ChatMessage]?, APIError?) -> Void)) {
         let timefrom = String(describing: Int((startingFrom?.timeIntervalSince1970.rounded() ?? 0) * 1000) + 60000)
         let request = APIRequest(method: .get, path: "chat/messages/\(chatUUID)")
