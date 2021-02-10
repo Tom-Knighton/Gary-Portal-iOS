@@ -13,12 +13,12 @@ extension String {
     
     ///Returns the string without extraneous whitespaces
     func trim() -> String {
-        return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        return self.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
     }
     
     ///Returns whether the string contains only whitespaces, or is empty
     func isEmptyOrWhitespace() -> Bool {
-        return self.isEmpty ? true : self.trimmingCharacters(in: .whitespaces) == ""
+        return self.isEmpty ? true : self.trimmingCharacters(in: .whitespacesAndNewlines) == ""
     }
     
     ///Returns whether the string matches a valid email pattern
@@ -75,8 +75,8 @@ extension Date {
             dateFormatterPrint.dateStyle = .none
             return "Today at \(dateFormatterPrint.string(from: self))"
         } else if isYesterday {
-            dateFormatterPrint.timeStyle = .none
-            dateFormatterPrint.dateStyle = .medium
+            dateFormatterPrint.timeStyle = .short
+            dateFormatterPrint.dateStyle = .none
             return "Yesterday at \(dateFormatterPrint.string(from: self))"
         } else if self.compareCloseTo(Date(), precision: 6.days.timeInterval) {
             return dateFormatterPrint.weekdaySymbols[weekday - 1]

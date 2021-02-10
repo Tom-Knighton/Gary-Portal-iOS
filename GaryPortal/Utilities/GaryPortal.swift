@@ -100,12 +100,18 @@ struct GaryPortalConstants {
         static let RulesURL = "https://garyportal.tomk.online/rules"
         static let FeedbackURL = "https://form.jotform.com/202855831651356"
         static let ComputerDatingURL = "https://garyportal.tomk.online/computerdating"
+        static let DinoGameURL = "https://tomk.online/amdinogame"
     }
     
     struct UserDefaults {
         
         static let autoPlayVideos = "appSettingsAutoPlayVideos"
         static let notifications = "appSettingsNotifications"
+    }
+    
+    struct Messages {
+        static let thankYou = "Thank You"
+        static let messageReported = "This message has been reported, an admin will review it and possibly contact you for further information if necessary"
     }
 
 }

@@ -23,12 +23,19 @@ class ChatConnection: HubConnectionDelegate {
         connection.delegate = self
         
         connection.on(method: "KeepAlive") { _ in
-            print("got")
         }
         
         connection.on(method: "MessageReceived", callback: { (chatUUID: String, senderUUID: String, messageUUID: String) in
             self.messageReceived(chatUUID: chatUUID, senderUUID: senderUUID, messageUUID: messageUUID)
         })
+        
+        connection.on(method: "RemoveMessage") { (chatUUID: String, messageUUID: String) in
+            self.messageDeleted(chatUUID: chatUUID, messageUUID: messageUUID)
+        }
+        
+        connection.on(method: "NewChatName") { (chatUUID: String, newChatName: String) in
+            self.chatNameChanged(chatUUID: chatUUID, newName: newChatName)
+        }
         
         connection.start()
     }
@@ -50,6 +57,8 @@ class ChatConnection: HubConnectionDelegate {
         self.subscribeToChats()
         self.keepAliveInternal()
     }
+    
+    //MARK: - Methods
     
     func subscribeToChats() {
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (chats, error) in
@@ -74,6 +83,24 @@ class ChatConnection: HubConnectionDelegate {
 
     }
     
+    func deleteMessage(_ messageUUID: String, to chatUUID: String) {
+        self.connection.invoke(method: "DeleteMessage", chatUUID, messageUUID) { error in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    
+    func editChatName(_ chatUUID: String, to newChatName: String) {
+        self.connection.invoke(method: "EditChatName", chatUUID, newChatName) { error in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    
+    //MARK: - Handlers
+    
     func messageReceived(chatUUID: String, senderUUID: String, messageUUID: String) {
         do {
             let dataDict : [String: Any] = ["chatUUID": chatUUID, "userUUID" : senderUUID, "messageUUID": messageUUID]
@@ -81,8 +108,23 @@ class ChatConnection: HubConnectionDelegate {
         }
     }
     
+    func messageDeleted(chatUUID: String, messageUUID: String) {
+        do {
+            let dataDict: [String: Any] = ["chatUUID": chatUUID, "messageUUID": messageUUID]
+            NotificationCenter.default.post(Notification(name: .deleteChatMessage, object: self, userInfo: dataDict))
+        }
+    }
+    
+    func chatNameChanged(chatUUID: String, newName: String) {
+        do {
+            let dataDict: [String: Any] = ["chatUUID": chatUUID, "newName": newName]
+            NotificationCenter.default.post(Notification(name: .chatNameChanged, object: self, userInfo: dataDict))
+        }
+    }
+    
+    
+    //MARK: - Keep Alive
     func keepAliveInternal() {
-        print("register")
         self.timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true, block: { _ in
             self.connection.send(method: "KeepAlive")
         })

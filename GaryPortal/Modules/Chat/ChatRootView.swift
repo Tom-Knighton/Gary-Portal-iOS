@@ -21,30 +21,70 @@ struct ChatListView: View {
     
     @ObservedObject var dataSource: ChatListDataSource = ChatListDataSource()
     
+    @State var isShowingNameAlert = false
+    @State var isShowingAlert = false
+    @State var alertContent: [String] = []
+    @State var selectedChat: Chat?
+    @State var newName: String = ""
+    
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(dataSource.chats, id: \.chatUUID) { chat in
-                    NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
-                        ChatListItem(chat: chat)
+        ZStack(alignment: .top) {
+            ScrollView {
+                LazyVStack {
+                    ForEach(dataSource.chats, id: \.chatUUID) { chat in
+                        NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
+                            ChatListItem(chat: chat)
+                        }
+                        .contextMenu(menuItems: {
+                            if chat.chatIsProtected == false {
+                                Button(action: { self.beginEditChat(chat: chat) }, label: {
+                                    Text("Rename chat")
+                                    Image(systemName: "pencil")
+                                })
+                                Button(action: { }, label: {
+                                    Text("Leave chat")
+                                    Image(systemName: "hand.wave.fill")
+                                })
+                            }
+                        })
                     }
+                    .animation(Animation.spring())
                 }
-                .animation(Animation.spring())
-            }
-            .introspectScrollView { (scrollView) in
-                scrollView.refreshControl = UIRefreshControl { refreshControl in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        self.dataSource.loadChats()
-                        refreshControl.endRefreshing()
+                .introspectScrollView { (scrollView) in
+                    scrollView.refreshControl = UIRefreshControl { refreshControl in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            self.dataSource.loadChats()
+                            refreshControl.endRefreshing()
+                        }
                     }
+                    
                 }
-                
             }
+            .onAppear {
+                self.dataSource.loadChats()
+            }
+            .background(Color.clear)
+            
+            AZAlert(title: "New Chat Name", message: "Enter a new chat name for: \(self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? "")", isShown: $isShowingNameAlert, text: $newName) { (newName) in
+                let newName = newName.trim()
+                if !newName.isEmptyOrWhitespace() {
+                    guard let selectedChat = self.selectedChat else { return }
+                    
+                    self.dataSource.changeChatName(chat: selectedChat, newName: newName)
+                    GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
+                } else {
+                    self.alertContent = ["Error", "Please enter a valid chat name"]
+                    self.isShowingAlert = true
+                }
+            }
+
         }
-        .onAppear {
-            self.dataSource.loadChats()
-        }
-        .background(Color.clear)
+        
+    }
+    
+    func beginEditChat(chat: Chat) {
+        self.selectedChat = chat
+        self.isShowingNameAlert = true
     }
 }
 
@@ -80,7 +120,7 @@ struct ChatListItem: View {
                     Text(chat.getLastMessageToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
                         .font(.custom("Montserrat-Light", size: 14))
                         .multilineTextAlignment(.leading)
-                        .frame(maxHeight: 100)
+                        .frame(maxHeight: 80)
                         .foregroundColor(.secondary)
                     Spacer()
                     
@@ -104,5 +144,6 @@ struct ChatListItem: View {
             
             Spacer().frame(width: 16)
         }
+        
     }
 }

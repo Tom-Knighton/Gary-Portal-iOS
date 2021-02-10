@@ -12,7 +12,7 @@ import SwiftDate
 struct Chat: Codable {
     
     let chatUUID: String?
-    let chatName: String?
+    var chatName: String?
     let chatIsProtected: Bool?
     let chatIsPublic: Bool?
     let chatIsDeleted: Bool?

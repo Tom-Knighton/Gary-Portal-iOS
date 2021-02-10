@@ -12,4 +12,6 @@ extension NSNotification.Name {
     static let goneToFeed = Notification.Name("goneBackToFeed")
     
     static let newChatMessage = Notification.Name("newChatMessage")
+    static let deleteChatMessage = Notification.Name("deleteChatMessage")
+    static let chatNameChanged = Notification.Name("chatNameChanged")
 }

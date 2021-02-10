@@ -11,15 +11,34 @@ import UIKit
 class ChatListDataSource: ObservableObject {
     @Published var chats = [Chat]()
     
+    
+    
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
         self.loadChats()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .newChatMessage, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
     }
     
     func loadChats() {
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
             DispatchQueue.main.async {
                 self.chats = newChats ?? []
+            }
+        }
+    }
+    
+    func changeChatName(chat: Chat, newName: String) {
+        ChatService.editChatName(chat, newName: newName) { (newChat, error) in
+            if error == nil, let newChat = newChat {
+                DispatchQueue.main.async {
+                    guard let index = self.chats.firstIndex(where: { $0.chatUUID == newChat.chatUUID }) else { return }
+                    self.chats[index] = newChat
+                }
             }
         }
     }
@@ -49,10 +68,23 @@ class ChatListDataSource: ObservableObject {
             }
         }
     }
+    
+    @objc
+    func onChatNameChanged(_ notification: NSNotification) {
+        if let chatUUID = notification.userInfo?["chatUUID"] as? String, let newName = notification.userInfo?["newName"] as? String {
+            let index = self.chats.firstIndex(where: { $0.chatUUID == chatUUID }) ?? -1
+            guard index != -1 else { return }
+            
+            DispatchQueue.main.async {
+                self.chats[index].chatName = newName
+            }
+        }
+    }
 }
 
 
 class ChatMessagesDataSource: ObservableObject {
+    @Published var chatName = ""
     @Published var messages = [ChatMessage]()
     @Published var isLoadingPage = false
     @Published var canLoadMore = true
@@ -60,12 +92,21 @@ class ChatMessagesDataSource: ObservableObject {
     @Published var hasLoadedFirst = false
     
     var shouldRespondToNewMessages = false
-    var chatUUID: String = ""
+    var chat: Chat?
     private var lastDateFrom = Date()
     
-    func setup(for chatUUID: String) {
-        self.chatUUID = chatUUID
+    func setup(for chat: Chat) {
+        self.chat = chat
+        self.chatName = chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "")
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDeleteMessage(_:)), name: .deleteChatMessage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .newChatMessage, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
     }
     
     func loadMoreContentIfNeeded(currentMessage message: ChatMessage?) {
@@ -97,7 +138,7 @@ class ChatMessagesDataSource: ObservableObject {
         }
         
         isLoadingPage = true
-        ChatService.getChatMessages(for: chatUUID, startingFrom: lastDateFrom, limit: 20) { (newMessages, error) in
+        ChatService.getChatMessages(for: self.chat?.chatUUID ?? "", startingFrom: lastDateFrom, limit: 20) { (newMessages, error) in
             if error == nil {
                 DispatchQueue.main.async {
                     let oldLastMessage = self.messages.first?.chatMessageUUID ?? ""
@@ -125,7 +166,7 @@ class ChatMessagesDataSource: ObservableObject {
     }
     
     func postNewMessage(message: ChatMessage) {
-        ChatService.postNewMessage(message, to: self.chatUUID) { (newMessage, error) in
+        ChatService.postNewMessage(message, to: self.chat?.chatUUID ?? "") { (newMessage, error) in
             guard let newMessage = newMessage else { return }
             
             DispatchQueue.main.async {
@@ -136,12 +177,18 @@ class ChatMessagesDataSource: ObservableObject {
         }
     }
     
-    @objc func onNewMessage(_ notification: NSNotification) {
+    func deleteMessage(messageUUID: String) {
+        ChatService.markMessageAsDeleted(messageUUID: messageUUID)
+        self.messages.removeAll(where: { $0.chatMessageUUID == messageUUID })
+    }
+    
+    @objc
+    func onNewMessage(_ notification: NSNotification) {
         guard shouldRespondToNewMessages else { return }
         
         if let messageUUID = notification.userInfo?["messageUUID"] as? String, let chatUUID = notification.userInfo?["chatUUID"] as? String {
             
-            guard chatUUID == self.chatUUID else { return }
+            guard chatUUID == self.chat?.chatUUID else { return }
             
             ChatService.getChatMessage(by: messageUUID) { (message, error) in
                 if let message = message {
@@ -152,6 +199,27 @@ class ChatMessagesDataSource: ObservableObject {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    @objc
+    func onDeleteMessage(_ notification: NSNotification) {
+        guard shouldRespondToNewMessages else { return }
+        
+        if let messageUUID = notification.userInfo?["messageUUID"] as? String {
+            self.messages.removeAll(where: { $0.chatMessageUUID == messageUUID })
+        }
+    }
+    
+    @objc
+    func onChatNameChanged(_ notification: NSNotification) {
+        guard shouldRespondToNewMessages else { return }
+        if let chatUUID = notification.userInfo?["chatUUID"] as? String, let newName = notification.userInfo?["newName"] as? String {
+            guard self.chat?.chatUUID == chatUUID else { return }
+            DispatchQueue.main.async {
+                self.chat?.chatName = newName
+                self.chatName = self.chat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? ""
             }
         }
     }

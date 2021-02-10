@@ -80,4 +80,34 @@ struct ChatService {
         let request = APIRequest(method: .put, path: "chat/chats/\(chatUUID)/markasread")
         APIClient().perform(request, nil)
     }
+    
+    static func markMessageAsDeleted(messageUUID: String) {
+        let request = APIRequest(method: .put, path: "chat/messages/delete/\(messageUUID)")
+        APIClient().perform(request, nil)
+    }
+    
+    static func reportMessage(_ messageUUID: String, from uuid: String, for reason: String) {
+        let report = ChatMessageReport(chatMessageReportId: 0, chatMessageUUID: messageUUID, reportReason: reason, reportIssuedAt: Date(), reportByUUID: uuid, isDeleted: false, reportedMessage: nil, reporter: nil)
+        let request = APIRequest(method: .post, path: "chat/reportmessage/\(messageUUID)")
+        request.body = report.jsonEncode()
+        APIClient().perform(request, nil)
+    }
+    
+    static func editChatName(_ chat: Chat, newName: String, completion: @escaping((Chat?, APIError?) -> Void)) {
+        let chatDetails = ChatEditDetails(chatUUID: chat.chatUUID ?? "", chatName: newName, chatIsProtected: chat.chatIsProtected, chatIsPublic: chat.chatIsPublic, chatIsDeleted: chat.chatIsDeleted)
+        let request = APIRequest(method: .put, path: "chat")
+        request.body = chatDetails.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: Chat.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
 }

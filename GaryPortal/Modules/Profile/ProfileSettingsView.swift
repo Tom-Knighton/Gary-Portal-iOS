@@ -218,8 +218,8 @@ struct AccountSettingsView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(Color("Section"))
         .cornerRadius(radius: 15, corners: [.allCorners])
+        .background(Color("Section"))
         .sheet(isPresented: $isShowingImagePicker, onDismiss: loadImage) {
             ImagePicker(image: $newUIImage)
         }

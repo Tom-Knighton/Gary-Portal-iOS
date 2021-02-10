@@ -33,6 +33,7 @@ struct ChatView: View {
                             }
                             
                         }
+                        .animation(.spring())
                         .onAppear {
                             reader.scrollTo(datasource.messages.last?.chatMessageUUID, anchor: .bottom)
                             if self.datasource.messages.isEmpty {
@@ -66,20 +67,20 @@ struct ChatView: View {
                 }
                 
                 ChatMessageBarView(content: $textMessage) {
-                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                     self.datasource.postNewMessage(message: message)
                     self.textMessage = ""
                 }
                     
             }
-            .navigationTitle(chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
+            .navigationTitle(self.datasource.chatName)
             .navigationBarItems(leading:
                 Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
                    Image(systemName: "chevron.backward")
             })
         }
         .onAppear {
-            self.datasource.setup(for: chat.chatUUID ?? "")
+            self.datasource.setup(for: chat)
             self.datasource.loadMoreContentIfNeeded(currentMessage: nil)
             ChatService.markChatAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "", chatUUID: self.chat.chatUUID ?? "")
             self.chat.markViewAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "")
@@ -130,7 +131,7 @@ struct ChatMessageBarView: View {
             .cornerRadius(10)
             .shadow(radius: 3)
             
-            if !text.isEmpty {
+            if !text.trim().isEmptyOrWhitespace() {
                 withAnimation(.easeIn) {
                     Button(action: { self.onSendAction() }) {
                         Image(systemName: "paperplane.fill")
@@ -167,6 +168,10 @@ struct ChatMessageView: View {
     var lastMessage: ChatMessage?
     
     let otherMsgGradient = Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))])
+    
+    @State var isAlertShowing = false
+    @State var alertContent: [String] = []
+    @State var showDinoGame = false
     
     var body: some View {
         let ownMessage = chatMessage.userUUID == GaryPortal.shared.currentUser?.userUUID ?? ""
@@ -208,11 +213,50 @@ struct ChatMessageView: View {
                     }
                     
                 }
+                
                 Text(chatMessage.messageContent ?? "")
                     .padding()
                     .background(msgBG)
                     .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
                     .foregroundColor(.white)
+                    .contextMenu(menuItems: {
+                        Button(action: { UIPasteboard.general.string = chatMessage.messageContent ?? "" }, label: {
+                            Text("Copy Text")
+                            Image(systemName: "doc.on.doc")
+                        })
+                        Button(action: { self.loadDinoGame() }, label : {
+                            Text("🐸 Dinosaur Game 🐸")
+                        })
+                        if ownMessage {
+                            Button(action: { self.deleteMessage() }, label: {
+                                Text("Delete Message")
+                                Image(systemName: "trash")
+                            })
+                        } else {
+                            Menu(content: {
+                                Text("Select Report Reason:")
+                                Divider()
+                                Button(action: { self.reportMessage(reason: "Breaks Gary Portal") }, label: {
+                                    Text("Breaks Gary Portal")
+                                })
+                                Button(action: { self.reportMessage(reason: "Violates Policy") }, label: {
+                                    Text("Violates Policy")
+                                })
+                                Button(action: { self.reportMessage(reason: "Is Offensive") }, label: {
+                                    Text("Is Offensive")
+                                })
+                                Divider()
+                                Button(action: {}, label: {
+                                    Text("Cancel")
+                                })
+                            },
+                            label: {
+                                Text("Report Message")
+                                Image(systemName: "exclamationmark.bubble")
+                            })
+                            
+                        }
+                    })
                 
 
                 if !ownMessage { Spacer() }
@@ -221,6 +265,12 @@ struct ChatMessageView: View {
         }
         .padding(.top, isWithinLastMessage ? 3 : 10)
         .padding(.bottom, isWithinNextMessage ? 3 : 10)
+        .alert(isPresented: $isAlertShowing, content: {
+            Alert(title: Text(self.alertContent[0]), message: Text(self.alertContent[1]), dismissButton: .default(Text("Ok")))
+        })
+        .sheet(isPresented: $showDinoGame, content: {
+            SafariView(url: GaryPortalConstants.URLs.DinoGameURL)
+        })
     }
     
     var msgBG: some View {
@@ -230,6 +280,21 @@ struct ChatMessageView: View {
         } else {
             return AnyView(LinearGradient(gradient: otherMsgGradient, startPoint: .topLeading, endPoint: .bottomTrailing))
         }
+    }
+    
+    func deleteMessage() {
+        ChatService.markMessageAsDeleted(messageUUID: self.chatMessage.chatMessageUUID ?? "")
+        GaryPortal.shared.chatConnection?.deleteMessage(self.chatMessage.chatMessageUUID ?? "", to: self.chatMessage.chatUUID ?? "")
+    }
+    
+    func reportMessage(reason: String) {
+        self.alertContent = [GaryPortalConstants.Messages.thankYou, GaryPortalConstants.Messages.messageReported]
+        self.isAlertShowing = true
+        ChatService.reportMessage(self.chatMessage.chatMessageUUID ?? "", from: GaryPortal.shared.currentUser?.userUUID ?? "", for: reason)
+    }
+    
+    func loadDinoGame() {
+        self.showDinoGame = true
     }
 }
 
