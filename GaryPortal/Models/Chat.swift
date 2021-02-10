@@ -44,6 +44,37 @@ struct Chat: Codable {
             return AnyView(Image("IconSprite"))
         }
     }
+    
+    func getLastMessageToDisplay(for uuid: String) -> String {
+        guard let lastMessage = lastChatMessage else { return "" }
+        let senderName = lastMessage.userDTO?.userUUID ?? "" == uuid ? "You" : lastMessage.userDTO?.userFullName ?? ""
+        switch lastMessage.messageTypeId {
+        case 1:
+            return "\(senderName): \(lastMessage.messageContent ?? "")"
+        case 2:
+            return "\(senderName) sent some media"
+        case 3, 4:
+            return "Bot Message"
+        case 5:
+            return "-- ADMIN MESSAGE --"
+        default:
+            return "\(senderName): \(lastMessage.messageContent ?? "")"
+        }
+    }
+    
+    func hasUnreadMessages(for uuid: String) -> Bool {
+        guard let lastMessage = lastChatMessage,
+              let thisUser = self.chatMembers?.first(where: { $0.userUUID == uuid })
+              else { return false }
+        
+        return thisUser.lastReadAt ?? Date() < lastMessage.messageCreatedAt ?? Date()
+    }
+    
+    func markViewAsRead(for uuid: String) {
+        guard var thisUser = self.chatMembers?.first(where: { $0.userUUID == uuid }) else { return }
+       
+        thisUser.lastReadAt = Date()
+    }
 }
 
 struct ChatEditDetails: Codable {
@@ -59,8 +90,8 @@ struct ChatMember: Codable {
     
     let chatUUID: String?
     let userUUID: String?
-    let isInChat: Bool?
-    let lastReadAt: Bool?
+    var isInChat: Bool?
+    var lastReadAt: Date?
     
     let user: User?
     let userDTO: UserDTO?

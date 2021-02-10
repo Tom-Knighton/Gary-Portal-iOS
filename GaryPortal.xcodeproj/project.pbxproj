@@ -57,6 +57,8 @@
 		E2BB737825B090C800CDB422 /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = E2BB737725B090C800CDB422 /* CropViewController */; };
 		E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737A25B0946F00CDB422 /* GaryPortal.swift */; };
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
+		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
+		E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */; };
 		E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */; };
 		E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
@@ -131,6 +133,8 @@
 		E2BB736E25B0897F00CDB422 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		E2BB737A25B0946F00CDB422 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E2BB737D25B0951500CDB422 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
+		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
 		E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomView.swift; sourceTree = "<group>"; };
 		E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPGradientButton.swift; sourceTree = "<group>"; };
 		E2F492F625D2C193007A0775 /* RefreshScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshScrollView.swift; sourceTree = "<group>"; };
@@ -293,6 +297,8 @@
 			isa = PBXGroup;
 			children = (
 				E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */,
+				E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */,
+				E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -438,6 +444,7 @@
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
+				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
@@ -451,6 +458,7 @@
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,
 				E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */,
 				E28DC01925C707E800A6EBEB /* Chat.swift in Sources */,
+				E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */,
 				E25CC1B925AF702B00B1FA55 /* User.swift in Sources */,
 				E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */,
 				E25CC1BA25AF702B00B1FA55 /* Feed.swift in Sources */,

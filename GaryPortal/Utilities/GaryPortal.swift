@@ -76,7 +76,7 @@ struct GaryPortalConstants {
     static let PasswordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}"
     
     static let APIBaseUrl = "https://api.garyportal.tomk.online/api/"
-    static let APIChatHub = "https://f56b9ab3d323.ngrok.io/chathub"
+    static let APIChatHub = "https://api.garyportal.tomk.online/chathub"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
     

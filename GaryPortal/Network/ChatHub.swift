@@ -11,6 +11,7 @@ import SignalRClient
 class ChatConnection: HubConnectionDelegate {
     
     private var connection: HubConnection
+    private var timer: Timer?
     
     public init() {
         connection = HubConnectionBuilder(url: URL(string: GaryPortalConstants.APIChatHub)!)
@@ -21,8 +22,11 @@ class ChatConnection: HubConnectionDelegate {
         
         connection.delegate = self
         
+        connection.on(method: "KeepAlive") { _ in
+            print("got")
+        }
+        
         connection.on(method: "MessageReceived", callback: { (chatUUID: String, senderUUID: String, messageUUID: String) in
-            print("msg receives")
             self.messageReceived(chatUUID: chatUUID, senderUUID: senderUUID, messageUUID: messageUUID)
         })
         
@@ -30,19 +34,21 @@ class ChatConnection: HubConnectionDelegate {
     }
     
     func connectionDidOpen(hubConnection: HubConnection) {
+        self.stopKeepAlive()
         self.subscribeToChats()
+        self.keepAliveInternal()
     }
     
     func connectionDidFailToOpen(error: Error) {
-        print("failed")
     }
     
     func connectionDidClose(error: Error?) {
-        print("closed")
     }
     
     func connectionDidReconnect() {
-        print("reconnected")
+        self.stopKeepAlive()
+        self.subscribeToChats()
+        self.keepAliveInternal()
     }
     
     func subscribeToChats() {
@@ -75,5 +81,14 @@ class ChatConnection: HubConnectionDelegate {
         }
     }
     
+    func keepAliveInternal() {
+        print("register")
+        self.timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true, block: { _ in
+            self.connection.send(method: "KeepAlive")
+        })
+    }
     
+    func stopKeepAlive() {
+        self.timer?.invalidate()
+    }
 }

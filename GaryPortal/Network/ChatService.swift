@@ -75,4 +75,9 @@ struct ChatService {
             }
         }
     }
+    
+    static func markChatAsRead(for uuid: String, chatUUID: String) {
+        let request = APIRequest(method: .put, path: "chat/chats/\(chatUUID)/markasread")
+        APIClient().perform(request, nil)
+    }
 }
