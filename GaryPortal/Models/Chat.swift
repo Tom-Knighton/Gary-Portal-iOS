@@ -75,6 +75,10 @@ struct Chat: Codable {
        
         thisUser.lastReadAt = Date()
     }
+    
+    func getListImageName() -> String {
+        return (self.chatMembers?.count ?? 0) >= 3 ? "person.3" : self.chatMembers?.count == 2 ? "person.2" : "person"
+    }
 }
 
 struct ChatEditDetails: Codable {

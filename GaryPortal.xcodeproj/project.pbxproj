@@ -61,6 +61,7 @@
 		E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */; };
 		E2E0FA1425D478B60069E153 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1325D478B60069E153 /* Report.swift */; };
 		E2E0FA1625D47DAA0069E153 /* GPAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1525D47DAA0069E153 /* GPAlert.swift */; };
+		E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1725D498620069E153 /* ChatMemberList.swift */; };
 		E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */; };
 		E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
@@ -139,6 +140,7 @@
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
 		E2E0FA1325D478B60069E153 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E2E0FA1525D47DAA0069E153 /* GPAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAlert.swift; sourceTree = "<group>"; };
+		E2E0FA1725D498620069E153 /* ChatMemberList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMemberList.swift; sourceTree = "<group>"; };
 		E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomView.swift; sourceTree = "<group>"; };
 		E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPGradientButton.swift; sourceTree = "<group>"; };
 		E2F492F625D2C193007A0775 /* RefreshScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshScrollView.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */,
 				E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */,
 				E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */,
+				E2E0FA1725D498620069E153 /* ChatMemberList.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
 				E25CC1BB25AF702B00B1FA55 /* Rank.swift in Sources */,
 				E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */,
+				E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */,
 				E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */,
 				E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */,
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,

@@ -74,10 +74,17 @@ struct ChatView: View {
                     
             }
             .navigationTitle(self.datasource.chatName)
-            .navigationBarItems(leading:
-                Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
-                   Image(systemName: "chevron.backward")
-            })
+            .navigationBarItems(
+                leading:
+                    Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                       Image(systemName: "chevron.backward")
+                }, trailing:
+                    NavigationLink(
+                        destination: ChatMemberList(users: self.chat.chatMembers ?? []),
+                        label: {
+                            Image(systemName: self.chat.getListImageName())
+                        })
+            )
         }
         .onAppear {
             self.datasource.setup(for: chat)
@@ -86,6 +93,7 @@ struct ChatView: View {
             self.chat.markViewAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "")
         }
     }
+    
 }
 
 struct ChatMessageBarView: View {

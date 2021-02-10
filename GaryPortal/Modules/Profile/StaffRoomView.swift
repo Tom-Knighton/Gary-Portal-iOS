@@ -180,20 +180,33 @@ struct UserList: View {
 struct UserListElement: View {
     
     @State var user: UserDTO?
+    @State var secondaryText: String?
+    var displaysChevron = true
     
     var body: some View {
         HStack {
+           
             AsyncImage(url: user?.userProfileImageUrl ?? "")
                 .aspectRatio(contentMode: .fill)
                 .clipShape(Circle())
                 .padding()
                 .frame(width: 80, height: 80)
-            Text(user?.userFullName ?? "")
-            
+            VStack {
+                Text(user?.userFullName ?? "")
+                    .frame(maxWidth: .infinity)
+                if let secondaryText = secondaryText {
+                    Text(secondaryText)
+                        .font(.custom("Montserrat-Light", size: 14))
+                        .frame(maxWidth: .infinity)
+
+                }
+            }
             Spacer()
-            Button(action: {}) {
-                Image(systemName: "chevron.right")
-                    .font(.body)
+            if displaysChevron {
+                Button(action: {}) {
+                    Image(systemName: "chevron.right")
+                        .font(.body)
+                }
             }
             Spacer().frame(width: 16)
         }
