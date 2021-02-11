@@ -126,4 +126,9 @@ struct ChatService {
             }
         }
     }
+    
+    static func leaveChat(userUUID: String, chatUUID: String) {
+        let request = APIRequest(method: .put, path: "chat/chats/removeuser/\(userUUID)/\(chatUUID)")
+        APIClient().perform(request, nil)
+    }
 }

@@ -23,24 +23,22 @@ struct Chat: Codable {
     var lastChatMessage: ChatMessage?
     
     func getTitleToDisplay(for uuid: String) -> String {
-        switch chatMembers?.count ?? 0 {
-        case 2:
-            return chatMembers?.first(where: { $0.userUUID != uuid })?.userDTO?.userFullName ?? ""
-        case 3...:
+        if (chatMembers?.count ?? 0) >= 3 || chatName?.hasPrefix("GP$AG_") == false {
             return self.chatName ?? "Group Chat"
-        default:
+        } else if chatMembers?.count == 2 {
+            return chatMembers?.first(where: { $0.userUUID != uuid })?.userDTO?.userFullName ?? ""
+        } else {
             return "Lonely Chat :("
         }
     }
     
     func profilePicToDisplay(for uuid: String) -> some View {
-        switch chatMembers?.count ?? 0 {
-        case 2:
+        if (chatMembers?.count ?? 0) >= 3 || chatName?.hasPrefix("GP$AG_") == false {
+            return AnyView(Image("GroupChatCover").resizable())
+        } else if chatMembers?.count == 2 {
             let url = chatMembers?.first(where: { $0.userUUID != uuid})?.userDTO?.userProfileImageUrl ?? ""
             return AnyView(AsyncImage(url: url))
-        case 3...:
-            return AnyView(Image("GroupChatCover").resizable())
-        default:
+        } else {
             return AnyView(Image("IconSprite"))
         }
     }
@@ -60,6 +58,10 @@ struct Chat: Codable {
         default:
             return "\(senderName): \(lastMessage.messageContent ?? "")"
         }
+    }
+    
+    func canRenameChat() -> Bool {
+        return self.chatIsProtected == false && ((self.chatMembers?.count ?? 0) >= 3 || self.chatName?.hasPrefix("GP$AG_") == false)
     }
     
     func hasUnreadMessages(for uuid: String) -> Bool {

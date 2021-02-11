@@ -18,7 +18,7 @@ struct ChatMemberList: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             Color(UIColor.systemGroupedBackground).edgesIgnoringSafeArea(.all)
             ScrollView {
                 LazyVStack {
@@ -47,7 +47,7 @@ struct ChatMemberList: View {
     }
     
     func addUser(_ username: String) {
-        ChatService.addUserToChat(username, chatUUID: self.chatUUID) { (newMember, error) in
+        ChatService.addUserToChat(username.trim(), chatUUID: self.chatUUID) { (newMember, error) in
             if let newMember = newMember {
                 GaryPortal.shared.chatConnection?.addUserToChat(newMember, to: self.chatUUID)
                 self.alertContent = ["Success", "User added successfully"]

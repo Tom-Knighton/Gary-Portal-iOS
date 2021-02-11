@@ -37,11 +37,14 @@ struct ChatListView: View {
                         }
                         .contextMenu(menuItems: {
                             if chat.chatIsProtected == false {
-                                Button(action: { self.beginEditChat(chat: chat) }, label: {
-                                    Text("Rename chat")
-                                    Image(systemName: "pencil")
-                                })
-                                Button(action: { }, label: {
+                                if chat.canRenameChat() {
+                                    Button(action: { self.beginEditChat(chat: chat) }, label: {
+                                        Text("Rename chat")
+                                        Image(systemName: "pencil")
+                                    })
+                                }
+
+                                Button(action: { self.leaveChat(chat: chat) }, label: {
                                     Text("Leave chat")
                                     Image(systemName: "hand.wave.fill")
                                 })
@@ -85,6 +88,11 @@ struct ChatListView: View {
     func beginEditChat(chat: Chat) {
         self.selectedChat = chat
         self.isShowingNameAlert = true
+    }
+    
+    func leaveChat(chat: Chat) {
+        ChatService.leaveChat(userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", chatUUID: chat.chatUUID ?? "")
+        self.dataSource.chats.removeAll(where: { $0.chatUUID == chat.chatUUID })
     }
 }
 

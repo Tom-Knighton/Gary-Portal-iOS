@@ -64,7 +64,9 @@ struct AZAlert: View {
                     .multilineTextAlignment(.center)
             }
             TextField("", text: $text)
+                .autocapitalization(.none)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+            
             HStack(spacing: 20) {
                 Button("Done") {
                     self.isShown = false
