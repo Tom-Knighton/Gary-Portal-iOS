@@ -101,6 +101,7 @@ struct ChatListItem: View {
     
     var chat: Chat
     let unreadGradient = [Color(UIColor(hexString: "#5f2c82")), Color(UIColor(hexString: "#49a09d"))]
+    let protectedGradientColors = [Color(UIColor(hexString: "#642B73")), Color(UIColor(hexString: "#C6426E"))]
     
     var body: some View {
         HStack {
@@ -117,7 +118,7 @@ struct ChatListItem: View {
                     Spacer().frame(width: 16)
                     Text(chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
                         .font(.custom("Montserrat-SemiBold", size: 19))
-                        .foregroundColor(.primary)
+                        .foregroundColor(self.chat.chatIsProtected == false ? .primary : .white)
                     Spacer()
                 
                     Spacer().frame(width: 16)
@@ -129,7 +130,7 @@ struct ChatListItem: View {
                         .font(.custom("Montserrat-Light", size: 14))
                         .multilineTextAlignment(.leading)
                         .frame(maxHeight: 80)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(self.chat.chatIsProtected == false ? .secondary : .gray)
                     Spacer()
                     
                     if chat.hasUnreadMessages(for: GaryPortal.shared.currentUser?.userUUID ?? "") {
@@ -146,7 +147,8 @@ struct ChatListItem: View {
             }
             .padding(.top, 16)
             .padding(.bottom, 16)
-            .background(Color(UIColor.secondarySystemGroupedBackground))
+            .if(self.chat.chatIsProtected == true) { $0.background(LinearGradient(gradient: Gradient(colors: self.protectedGradientColors), startPoint: .leading, endPoint: .trailing)) }
+            .if(self.chat.chatIsProtected == false) { $0.background(Color(UIColor.secondarySystemGroupedBackground)) }
             .cornerRadius(20)
             .shadow(radius: 10)
             
