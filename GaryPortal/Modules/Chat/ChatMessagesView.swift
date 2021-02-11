@@ -80,7 +80,7 @@ struct ChatView: View {
                        Image(systemName: "chevron.backward")
                 }, trailing:
                     NavigationLink(
-                        destination: ChatMemberList(users: self.chat.chatMembers ?? []),
+                        destination: NavigationLazyView(ChatMemberList(chatUUID: self.chat.chatUUID ?? "", users: self.datasource.chat?.chatMembers ?? [])),
                         label: {
                             Image(systemName: self.chat.getListImageName())
                         })

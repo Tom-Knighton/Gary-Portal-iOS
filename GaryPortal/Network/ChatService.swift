@@ -110,4 +110,20 @@ struct ChatService {
             }
         }
     }
+    
+    static func addUserToChat(_ username: String, chatUUID: String, completion: @escaping((ChatMember?, APIError?) -> Void)) {
+        let request = APIRequest(method: .put, path: "chat/Chats/AddUserByUsername/\(username)/\(chatUUID)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: ChatMember.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
 }

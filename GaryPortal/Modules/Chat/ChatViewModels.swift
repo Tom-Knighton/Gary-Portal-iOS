@@ -16,12 +16,14 @@ class ChatListDataSource: ObservableObject {
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onChatMemberAdded(_:)), name: .newChatMember, object: nil)
         self.loadChats()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .newChatMessage, object: nil)
         NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .newChatMember, object: nil)
     }
     
     func loadChats() {
@@ -80,6 +82,19 @@ class ChatListDataSource: ObservableObject {
             }
         }
     }
+    
+    @objc
+    func onChatMemberAdded(_ notification: NSNotification) {
+        if let chatUUID = notification.userInfo?["chatUUID"] as? String, let newMember = notification.userInfo?["chatMember"] as? ChatMember {
+            let index = self.chats.firstIndex(where: { $0.chatUUID == chatUUID }) ?? -1
+            guard index != -1 else { return }
+            DispatchQueue.main.async {
+                if self.chats[index].chatMembers?.contains(where: { $0.userUUID == newMember.userUUID }) == false {
+                    self.chats[index].chatMembers?.append(newMember)
+                }
+            }
+        }
+    }
 }
 
 
@@ -101,12 +116,14 @@ class ChatMessagesDataSource: ObservableObject {
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDeleteMessage(_:)), name: .deleteChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onChatMemberAdded(_:)), name: .newChatMember, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .newChatMessage, object: nil)
         NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
         NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .newChatMember, object: nil)
     }
     
     func loadMoreContentIfNeeded(currentMessage message: ChatMessage?) {
@@ -220,6 +237,19 @@ class ChatMessagesDataSource: ObservableObject {
             DispatchQueue.main.async {
                 self.chat?.chatName = newName
                 self.chatName = self.chat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? ""
+            }
+        }
+    }
+    
+    @objc
+    func onChatMemberAdded(_ notification: NSNotification) {
+        guard shouldRespondToNewMessages else { return }
+        if let chatUUID = notification.userInfo?["chatUUID"] as? String, let newMember = notification.userInfo?["chatMember"] as? ChatMember {
+            guard self.chat?.chatUUID == chatUUID else { return }
+            DispatchQueue.main.async {
+                if self.chat?.chatMembers?.contains(where: { $0.userUUID == newMember.userUUID }) == false {
+                    self.chat?.chatMembers?.append(newMember)
+                }
             }
         }
     }

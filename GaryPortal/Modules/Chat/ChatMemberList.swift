@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct ChatMemberList: View {
+    var chatUUID: String
     @State var users: [ChatMember] = []
+    @State var showUsernameAlert = false
+    @State var usernameText = ""
+    @State var showingAlert = false
+    @State var alertContent: [String] = []
+    
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ZStack {
@@ -21,13 +28,32 @@ struct ChatMemberList: View {
                     }
                 }
             }
+            
+            AZAlert(title: "Add User", message: "Enter the username of the user to add to this chat:", isShown: $showUsernameAlert, text: $usernameText, onDone: { username in
+                self.addUser(username)
+            })
         }
+        .alert(isPresented: $showingAlert, content: {
+            Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok"), action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }))
+        })
         .navigationBarTitle("Members")
+        .navigationBarItems(trailing:
+            Button(action: { self.showUsernameAlert = true }, label: {
+                Image(systemName: "person.badge.plus")
+            })
+        )
+    }
+    
+    func addUser(_ username: String) {
+        ChatService.addUserToChat(username, chatUUID: self.chatUUID) { (newMember, error) in
+            if let newMember = newMember {
+                GaryPortal.shared.chatConnection?.addUserToChat(newMember, to: self.chatUUID)
+                self.alertContent = ["Success", "User added successfully"]
+                self.showingAlert = true
+            }
+        }
     }
 }
 
-struct ChatMemberList_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatMemberList()
-    }
-}

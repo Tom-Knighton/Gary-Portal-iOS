@@ -37,6 +37,10 @@ class ChatConnection: HubConnectionDelegate {
             self.chatNameChanged(chatUUID: chatUUID, newName: newChatName)
         }
         
+        connection.on(method: "NewChatUser") { (chatUUID: String, newChatMember: ChatMember) in
+            self.chatMemberAdded(chatUUID: chatUUID, member: newChatMember)
+        }
+        
         connection.start()
     }
     
@@ -99,6 +103,14 @@ class ChatConnection: HubConnectionDelegate {
         }
     }
     
+    func addUserToChat(_ member: ChatMember, to chatUUID: String) {
+        self.connection.invoke(method: "AddedUserToChat", chatUUID, member) { error in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    
     //MARK: - Handlers
     
     func messageReceived(chatUUID: String, senderUUID: String, messageUUID: String) {
@@ -122,6 +134,12 @@ class ChatConnection: HubConnectionDelegate {
         }
     }
     
+    func chatMemberAdded(chatUUID: String, member: ChatMember) {
+        do {
+            let dataDict: [String: Any] = ["chatUUID": chatUUID, "chatMember": member]
+            NotificationCenter.default.post(Notification(name: .newChatMember, object: self, userInfo: dataDict))
+        }
+    }
     
     //MARK: - Keep Alive
     func keepAliveInternal() {
