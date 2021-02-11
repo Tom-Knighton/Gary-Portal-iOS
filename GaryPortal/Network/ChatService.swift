@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct ChatService {
     
@@ -130,5 +131,78 @@ struct ChatService {
     static func leaveChat(userUUID: String, chatUUID: String) {
         let request = APIRequest(method: .put, path: "chat/chats/removeuser/\(userUUID)/\(chatUUID)")
         APIClient().perform(request, nil)
+    }
+    
+    static func uploadAttachment(to chatUUUID: String, videoURL: String? = "", photoURL: String? = "", completion: @escaping((String?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "chat/\(chatUUUID)/Attachment")
+        var boundary = ""
+        if let url = videoURL, let videoURL = URL(string: url) {
+            print("video")
+            do {
+                print(videoURL.absoluteString)
+                let videoData = try Data(contentsOf: videoURL)
+                boundary = "Boundary-\(UUID().uuidString)"
+                let paramName = "video"
+                let fileName = "video.mp4"
+                var data = Data()
+                data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+                data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                data.append("Content-Type: video/mp4\r\n\r\n".data(using: .utf8)!)
+                data.append(videoData)
+                data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+                request.body = data
+            } catch {
+                completion(nil, .dataNotFound)
+                return
+            }
+        } else if let url = photoURL, let photoURL = URL(string: url) {
+            do {
+                let photoData = try Data(contentsOf: photoURL)
+                let image = UIImage(data: photoData)
+                let imgData = image?.jpegData(compressionQuality: 0.5)
+                print("image")
+                boundary = "Boundary-\(UUID().uuidString)"
+                let paramName = "image"
+                let fileName = "image.jpg"
+                var data = Data()
+                data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+                data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                data.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+                data.append(imgData!)
+                data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+                request.body = data
+            } catch {
+                completion(nil, .dataNotFound)
+                return
+            }
+            
+        } else {
+            print("?")
+            completion(nil, .dataNotFound)
+            return
+        }
+        
+        print("Boundary: \(boundary)")
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useMB] // optional: restricts the units to MB only
+        bcf.countStyle = .file
+        let string = bcf.string(fromByteCount: Int64(request.body?.count ?? 0))
+        print("formatted result: \(string)")
+        APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: String.self) {
+                    print("success")
+                    completion(response.body, nil)
+                } else {
+                    print(response.statusCode)
+                    print(String(data: response.body ?? Data(), encoding: .utf8))
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                print("network")
+                completion(nil, .networkFail)
+            }
+        }
     }
 }

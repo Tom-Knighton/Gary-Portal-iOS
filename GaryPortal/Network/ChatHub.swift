@@ -143,7 +143,7 @@ class ChatConnection: HubConnectionDelegate {
     
     //MARK: - Keep Alive
     func keepAliveInternal() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true, block: { _ in
+        self.timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: { _ in
             self.connection.send(method: "KeepAlive")
         })
     }

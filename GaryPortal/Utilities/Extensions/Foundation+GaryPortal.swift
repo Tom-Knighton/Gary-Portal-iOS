@@ -26,7 +26,7 @@ extension String {
         let regex = try? NSRegularExpression(pattern: GaryPortalConstants.EmailRegex, options: .caseInsensitive)
         return regex?.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count)) != nil
     }
-       
+    
     ///Returns whether the string matches a valid password strength
     var isValidPassword: Bool {
         let regex = try? NSRegularExpression(pattern: GaryPortalConstants.PasswordRegex, options: [])
@@ -54,14 +54,69 @@ extension UIColor {
     }
 }
 
+extension UIImage {
+    func imageByCombiningImage(withImage secondImage: UIImage) -> UIImage {
+        let firstImage = self
+        let newImageWidth  = max(firstImage.size.width,  secondImage.size.width )
+        let newImageHeight = max(firstImage.size.height, secondImage.size.height)
+        let newImageSize = CGSize(width : newImageWidth, height: newImageHeight)
+        
+        
+        UIGraphicsBeginImageContextWithOptions(newImageSize, false, UIScreen.main.scale)
+        
+        let firstImageDrawX  = round((newImageSize.width  - firstImage.size.width  ) / 2)
+        let firstImageDrawY  = round((newImageSize.height - firstImage.size.height ) / 2)
+        
+        let secondImageDrawX = round((newImageSize.width  - secondImage.size.width ) / 2)
+        let secondImageDrawY = round((newImageSize.height - secondImage.size.height) / 2)
+        
+        firstImage .draw(at: CGPoint(x: firstImageDrawX,  y: firstImageDrawY))
+        secondImage.draw(at: CGPoint(x: secondImageDrawX, y: secondImageDrawY))
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        
+        return image!
+    }
+    
+    func getDocumentDirectoryPath() -> NSString {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory as NSString
+    }
+    
+    func saveImageToDocumentsDirectory(withName: String) -> String? {
+        let image = self
+        if let data = image.jpegData(compressionQuality: 0.7) {
+            let dirPath = getDocumentDirectoryPath()
+            let imageFileUrl = URL(fileURLWithPath: dirPath.appendingPathComponent(withName) as String)
+            do {
+                try data.write(to: imageFileUrl)
+                return imageFileUrl.absoluteString
+            } catch {
+                print("Error saving image: \(error)")
+            }
+        }
+        return nil
+    }
+    
+    class func loadImageFromDocumentsDirectory(imageName: String) -> UIImage? {
+        let tempDirPath = UIImage().getDocumentDirectoryPath()
+        let imageFilePath = tempDirPath.appendingPathComponent(imageName)
+        return UIImage(contentsOfFile:imageFilePath)
+    }
+}
+
 extension Date {
     func minutesBetweenDates(_ newDate: Date) -> CGFloat {
-
+        
         let oldDate = self
         //get both times sinces refrenced date and divide by 60 to get minutes
         let newDateMinutes = newDate.timeIntervalSinceReferenceDate/60
         let oldDateMinutes = oldDate.timeIntervalSinceReferenceDate/60
-
+        
         //then return the difference
         return CGFloat(newDateMinutes - oldDateMinutes)
     }
@@ -107,3 +162,16 @@ extension UIApplication: UIGestureRecognizerDelegate {
     }
 }
 
+extension FileManager {
+    func clearTmpDirectory() {
+        do {
+            let tmpDirectory = try contentsOfDirectory(atPath: NSTemporaryDirectory())
+            try tmpDirectory.forEach {[unowned self] file in
+                let path = String.init(format: "%@%@", NSTemporaryDirectory(), file)
+                try self.removeItem(atPath: path)
+            }
+        } catch {
+            print(error)
+        }
+    }
+}

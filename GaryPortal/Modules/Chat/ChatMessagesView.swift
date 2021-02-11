@@ -66,7 +66,29 @@ struct ChatView: View {
                     }
                 }
                 
-                ChatMessageBarView(content: $textMessage) {
+                ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL in
+                    
+                    if hasMedia {
+                        print("has media")
+                        if let imageURL = imageURL {
+                            ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
+                                if let url = url {
+                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    self.datasource.postNewMessage(message: assetMessage)
+                                }
+                            }
+                        }
+                        if let videoURL = videoURL {
+                            ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
+                                if let url = url {
+                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    self.datasource.postNewMessage(message: assetMessage)
+                                }
+                            }
+                        }
+                    }
+                    
+                    
                     let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                     self.datasource.postNewMessage(message: message)
                     self.textMessage = ""
@@ -99,74 +121,131 @@ struct ChatView: View {
 struct ChatMessageBarView: View {
     
     @Binding var text: String
-    var onSendAction: () -> ()
     
-    init(content: Binding<String>, _ onSend: @escaping () -> ()) {
+    var onSendAction: (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()
+    
+    @State var isShowingCamera = false
+    
+    @State var play = true
+    
+    @State var hasMedia = false
+    @State var imageURL: String? = nil
+    @State var videoURL: String? = nil
+    
+    init(content: Binding<String>, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
         self.onSendAction = onSend
         _text = content
     }
     
     var body: some View {
-        HStack {
-            HStack(spacing: 8) {
+        VStack {
+            if self.hasMedia {
+                HStack {
+                    Spacer().frame(width: 16)
+                    if self.imageURL != nil {
+                        AsyncImage(url: self.imageURL ?? "")
+                            .cornerRadius(10)
+                            .frame(width: 80, height: 80)
+                            .aspectRatio(contentMode: .fill)
+                            .onTapGesture {
+                                self.hasMedia = false
+                                self.imageURL = nil
+                            }
+                    }
+                    if self.videoURL != nil {
+                        PlayerView(url: self.videoURL ?? "", play: $play)
+                            .cornerRadius(10)
+                            .frame(width: 80, height: 80)
+                            .aspectRatio(contentMode: .fill)
+                            .onTapGesture {
+                                self.hasMedia = false
+                                self.videoURL = nil
+                            }
+                    }
+                   
+                    Spacer()
+                }
+            }
+            Spacer().frame(height: 8)
+            HStack {
                 
-                TextEditor(text: $text)
-                    .frame(maxHeight: 100)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .background(
-                        ZStack {
-                            if self.text.isEmpty {
-                                HStack {
-                                    Spacer().frame(width: 1)
-                                    Text("Your message...")
-                                        .foregroundColor(.gray)
-                                        .disabled(true)
-                                    Spacer()
+                HStack(spacing: 8) {
+                    
+                    TextEditor(text: $text)
+                        .frame(maxHeight: 100)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .background(
+                            ZStack {
+                                if self.text.isEmpty {
+                                    HStack {
+                                        Spacer().frame(width: 1)
+                                        Text("Your message...")
+                                            .foregroundColor(.gray)
+                                            .disabled(true)
+                                        Spacer()
+                                    }
                                 }
                             }
-                        }
-                    )
-                
-                Button(action: {}) {
-                    Image(systemName: "camera.fill")
-                        .font(.body)
-                }
-                .foregroundColor(.gray)
-                
-            }
-            .padding(.horizontal, 8)
-            .background(Color("Section"))
-            .cornerRadius(10)
-            .shadow(radius: 3)
-            
-            if !text.trim().isEmptyOrWhitespace() {
-                withAnimation(.easeIn) {
-                    Button(action: { self.onSendAction() }) {
-                        Image(systemName: "paperplane.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 15, height: 23)
-                            .padding(13)
-                            .shadow(radius: 3)
-                            .foregroundColor(.white)
-                            .background(Color.blue)
-                            .clipShape(Circle())
-
+                        )
+                    
+                    Button(action: { self.isShowingCamera = true }) {
+                        Image(systemName: "camera.fill")
+                            .font(.body)
                     }
                     .foregroundColor(.gray)
+                    
                 }
-               
+                .padding(.horizontal, 8)
+                .background(Color("Section"))
+                .cornerRadius(10)
+                .shadow(radius: 3)
+                
+                if !text.trim().isEmptyOrWhitespace() {
+                    withAnimation(.easeIn) {
+                        Button(action: { self.onSendAction(self.text, self.hasMedia, self.imageURL, self.videoURL); self.hasMedia = false; self.imageURL = ""; self.videoURL = "" }) {
+                            Image(systemName: "paperplane.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 15, height: 23)
+                                .padding(13)
+                                .shadow(radius: 3)
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .clipShape(Circle())
+
+                        }
+                        .foregroundColor(.gray)
+                    }
+                   
+                }
+            }
+            .transition(.slide)
+            .animation(.easeInOut)
+            .padding(.horizontal, 15)
+            .padding(.bottom, 8)
+            .background(Color.clear)
+            .fullScreenCover(isPresented: $isShowingCamera, onDismiss: { print("dismiss" )}) {
+                CameraView { (success, isVideo, urlToAsset) in
+                    self.isShowingCamera = false
+                    if success {
+                        if isVideo {
+                            self.videoURL = urlToAsset?.absoluteString ?? ""
+                            self.hasMedia = true
+                        } else {
+                            self.imageURL = urlToAsset?.absoluteString ?? ""
+                            self.hasMedia = true
+                        }
+                    }
+                }
+            }
+            .onAppear {
+                UITextView.appearance().backgroundColor = .clear
             }
         }
-        .transition(.slide)
-        .animation(.easeInOut)
-        .padding(.horizontal, 15)
-        .padding(.bottom, 8)
-        .background(Color.clear)
-        .onAppear {
-            UITextView.appearance().backgroundColor = .clear
-        }
+       
+        
     }
+    
 }
 
 struct ChatMessageView: View {

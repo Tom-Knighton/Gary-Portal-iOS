@@ -22,6 +22,9 @@
 		E23B908225BA048000C0C201 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908125BA048000C0C201 /* FeedService.swift */; };
 		E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908425BB1DCB00C0C201 /* PlayerView.swift */; };
 		E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */; };
+		E249D96925D53DF50056B027 /* GPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D96825D53DF50056B027 /* GPCamera.swift */; };
+		E249D98025D54B6C0056B027 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D97F25D54B6C0056B027 /* CameraService.swift */; };
+		E249D98225D599380056B027 /* ColourPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D98125D599380056B027 /* ColourPicker.swift */; };
 		E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25C1DAA25B1AAC90046EA6C /* AdminService.swift */; };
 		E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25C1DAD25B1AC360046EA6C /* ProfileSettingsView.swift */; };
 		E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25CC1B125AF702B00B1FA55 /* Team.swift */; };
@@ -102,6 +105,9 @@
 		E23B908125BA048000C0C201 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 		E23B908425BB1DCB00C0C201 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+GaryPortal.swift"; sourceTree = "<group>"; };
+		E249D96825D53DF50056B027 /* GPCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamera.swift; sourceTree = "<group>"; };
+		E249D97F25D54B6C0056B027 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		E249D98125D599380056B027 /* ColourPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourPicker.swift; sourceTree = "<group>"; };
 		E25C1DAA25B1AAC90046EA6C /* AdminService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminService.swift; sourceTree = "<group>"; };
 		E25C1DAD25B1AC360046EA6C /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		E25CC1B125AF702B00B1FA55 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
@@ -224,6 +230,7 @@
 				E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */,
 				E2BB737A25B0946F00CDB422 /* GaryPortal.swift */,
 				E2930CC025B6089700186364 /* Sounds.swift */,
+				E249D97F25D54B6C0056B027 /* CameraService.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -345,14 +352,16 @@
 			isa = PBXGroup;
 			children = (
 				E2E0FA1525D47DAA0069E153 /* GPAlert.swift */,
+				E249D96825D53DF50056B027 /* GPCamera.swift */,
+				E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */,
+				E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */,
 				E2BB736B25B06DCD00CDB422 /* GPTextField.swift */,
 				E2BB736E25B0897F00CDB422 /* ImagePicker.swift */,
 				E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */,
-				E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */,
 				E26A68A025B22C5C00CD0662 /* SafariView.swift */,
 				E23B908425BB1DCB00C0C201 /* PlayerView.swift */,
-				E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */,
 				E2F492F625D2C193007A0775 /* RefreshScrollView.swift */,
+				E249D98125D599380056B027 /* ColourPicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -487,9 +496,11 @@
 				E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */,
 				E23B908225BA048000C0C201 /* FeedService.swift in Sources */,
 				E26A68A425B2630D00CD0662 /* StaffRoomView.swift in Sources */,
+				E249D98025D54B6C0056B027 /* CameraService.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
+				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
 				E25CC1B825AF702B00B1FA55 /* AppSettings.swift in Sources */,
 				E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */,
 				E2BB736F25B0897F00CDB422 /* ImagePicker.swift in Sources */,
@@ -498,6 +509,7 @@
 				E26C628D25B055C700FC2D0D /* SignInView.swift in Sources */,
 				E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */,
 				E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */,
+				E249D98225D599380056B027 /* ColourPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
