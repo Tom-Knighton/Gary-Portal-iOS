@@ -18,7 +18,7 @@ struct AdminService {
     static func postStaffAnnouncement(uuid: String, announcement: String, completion: @escaping ((StaffRoomAnnouncement?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "admin/poststaffannouncement")
         let newAnnouncement = StaffRoomAnnouncement(announcementId: 0, announcement: announcement, userUUID: uuid, announcementDate: Date(), isDeleted: false, userDTO: nil)
-        request.body = try? JSONEncoder().encode(newAnnouncement)
+        request.body = newAnnouncement.jsonEncode()
         APIClient().perform(request) { (result) in
             switch result {
             case .failure:

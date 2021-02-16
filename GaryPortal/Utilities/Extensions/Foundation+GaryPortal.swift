@@ -118,7 +118,7 @@ extension Date {
         let dateFormatterPrint = DateFormatter()
         dateFormatterPrint.doesRelativeDateFormatting = true
         
-        if isToday && self.hour == Date().hour && CGFloat(self.minute) <= (CGFloat(Date().minute) - 1.5) {
+        if isToday && self.hour == Date().hour && (CGFloat(Date().minute - self.minute) <= 1.5) {
             return "Now"
         } else if isToday {
             dateFormatterPrint.timeStyle = .short

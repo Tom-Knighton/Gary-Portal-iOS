@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct StaffRoomView: View {
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     
     var body: some View {
         NavigationView {
@@ -26,7 +26,7 @@ struct StaffRoomView: View {
 struct StaffRoomHome: View {
     
     @EnvironmentObject var garyportal: GaryPortal
-    @State var announcements: [StaffRoomAnnouncement]? = []
+    @State var announcements: [StaffRoomAnnouncement] = []
     let manageTeamGradient = [Color(UIColor(hexString: "#DA4453")), Color(UIColor(hexString: "#89216B"))]
     let queueGradient = [Color(UIColor(hexString: "#c94b4b")), Color(UIColor(hexString: "#4b134f"))]
     let relieveGradient = [Color(UIColor(hexString: "#603813")), Color(UIColor(hexString: "#b29f94"))]
@@ -41,26 +41,28 @@ struct StaffRoomHome: View {
     
     var body: some View {
         VStack {
-            VStack {
-                Spacer().frame(height: 16)
-                Text(announcements?.first?.announcement ?? "Test announcement 2")
-                    .bold()
-                    .multilineTextAlignment(.center)
-                    .padding(.leading, 8)
-                    .padding(.trailing, 8)
-                    .padding(.bottom, 8)
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(Color(UIColor.systemBackground))
-                Text("See all announcements ➜")
-                    .padding(.bottom, 8)
-                    .font(.subheadline)
-                    .foregroundColor(Color(UIColor.systemBackground))
+            NavigationLink(destination: AnnouncementsView(announcements: $announcements)) {
+                VStack {
+                    Spacer().frame(height: 16)
+                    Text(announcements.first?.announcement ?? "Test announcement 2")
+                        .bold()
+                        .multilineTextAlignment(.center)
+                        .padding(.leading, 8)
+                        .padding(.trailing, 8)
+                        .padding(.bottom, 8)
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(Color(UIColor.systemBackground))
+                    Text("See all announcements ➜")
+                        .padding(.bottom, 8)
+                        .font(.subheadline)
+                        .foregroundColor(Color(UIColor.systemBackground))
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 5).stroke()
+                        .foregroundColor(Color(UIColor.systemBackground))
+                )
+                .padding()
             }
-            .background(
-                RoundedRectangle(cornerRadius: 5).stroke()
-                    .foregroundColor(Color(UIColor.systemBackground))
-            )
-            .padding()
             
             Text("Team: \(garyportal.currentUser?.userTeam?.team?.teamName ?? "Team")")
                 .font(.custom("Montserrat-SemiBold", size: 19))
@@ -108,7 +110,7 @@ struct StaffRoomHome: View {
                 print(error.localizedDescription)
                 return
             }
-            self.announcements = announcements
+            self.announcements = announcements ?? []
         }
     }
     
@@ -216,6 +218,110 @@ struct UserListElement: View {
         .padding(.top, 8)
         .padding(.leading, 8)
         .padding(.trailing, 8)
+    }
+}
+
+struct AnnouncementsView: View {
+    
+    @Binding var announcements: [StaffRoomAnnouncement]
+    
+    var body: some View {
+        ZStack(alignment: .bottomTrailing) {
+            List(announcements, id: \.announcementId) { announcement in
+                VStack {
+                    Group {
+                        Text("\(announcement.userDTO?.userFullName ?? ""):")
+                            .font(.custom("Montserrat-SemiBold", size: 19))
+                        Text(announcement.announcement ?? "")
+                            .font(.custom("Montserrat-Regular", size: 17))
+                            .multilineTextAlignment(.center)
+                        Text(announcement.announcementDate?.niceDateAndTime() ?? "")
+                            .font(.custom("Montserrat-Light", size: 14))
+                    }
+                    .contextMenu(menuItems: {
+                        Button(action: { UIPasteboard.general.string = announcement.announcement ?? "" } ) {
+                            Text("Copy Announcement")
+                            Image(systemName: "doc.on.doc")
+                        }
+                        if GaryPortal.shared.currentUser?.userIsAdmin == true {
+                            Button(action: { self.deleteAnnouncement(announcementId: announcement.announcementId ?? 0) }) {
+                                Text("Delete Announcement")
+                                Image(systemName: "trash")
+                            }
+                        }
+                    })
+                }
+                .frame(maxWidth: .infinity)
+            }
+            
+            HStack {
+                Spacer()
+                NavigationLink(destination: NavigationLazyView(NewAnnouncementView(announcements: $announcements)), label: {
+                    Image(systemName: "plus.circle")
+                        .padding(16)
+                        .background(Color.purple)
+                        .cornerRadius(10)
+                        .foregroundColor(.white)
+                        .shadow(radius: 5)
+                })
+                Spacer().frame(width: 16)
+            }
+           
+        }
+        .navigationTitle("Announcements")
+        .onAppear {
+            self.announcements.sort(by: { $0.announcementDate ?? Date() > $1.announcementDate ?? Date() })
+        }
+    }
+    
+    func deleteAnnouncement(announcementId: Int) {
+        AdminService.deleteStaffAnnouncement(id: announcementId)
+        self.announcements.removeAll(where: { $0.announcementId == announcementId })
+    }
+}
+
+struct NewAnnouncementView: View {
+    
+    @Binding var announcements: [StaffRoomAnnouncement]
+    @State var text: String = ""
+    var buttonGradient = [Color(UIColor(hexString: "#0575E6")), Color(UIColor(hexString: "#021B79"))]
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        VStack {
+            Text("Enter your announcement message:")
+            TextEditor(text: $text)
+                .padding()
+                .shadow(radius: 5)
+                .overlay(
+                    ZStack(alignment: .leading) {
+                        if self.text.isEmpty {
+                            Text("Your announcement...")
+                                .foregroundColor(.gray)
+                                .disabled(true)
+                                .padding()
+                        }
+                    }
+                )
+            GPGradientButton(action: { self.postAnnouncement() }, buttonText: "Post Announcement", gradientColours: self.buttonGradient)
+                .padding()
+        }
+        .navigationTitle("New Announcement")
+    }
+    
+    func postAnnouncement() {
+        if !self.text.isEmptyOrWhitespace() {
+            AdminService.postStaffAnnouncement(uuid: GaryPortal.shared.currentUser?.userUUID ?? "", announcement: self.text.trim()) { (announcement, error) in
+                if let announcement = announcement {
+                    DispatchQueue.main.async {
+                        self.announcements.append(announcement)
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                } else {
+                    print("Fail")
+                }
+            }
+        }
     }
 }
 
