@@ -20,6 +20,7 @@ struct AditLogGroup: Equatable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(aditLogGroupHash)
     }
+
 }
 
 struct AditLog: Codable {
@@ -38,6 +39,14 @@ struct AditLog: Codable {
     let poster: User?
     let posterDTO: UserDTO?
     let aditLogTeam: Team?
+    
+    func getName() -> String {
+        return self.posterDTO?.userFullName ?? ""
+    }
+    
+    func getNiceTime() -> String {
+        return self.datePosted?.niceDateAndTime() ?? ""
+    }
 }
 
 struct AditLogUrlResult: Codable {
@@ -144,6 +153,14 @@ class FeedPollPost: FeedPost {
         return self.pollAnswers?.contains { ($0.votes?.contains { $0.userUUID == userUUID && $0.isDeleted == false } ?? false) } ?? false
     }
     
+    func clearVotes() {
+        if let answers = pollAnswers {
+            for index in answers.indices {
+                pollAnswers?[index].clearVotes()
+            }
+        }
+    }
+    
 }
 
 struct FeedPollAnswer: Codable {
@@ -152,6 +169,10 @@ struct FeedPollAnswer: Codable {
     let pollId: Int?
     let answer: String?
     var votes: [FeedAnswerVote]?
+    
+    mutating func clearVotes() {
+        votes?.removeAll()
+    }
 }
 
 struct FeedAnswerVote: Codable {

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ProfileSettingsView: View {
     
+    @ObservedObject var datasource: ProfileViewDataSource
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var garyportal: GaryPortal
     
     @State var usernameText = ""
     @State var emailText = ""
@@ -27,7 +27,7 @@ struct ProfileSettingsView: View {
             ZStack {
                 Color(UIColor.systemGroupedBackground).edgesIgnoringSafeArea(.all)
                 ScrollView {
-                    AccountSettingsView(usernameText: $usernameText, emailText: $emailText, fullNameText: $fullNameText, hasChosenNewImage: $hasChosenNewImage, newImage: $newImage, newUIImage: $newUIImage)
+                    AccountSettingsView(datasource: self.datasource, usernameText: $usernameText, emailText: $emailText, fullNameText: $fullNameText, hasChosenNewImage: $hasChosenNewImage, newImage: $newImage, newUIImage: $newUIImage)
                     Divider()
                     SecuritySettingsView()
                     Divider()
@@ -63,7 +63,7 @@ struct ProfileSettingsView: View {
     }
     
     func saveSettings() {
-        guard let oldUsername = garyportal.currentUser?.userName, let oldEmail = garyportal.currentUser?.userAuthentication?.userEmail, let oldFullName = garyportal.currentUser?.userFullName else { return }
+        guard let oldUsername = self.datasource.user?.userName, let oldEmail = self.datasource.user?.userAuthentication?.userEmail, let oldFullName = self.datasource.user?.userFullName else { return }
         
         if oldUsername != usernameText || oldEmail != emailText || oldFullName != fullNameText || hasChosenNewImage {
             AuthService.isEmailFree(email: emailText.trim()) { (isEmailFree) in
@@ -80,10 +80,10 @@ struct ProfileSettingsView: View {
                         return
                     }
                     
-                    var newDetails = UserDetails(userName: usernameText, userEmail: emailText, fullName: fullNameText, profilePictureUrl: garyportal.currentUser?.userProfileImageUrl ?? "")
+                    var newDetails = UserDetails(userName: usernameText, userEmail: emailText, fullName: fullNameText, profilePictureUrl: self.datasource.user?.userProfileImageUrl ?? "")
                     
                     if hasChosenNewImage {
-                        UserService.updateUserProfileImage(userUUID: garyportal.currentUser?.userUUID ?? "", newImage: self.newUIImage) { (newURL) in
+                        UserService.updateUserProfileImage(userUUID: self.datasource.user?.userUUID ?? "", newImage: self.newUIImage) { (newURL) in
                             newDetails.profilePictureUrl = newURL
                             self.updateSettings(userDetails: newDetails)
                         }
@@ -96,13 +96,14 @@ struct ProfileSettingsView: View {
     }
     
     func updateSettings(userDetails: UserDetails) {
-        UserService.updateUserDetails(userUUID: garyportal.currentUser?.userUUID ?? "", userDetails: userDetails) { (newUser, error) in
+        UserService.updateUserDetails(userUUID: self.datasource.user?.userUUID ?? "", userDetails: userDetails) { (newUser, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
             }
             DispatchQueue.main.async {
-                garyportal.currentUser = newUser
+                GaryPortal.shared.currentUser = newUser
+                self.datasource.user = newUser
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
@@ -111,8 +112,7 @@ struct ProfileSettingsView: View {
 
 struct AccountSettingsView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
-    
+    @ObservedObject var datasource: ProfileViewDataSource
     @Binding var usernameText: String
     @Binding var emailText: String
     @Binding var fullNameText: String
@@ -181,7 +181,7 @@ struct AccountSettingsView: View {
                 }
                 
                 if !hasChosenNewImage {
-                    AsyncImage(url: garyportal.currentUser?.userProfileImageUrl ?? "")
+                    AsyncImage(url: self.datasource.user?.userProfileImageUrl ?? "")
                         .aspectRatio(contentMode: .fill)
                         .clipShape(Circle())
                         .overlay(
@@ -231,16 +231,14 @@ struct AccountSettingsView: View {
     }
     
     func loadData() {
-        self.usernameText = garyportal.currentUser?.userName ?? ""
-        self.emailText = garyportal.currentUser?.userAuthentication?.userEmail ?? ""
-        self.fullNameText = garyportal.currentUser?.userFullName ?? ""
+        self.usernameText = self.datasource.user?.userName ?? ""
+        self.emailText = self.datasource.user?.userAuthentication?.userEmail ?? ""
+        self.fullNameText = self.datasource.user?.userFullName ?? ""
     }
 }
 
 struct SecuritySettingsView: View {
-    
-    @EnvironmentObject var garyportal: GaryPortal
-    
+       
     var body: some View {
         VStack {
             Spacer().frame(height: 8)
@@ -264,7 +262,6 @@ struct SecuritySettingsView: View {
 
 struct AppSettingsView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
     @AppStorage(GaryPortalConstants.UserDefaults.autoPlayVideos) var autoPlayVideos = false
     @AppStorage(GaryPortalConstants.UserDefaults.notifications) var notifications = false
     
@@ -298,15 +295,5 @@ struct AppSettingsView: View {
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
         .cornerRadius(radius: 15, corners: [.bottomLeft, .bottomRight])
-    }
-    
-   
-}
-
-struct ProfileSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileSettingsView()
-            .environmentObject(GaryPortal.shared)
-            .environment(\.colorScheme, .dark)
     }
 }

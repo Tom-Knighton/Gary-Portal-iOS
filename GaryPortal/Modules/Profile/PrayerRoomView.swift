@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PrayerRoomView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var datasource: ProfileViewDataSource
     @State var counter = 0
     @State var meaningfulCounter = 0
     
@@ -35,22 +35,25 @@ struct PrayerRoomView: View {
                 
                 Spacer()
                 
-                if garyportal.currentUser?.userIsAdmin == true {
+                if self.datasource.user?.userIsAdmin == true {
                     GPGradientButton(action: { adminClearPrayers() }, buttonText: "ADMIN: Clear All Prayers", gradientColours: adminGradient)
                 }
             }
             .navigationTitle("Prayer Room")
         }
         .onAppear {
-            self.counter = garyportal.currentUser?.userPoints?.prayers ?? 0
-            self.meaningfulCounter = garyportal.currentUser?.userPoints?.meaningfulPrayers ?? 0
+            self.counter = self.datasource.user?.userPoints?.prayers ?? 0
+            self.meaningfulCounter = self.datasource.user?.userPoints?.meaningfulPrayers ?? 0
         }
         .onDisappear {
-            guard let points = garyportal.currentUser?.userPoints else { return }
-            UserService.updatePointsForUser(userUUID: garyportal.currentUser?.userUUID ?? "", userPoints: points) { (newPoints, error) in
+            guard let points = self.datasource.user?.userPoints else { return }
+            UserService.updatePointsForUser(userUUID: self.datasource.user?.userUUID ?? "", userPoints: points) { (newPoints, error) in
                 if newPoints != nil {
                     DispatchQueue.main.async {
-                        garyportal.currentUser?.userPoints = newPoints
+                        GaryPortal.shared.currentUser?.userPoints = newPoints
+                        let tempUser = self.datasource.user
+                        tempUser?.userPoints = newPoints
+                        self.datasource.user = tempUser
                     }
                 }
             }
@@ -58,29 +61,22 @@ struct PrayerRoomView: View {
     }
     
     func pray() {
-        garyportal.currentUser?.userPoints?.prayers = (garyportal.currentUser?.userPoints?.prayers ?? 0) + 1
-        counter = garyportal.currentUser?.userPoints?.prayers ?? 0
+        self.datasource.user?.userPoints?.prayers = (self.datasource.user?.userPoints?.prayers ?? 0) + 1
+        counter = self.datasource.user?.userPoints?.prayers ?? 0
     }
     
     func prayMeaningful() {
-        garyportal.currentUser?.userPoints?.meaningfulPrayers = (garyportal.currentUser?.userPoints?.meaningfulPrayers ?? 0) + 1
-        meaningfulCounter = garyportal.currentUser?.userPoints?.meaningfulPrayers ?? 0
+        self.datasource.user?.userPoints?.meaningfulPrayers = (self.datasource.user?.userPoints?.meaningfulPrayers ?? 0) + 1
+        meaningfulCounter = self.datasource.user?.userPoints?.meaningfulPrayers ?? 0
     }
     
     func adminClearPrayers() {
         AdminService.clearAllPrayers()
         DispatchQueue.main.async {
-            garyportal.currentUser?.userPoints?.prayers = 0
-            garyportal.currentUser?.userPoints?.meaningfulPrayers = 0
-            counter = garyportal.currentUser?.userPoints?.prayers ?? 0
-            meaningfulCounter = garyportal.currentUser?.userPoints?.meaningfulPrayers ?? 0
+            self.datasource.user?.userPoints?.prayers = 0
+            self.datasource.user?.userPoints?.meaningfulPrayers = 0
+            counter = self.datasource.user?.userPoints?.prayers ?? 0
+            meaningfulCounter = self.datasource.user?.userPoints?.meaningfulPrayers ?? 0
         }
-    }
-}
-
-struct PrayerRoomView_Previews: PreviewProvider {
-    static var previews: some View {
-        PrayerRoomView()
-            .environmentObject(GaryPortal.shared)
     }
 }

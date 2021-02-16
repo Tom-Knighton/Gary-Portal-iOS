@@ -29,7 +29,7 @@ class GaryPortal: NSObject, ObservableObject {
                     topController = presentedViewController
                 }
                 //let vc = HostController()
-                let vc = UIHostingController(rootView: ContentView().environmentObject(GaryPortal.shared))
+                let vc = UIHostingController(rootView: ContentView())
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)
             }
@@ -48,7 +48,7 @@ class GaryPortal: NSObject, ObservableObject {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
-                let vc = UIHostingController(rootView: SignInNavigationHost().environmentObject(GaryPortal.shared))
+                let vc = UIHostingController(rootView: SignInNavigationHost())
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)
             }
@@ -112,6 +112,7 @@ struct GaryPortalConstants {
     struct Messages {
         static let thankYou = "Thank You"
         static let messageReported = "This message has been reported, an admin will review it and possibly contact you for further information if necessary"
+        static let postReported = "This post has been reported, an admin will review it and possibly contact you for further information if necessary"
     }
 
 }

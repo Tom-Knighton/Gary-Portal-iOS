@@ -10,9 +10,7 @@ import UIKit
 
 class ChatListDataSource: ObservableObject {
     @Published var chats = [Chat]()
-    
-    
-    
+
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)

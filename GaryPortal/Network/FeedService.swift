@@ -43,6 +43,23 @@ struct FeedService {
         }
     }
     
+    static func watchAditLog(_ aditLogId: Int, uuid: String) {
+        let request = APIRequest(method: .put, path: "feed/watchedaditlog/\(aditLogId)/\(uuid)")
+        APIClient().perform(request, nil)
+    }
+    
+    static func reportPost(_ postId: Int, from uuid: String, for reason: String) {
+        let report = FeedReport(feedReportId: 0, feedPostId: postId, reportReason: reason, reportIssuedAt: Date(), reportByUUID: uuid, isDeleted: false, reportedPost: nil, reporter: nil)
+        let request = APIRequest(method: .post, path: "feed/reportpost/\(postId)")
+        request.body = report.jsonEncode()
+        APIClient().perform(request, nil)
+    }
+    
+    static func deletePost(postId: Int) {
+        let request = APIRequest(method: .put, path: "feed/deletepost")
+        APIClient().perform(request, nil)
+    }
+    
     static func toggleLikeForPost(postId: Int, userUUID: String) {
         let request = APIRequest(method: .put, path: "feed/togglelike/\(postId)/\(userUUID)")
         APIClient().perform(request, nil)
@@ -50,6 +67,11 @@ struct FeedService {
     
     static func voteOnPoll(for answerId: Int, userUUID: String) {
         let request = APIRequest(method: .put, path: "feed/votefor/\(answerId)/\(userUUID)")
+        APIClient().perform(request, nil)
+    }
+    
+    static func resetPollVotes(for postId: Int) {
+        let request = APIRequest(method: .put, path: "feed/resetvotes/\(postId)")
         APIClient().perform(request, nil)
     }
 }

@@ -10,7 +10,7 @@ import AVKit
 
 struct FeedView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @State var aditLogs: [AditLog] = []
     @State var aditLogGroups: [AditLogGroup] = []
     
@@ -59,12 +59,22 @@ struct FeedView: View {
 struct AditLogView: View {
     
     var aditLogGroups: [AditLogGroup] = []
-    
+    @State var showFullScreen = false
+
     var body: some View {
         return ScrollView(.horizontal) {
             LazyHStack {
                 ForEach(aditLogGroups, id: \.self) { group in
                     AditLogListItem(userAditLogs: group)
+                        .onTapGesture {
+                            self.showFullScreen = true
+                        }
+                        .fullScreenCover(isPresented: $showFullScreen) {
+                            NotificationCenter.default.post(name: .goneToFeed, object: nil)
+                        } content: {
+                            FeedAditLogView(aditLogs: group)
+                        }
+
                 }
             }
         }
@@ -112,6 +122,7 @@ struct AditLogListItem: View {
         .onAppear {
             self.previewAditLog = userAditLogs?.aditLogs?.last
         }
+        
     }
 }
 
@@ -124,6 +135,13 @@ class FeedPostsDataSource: ObservableObject {
     
     init() {
         loadMoreContent()
+        NotificationCenter.default.addObserver(self, selector: #selector(clearVotes(_:)), name: .postVotesCleared, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(removePost(_:)), name: .postDeleted, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .postVotesCleared, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .postDeleted, object: nil)
     }
     
     func loadMoreContentIfNeeded(currentPost post: FeedPost?) {
@@ -164,6 +182,27 @@ class FeedPostsDataSource: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    @objc
+    func removePost(_ sender: NSNotification) {
+        if let postId = sender.userInfo?["postId"] as? Int {
+            let index = self.posts.firstIndex(where: { $0.postId == postId }) ?? -1
+            guard index != -1 else { return }
+            
+            self.posts.remove(at: index)
+        }
+    }
+    
+    @objc
+    func clearVotes(_ sender: NSNotification) {
+        if let postId = sender.userInfo?["postId"] as? Int {
+            let index = self.posts.firstIndex(where: { $0.postId == postId }) ?? -1
+            guard index != -1, let post = self.posts[index] as? FeedPollPost else { return }
+            
+            post.clearVotes()
+            self.posts[index] = post
         }
     }
 }
@@ -303,7 +342,6 @@ struct PollPostVoteButton: View {
     
     @ObservedObject var pollModel: PollPostViewModel
     var pollAnswer: FeedPollAnswer?
-   
     
     var body: some View {
         HStack {
@@ -364,6 +402,10 @@ struct PollPostVoteButton: View {
 struct PostHeaderView: View {
     
     @ObservedObject var post: FeedPost
+    @State var isShowingAlert = false
+    @State var alertContent: [String] = []
+    @State var isShowingProfile = false
+    @State var viewingUUID: String = ""
     
     var body: some View {
         HStack{
@@ -374,20 +416,74 @@ struct PostHeaderView: View {
             Text(post.posterDTO?.userFullName ?? "")
                 .font(.custom("Montserrat-SemiBold", size: 17))
             Spacer()
-            Text("...")
+            Menu(content: {
+                Menu("Report...") {
+                    Text("Choose a report reason...")
+                    Divider()
+                    Button("NSFW", action: { self.reportPost(for: "NSFW") })
+                    Button("Breaks Policy", action: { self.reportPost(for: "Breaks Policy") })
+                    Button("Breaks GaryGram", action: { self.reportPost(for: "Breaks GaryGram") })
+                    Button("I'm in this post and I don't like it", action: { self.reportPost(for: "I'm in this post and I don't like it") })
+                    Button("Cancel", action: {})
+                }
+                if self.post is FeedPollPost && self.post.posterUUID == GaryPortal.shared.currentUser?.userUUID {
+                    Button("Reset All Poll Votes", action: { self.resetPollVotes() })
+                }
+                if self.post.posterUUID == GaryPortal.shared.currentUser?.userUUID {
+                    Button("Delete Post", action: { self.deletePost() })
+                }
+                Button("View Profile", action: { self.goToProfile() })
+            }, label: {
+                Text("...")
+                    .fontWeight(.bold)
+                    .padding()
+                    .foregroundColor(.primary)
+            })
+            .buttonStyle(PlainButtonStyle())
             Spacer().frame(width: 8)
         }
         .padding(.top, 8)
         .padding(.leading, 8)
         .padding(.trailing, 8)
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text(self.alertContent[0]), message: Text(self.alertContent[1]), dismissButton: .default(Text("Ok")))
+        }
+        .sheet(isPresented: $isShowingProfile) {
+            ProfileView(uuid: $viewingUUID)
+        }
+    }
+    
+    func resetPollVotes() {
+        FeedService.resetPollVotes(for: self.post.postId ?? 0)
+        self.alertContent = ["Succes", "The votes on this post have all been reset"]
+        self.isShowingAlert = true
+        let dataDict: [String: Int?] = ["postId": self.post.postId]
+        NotificationCenter.default.post(Notification(name: .postVotesCleared, object: self, userInfo: dataDict as [AnyHashable : Any]))
+    }
+    
+    func deletePost() {
+        FeedService.deletePost(postId: self.post.postId ?? 0)
+        let dataDict: [String: Int?] = ["postId": self.post.postId]
+        NotificationCenter.default.post(Notification(name: .postDeleted, object: self, userInfo: dataDict as [AnyHashable : Any]))
+    }
+    
+    func reportPost(for reason: String) {
+        FeedService.reportPost(self.post.postId ?? 0, from: GaryPortal.shared.currentUser?.userUUID ?? "", for: reason)
+        self.alertContent = [GaryPortalConstants.Messages.thankYou, GaryPortalConstants.Messages.postReported]
+        self.isShowingAlert = true
+    }
+    
+    func goToProfile() {
+        self.viewingUUID = self.post.posterUUID ?? ""
+        self.isShowingProfile = true
     }
 }
 
 struct PostActionView: View {
     
     @ObservedObject var post: FeedPost
-    @EnvironmentObject var garyportal: GaryPortal
-    
+    @ObservedObject var garyportal = GaryPortal.shared
+
     @State var isLiked = false
     @State var likeCount = 0
 
@@ -442,9 +538,3 @@ struct PostActionView: View {
         }
     }
 }
-
-//struct FeedView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PostPollView(post: FeedPollPost(posterUUID: "", postType: "poll", teamId: 2, postDescription: "Description", question: "Are you going to uni or are you shit?", answers: [FeedPollAnswer(pollAnswerId: 0, pollId: 1, answer: "Uni", votes: nil), FeedPollAnswer(pollAnswerId: 1, pollId: 1, answer: "SHIIIIIIIIT", votes: nil)])!, hasVoted: false).environmentObject(GaryPortal.shared)
-//    }
-//}

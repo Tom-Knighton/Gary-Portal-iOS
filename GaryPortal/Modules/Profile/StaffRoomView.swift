@@ -25,7 +25,7 @@ struct StaffRoomView: View {
 
 struct StaffRoomHome: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @State var announcements: [StaffRoomAnnouncement] = []
     let manageTeamGradient = [Color(UIColor(hexString: "#DA4453")), Color(UIColor(hexString: "#89216B"))]
     let queueGradient = [Color(UIColor(hexString: "#c94b4b")), Color(UIColor(hexString: "#4b134f"))]
@@ -87,7 +87,7 @@ struct StaffRoomHome: View {
                 GPGradientButton(action: { self.isShowingRelieveSelf = true }, buttonText: "Relieve Self ➜", gradientColours: relieveGradient)
                     .padding()
                     .sheet(isPresented: $isShowingRelieveSelf, content: {
-                        StaffRoomRelieveView().environmentObject(garyportal)
+                        StaffRoomRelieveView()
                     })
                 GPGradientButton(action: { getJoke() }, buttonText: "Tell me a joke", gradientColours: jokeGradient)
                     .padding()
@@ -127,7 +127,7 @@ struct StaffRoomHome: View {
 
 struct UserList: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @State var users: [UserDTO] = []
     @State var teamId = 0
     @State var editingUser: UserDTO? = nil
@@ -148,7 +148,6 @@ struct UserList: View {
                                     self.loadView(queued: isQueue)
                                 }, content: { (tappedUser) in
                                     EditUserView(editingUser: tappedUser)
-                                        .environmentObject(self.garyportal)
                                 })
                         }
                     }
@@ -327,7 +326,7 @@ struct NewAnnouncementView: View {
 
 struct StaffRoomRelieveView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @State var tempRelieved = 0
     var messages = [", wow!", ", great job!", ", keep going!", ", nearly there!", ", are you okay?", ", fantastic news!", ", marvellous!", ", nearly as much as me!", ", and I can feel more!", ", and it doesnt even hurt!", ", never question yourself", ", it takes more than that!", ", keep going and version 5 will be released!", ", you make me so proud 😢", ", that's impressive!", ", but I could do more", ", all I feel now is pain :(", ", those are some dirty eggs", ", must be under a lot of stress!", ", let me see!"]
     @State var currentMessage = "."
@@ -364,12 +363,5 @@ struct StaffRoomRelieveView: View {
         self.tempRelieved += 1
         self.currentMessage = self.messages.randomElement() ?? "."
         Sounds.playSounds(soundfile: "toilet.mp3")
-    }
-}
-
-struct StaffRoomView_Previews: PreviewProvider {
-    static var previews: some View {
-        StaffRoomView()
-            .environmentObject(GaryPortal.shared)
     }
 }

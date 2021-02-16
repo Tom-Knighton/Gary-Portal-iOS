@@ -74,9 +74,9 @@ extension HostController: GPSwipeControllerDataSource {
         let view = UIViewController()
         view.view.backgroundColor = .clear
         
-        let profileView = UIHostingController(rootView: ProfileView().environmentObject(GaryPortal.shared))
-        let feedView = UIHostingController(rootView: FeedView().environmentObject(GaryPortal.shared))
-        let newFeedView = UIHostingController(rootView: ChatRootView().environmentObject(GaryPortal.shared))
+        let profileView = UIHostingController(rootView: ProfileView(uuid: .constant(GaryPortal.shared.currentUser?.userUUID ?? "")))
+        let feedView = UIHostingController(rootView: FeedView())
+        let newFeedView = UIHostingController(rootView: ChatRootView())
         feedView.view.backgroundColor = .clear
         profileView.view.backgroundColor = .clear
         newFeedView.view.backgroundColor = .clear

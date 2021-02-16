@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EditUserView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @Environment(\.presentationMode) var presentationMode
     var editingUser: UserDTO?
     @State var oldUser: User?
@@ -269,7 +269,7 @@ class EditingUser: ObservableObject {
 
 struct ManageUserBans: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @State var user: User?
     
     @State var isShowingAlert = false
@@ -280,7 +280,7 @@ struct ManageUserBans: View {
     
     var body: some View {
         List {
-            NavigationLink(destination: StaffCreateBanView(user: user).environmentObject(garyportal)) {
+            NavigationLink(destination: StaffCreateBanView(user: user)) {
                 Text("Add New ban")
             }
             ForEach(user?.userBans ?? [], id: \.userBanId) { ban in
@@ -329,7 +329,7 @@ struct ManageUserBans: View {
 struct StaffCreateBanView: View {
     
     @State var user: User?
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var garyportal = GaryPortal.shared
     @Environment(\.presentationMode) var presentationMode
     
     @State var banTypes: [BanType] = []
@@ -419,15 +419,5 @@ struct StaffCreateBanView: View {
                 }
             }
         }
-    }
-}
-
-
-
-struct editpreview: PreviewProvider {
-    
-    static var previews: some View {
-        EditUserView()
-            .environmentObject(GaryPortal.shared)
     }
 }

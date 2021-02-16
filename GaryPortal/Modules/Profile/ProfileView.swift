@@ -7,23 +7,50 @@
 
 import SwiftUI
 
+class ProfileViewDataSource: ObservableObject {
+    
+    @Published var user: User?
+    @Published var hasLoaded = false
+    
+    func setup(for uuid: String) {
+        UserService.getUser(with: uuid) { (user) in
+            DispatchQueue.main.async {
+                if let user = user {
+                    self.user = user
+                    self.hasLoaded = true
+                }
+            }
+        }
+    }
+}
+
 struct ProfileView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @Binding var uuid: String
+    @ObservedObject var datasource = ProfileViewDataSource()
     
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
-                ProfileHeaderView()
+                ProfileHeaderView(datasource: self.datasource)
+                    .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                 Spacer().frame(height: 16)
-                ProfilePointsView()
+                ProfilePointsView(datasource: self.datasource)
+                    .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                 Spacer().frame(height: 16)
-                ProfileStatsView()
+                ProfileStatsView(datasource: self.datasource)
+                    .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                 Spacer().frame(height: 16)
-                ProfileMiscView()
-                Spacer().frame(height: 16)
+                if GaryPortal.shared.currentUser?.userUUID == self.datasource.user?.userUUID {
+                    ProfileMiscView(datasource: self.datasource)
+                        .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
+                    Spacer().frame(height: 16)
+                }
             }
             .frame(width: geometry.size.width)
+        }
+        .onAppear {
+            self.datasource.setup(for: uuid)
         }
     }
     
@@ -31,7 +58,7 @@ struct ProfileView: View {
 
 struct ProfileHeaderView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var datasource: ProfileViewDataSource
     let websiteGradient = [Color(UIColor(hexString: "#FF416C")), Color(UIColor(hexString: "#FF4B2B"))]
     let privilegedGradient = [Color(UIColor(hexString: "#42275a")), Color(UIColor(hexString: "#734b6d"))]
     
@@ -42,7 +69,7 @@ struct ProfileHeaderView: View {
             Spacer().frame(width: 16)
             VStack {
                 Spacer().frame(height: 16)
-                AsyncImage(url: garyportal.currentUser?.userProfileImageUrl ?? "")
+                AsyncImage(url: self.datasource.user?.userProfileImageUrl ?? "")
                     .aspectRatio(contentMode: .fill)
                     .clipShape(Circle())
                     .overlay(
@@ -53,25 +80,28 @@ struct ProfileHeaderView: View {
                 
                 Group {
                     Spacer().frame(height: 16)
-                    Text(garyportal.currentUser?.userFullName ?? "Full Name")
+                    Text(self.datasource.user?.userFullName ?? "Full Name")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
                     Spacer().frame(height: 16)
-                    Text(garyportal.currentUser?.userSpanishName ?? "Spanish Name")
+                    Text(self.datasource.user?.userSpanishName ?? "Spanish Name")
                         .font(Font.custom("Montserrat-Light", size: 20))
                     Spacer().frame(height: 8)
-                    Text("@\(garyportal.currentUser?.userName ?? "Username")")
+                    Text("@\(self.datasource.user?.userName ?? "Username")")
                         .font(Font.custom("Montserrat-Light", size: 15))
                     Spacer().frame(height: 8)
                 }
                 
-                if garyportal.currentUser?.userIsAdmin == true || garyportal.currentUser?.userIsStaff == true {
-                    GPGradientButton(action: { self.isShowingStaff = true }, buttonText: "Staff Panel", gradientColours: privilegedGradient)
-                        .sheet(isPresented: $isShowingStaff, content: {
-                            StaffRoomView()
-                        })
-                } else {
-                    GPGradientButton(action: {}, buttonText: "Visit Website", gradientColours: websiteGradient)
+                if GaryPortal.shared.currentUser?.userUUID == datasource.user?.userUUID {
+                    if GaryPortal.shared.currentUser?.userIsAdmin == true || GaryPortal.shared.currentUser?.userIsStaff == true {
+                        GPGradientButton(action: { self.isShowingStaff = true }, buttonText: "Staff Panel", gradientColours: privilegedGradient)
+                            .sheet(isPresented: $isShowingStaff, content: {
+                                StaffRoomView()
+                            })
+                    } else {
+                        GPGradientButton(action: {}, buttonText: "Visit Website", gradientColours: websiteGradient)
+                    }
                 }
+                
                 Spacer().frame(height: 16)
                 
                 
@@ -87,8 +117,7 @@ struct ProfileHeaderView: View {
 
 struct ProfilePointsView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
-    @State var image: UIImageView?
+    @ObservedObject var datasource: ProfileViewDataSource
 
     var body: some View {
         HStack {
@@ -102,10 +131,18 @@ struct ProfilePointsView: View {
                 
                 Group {
                     Spacer().frame(height: 16)
-                    Text("AMIGO POINTS: \(garyportal.currentUser?.userPoints?.amigoPoints ?? 0)")
+                    Text("AMIGO POINTS: \(self.datasource.user?.userPoints?.amigoPoints ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
                     Spacer().frame(height: 16)
-                    Text("POSITIVE POINTS: \(garyportal.currentUser?.userPoints?.positivityPoints ?? 0)")
+                    Text("POSITIVE POINTS: \(self.datasource.user?.userPoints?.positivityPoints ?? 0)")
+                        .font(Font.custom("Montserrat-SemiBold", size: 20))
+                    
+                    Divider().padding()
+
+                    Text("PRAYERS: \(self.datasource.user?.userPoints?.prayers ?? 0)")
+                        .font(Font.custom("Montserrat-SemiBold", size: 20))
+                    Spacer().frame(height: 16)
+                    Text("MEANINGFUL: \(self.datasource.user?.userPoints?.meaningfulPrayers ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
                     Spacer().frame(height: 16)
                 }
@@ -123,8 +160,7 @@ struct ProfilePointsView: View {
 
 struct ProfileStatsView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
-    @State var image: UIImageView?
+    @ObservedObject var datasource: ProfileViewDataSource
     
     var body: some View {
         HStack {
@@ -141,7 +177,7 @@ struct ProfileStatsView: View {
                     Text("Amigo Rank:")
                         .font(Font.custom("Montserrat-Regular", size: 20))
                     Spacer().frame(height: 16)
-                    Text("\(garyportal.currentUser?.userRanks?.amigoRank?.rankName ?? "AMIGO RANK")")
+                    Text("\(self.datasource.user?.userRanks?.amigoRank?.rankName ?? "AMIGO RANK")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
                 }
                 Group {
@@ -149,7 +185,7 @@ struct ProfileStatsView: View {
                     Text("Positivity Rank:")
                         .font(Font.custom("Montserrat-Regular", size: 20))
                     Spacer().frame(height: 16)
-                    Text("\(garyportal.currentUser?.userRanks?.positivityRank?.rankName ?? "POSITIVITY RANK")")
+                    Text("\(self.datasource.user?.userRanks?.positivityRank?.rankName ?? "POSITIVITY RANK")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
                 }
                 Group {
@@ -157,7 +193,7 @@ struct ProfileStatsView: View {
                     Text("Team:")
                         .font(Font.custom("Montserrat-Regular", size: 20))
                     Spacer().frame(height: 16)
-                    Text("\(garyportal.currentUser?.userTeam?.team?.teamName ?? "TEAM")")
+                    Text("\(self.datasource.user?.userTeam?.team?.teamName ?? "TEAM")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
                 }
                 Group {
@@ -165,7 +201,7 @@ struct ProfileStatsView: View {
                     Text("Team Standing:")
                         .font(Font.custom("Montserrat-Regular", size: 20))
                     Spacer().frame(height: 16)
-                    Text("\(garyportal.currentUser?.userStanding ?? "STANDING")")
+                    Text("\(self.datasource.user?.userStanding ?? "STANDING")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
                     Spacer().frame(height: 16)
                 }
@@ -183,7 +219,7 @@ struct ProfileStatsView: View {
 
 struct ProfileMiscView: View {
     
-    @EnvironmentObject var garyportal: GaryPortal
+    @ObservedObject var datasource: ProfileViewDataSource
     @State var image: UIImageView?
     @State var isShowingPrayerRoom = false
     @State var isShowingSettings = false
@@ -211,7 +247,7 @@ struct ProfileMiscView: View {
                 Group {
                     GPGradientButton(action: self.showPrayerRoom, buttonText: "PRAYER ROOM", gradientColours: prayerGradient)
                         .sheet(isPresented: $isShowingPrayerRoom, content: {
-                            PrayerRoomView()
+                            PrayerRoomView(datasource: self.datasource)
                         })
                     Spacer().frame(height: 16)
                     GPGradientButton(action: { openURL(url: GaryPortalConstants.URLs.RulesURL )}, buttonText: "RULES AND REGULATIONS", gradientColours: rulesGradient)
@@ -225,7 +261,7 @@ struct ProfileMiscView: View {
                     Spacer().frame(height: 16)
                     GPGradientButton(action: self.showSettings, buttonText: "SETTINGS", gradientColours: settingsGradient)
                         .sheet(isPresented: $isShowingSettings, content: {
-                            ProfileSettingsView()
+                            ProfileSettingsView(datasource: self.datasource)
                         })
                 }
                 
@@ -253,10 +289,3 @@ struct ProfileMiscView: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-            .environmentObject(GaryPortal())
-            .environment(\.colorScheme, .dark)
-    }
-}

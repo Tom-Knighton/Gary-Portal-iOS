@@ -11,6 +11,7 @@
 		E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */; };
 		E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755A25B0BC4D0006B7CA /* HostController.swift */; };
 		E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */; };
+		E22C032A25DC6FD2001E78BC /* FeedAditLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */; };
 		E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AC25AF6F8E00739E9E /* AppDelegate.swift */; };
 		E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */; };
 		E23100B125AF6F8E00739E9E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100B025AF6F8E00739E9E /* ContentView.swift */; };
@@ -92,6 +93,7 @@
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
 		E217755A25B0BC4D0006B7CA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaryPortalSwipeController.swift; sourceTree = "<group>"; };
+		E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAditLogView.swift; sourceTree = "<group>"; };
 		E23100A925AF6F8E00739E9E /* GaryPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaryPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23100AC25AF6F8E00739E9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				E23B907D25B9CB3E00C0C201 /* FeedView.swift */,
+				E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */,
 				E2BB736F25B0897F00CDB422 /* ImagePicker.swift in Sources */,
 				E23100B125AF6F8E00739E9E /* ContentView.swift in Sources */,
+				E22C032A25DC6FD2001E78BC /* FeedAditLogView.swift in Sources */,
 				E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */,
 				E26C628D25B055C700FC2D0D /* SignInView.swift in Sources */,
 				E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */,
