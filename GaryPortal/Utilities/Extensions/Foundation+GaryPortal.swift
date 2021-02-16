@@ -56,22 +56,15 @@ extension UIColor {
 
 extension UIImage {
     func imageByCombiningImage(withImage secondImage: UIImage) -> UIImage {
-        let firstImage = self
-        let newImageWidth  = max(firstImage.size.width,  secondImage.size.width )
-        let newImageHeight = max(firstImage.size.height, secondImage.size.height)
-        let newImageSize = CGSize(width : newImageWidth, height: newImageHeight)
+        let newImageWidth  = self.size.width
+        let newImageHeight = self.size.height
+        let newSize = CGSize(width : newImageWidth, height: newImageHeight)
         
         
-        UIGraphicsBeginImageContextWithOptions(newImageSize, false, UIScreen.main.scale)
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0)
         
-        let firstImageDrawX  = round((newImageSize.width  - firstImage.size.width  ) / 2)
-        let firstImageDrawY  = round((newImageSize.height - firstImage.size.height ) / 2)
-        
-        let secondImageDrawX = round((newImageSize.width  - secondImage.size.width ) / 2)
-        let secondImageDrawY = round((newImageSize.height - secondImage.size.height) / 2)
-        
-        firstImage .draw(at: CGPoint(x: firstImageDrawX,  y: firstImageDrawY))
-        secondImage.draw(at: CGPoint(x: secondImageDrawX, y: secondImageDrawY))
+        self.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
+        secondImage.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         
@@ -153,6 +146,21 @@ extension UIApplication {
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         window.addGestureRecognizer(tapGesture)
+    }
+    
+    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topViewController(base: selected)
+            }
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        }
+        return base
     }
 }
 

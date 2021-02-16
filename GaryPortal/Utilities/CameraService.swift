@@ -45,13 +45,20 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AV
     @Published var flashMode: AVCaptureDevice.FlashMode = .off
     
     @Published var shouldShowEditor = false
+    @Published var wasFromLibrary = false
+
+    @State var timeLimit = 30
     
-    func checkAccess() {
+    init(timeLimit: Int = 30) {
+        self.timeLimit = timeLimit
+    }
+    
+    func checkAccess(_ timeLimit: Int = 30) {
         
         // first checking camerahas got permission...
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            setup()
+            setup(30)
             return
             // Setting Up Session
         case .notDetermined:
@@ -71,8 +78,8 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AV
         }
     }
     
-    func setup(){
-        
+    func setup(_ timeLimit: Int = 30){
+        self.timeLimit = timeLimit
         // setting up camera...
         
         do{
@@ -167,6 +174,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AV
         FileManager.default.clearTmpDirectory()
         self.outputURL = FileManager.default.temporaryDirectory.appendingPathComponent("tempfilm").appendingPathExtension("mp4").absoluteURL
         if let url = outputURL {
+            self.movieOutput.maxRecordedDuration = CMTime(seconds: Double(self.timeLimit), preferredTimescale: 600)
             self.movieOutput.startRecording(to: url, recordingDelegate: self)
         }
     }
@@ -195,6 +203,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AV
                 self.isSaved = false
                 self.picData = Data(count: 0)
                 self.outputURL = nil
+                self.wasFromLibrary = false
             }
         }
     }

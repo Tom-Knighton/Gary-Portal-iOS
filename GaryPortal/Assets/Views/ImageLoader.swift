@@ -11,38 +11,37 @@ import Foundation
 
 final class Loader: ObservableObject {
     
-    var task: URLSessionDataTask!
+    var task: URLSessionDataTask?
     @Published var data: Data? = nil
     
-    init(_ url: URL) {
+    func setup(_ url: URL) {
         task = URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
             DispatchQueue.main.async {
                 self.data = data
             }
         })
-        task.resume()
+        task?.resume()
     }
+    
     deinit {
-        task.cancel()
+        task?.cancel()
     }
 }
 
-let placeholder = UIImage(named: "IconSprite")!
+let placeholder = UIImage()
 
 struct AsyncImage: View {
     init(url: String) {
         if let url = URL(string: url) {
-            self.imageLoader = Loader(url)
-        } else {
-            self.imageLoader = Loader(URL(string: "https://cdn.tomk.online/GaryPortal/AppLogo.png")!)
+            self.imageLoader.setup(url)
         }
     }
     
-    @ObservedObject private var imageLoader: Loader
+    @ObservedObject private var imageLoader: Loader = Loader()
+    
     var image: UIImage? {
         imageLoader.data.flatMap(UIImage.init)
     }
-    
     
     var body: Image {
         return Image(uiImage: image ?? placeholder)

@@ -15,11 +15,15 @@ struct CameraView: View {
     @GestureState private var isPressingDown: Bool = false
     
     @State var isShowingEditor = false
-
+    @State var timeLimit = 30
+    @State var allowsGallery = true
+    @State var isShowingPicker = false
     var onFinalAction: (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()
     
-    init(_ finishedEditing: @escaping(_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
+    init(timeLimit: Int = 30, allowsGallery: Bool = true, _ finishedEditing: @escaping(_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
         self.onFinalAction = finishedEditing
+        self.timeLimit = timeLimit
+        self.allowsGallery = allowsGallery
     }
     
     var body: some View {
@@ -69,9 +73,9 @@ struct CameraView: View {
                     
                 }
                 HStack {
-                    if !camera.isTaken && !camera.isRecording {
+                    if !camera.isTaken && !camera.isRecording && self.allowsGallery {
                         Spacer()
-                        Button(action: { }, label: {
+                        Button(action: { self.isShowingPicker = true }, label: {
                             Image(systemName: "photo.on.rectangle.angled")
                                 .foregroundColor(.primary)
                                 .padding()
@@ -84,19 +88,7 @@ struct CameraView: View {
                 
                 Spacer()
                 HStack {
-                    if camera.isTaken {
-                        Button(action: { if !camera.isSaved { camera.savePic() }}, label: {
-                            Text(camera.isSaved ? "Saved" : "Save")
-                                .foregroundColor(.black)
-                                .fontWeight(.semibold)
-                                .padding(.vertical,10)
-                                .padding(.horizontal,20)
-                                .background(Color.white)
-                                .clipShape(Capsule())
-                        })
-                        .padding(.leading)
-                        Spacer()
-                    } else {
+                    if !camera.isTaken {
                         Button(action: {  }, label: {
                             ZStack {
                                 Circle()
@@ -135,14 +127,44 @@ struct CameraView: View {
             }
             
             if self.camera.shouldShowEditor {
-                MediaEditor(isShowing: Binding(get: { camera.shouldShowEditor} , set: {camera.shouldShowEditor = $0}), isVideo: self.camera.outputURL != nil, photoData: self.camera.picData, videoURL: self.camera.outputURL, cameraUsed: self.camera.currentCamera, action: self.onFinalAction)
+                MediaEditor(isShowing: Binding(get: { camera.shouldShowEditor} , set: {camera.shouldShowEditor = $0}), isVideo: self.camera.outputURL != nil, photoData: self.camera.picData, videoURL: self.camera.outputURL, wasFromLibrary: self.camera.wasFromLibrary, cameraUsed: self.camera.currentCamera, action: self.onFinalAction)
                     .onDisappear {
                         self.camera.reTake()
                     }
             }
         }
         .onAppear {
-            camera.checkAccess()
+            camera.checkAccess(self.timeLimit)
+        }
+        .sheet(isPresented: $isShowingPicker) {
+            MediaPicker(limit: 1, filter: .imagesAndVideos) { (didPick, items) in
+                self.isShowingPicker = false
+                if didPick {
+                    if let items = items, let item = items.items.first {
+                        if item.mediaType == .photo {
+                            guard let imageData = item.photo?.jpegData(compressionQuality: 0.7) else { return }
+                            
+                            DispatchQueue.global(qos: .background).async {
+                                self.camera.session.stopRunning()
+                            }
+                            self.camera.picData = imageData
+                            self.camera.isTaken = true
+                            self.camera.wasFromLibrary = true
+                            self.camera.shouldShowEditor = true
+                        } else if item.mediaType == .video {
+                            DispatchQueue.main.async {
+                                self.camera.session.stopRunning()
+                                self.camera.outputURL = item.url
+                                self.camera.isRecording = false
+                                self.camera.picData = Data(count: 0)
+                                self.camera.isTaken = true
+                                self.camera.wasFromLibrary = true
+                                self.camera.shouldShowEditor = true
+                            }
+                        }
+                    }
+                }
+            }
         }
         .alert(isPresented: $camera.alert, content: {
             Alert(title: Text("Please enable camera"))
@@ -157,30 +179,33 @@ struct MediaEditor: View {
     var photoData: Data?
     var videoURL: URL?
     var cameraUsed: CameraPosition
+    var wasFromLibrary: Bool
     
     @Binding var isShowing: Bool
     @State private var play = true
     @State private var chosenColour: Color = .clear
     @State private var drawingImage = UIImage()
     @State private var isInDrawingMode = false
+    @State private var didDraw = false
     
     var onFinishedEditing: (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()
     
-    init(isShowing: Binding<Bool>, isVideo: Bool = false, photoData: Data? = nil, videoURL: URL? = nil, cameraUsed: CameraPosition, action: @escaping (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
+    init(isShowing: Binding<Bool>, isVideo: Bool = false, photoData: Data? = nil, videoURL: URL? = nil, wasFromLibrary: Bool, cameraUsed: CameraPosition, action: @escaping (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
         self.isVideo = isVideo
         self.photoData = photoData
         self.videoURL = videoURL
         self.cameraUsed = cameraUsed
         self.onFinishedEditing = action
+        self.wasFromLibrary = wasFromLibrary
         self._isShowing = isShowing
     }
     
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
+                Color.black.edgesIgnoringSafeArea(.all)
                 if isVideo {
-                    PlayerView(url: videoURL?.absoluteString ?? "", play: $play)
-                        .aspectRatio(contentMode: .fill)
+                    PlayerView(url: videoURL?.absoluteString ?? "", play: $play, gravity: self.wasFromLibrary ? .fit : .fill)
                         .if(self.cameraUsed == .front) { $0.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0)) }
                         .frame(width: geometry.size.width, height: geometry.size.height)
                 } else {
@@ -193,8 +218,11 @@ struct MediaEditor: View {
                     }
                 }
                 
-                DrawingViewRepresentable(isDrawing: $isInDrawingMode, finalImage: $drawingImage)
-                    .frame(width: geometry.size.width, height: geometry.size.height)
+                if !self.isVideo || (self.isVideo && !self.wasFromLibrary) {
+                    DrawingViewRepresentable(isDrawing: $isInDrawingMode, finalImage: $drawingImage, didDraw: $didDraw)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .edgesIgnoringSafeArea(.all)
+                }
                 
                 VStack {
                     if !isInDrawingMode {
@@ -218,6 +246,8 @@ struct MediaEditor: View {
                                     .clipShape(Circle())
                                     .padding(.top, 24)
                             })
+                            .if(self.isVideo && self.wasFromLibrary) { $0.hidden() }
+
                             Spacer().frame(width: 16)
                         }
                         .animation(.easeInOut)
@@ -241,16 +271,22 @@ struct MediaEditor: View {
                     Spacer()
                     if !isInDrawingMode {
                         HStack {
-                            Spacer().frame(width: 8)
-                            Button(action: { self.finishEditing() }, label: {
-                                Image(systemName: "square.and.arrow.up")
-                                    .foregroundColor(.primary)
-                                    .padding()
-                                    .background(Color("Section"))
-                                    .clipShape(Circle())
-                                    .padding(.top, 24)
-                            })
                             Spacer()
+
+                            Button(action: { finishEditing() }, label: {
+                                HStack {
+                                    Text("Next")
+                                        .fontWeight(.semibold)
+                                    Image(systemName: "arrow.right")
+                                }
+                                .foregroundColor(.black)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(Color.white)
+                                .clipShape(Capsule())
+                            })
+                            .padding(.leading)
+                            Spacer().frame(width: 8)
                         }
                     }
                     Spacer().frame(height: 32)
@@ -279,14 +315,25 @@ struct MediaEditor: View {
                 }
                 
                 compositionTrack.preferredTransform = assetTrack.preferredTransform
-                let videoSize = CGSize(width: assetTrack.naturalSize.height, height: assetTrack.naturalSize.width)
+                let videoInfo = orientation(from: assetTrack.preferredTransform)
+                
+                let videoSize: CGSize
+                let screenSize = CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+                if videoInfo.isPortrait {
+                    videoSize = CGSize(
+                        width: assetTrack.naturalSize.height,
+                        height: assetTrack.naturalSize.width)
+                } else {
+                    print("horizontal")
+                    videoSize = assetTrack.naturalSize
+                }
+                
                 let videoLayer = CALayer()
                 videoLayer.frame = CGRect(origin: .zero, size: videoSize)
                 let overlayLayer = CALayer()
-                overlayLayer.frame = CGRect(origin: .zero, size: videoSize)
+                overlayLayer.frame = CGRect(origin: .zero, size: screenSize)
                 overlayLayer.contents = self.drawingImage.cgImage
-                overlayLayer.contentsGravity = .resizeAspectFill
-
+                
                 let outputLayer = CALayer()
                 outputLayer.frame = CGRect(origin: .zero, size: videoSize)
                 outputLayer.addSublayer(videoLayer)
@@ -303,7 +350,7 @@ struct MediaEditor: View {
                 let layerInstruction = compositionLayerInstruction(for: compositionTrack, assetTrack: assetTrack)
                 instruction.layerInstructions = [layerInstruction]
                 
-                guard let export = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else { return }
+                guard let export = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetMediumQuality) else { return }
                 let videoName = UUID().uuidString
                 let exportURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(videoName).appendingPathExtension("mp4")
                 export.videoComposition = videoComposition
@@ -341,12 +388,30 @@ struct MediaEditor: View {
     }
     
     private func compositionLayerInstruction(for track: AVCompositionTrack, assetTrack: AVAssetTrack) -> AVMutableVideoCompositionLayerInstruction {
-      let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-      let transform = assetTrack.preferredTransform
-      
-      instruction.setTransform(transform, at: .zero)
-      
-      return instruction
+        let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
+        let transform = assetTrack.preferredTransform
+        
+        instruction.setTransform(transform, at: .zero)
+        
+        return instruction
+    }
+    
+    private func orientation(from transform: CGAffineTransform) -> (orientation: UIImage.Orientation, isPortrait: Bool) {
+        var assetOrientation = UIImage.Orientation.up
+        var isPortrait = false
+        if transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0 {
+            assetOrientation = .right
+            isPortrait = true
+        } else if transform.a == 0 && transform.b == -1.0 && transform.c == 1.0 && transform.d == 0 {
+            assetOrientation = .left
+            isPortrait = true
+        } else if transform.a == 1.0 && transform.b == 0 && transform.c == 0 && transform.d == 1.0 {
+            assetOrientation = .up
+        } else if transform.a == -1.0 && transform.b == 0 && transform.c == 0 && transform.d == -1.0 {
+            assetOrientation = .down
+        }
+        
+        return (assetOrientation, isPortrait)
     }
 }
 
@@ -484,6 +549,7 @@ struct DrawingViewRepresentable: UIViewRepresentable {
     @Binding var isDrawing: Bool
     
     @Binding var finalImage: UIImage
+    @Binding var didDraw: Bool
     
     
     func makeUIView(context: Context) -> DrawingView {
@@ -510,6 +576,7 @@ struct DrawingViewRepresentable: UIViewRepresentable {
         
         func didUpdateImage(_ image: UIImage) {
             parent.finalImage = image
+            self.parent.didDraw = true
         }
     }
 }

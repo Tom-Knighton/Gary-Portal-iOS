@@ -192,15 +192,11 @@ struct ChatService {
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: String.self) {
-                    print("success")
                     completion(response.body, nil)
                 } else {
-                    print(response.statusCode)
-                    print(String(data: response.body ?? Data(), encoding: .utf8))
                     completion(nil, .codingFailure)
                 }
             case .failure:
-                print("network")
                 completion(nil, .networkFail)
             }
         }

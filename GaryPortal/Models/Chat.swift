@@ -50,10 +50,14 @@ struct Chat: Codable {
         case 1:
             return "\(senderName): \(lastMessage.messageContent ?? "")"
         case 2:
-            return "\(senderName) sent some media"
-        case 3, 4:
+            return "\(senderName) sent an image"
+        case 3:
+            return "\(senderName) sent a video"
+        case 4:
+            return "\(senderName) send a file"
+        case 5, 6:
             return "Bot Message"
-        case 5:
+        case 7:
             return "-- ADMIN MESSAGE --"
         default:
             return "\(senderName): \(lastMessage.messageContent ?? "")"

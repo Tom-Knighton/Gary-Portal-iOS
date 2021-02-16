@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import AVKit
 
 struct ChatView: View {
     
@@ -69,7 +69,6 @@ struct ChatView: View {
                 ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL in
                     
                     if hasMedia {
-                        print("has media")
                         if let imageURL = imageURL {
                             ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
                                 if let url = url {
@@ -81,16 +80,17 @@ struct ChatView: View {
                         if let videoURL = videoURL {
                             ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
                                 if let url = url {
-                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                                     self.datasource.postNewMessage(message: assetMessage)
                                 }
                             }
                         }
                     }
                     
-                    
-                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                    self.datasource.postNewMessage(message: message)
+                    if !text.isEmptyOrWhitespace() {
+                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                        self.datasource.postNewMessage(message: message)
+                    }
                     self.textMessage = ""
                 }
                     
@@ -200,7 +200,7 @@ struct ChatMessageBarView: View {
                 .cornerRadius(10)
                 .shadow(radius: 3)
                 
-                if !text.trim().isEmptyOrWhitespace() {
+                if !text.trim().isEmptyOrWhitespace() || self.hasMedia {
                     withAnimation(.easeIn) {
                         Button(action: { self.onSendAction(self.text, self.hasMedia, self.imageURL, self.videoURL); self.hasMedia = false; self.imageURL = ""; self.videoURL = "" }) {
                             Image(systemName: "paperplane.fill")
@@ -259,6 +259,7 @@ struct ChatMessageView: View {
     @State var isAlertShowing = false
     @State var alertContent: [String] = []
     @State var showDinoGame = false
+    @State var isPlayingVideo = false
     
     var body: some View {
         let ownMessage = chatMessage.userUUID == GaryPortal.shared.currentUser?.userUUID ?? ""
@@ -300,17 +301,19 @@ struct ChatMessageView: View {
                     }
                     
                 }
-                
-                Text(chatMessage.messageContent ?? "")
-                    .padding()
-                    .background(msgBG)
+
+                self.messageContent()
+                    .background(messageBackground())
                     .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
                     .foregroundColor(.white)
                     .contextMenu(menuItems: {
-                        Button(action: { UIPasteboard.general.string = chatMessage.messageContent ?? "" }, label: {
-                            Text("Copy Text")
-                            Image(systemName: "doc.on.doc")
-                        })
+                        if self.chatMessage.messageTypeId == 1 {
+                            Button(action: { UIPasteboard.general.string = chatMessage.messageContent ?? "" }, label: {
+                                Text("Copy Text")
+                                Image(systemName: "doc.on.doc")
+                            })
+                        }
+                        
                         Button(action: { self.loadDinoGame() }, label : {
                             Text("🐸 Dinosaur Game 🐸")
                         })
@@ -360,12 +363,38 @@ struct ChatMessageView: View {
         })
     }
     
-    var msgBG: some View {
+    @ViewBuilder
+    func messageBackground() -> some View {
         let ownMessage = chatMessage.userUUID == GaryPortal.shared.currentUser?.userUUID ?? ""
         if ownMessage {
-            return AnyView(Color(UIColor(hexString: "#323232")))
+            Color(UIColor(hexString: "#323232"))
         } else {
-            return AnyView(LinearGradient(gradient: otherMsgGradient, startPoint: .topLeading, endPoint: .bottomTrailing))
+            LinearGradient(gradient: otherMsgGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
+
+    @ViewBuilder
+    func messageContent() -> some View {
+        switch self.chatMessage.messageTypeId {
+        case 1:
+            Text(self.chatMessage.messageContent ?? "")
+                .padding()
+        case 2:
+            AsyncImage(url: self.chatMessage.messageContent ?? "")
+                .aspectRatio(contentMode: .fill)
+                .frame(maxWidth: 250, maxHeight: 400)
+        case 3:
+            if let content = self.chatMessage.messageContent, let url = URL(string: content) {
+                VideoPlayer(player: AVPlayer(url: url))
+                    .frame(minWidth: 250, maxWidth: .infinity, minHeight: 250, maxHeight: .infinity)
+                    .fixedSize(horizontal: true, vertical: true)
+                    .cornerRadius(25)
+                    .padding(.all, 8)
+            }
+            
+        default:
+            Text(self.chatMessage.messageContent ?? "")
+                .padding()
         }
     }
     

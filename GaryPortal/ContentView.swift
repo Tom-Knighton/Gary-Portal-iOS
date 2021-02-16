@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct ContentView: View {
     @EnvironmentObject var garyportal: GaryPortal
@@ -23,6 +24,9 @@ struct ContentView: View {
             }
         }
         .edgesIgnoringSafeArea(.all)
+        
+//        PlayerView(url: "https://cdn.tomk.online/GaryPortal/Chat/b2d3f505c61e46d6a66da9f062573773/Attachments/3aa7c7d6-a0cd-46b3-bd0d-51cfec4f921f.mp4", play: .constant(true))
+//            .frame(maxWidth: 250, maxHeight: 400)
     }
 }
 

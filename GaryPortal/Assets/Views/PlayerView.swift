@@ -19,27 +19,32 @@ class PlayerUIView: UIView {
         super.init(frame: frame)
     }
     
-    func setup(url: String) {
-        let url = URL(string: url)!
-        self.avPlayer = AVPlayer(url: url)
-        
-        do {
-           try AVAudioSession.sharedInstance().setCategory(.playback)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-        self.avPlayer.isMuted = false
-        
-        if autoPlayVideos {
-            self.avPlayer.play()
-            _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer.currentItem, queue: nil) { _ in
-                self.avPlayer.seek(to: CMTime.zero)
-                self.avPlayer.play()
+    func setup(url: String, gravity: PlayerViewGravity? = .fit) {
+        if let url = URL(string: url) {
+            self.avPlayer = AVPlayer(url: url)
+            
+            do {
+               try AVAudioSession.sharedInstance().setCategory(.playback)
+            } catch let error {
+                print(error.localizedDescription)
             }
+            self.avPlayer.isMuted = false
+            
+            if autoPlayVideos {
+                self.avPlayer.play()
+                _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer.currentItem, queue: nil) { _ in
+                    self.avPlayer.seek(to: CMTime.zero)
+                    self.avPlayer.play()
+                }
+            }
+            
+            self.playerLayer.player = self.avPlayer
+            self.playerLayer.videoGravity = gravity?.avGravity ?? .resizeAspect
+            layer.addSublayer(playerLayer)
+        } else {
+            print("fail")
         }
-        
-        self.playerLayer.player = self.avPlayer
-        layer.addSublayer(playerLayer)
+       
     }
     
     required init?(coder: NSCoder) {
@@ -59,9 +64,27 @@ class PlayerUIView: UIView {
 }
 
 
+public enum PlayerViewGravity {
+    case fit
+    case fill
+    case stretch
+    
+    var avGravity: AVLayerVideoGravity {
+        switch self {
+        case .fit:
+            return .resizeAspect
+        case .fill:
+            return .resizeAspectFill
+        case .stretch:
+            return .resize
+        }
+    }
+}
+
 struct PlayerView: UIViewRepresentable {
     var url: String
     @Binding var play: Bool
+    var gravity: PlayerViewGravity = .fill
     
     func updateUIView(_ uiView: PlayerUIView, context: UIViewRepresentableContext<PlayerView>) {
         uiView.togglePlay(play: play)
@@ -69,7 +92,7 @@ struct PlayerView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> PlayerUIView {
         let playerview = PlayerUIView(frame: .zero)
-        playerview.setup(url: url)
+        playerview.setup(url: url, gravity: gravity)
         return playerview
     }
 

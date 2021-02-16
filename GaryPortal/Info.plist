@@ -75,5 +75,7 @@
 	<string>Enables access to photo library</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Enables access to microphone</string>
+	<key></key>
+	<string></string>
 </dict>
 </plist>
