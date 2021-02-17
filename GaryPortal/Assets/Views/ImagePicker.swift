@@ -234,6 +234,7 @@ class PickedMediaItems: ObservableObject {
     }
 }
 
+@available(*, deprecated, message: "ImagePicker deprecated, Use MediaPicker instead", renamed: "MediaPicker")
 struct ImagePicker: UIViewControllerRepresentable {
     
     @Environment(\.presentationMode) var presentationMode

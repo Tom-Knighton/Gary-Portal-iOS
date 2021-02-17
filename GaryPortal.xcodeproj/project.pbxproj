@@ -47,6 +47,7 @@
 		E26C629625B0569900FC2D0D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */; };
 		E26C629725B0569900FC2D0D /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */; };
 		E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */; };
+		E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */; };
 		E28DC01925C707E800A6EBEB /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01825C707E800A6EBEB /* Chat.swift */; };
 		E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01A25C7090000A6EBEB /* ChatService.swift */; };
 		E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */; };
@@ -131,6 +132,7 @@
 		E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFeedView.swift; sourceTree = "<group>"; };
 		E28DC01825C707E800A6EBEB /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		E28DC01A25C7090000A6EBEB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRootView.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			children = (
 				E23B907D25B9CB3E00C0C201 /* FeedView.swift */,
 				E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */,
+				E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 				E25CC1C025AF724400B1FA55 /* ZeroPage.swift in Sources */,
 				E25CC1BC25AF702B00B1FA55 /* UserAuthentication.swift in Sources */,
 				E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */,
+				E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */,
 				E26C628A25B053BD00FC2D0D /* UserService.swift in Sources */,
 				E26C628725B053B400FC2D0D /* APISession.swift in Sources */,
 				E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */,

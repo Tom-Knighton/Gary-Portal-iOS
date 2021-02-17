@@ -11,8 +11,7 @@ import AVKit
 struct FeedView: View {
     
     @ObservedObject var garyportal = GaryPortal.shared
-    @State var aditLogs: [AditLog] = []
-    @State var aditLogGroups: [AditLogGroup] = []
+    @ObservedObject var datasource = FeedPostsDataSource()
     
     init(){
         UITableView.appearance().backgroundColor = .clear
@@ -23,9 +22,9 @@ struct FeedView: View {
     var body: some View {
         GeometryReader { geometry in
             List {
-                AditLogView(aditLogGroups: aditLogGroups)
+                AditLogView(datasource: datasource)
                     .listRowBackground(Color.clear)
-                FeedPostTable()
+                FeedPostTable(dataSource: datasource)
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
@@ -33,38 +32,36 @@ struct FeedView: View {
         .edgesIgnoringSafeArea(.leading)
         .edgesIgnoringSafeArea(.trailing)
         .onAppear {
-            loadAditLogs()
+            datasource.loadAditLogs()
         }
     }
     
-    func loadAditLogs() {
-        FeedService.getAditLogs { (aditLogs, error) in
-            if error == nil {
-                self.aditLogs = []
-                self.aditLogs = aditLogs ?? []
-                self.mapAditLogs()
-            }
-        }
-    }
     
-    func mapAditLogs() {
-        let keys = Array(Set(aditLogs.map { $0.posterDTO }))
-        keys.forEach { (dto) in
-            self.aditLogGroups = []
-            self.aditLogGroups.append(AditLogGroup(aditLogGroupHash: UUID(), posterDTO: dto, aditLogs: aditLogs.filter { $0.posterDTO == dto }))
-        }
-    }
 }
 
 struct AditLogView: View {
     
-    var aditLogGroups: [AditLogGroup] = []
+    @ObservedObject var datasource: FeedPostsDataSource
     @State var showFullScreen = false
-
+    @State var showCamera = false
+    
     var body: some View {
         return ScrollView(.horizontal) {
             LazyHStack {
-                ForEach(aditLogGroups, id: \.self) { group in
+                AditLogListItem(isUploader: true)
+                    .onTapGesture {
+                        self.showCamera = true
+                    }
+                    .fullScreenCover(isPresented: $showCamera) {
+                        CameraView(timeLimit: 25, allowsGallery: false) { (success, isVideo, url) in
+                            self.showCamera = false
+                            if success {
+                                self.uploadAditLog(isVideo: isVideo, url: url)
+                            }
+                        }
+                    }
+                
+                ForEach(datasource.aditLogGroups, id: \.self) { group in
                     AditLogListItem(userAditLogs: group)
                         .onTapGesture {
                             self.showFullScreen = true
@@ -81,39 +78,68 @@ struct AditLogView: View {
         .frame(maxHeight: 110)
         .listRowBackground(Color.clear)
     }
+    
+    func uploadAditLog(isVideo: Bool, url: URL?) {
+        if let url = url {
+            FeedService.uploadAditLogMedia(isVideo ? nil : url.absoluteString, isVideo ? url.absoluteString : nil) { (urls, error) in
+                if let urls = urls {
+                    let aditLog = AditLog(aditLogId: 0, aditLogUrl: urls.aditLogUrl, aditLogThumbnailUrl: urls.aditLogThumbnailUrl, posterUUID: GaryPortal.shared.currentUser?.userUUID, aditLogTeamId: GaryPortal.shared.currentUser?.userTeam?.teamId, isVideo: isVideo, datePosted: Date(), aditLogViews: 0, caption: "", isDeleted: false, poster: nil, posterDTO: nil, aditLogTeam: nil)
+                    FeedService.postAditLog(aditLog) { (finalAditLog, error) in
+                        if let _ = finalAditLog {
+                            self.datasource.loadAditLogs()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 struct AditLogListItem: View {
     
     @State var userAditLogs: AditLogGroup?
     @State var previewAditLog: AditLog?
+    @State var isUploader = false
     
     var body: some View {
         HStack {
             Spacer().frame(width: 8)
             VStack {
-                Spacer().frame(height: 4)
-                HStack {
-                    Spacer()
-                    if previewAditLog?.isVideo == false {
-                        AsyncImage(url: previewAditLog?.aditLogUrl ?? "")
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 84, height: 84)
-                            .cornerRadius(25)
-                            .shadow(radius: 5)
-                    } else {
-                        AsyncImage(url: previewAditLog?.aditLogThumbnailUrl ?? "")
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 84, height: 84)
-                            .cornerRadius(25)
-                            .shadow(radius: 5)
+                Spacer().frame(height: 8)
+                if isUploader {
+                    uploader
+                } else {
+                    HStack {
+                        Spacer()
+                        if previewAditLog?.isVideo == false {
+                            AsyncImage(url: previewAditLog?.aditLogUrl ?? "")
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 84, height: 84)
+                                .cornerRadius(25)
+                                .shadow(radius: 5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .stroke(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
+                                )
+                        } else {
+                            AsyncImage(url: previewAditLog?.aditLogThumbnailUrl ?? "")
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 84, height: 84)
+                                .cornerRadius(25)
+                                .shadow(radius: 5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .stroke(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
+                                )
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    Text(previewAditLog?.posterDTO?.userFullName ?? "")
+                        .font(.custom("Montserrat-Regular", size: 13))
+                        .foregroundColor(Color(UIColor.systemBackground))
+                        .frame(maxWidth: 100)
                 }
-                Text(previewAditLog?.posterDTO?.userFullName ?? "")
-                    .font(.custom("Montserrat-Regular", size: 13))
-                    .foregroundColor(Color(UIColor.systemBackground))
-                    .frame(maxWidth: 100)
+               
                 Spacer().frame(height: 8)
             }
             .cornerRadius(10)
@@ -122,12 +148,33 @@ struct AditLogListItem: View {
         .onAppear {
             self.previewAditLog = userAditLogs?.aditLogs?.last
         }
-        
+    }
+    
+    @ViewBuilder
+    var uploader: some View {
+        HStack {
+            Spacer()
+            Image("upload-glyph")
+                .frame(width: 80, height: 80)
+                .cornerRadius(25)
+                .shadow(radius: 5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
+                )
+            Spacer()
+        }
+        Text("Upload")
+            .font(.custom("Montserrat-SemiBold", size: 14))
+            .foregroundColor(Color(UIColor.systemBackground))
+            .frame(maxWidth: 100)
     }
 }
 
 class FeedPostsDataSource: ObservableObject {
     @Published var posts = [FeedPost]()
+    @Published var aditLogs = [AditLog]()
+    @Published var aditLogGroups = [AditLogGroup]()
     @Published var isLoadingPage = false
     @Published var canLoadMore = true
     private var isFirstLoad = true
@@ -142,6 +189,28 @@ class FeedPostsDataSource: ObservableObject {
     deinit {
         NotificationCenter.default.removeObserver(self, name: .postVotesCleared, object: nil)
         NotificationCenter.default.removeObserver(self, name: .postDeleted, object: nil)
+    }
+    
+    func loadAditLogs() {
+        FeedService.getAditLogs { (aditLogs, error) in
+            DispatchQueue.main.async {
+                if error == nil {
+                    self.aditLogs = []
+                    self.aditLogs = aditLogs ?? []
+                    self.mapAditLogs()
+                }
+            }
+        }
+    }
+    
+    func mapAditLogs() {
+        let keys = Array(Set(aditLogs.map { $0.posterDTO }))
+        DispatchQueue.main.async { [weak self] in
+            keys.forEach { (dto) in
+                self?.aditLogGroups = []
+                self?.aditLogGroups.append(AditLogGroup(aditLogGroupHash: UUID(), posterDTO: dto, aditLogs: self?.aditLogs.filter { $0.posterDTO == dto }))
+            }
+        }
     }
     
     func loadMoreContentIfNeeded(currentPost post: FeedPost?) {

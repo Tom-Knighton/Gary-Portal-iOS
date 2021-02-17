@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct FeedService {
     
@@ -33,6 +34,86 @@ struct FeedService {
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [AditLog].self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func uploadAditLogMedia(_ imageURL: String? = "", _ videoURL: String? = "", completion: @escaping ((AditLogUrlResult?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "feed/uploadaditlogattachment")
+        var boundary = ""
+        if let url = videoURL, let videoURL = URL(string: url) {
+            do {
+                print(videoURL.absoluteString)
+                let videoData = try Data(contentsOf: videoURL)
+                boundary = "Boundary-\(UUID().uuidString)"
+                let paramName = "video"
+                let fileName = "video.mp4"
+                var data = Data()
+                data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+                data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                data.append("Content-Type: video/mp4\r\n\r\n".data(using: .utf8)!)
+                data.append(videoData)
+                data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+                request.body = data
+                request.queryItems = [URLQueryItem(name: "isVideo", value: "true")]
+            } catch {
+                completion(nil, .dataNotFound)
+                return
+            }
+        } else if let url = imageURL, let photoURL = URL(string: url) {
+            do {
+                let photoData = try Data(contentsOf: photoURL)
+                let image = UIImage(data: photoData)
+                let imgData = image?.jpegData(compressionQuality: 0.5)
+                print("image")
+                boundary = "Boundary-\(UUID().uuidString)"
+                let paramName = "image"
+                let fileName = "image.jpg"
+                var data = Data()
+                data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+                data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                data.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+                data.append(imgData!)
+                data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+                request.body = data
+            } catch {
+                completion(nil, .dataNotFound)
+                return
+            }
+            
+        } else {
+            completion(nil, .dataNotFound)
+            return
+        }
+        
+        print("Boundary: \(boundary)")
+        APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: AditLogUrlResult.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func postAditLog(_ aditLog: AditLog, _ completion: @escaping((AditLog?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "feed/aditlog")
+        request.body = aditLog.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: AditLog.self) {
                     completion(response.body, nil)
                 } else {
                     completion(nil, .codingFailure)
