@@ -92,11 +92,70 @@ struct FeedService {
             return
         }
         
-        print("Boundary: \(boundary)")
         APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: AditLogUrlResult.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func uploadPostAttachment(_ imageURL: String? = "", _ videoURL: String? = "", completion: @escaping ((String?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "feed/UploadMediaAttachment")
+        var boundary = ""
+        if let url = videoURL, let videoURL = URL(string: url) {
+            do {
+                print(videoURL.absoluteString)
+                let videoData = try Data(contentsOf: videoURL)
+                boundary = "Boundary-\(UUID().uuidString)"
+                let paramName = "video"
+                let fileName = "video.mp4"
+                var data = Data()
+                data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+                data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                data.append("Content-Type: video/mp4\r\n\r\n".data(using: .utf8)!)
+                data.append(videoData)
+                data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+                request.body = data
+            } catch {
+                completion(nil, .dataNotFound)
+                return
+            }
+        } else if let url = imageURL, let photoURL = URL(string: url) {
+            do {
+                let photoData = try Data(contentsOf: photoURL)
+                let image = UIImage(data: photoData)
+                let imgData = image?.jpegData(compressionQuality: 0.5)
+                boundary = "Boundary-\(UUID().uuidString)"
+                let paramName = "image"
+                let fileName = "image.jpg"
+                var data = Data()
+                data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+                data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                data.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+                data.append(imgData!)
+                data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+                request.body = data
+            } catch {
+                completion(nil, .dataNotFound)
+                return
+            }
+            
+        } else {
+            completion(nil, .dataNotFound)
+            return
+        }
+        
+        APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: String.self) {
                     completion(response.body, nil)
                 } else {
                     completion(nil, .codingFailure)
@@ -124,6 +183,41 @@ struct FeedService {
         }
     }
     
+    static func postMediaPost(_ mediaPost: FeedMediaPost, _ completion: @escaping((FeedMediaPost?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "feed")
+        request.body = mediaPost.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: FeedMediaPost.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func postPollPost(_ pollPost: FeedPollPost, _ completion: @escaping((FeedPollPost?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "feed")
+        request.body = pollPost.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: FeedPollPost.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    
     static func watchAditLog(_ aditLogId: Int, uuid: String) {
         let request = APIRequest(method: .put, path: "feed/watchedaditlog/\(aditLogId)/\(uuid)")
         APIClient().perform(request, nil)
@@ -137,7 +231,7 @@ struct FeedService {
     }
     
     static func deletePost(postId: Int) {
-        let request = APIRequest(method: .put, path: "feed/deletepost")
+        let request = APIRequest(method: .put, path: "feed/deletepost/\(postId)")
         APIClient().perform(request, nil)
     }
     

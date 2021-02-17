@@ -9,12 +9,18 @@ import SwiftUI
 
 struct GPGradientButton: View {
     
-    private var buttonText = ""
+    private var buttonText: Text
     private var gradientColors: [Color] = [.blue, .blue]
     
     private let action: () -> ()
     
     init(action: @escaping () -> (), buttonText: String = "", gradientColours: [Color] = []) {
+        self.action = action
+        self.buttonText = Text(buttonText)
+        self.gradientColors = gradientColours
+    }
+    
+    init(action: @escaping () -> (), buttonText: Text, gradientColours: [Color] = []) {
         self.action = action
         self.buttonText = buttonText
         self.gradientColors = gradientColours
@@ -22,7 +28,7 @@ struct GPGradientButton: View {
         
     var body: some View {
         Button(action: action, label: {
-            Text(buttonText)
+            buttonText
                 .font(Font.custom("Montserrat-Regular", size: 17))
                 .foregroundColor(.white)
                 .padding()

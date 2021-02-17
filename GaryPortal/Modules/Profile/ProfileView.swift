@@ -133,17 +133,21 @@ struct ProfilePointsView: View {
                     Spacer().frame(height: 16)
                     Text("AMIGO POINTS: \(self.datasource.user?.userPoints?.amigoPoints ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
+                        .multilineTextAlignment(.center)
                     Spacer().frame(height: 16)
                     Text("POSITIVE POINTS: \(self.datasource.user?.userPoints?.positivityPoints ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
+                        .multilineTextAlignment(.center)
                     
                     Divider().padding()
 
                     Text("PRAYERS: \(self.datasource.user?.userPoints?.prayers ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
+                        .multilineTextAlignment(.center)
                     Spacer().frame(height: 16)
-                    Text("MEANINGFUL: \(self.datasource.user?.userPoints?.meaningfulPrayers ?? 0)")
+                    Text("MEANINGFUL PRAYERS: \(self.datasource.user?.userPoints?.meaningfulPrayers ?? 0)")
                         .font(Font.custom("Montserrat-SemiBold", size: 20))
+                        .multilineTextAlignment(.center)
                     Spacer().frame(height: 16)
                 }
                
@@ -179,6 +183,7 @@ struct ProfileStatsView: View {
                     Spacer().frame(height: 16)
                     Text("\(self.datasource.user?.userRanks?.amigoRank?.rankName ?? "AMIGO RANK")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
+                        .multilineTextAlignment(.center)
                 }
                 Group {
                     Spacer().frame(height: 16)
@@ -187,6 +192,7 @@ struct ProfileStatsView: View {
                     Spacer().frame(height: 16)
                     Text("\(self.datasource.user?.userRanks?.positivityRank?.rankName ?? "POSITIVITY RANK")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
+                        .multilineTextAlignment(.center)
                 }
                 Group {
                     Spacer().frame(height: 16)
@@ -195,6 +201,7 @@ struct ProfileStatsView: View {
                     Spacer().frame(height: 16)
                     Text("\(self.datasource.user?.userTeam?.team?.teamName ?? "TEAM")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
+                        .multilineTextAlignment(.center)
                 }
                 Group {
                     Spacer().frame(height: 16)
@@ -203,6 +210,7 @@ struct ProfileStatsView: View {
                     Spacer().frame(height: 16)
                     Text("\(self.datasource.user?.userStanding ?? "STANDING")")
                         .font(Font.custom("Montserrat-SemiBold", size: 25))
+                        .multilineTextAlignment(.center)
                     Spacer().frame(height: 16)
                 }
                

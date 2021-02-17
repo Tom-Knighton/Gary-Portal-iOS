@@ -81,7 +81,10 @@ class FeedPost: Codable, ObservableObject, Identifiable, Equatable {
 
     
     public init?(posterUUID: String, postType: String, teamId: Int, postDescription: String) {
-        self.postId = 0; self.posterUUID = posterUUID; self.postCreatedAt = nil; self.postType = postType; self.teamId = teamId
+        self.postId = 0; self.posterUUID = posterUUID;
+        self.postCreatedAt = Date();
+        self.postType = postType;
+        self.teamId = teamId
         self.poster = nil
         self.postIsGlobal = false
         self.postDescription = postDescription
@@ -109,7 +112,6 @@ class FeedMediaPost: FeedPost {
         
         self.postUrl = postURL
         self.isVideo = isVideo
-        
     }
     
     required init(from decoder: Decoder) throws {
@@ -118,6 +120,13 @@ class FeedMediaPost: FeedPost {
         self.isVideo = try decoder.container(keyedBy: CodingKeys.self)
             .decode(Bool.self, forKey: .isVideo)
         try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.postUrl, forKey: .postUrl)
+        try container.encode(self.isVideo, forKey: .isVideo)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -147,6 +156,13 @@ class FeedPollPost: FeedPost {
         self.pollQuestion = try decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .pollQuestion)
         self.pollAnswers = try decoder.container(keyedBy: CodingKeys.self).decode([FeedPollAnswer].self, forKey: .pollAnswers)
         try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.pollQuestion, forKey: .pollQuestion)
+        try container.encode(self.pollAnswers, forKey: .pollAnswers)
     }
         
     func hasBeenVotedOn(by userUUID: String) -> Bool {

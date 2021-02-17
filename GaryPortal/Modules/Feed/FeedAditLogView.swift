@@ -79,6 +79,7 @@ struct FeedAditLogView: View {
                     }
                 }
             }
+            
             Spacer().frame(height: 8)
             Text(current?.getName() ?? "")
                 .font(.custom("Montserrat-SemiBold", size: 15))

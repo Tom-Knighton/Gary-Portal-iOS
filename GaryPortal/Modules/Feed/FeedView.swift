@@ -12,6 +12,7 @@ struct FeedView: View {
     
     @ObservedObject var garyportal = GaryPortal.shared
     @ObservedObject var datasource = FeedPostsDataSource()
+    @State var isShowingCreator = false
     
     init(){
         UITableView.appearance().backgroundColor = .clear
@@ -21,18 +22,40 @@ struct FeedView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            List {
-                AditLogView(datasource: datasource)
-                    .listRowBackground(Color.clear)
-                FeedPostTable(dataSource: datasource)
+            ZStack {
+                List {
+                    AditLogView(datasource: datasource)
+                        .listRowBackground(Color.clear)
+                    FeedPostTable(dataSource: datasource)
+                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            .frame(width: geometry.size.width, height: geometry.size.height)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: { self.isShowingCreator = true }) {
+                        Image("upload-glyph")
+                            .frame(width: 64, height: 64)
+                            .cornerRadius(10)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))]), startPoint: .topLeading, endPoint: .bottomTrailing).cornerRadius(10))
+                    }
+                    .opacity(0.75)
+                    .padding()
+                    .shadow(radius: 5)
+                    Spacer().frame(width: 16)
+                }
+                Spacer().frame(height: 16)
+            }
         }
         .edgesIgnoringSafeArea(.bottom)
         .edgesIgnoringSafeArea(.leading)
         .edgesIgnoringSafeArea(.trailing)
         .onAppear {
             datasource.loadAditLogs()
+        }
+        .sheet(isPresented: $isShowingCreator) {
+            UploadPostView(datasource: datasource)
         }
     }
     
@@ -464,7 +487,8 @@ struct PollPostVoteButton: View {
     }
     
     func getVotePercentage() -> CGFloat {
-        return CGFloat((CGFloat(pollAnswer?.votes?.count ?? 0) / CGFloat(pollModel.totalVotes)))
+        let percentage = CGFloat((CGFloat(pollAnswer?.votes?.count ?? 0) / CGFloat(pollModel.totalVotes)))
+        return (percentage.isNaN || percentage.isInfinite || !self.pollModel.hasVoted) ? 0 : percentage
     }
 }
 
