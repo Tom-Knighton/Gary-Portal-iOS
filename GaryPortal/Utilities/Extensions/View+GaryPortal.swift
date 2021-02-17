@@ -65,9 +65,9 @@ extension View {
         ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
     }
     
-    public func listSeparatorStyleNone() -> some View {
-        modifier(ListSeparatorStyleNoneModifier())
-    }
+//    public func listSeparatorStyleNone() -> some View {
+//        modifier(ListSeparatorStyleNoneModifier())
+//    }
     
 }
 
@@ -92,12 +92,12 @@ struct CornerRadiusStyle: ViewModifier {
     }
 }
 
-public struct ListSeparatorStyleNoneModifier: ViewModifier {
-    public func body(content: Content) -> some View {
-        content.onAppear {
-            UITableView.appearance().separatorStyle = .none
-        }.onDisappear {
-            UITableView.appearance().separatorStyle = .singleLine
-        }
-    }
-}
+//public struct ListSeparatorStyleNoneModifier: ViewModifier {
+//    public func body(content: Content) -> some View {
+//        content.onAppear {
+//            UITableView.appearance().separatorStyle = .none
+//        }.onDisappear {
+//            UITableView.appearance().separatorStyle = .singleLine
+//        }
+//    }
+//}

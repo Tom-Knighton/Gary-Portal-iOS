@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import Introspect
 
 struct FeedView: View {
     
@@ -16,6 +17,7 @@ struct FeedView: View {
     
     init(){
         UITableView.appearance().backgroundColor = .clear
+        UITableView.appearance().separatorStyle = .none
         UITableViewCell.appearance().backgroundColor = .clear
     }
 
@@ -29,6 +31,19 @@ struct FeedView: View {
                     FeedPostTable(dataSource: datasource)
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
+                .listSeparatorStyle(.none)
+                .introspectTableView { (tableView) in
+                    tableView.refreshControl = UIRefreshControl { refreshControl in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            self.datasource.reset()
+                            self.datasource.loadAditLogs()
+                            self.datasource.loadMoreContent()
+                            refreshControl.endRefreshing()
+                        }
+                    }
+                    
+                }
+                
             }
             VStack {
                 Spacer()
@@ -212,6 +227,13 @@ class FeedPostsDataSource: ObservableObject {
     deinit {
         NotificationCenter.default.removeObserver(self, name: .postVotesCleared, object: nil)
         NotificationCenter.default.removeObserver(self, name: .postDeleted, object: nil)
+    }
+    
+    func reset() {
+        self.aditLogs = []
+        self.posts = []
+        self.lastDateFrom = Date()
+        self.isFirstLoad = true
     }
     
     func loadAditLogs() {
