@@ -12,6 +12,8 @@ import AVKit
 class PlayerUIView: UIView {
     private var avPlayer = AVPlayer()
     private let playerLayer = AVPlayerLayer()
+    var isPlaying = false
+    var url = ""
     
     @AppStorage(GaryPortalConstants.UserDefaults.autoPlayVideos) var autoPlayVideos = false
         
@@ -20,6 +22,7 @@ class PlayerUIView: UIView {
     }
     
     func setup(url: String, gravity: PlayerViewGravity? = .fit) {
+        self.url = url
         if let url = URL(string: url) {
             self.avPlayer = AVPlayer(url: url)
             
@@ -36,6 +39,7 @@ class PlayerUIView: UIView {
                     self.avPlayer.seek(to: CMTime.zero)
                     self.avPlayer.play()
                 }
+                self.isPlaying = true
             }
             
             self.playerLayer.player = self.avPlayer
@@ -54,6 +58,7 @@ class PlayerUIView: UIView {
     public func togglePlay(play: Bool) {
         self.avPlayer.seek(to: CMTime.zero)
         play ? self.avPlayer.play() : self.avPlayer.pause()
+        self.isPlaying = play
     }
     
     override func layoutSubviews() {
@@ -87,7 +92,12 @@ struct PlayerView: UIViewRepresentable {
     var gravity: PlayerViewGravity = .fill
     
     func updateUIView(_ uiView: PlayerUIView, context: UIViewRepresentableContext<PlayerView>) {
-        uiView.togglePlay(play: play)
+        if play != uiView.isPlaying {
+            uiView.togglePlay(play: play)
+        }
+        if url != uiView.url {
+            uiView.setup(url: url, gravity: gravity)
+        }
     }
     
     func makeUIView(context: Context) -> PlayerUIView {

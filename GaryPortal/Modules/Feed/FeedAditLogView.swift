@@ -24,7 +24,7 @@ struct FeedAditLogView: View {
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .aspectRatio(contentMode: .fill)
                 } else {
-                    AsyncImage(url: self.aditLogs.aditLogs?[currentAditLog].aditLogUrl ?? "")
+                    AsyncImage(url: current?.aditLogUrl ?? "")
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .aspectRatio(contentMode: .fill)
                 }
@@ -64,7 +64,7 @@ struct FeedAditLogView: View {
         
     @ViewBuilder
     var overlay: some View {
-        let first = self.aditLogs.aditLogs?.first
+        let current = self.aditLogs.aditLogs?[currentAditLog]
         VStack {
             HStack(alignment: .top) {
                 if let aditLogs = aditLogs.aditLogs {
@@ -80,10 +80,10 @@ struct FeedAditLogView: View {
                 }
             }
             Spacer().frame(height: 8)
-            Text(first?.getName() ?? "")
+            Text(current?.getName() ?? "")
                 .font(.custom("Montserrat-SemiBold", size: 15))
                 .shadow(radius: 3)
-            Text(first?.getNiceTime() ?? "")
+            Text(current?.getNiceTime() ?? "")
                 .font(.custom("Montserrat-SemiBold", size: 13))
                 .shadow(radius: 3)
             Spacer()

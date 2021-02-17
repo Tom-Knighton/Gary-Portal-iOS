@@ -301,77 +301,13 @@ struct MediaEditor: View {
     func finishEditing() {
         if isVideo {
             guard let videoURL = self.videoURL else { self.onFinishedEditing(false, true, nil); return }
-            let asset = AVURLAsset(url: videoURL)
-            let composition = AVMutableComposition()
-            guard let compositionTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid),
-                  let assetTrack = asset.tracks(withMediaType: .video).first else { self.onFinishedEditing(false, true, nil); return }
-            
-            do {
-                let timeRange = CMTimeRange(start: .zero, duration: asset.duration)
-                try compositionTrack.insertTimeRange(timeRange, of: assetTrack, at: .zero)
-                if let audioAssetTrack = asset.tracks(withMediaType: .audio).first,
-                   let compositionAudioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
-                    try compositionAudioTrack.insertTimeRange(timeRange, of: audioAssetTrack, at: .zero)
-                }
-                
-                compositionTrack.preferredTransform = assetTrack.preferredTransform
-                let videoInfo = orientation(from: assetTrack.preferredTransform)
-                
-                let videoSize: CGSize
-                let screenSize = CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
-                if videoInfo.isPortrait {
-                    videoSize = CGSize(
-                        width: assetTrack.naturalSize.height,
-                        height: assetTrack.naturalSize.width)
-                } else {
-                    print("horizontal")
-                    videoSize = assetTrack.naturalSize
-                }
-                
-                let videoLayer = CALayer()
-                videoLayer.frame = CGRect(origin: .zero, size: videoSize)
-                let overlayLayer = CALayer()
-                overlayLayer.frame = CGRect(origin: .zero, size: screenSize)
-                overlayLayer.contents = self.drawingImage.cgImage
-                
-                let outputLayer = CALayer()
-                outputLayer.frame = CGRect(origin: .zero, size: videoSize)
-                outputLayer.addSublayer(videoLayer)
-                outputLayer.addSublayer(overlayLayer)
-                
-                let videoComposition = AVMutableVideoComposition()
-                videoComposition.renderSize = videoSize
-                videoComposition.frameDuration = CMTime(value: 1, timescale: 30)
-                videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: outputLayer)
-                
-                let instruction = AVMutableVideoCompositionInstruction()
-                instruction.timeRange = CMTimeRange(start: .zero, end: composition.duration)
-                videoComposition.instructions = [instruction]
-                let layerInstruction = compositionLayerInstruction(for: compositionTrack, assetTrack: assetTrack)
-                instruction.layerInstructions = [layerInstruction]
-                
-                guard let export = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetMediumQuality) else { return }
-                let videoName = UUID().uuidString
-                let exportURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(videoName).appendingPathExtension("mp4")
-                export.videoComposition = videoComposition
-                export.outputFileType = .mp4
-                export.outputURL = exportURL
-                
-                export.exportAsynchronously {
-                    DispatchQueue.main.async {
-                        switch export.status {
-                        case .completed:
-                            self.onFinishedEditing(true, true, exportURL)
-                            break
-                        default:
-                            self.onFinishedEditing(false, true, nil)
-                            break
-                        }
-                    }
-                }
-                
-            } catch {
-                self.onFinishedEditing(false, true, nil)
+            let asset = AVURLAsset(url: videoURL) 
+           
+            let merge = Merge(config: MergeConfiguration(frameRate: 30, directory: NSTemporaryDirectory(), quality: .medium, placement: .stretchFit))
+            merge.overlayVideo(video: asset, overlayImage: self.drawingImage) { (url) in
+                self.onFinishedEditing(true, true, url)
+            } progressHandler: { (progress) in
+                print(progress)
             }
         } else {
             if let photoData = self.photoData {
