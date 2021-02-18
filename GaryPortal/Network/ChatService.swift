@@ -77,6 +77,23 @@ struct ChatService {
         }
     }
     
+    static func createChat(chat: Chat, _ completion: @escaping ((Chat?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "chat")
+        request.body = chat.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: Chat.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
     static func markChatAsRead(for uuid: String, chatUUID: String) {
         let request = APIRequest(method: .put, path: "chat/chats/\(chatUUID)/markasread")
         APIClient().perform(request, nil)
@@ -114,6 +131,22 @@ struct ChatService {
     
     static func addUserToChat(_ username: String, chatUUID: String, completion: @escaping((ChatMember?, APIError?) -> Void)) {
         let request = APIRequest(method: .put, path: "chat/Chats/AddUserByUsername/\(username)/\(chatUUID)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: ChatMember.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func addUserToChatByUUID(_ userUUID: String, chatUUID: String, completion: @escaping((ChatMember?, APIError?) -> Void)) {
+        let request = APIRequest(method: .put, path: "chat/Chats/AddUser/\(userUUID)/\(chatUUID)")
         APIClient().perform(request) { (result) in
             switch result {
             case .success(let response):

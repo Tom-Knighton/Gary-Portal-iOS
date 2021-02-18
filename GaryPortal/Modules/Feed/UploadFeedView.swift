@@ -187,8 +187,10 @@ struct UploadPostView: View {
         if let poll = poll {
             FeedService.postPollPost(poll) { (finalPost, error) in
                 if let finalPost = finalPost {
-                    self.datasource.posts.insert(finalPost, at: 0)
-                    self.presentationMode.wrappedValue.dismiss()
+                    DispatchQueue.main.async {
+                        self.datasource.posts.insert(finalPost, at: 0)
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
         }

@@ -47,6 +47,20 @@ class ChatListDataSource: ObservableObject {
         }
     }
     
+    func addChat(chat: Chat) {
+        DispatchQueue.main.async {
+            self.chats.insert(chat, at: 0)
+        }
+    }
+    
+    func chatWithUsersExists(uuids: [String]) -> Bool {
+        let uuids = uuids.sorted()
+        return self.chats.contains { (chat) -> Bool in
+            let existing = chat.chatMembers?.compactMap { $0.userUUID }.sorted() ?? []
+            return existing.count == uuids.count && existing == uuids
+        }
+    }
+    
     @objc
     func refresh(_ sender: UIRefreshControl) {
         loadChats()

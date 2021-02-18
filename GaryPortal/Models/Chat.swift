@@ -91,6 +91,10 @@ struct Chat: Codable {
     }
 }
 
+extension Chat: Identifiable {
+    var id: String { self.chatUUID ?? "" }
+}
+
 struct ChatEditDetails: Codable {
     
     let chatUUID: String?
@@ -144,6 +148,14 @@ struct ChatMessage: Codable, Identifiable {
     
     func isSenderBlocked() -> Bool {
         return GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: userUUID ?? "") == true
+    }
+    
+    func isAdminMessage() -> Bool {
+        return messageTypeId == 7
+    }
+    
+    func isBotMessage() -> Bool {
+        return messageTypeId == 5 || messageTypeId == 6
     }
 }
 

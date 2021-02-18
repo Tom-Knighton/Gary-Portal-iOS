@@ -12,6 +12,13 @@ class ProfileViewDataSource: ObservableObject {
     @Published var user: User?
     @Published var hasLoaded = false
     
+    enum ActiveSheet: Identifiable {
+        case none, rules, book, feedback, settings, prayer, otherProfile, staff, website
+        var id: ActiveSheet { self }
+    }
+    @Published var activeSheet: ActiveSheet?
+
+    
     func setup(for uuid: String) {
         UserService.getUser(with: uuid) { (user) in
             DispatchQueue.main.async {
@@ -31,6 +38,7 @@ struct ProfileView: View {
     
     @State var alertContent: [String] = []
     @State var isShowingAlert = false
+    @State var viewingChat: Chat?
     
     var body: some View {
         GeometryReader { geometry in
@@ -40,23 +48,25 @@ struct ProfileView: View {
                 Spacer().frame(height: 16)
                 
                 if self.datasource.hasLoaded && GaryPortal.shared.currentUser?.userUUID != self.datasource.user?.userUUID {
-                    
-                    Menu(content: {
-                        Text("Select Report Reason:")
-                        Divider()
-                        Button(action: { self.reportUser(reason: "Harassment") }) { Text("Harassment") }
-                        Button(action: { self.reportUser(reason: "Breaks Policy") }) { Text("Breaks Policy") }
-                        Button(action: { self.reportUser(reason: "Spam") }) { Text("Spam") }
-                        Button(action: { self.reportUser(reason: "Threatening Behaviour") }) { Text("Threatening Behaviour") }
-                        Divider()
-                        Button(action: {}) { Text("Cancel")}
-                    }, label: {
-                        GPGradientButton(action: {}, buttonText: "Report User", gradientColours: [Color.red])
-                            .padding()
-                    })
-                    
-                    GPGradientButton(action: { self.blockUser() }, buttonText: "Block User", gradientColours: [Color.red])
+                    HStack {
+                        Menu(content: {
+                            Text("Select Report Reason:")
+                            Divider()
+                            Button(action: { self.reportUser(reason: "Harassment") }) { Text("Harassment") }
+                            Button(action: { self.reportUser(reason: "Breaks Policy") }) { Text("Breaks Policy") }
+                            Button(action: { self.reportUser(reason: "Spam") }) { Text("Spam") }
+                            Button(action: { self.reportUser(reason: "Threatening Behaviour") }) { Text("Threatening Behaviour") }
+                            Divider()
+                            Button(action: {}) { Text("Cancel")}
+                        }, label: {
+                            GPGradientButton(action: {}, buttonText: "Report User", gradientColours: [Color.red])
+                        })
+                        
+                        GPGradientButton(action: { self.blockUser() }, buttonText: "Block User", gradientColours: [Color.red])
+                    }
+                    GPGradientButton(action: { self.dmUser() }, buttonText: Text(Image(systemName: "envelope")) + Text("  Message User"), gradientColours: [Color(UIColor(hexString: "#00467F")), Color(UIColor(hexString: "#A5CC82"))])
                         .padding()
+                   
                 }
                 
                 ProfilePointsView(datasource: self.datasource)
@@ -79,6 +89,27 @@ struct ProfileView: View {
         .alert(isPresented: $isShowingAlert, content: {
             Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
         })
+        .sheet(item: $datasource.activeSheet) { item in
+            if item == ProfileViewDataSource.ActiveSheet.rules {
+                SafariView(url: GaryPortalConstants.URLs.RulesURL)
+            } else if item == ProfileViewDataSource.ActiveSheet.book {
+                SafariView(url: GaryPortalConstants.URLs.ComputerDatingURL)
+            } else if item == ProfileViewDataSource.ActiveSheet.feedback {
+                SafariView(url: GaryPortalConstants.URLs.FeedbackURL)
+            } else if item == ProfileViewDataSource.ActiveSheet.prayer {
+                PrayerRoomView(datasource: self.datasource)
+            } else if item == ProfileViewDataSource.ActiveSheet.settings {
+                ProfileSettingsView(datasource: self.datasource)
+            } else if item == ProfileViewDataSource.ActiveSheet.otherProfile {
+                if let chat = self.viewingChat {
+                    ChatView(chat: chat)
+                }
+            } else if item == ProfileViewDataSource.ActiveSheet.website {
+                SafariView(url: GaryPortalConstants.URLs.WebsiteURL)
+            } else {
+                StaffRoomView()
+            }
+        }
     }
     
     func blockUser() {
@@ -96,6 +127,57 @@ struct ProfileView: View {
         UserService.reportUser(uuid: self.datasource.user?.userUUID ?? "", reportedBy: GaryPortal.shared.currentUser?.userUUID ?? "", reason: reason)
         self.alertContent = ["Success", "User reported succesfully, an admin will review the report and may contact you if necessary. You can also block this user if needed."]
         self.isShowingAlert = true
+    }
+    
+    func dmUser() {
+        ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (chats, error) in
+            if let chats = chats {
+                let uuids = [GaryPortal.shared.currentUser?.userUUID ?? "", uuid].sorted()
+                let exists = chats.contains { (chat) -> Bool in
+                    let existing = chat.chatMembers?.compactMap { $0.userUUID }.sorted() ?? []
+                    return existing.count == uuids.count && existing == uuids
+                }
+                if exists {
+                    let chat = chats.first { (chat) -> Bool in
+                        let existing = chat.chatMembers?.compactMap { $0.userUUID }.sorted() ?? []
+                        return existing.count == uuids.count && existing == uuids
+                    }
+                    if let chat = chat {
+                        self.viewingChat = chat
+                        self.datasource.activeSheet = .otherProfile
+                    }
+                } else {
+                    createDM()
+                }
+            }
+        }
+    }
+    
+    func createDM() {
+        let uuids = [GaryPortal.shared.currentUser?.userUUID ?? "", uuid].sorted()
+        let chat = Chat(chatUUID: "", chatName: "GP$AG_\(uuids[0])-\(uuids[1])", chatIsProtected: false, chatIsPublic: false, chatIsDeleted: false, chatCreatedAt: Date(), chatMembers: nil, chatMessages: nil, lastChatMessage: nil)
+        
+        ChatService.createChat(chat: chat) { (createdChat, error) in
+            if var chat = createdChat {
+                for id in uuids {
+                    ChatService.addUserToChatByUUID(id, chatUUID: chat.chatUUID ?? "") { (member, _) in
+                        if let member = member {
+                            chat.chatMembers?.append(member)
+                        }
+                    }
+                }
+                
+                let creationMessage = ChatMessage(chatMessageUUID: "", chatUUID: chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID, messageContent: "Chat Created", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 6, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                
+                ChatService.postNewMessage(creationMessage, to: chat.chatUUID ?? "") { (message, error) in
+                    if let message = message {
+                        chat.lastChatMessage = message
+                        self.viewingChat = chat
+                        self.datasource.activeSheet = .otherProfile
+                    }
+                }
+            }
+        }
     }
     
 }
@@ -137,12 +219,9 @@ struct ProfileHeaderView: View {
                 
                 if GaryPortal.shared.currentUser?.userUUID == datasource.user?.userUUID {
                     if GaryPortal.shared.currentUser?.userIsAdmin == true || GaryPortal.shared.currentUser?.userIsStaff == true {
-                        GPGradientButton(action: { self.isShowingStaff = true }, buttonText: "Staff Panel", gradientColours: privilegedGradient)
-                            .sheet(isPresented: $isShowingStaff, content: {
-                                StaffRoomView()
-                            })
+                        GPGradientButton(action: { self.datasource.activeSheet = .staff }, buttonText: "Staff Panel", gradientColours: privilegedGradient)
                     } else {
-                        GPGradientButton(action: {}, buttonText: "Visit Website", gradientColours: websiteGradient)
+                        GPGradientButton(action: { self.datasource.activeSheet = .website }, buttonText: "Visit Website", gradientColours: websiteGradient)
                     }
                 }
                 
@@ -271,15 +350,9 @@ struct ProfileStatsView: View {
 
 struct ProfileMiscView: View {
     
-    enum ActiveSheet: Identifiable {
-        case none, rules, book, feedback, settings, prayer
-        var id: ActiveSheet { self }
-    }
     
     @ObservedObject var datasource: ProfileViewDataSource
-    
-    @State var activeSheet: ActiveSheet?
-    
+        
     var prayerGradient: [Color] = [Color(UIColor(hexString: "#8E2DE2")), Color(UIColor(hexString: "#4A00E0"))]
     var rulesGradient: [Color] = [Color(UIColor(hexString: "#8A2387")), Color(UIColor(hexString: "#E94057"))]
     var bookGradient: [Color] = [Color(UIColor(hexString: "#4568DC")), Color(UIColor(hexString: "#B06AB3"))]
@@ -311,19 +384,6 @@ struct ProfileMiscView: View {
                 
                 Spacer().frame(height: 16)
             }
-            .sheet(item: self.$activeSheet) { item in
-                if item == ActiveSheet.rules {
-                    SafariView(url: GaryPortalConstants.URLs.RulesURL)
-                } else if item == ActiveSheet.book {
-                    SafariView(url: GaryPortalConstants.URLs.ComputerDatingURL)
-                } else if item == ActiveSheet.feedback {
-                    SafariView(url: GaryPortalConstants.URLs.FeedbackURL)
-                } else if item == ActiveSheet.prayer {
-                    PrayerRoomView(datasource: self.datasource)
-                } else {
-                    ProfileSettingsView(datasource: self.datasource)
-                }
-            }
             .frame(maxWidth: .infinity)
             .background(Color(UIColor.secondarySystemBackground))
             .cornerRadius(20)
@@ -332,8 +392,8 @@ struct ProfileMiscView: View {
         }
     }
     
-    func openURL(url: ActiveSheet) {
-        self.activeSheet = url
+    func openURL(url: ProfileViewDataSource.ActiveSheet) {
+        self.datasource.activeSheet = url
     }
 }
 

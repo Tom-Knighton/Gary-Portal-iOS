@@ -730,10 +730,18 @@ struct CommentsView: View {
     
     var body: some View {
         NavigationView {
+            let descComment = FeedComment(feedCommentId: 0, userUUID: post.posterUUID, postId: post.postId, comment: post.postDescription, isAdminComment: false, isDeleted: false, datePosted: post.postCreatedAt, userDTO: post.posterDTO)
             VStack {
                 ScrollView {
                     ScrollViewReader { reader in
                         LazyVStack {
+                            if self.post.postType == "media" {
+                                CommentMessageView(comment: descComment)
+                                    .contextMenu {
+                                        Button(action: { UIPasteboard.general.string = descComment.comment ?? "" }) { Text("Copy Description") }
+                                        Button(action: { self.viewingUUID = descComment.userUUID ?? ""; self.isShowingProfile = true }) { Text("View Profile") }
+                                    }
+                            }
                             ForEach(self.datasource.getFilteredComments(), id: \.feedCommentId) { comment in
                                 CommentMessageView(comment: comment)
                                     .contextMenu {
@@ -781,27 +789,67 @@ struct CommentMessageView: View {
     
     @State var comment: FeedComment
     var otherUserGradient = [Color(UIColor(hexString: "#4568DC")), Color(UIColor(hexString: "#B06AB3"))]
+    var adminGradient = [Color(UIColor(hexString: "#ED213A")), Color(UIColor(hexString: "#93291E"))]
     var body: some View {
         VStack {
-            Spacer().frame(height: 8)
-            HStack {
-                Spacer().frame(width: 8)
-                Text("\(self.comment.userDTO?.userFullName ?? ""), \(comment.datePosted?.niceDateAndTime() ?? "")")
-                Spacer()
+            if comment.isAdminComment == true {
+                adminMessage
+            } else {
+                Spacer().frame(height: 8)
+                HStack {
+                    Spacer().frame(width: 8)
+                    Text("\(self.comment.userDTO?.userFullName ?? ""), \(comment.datePosted?.niceDateAndTime() ?? "")")
+                    Spacer()
+                }
+                HStack {
+                    Spacer().frame(width: 8)
+                    AsyncImage(url: self.comment.userDTO?.userProfileImageUrl ?? "")
+                        .aspectRatio(contentMode: .fill)
+                        .clipShape(Circle())
+                        .frame(width: 45, height: 45)
+                    Text(self.comment.comment ?? "")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(LinearGradient(gradient: Gradient(colors: otherUserGradient), startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .cornerRadius(10)
+                    Spacer()
+                }
             }
-            HStack {
-                Spacer().frame(width: 8)
-                AsyncImage(url: self.comment.userDTO?.userProfileImageUrl ?? "")
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(Circle())
-                    .frame(width: 45, height: 45)
-                Text(self.comment.comment ?? "")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(LinearGradient(gradient: Gradient(colors: otherUserGradient), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .cornerRadius(10)
-                Spacer()
-            }
+            
         }
+    }
+    
+    @ViewBuilder
+    var adminMessage: some View {
+        Spacer().frame(height: 8)
+        Divider()
+        HStack {
+            Spacer()
+            Text("-- ADMIN ANNOUNCEMENT --")
+                .fontWeight(.bold)
+            Spacer()
+        }
+        Spacer().frame(height: 8)
+        HStack {
+            Spacer().frame(width: 8)
+            Text("\(self.comment.userDTO?.userFullName ?? ""), \(comment.datePosted?.niceDateAndTime() ?? "")")
+            Spacer()
+        }
+        HStack {
+            Spacer().frame(width: 8)
+            AsyncImage(url: self.comment.userDTO?.userProfileImageUrl ?? "")
+                .aspectRatio(contentMode: .fill)
+                .clipShape(Circle())
+                .frame(width: 45, height: 45)
+            Text(self.comment.comment ?? "")
+                .foregroundColor(.white)
+                .padding()
+                .background(LinearGradient(gradient: Gradient(colors: adminGradient), startPoint: .topLeading, endPoint: .bottomTrailing))
+                .cornerRadius(10)
+            Spacer()
+        }
+        Spacer().frame(height: 8)
+        Divider()
+        Spacer().frame(height: 8)
     }
 }

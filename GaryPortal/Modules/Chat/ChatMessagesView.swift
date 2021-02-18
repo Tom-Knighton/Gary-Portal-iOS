@@ -271,7 +271,8 @@ struct ChatMessageView: View {
     var lastMessage: ChatMessage?
     
     let otherMsgGradient = Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))])
-    
+    var adminGradient = Gradient(colors: [Color(UIColor(hexString: "#ED213A")), Color(UIColor(hexString: "#93291E"))])
+
     @State var isAlertShowing = false
     @State var alertContent: [String] = []
     @State var isPlayingVideo = false
@@ -286,95 +287,130 @@ struct ChatMessageView: View {
         let shouldDisplayDate = chatMessage.shouldDisplayDate(from: lastMessage)
         VStack {
             if !chatMessage.isSenderBlocked() {
-                if shouldDisplayDate {
-                    HStack {
-                        Spacer().frame(width: 8)
-                        Text(chatMessage.messageCreatedAt?.niceDateAndTime() ?? "")
-                        Spacer().frame(width: 8)
-                    }
-                }
                 
-                if !ownMessage && ((isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage)) {
+                if chatMessage.isBotMessage() {
+                    Divider()
                     HStack {
-                        Spacer().frame(width: 55)
-                        Text(chatMessage.userDTO?.userFullName ?? "")
-                            .font(.custom("Montserrat-Light", size: 12))
+                        Spacer()
+                        Text("Bot Message:")
+                            .fontWeight(.bold)
                         Spacer()
                     }
-
-                }
-                
-                HStack{
-                    Spacer().frame(width: 8)
-                    if ownMessage { Spacer() }
-                    
-                    if !ownMessage {
-                        if (isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage) {
-                            AsyncImage(url: chatMessage.userDTO?.userProfileImageUrl ?? "")
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                                .frame(width: 45, height: 45)
-                        } else {
-                            Spacer().frame(width: isWithinLastMessage ? 50 : 45)
-                        }
-                        
+                    HStack {
+                        Spacer()
+                        Text(chatMessage.messageContent ?? "")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#f7ff00")), Color(UIColor(hexString: "#db36a4"))]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .cornerRadius(10)
+                        Spacer()
                     }
+                    
+                } else {
+                    
+                    if chatMessage.isAdminMessage() {
+                        Divider()
+                        HStack {
+                            Spacer()
+                            Text("-- ADMIN ANNOUNCEMENT --")
+                                .fontWeight(.bold)
+                            Spacer()
+                        }
+                    }
+                    
+                    if shouldDisplayDate {
+                        HStack {
+                            Spacer().frame(width: 8)
+                            Text(chatMessage.messageCreatedAt?.niceDateAndTime() ?? "")
+                            Spacer().frame(width: 8)
+                        }
+                    }
+                    
+                    if !ownMessage && ((isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage)) {
+                        HStack {
+                            Spacer().frame(width: 55)
+                            Text(chatMessage.userDTO?.userFullName ?? "")
+                                .font(.custom("Montserrat-Light", size: 12))
+                            Spacer()
+                        }
 
-                    self.messageContent()
-                        .background(messageBackground())
-                        .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
-                        .foregroundColor(.white)
-                        .contextMenu(menuItems: {
-                            if self.chatMessage.messageTypeId == 1 {
-                                Button(action: { UIPasteboard.general.string = chatMessage.messageContent ?? "" }, label: {
-                                    Text("Copy Text")
-                                    Image(systemName: "doc.on.doc")
-                                })
+                    }
+                    
+                    HStack{
+                        Spacer().frame(width: 8)
+                        if ownMessage { Spacer() }
+                        
+                        if !ownMessage {
+                            if (isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage) {
+                                AsyncImage(url: chatMessage.userDTO?.userProfileImageUrl ?? "")
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                                    .frame(width: 45, height: 45)
+                            } else {
+                                Spacer().frame(width: isWithinLastMessage ? 50 : 45)
                             }
                             
-                            Button(action: { self.loadDinoGame() }, label : {
-                                Text("🐸 Dinosaur Game 🐸")
-                            })
-                            if ownMessage {
-                                Button(action: { self.deleteMessage() }, label: {
-                                    Text("Delete Message")
-                                    Image(systemName: "trash")
-                                })
-                            } else {
-                                Button(action: { self.goToProfile() }) {
-                                    Text("View Profile")
+                        }
+
+                        self.messageContent()
+                            .background(messageBackground())
+                            .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
+                            .foregroundColor(.white)
+                            .contextMenu(menuItems: {
+                                if self.chatMessage.messageTypeId == 1 {
+                                    Button(action: { UIPasteboard.general.string = chatMessage.messageContent ?? "" }, label: {
+                                        Text("Copy Text")
+                                        Image(systemName: "doc.on.doc")
+                                    })
                                 }
                                 
-                                Menu(content: {
-                                    Text("Select Report Reason:")
-                                    Divider()
-                                    Button(action: { self.reportMessage(reason: "Breaks Gary Portal") }, label: {
-                                        Text("Breaks Gary Portal")
-                                    })
-                                    Button(action: { self.reportMessage(reason: "Violates Policy") }, label: {
-                                        Text("Violates Policy")
-                                    })
-                                    Button(action: { self.reportMessage(reason: "Is Offensive") }, label: {
-                                        Text("Is Offensive")
-                                    })
-                                    Divider()
-                                    Button(action: {}, label: {
-                                        Text("Cancel")
-                                    })
-                                },
-                                label: {
-                                    Text("Report Message")
-                                    Image(systemName: "exclamationmark.bubble")
+                                Button(action: { self.loadDinoGame() }, label : {
+                                    Text("🐸 Dinosaur Game 🐸")
                                 })
-                                
-                            }
-                        })
+                                if ownMessage {
+                                    Button(action: { self.deleteMessage() }, label: {
+                                        Text("Delete Message")
+                                        Image(systemName: "trash")
+                                    })
+                                } else {
+                                    Button(action: { self.goToProfile() }) {
+                                        Text("View Profile")
+                                    }
+                                    
+                                    Menu(content: {
+                                        Text("Select Report Reason:")
+                                        Divider()
+                                        Button(action: { self.reportMessage(reason: "Breaks Gary Portal") }, label: {
+                                            Text("Breaks Gary Portal")
+                                        })
+                                        Button(action: { self.reportMessage(reason: "Violates Policy") }, label: {
+                                            Text("Violates Policy")
+                                        })
+                                        Button(action: { self.reportMessage(reason: "Is Offensive") }, label: {
+                                            Text("Is Offensive")
+                                        })
+                                        Divider()
+                                        Button(action: {}, label: {
+                                            Text("Cancel")
+                                        })
+                                    },
+                                    label: {
+                                        Text("Report Message")
+                                        Image(systemName: "exclamationmark.bubble")
+                                    })
+                                    
+                                }
+                            })
 
-                    if !ownMessage { Spacer() }
-                    Spacer().frame(width: 8)
+                        if !ownMessage { Spacer() }
+                        Spacer().frame(width: 8)
+                    }
+                    if chatMessage.isAdminMessage() {
+                        Divider()
+                    }
                 }
+               
             }
-            
         }
         .padding(.top, isWithinLastMessage ? 3 : 10)
         .padding(.bottom, isWithinNextMessage ? 3 : 10)
@@ -393,7 +429,9 @@ struct ChatMessageView: View {
     @ViewBuilder
     func messageBackground() -> some View {
         let ownMessage = chatMessage.userUUID == GaryPortal.shared.currentUser?.userUUID ?? ""
-        if ownMessage {
+        if chatMessage.isAdminMessage() {
+            LinearGradient(gradient: adminGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+        } else if ownMessage {
             Color(UIColor(hexString: "#323232"))
         } else {
             LinearGradient(gradient: otherMsgGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
