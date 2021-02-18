@@ -23,7 +23,7 @@ class Sounds {
                 audioPlayer?.prepareToPlay()
                 audioPlayer?.play()
                 
-            }catch {
+            } catch {
                 print("Error")
             }
         } else {

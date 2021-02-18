@@ -20,7 +20,6 @@ struct FeedView: View {
         UITableView.appearance().separatorStyle = .none
         UITableViewCell.appearance().backgroundColor = .clear
     }
-
     
     var body: some View {
         GeometryReader { geometry in
@@ -328,20 +327,34 @@ struct FeedPostTable: View {
    
     var body: some View {
         ForEach(dataSource.posts, id: \.postId) { post in
-            if post is FeedMediaPost {
-                PostMediaView(post: post as! FeedMediaPost)
+            if GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: post.posterUUID ?? "") == true {
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(Color(UIColor.secondarySystemBackground).opacity(0.8))
+                    .overlay(
+                        Text("Post by blocked user")
+                            .frame(maxWidth: .infinity)
+                            .padding(.all)
+                    )
                     .onAppear {
                         self.dataSource.loadMoreContentIfNeeded(currentPost: post)
                     }
-                    .padding(.all, 4)
                     .shadow(color: Color.black, radius: 15)
-            } else if post is FeedPollPost {
-                PostPollView(pollModel: PollPostViewModel(post: post as! FeedPollPost))
-                    .onAppear {
-                        self.dataSource.loadMoreContentIfNeeded(currentPost: post)
-                    }
-                    .padding(.all, 4)
-                    .shadow(color: Color.black, radius: 15)
+            } else {
+                if post is FeedMediaPost {
+                    PostMediaView(post: post as! FeedMediaPost)
+                        .onAppear {
+                            self.dataSource.loadMoreContentIfNeeded(currentPost: post)
+                        }
+                        .padding(.all, 4)
+                        .shadow(color: Color.black, radius: 15)
+                } else if post is FeedPollPost {
+                    PostPollView(pollModel: PollPostViewModel(post: post as! FeedPollPost))
+                        .onAppear {
+                            self.dataSource.loadMoreContentIfNeeded(currentPost: post)
+                        }
+                        .padding(.all, 4)
+                        .shadow(color: Color.black, radius: 15)
+                }
             }
         }
         .listRowBackground(Color.clear)

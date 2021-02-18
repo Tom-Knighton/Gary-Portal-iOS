@@ -107,7 +107,6 @@ struct StaffRoomHome: View {
     func loadAnnouncements() {
         StaffService.getStaffAnnouncements { (announcements, error) in
             if let error = error {
-                print(error.localizedDescription)
                 return
             }
             self.announcements = announcements ?? []
@@ -316,8 +315,6 @@ struct NewAnnouncementView: View {
                         self.announcements.append(announcement)
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                } else {
-                    print("Fail")
                 }
             }
         }

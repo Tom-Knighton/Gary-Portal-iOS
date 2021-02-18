@@ -98,7 +98,6 @@ struct ProfileSettingsView: View {
     func updateSettings(userDetails: UserDetails) {
         UserService.updateUserDetails(userUUID: self.datasource.user?.userUUID ?? "", userDetails: userDetails) { (newUser, error) in
             if let error = error {
-                print(error.localizedDescription)
                 return
             }
             DispatchQueue.main.async {
@@ -206,24 +205,33 @@ struct AccountSettingsView: View {
                             self.isShowingImagePicker = true
                         })
                 }
+                
+                NavigationLink(destination: BlockedUsersManagement()) {
+                    GPGradientButton(action: {}, buttonText: Text("Blocked Users   ") + Text(Image(systemName: "chevron.right")), gradientColours: [Color.red])
+                        .foregroundColor(.white)
+                        .disabled(true)
+                }
+                
+                
                 Spacer().frame(height: 16)
             }
-            
-            if self.isShowingImageCropper {
+            .cornerRadius(radius: 15, corners: [.allCorners])
+            .sheet(isPresented: $isShowingImageCropper, content: {
                 ImageCropper(image: self.$newUIImage, visible: self.$isShowingImageCropper) { (finalImage) in
                     self.newUIImage = finalImage
                     self.newImage = Image(uiImage: finalImage)
                     self.hasChosenNewImage = true
                 }
-            }
+            })
         }
         .frame(maxWidth: .infinity)
-        .cornerRadius(radius: 15, corners: [.allCorners])
+        .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
         .background(Color("Section"))
         .sheet(isPresented: $isShowingImagePicker, onDismiss: loadImage) {
             ImagePicker(image: $newUIImage)
         }
         .onAppear(perform: loadData)
+        .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
     }
     
     func loadImage() {
@@ -256,7 +264,6 @@ struct SecuritySettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
-        .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
     }
 }
 
@@ -295,5 +302,63 @@ struct AppSettingsView: View {
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
         .cornerRadius(radius: 15, corners: [.bottomLeft, .bottomRight])
+    }
+}
+
+struct BlockedUsersManagement: View {
+    
+    @ObservedObject var datasource: GaryPortal = GaryPortal.shared
+    @ObservedObject var blocksDataSource = BlockedUsersDataSource()
+    
+    var body: some View {
+        List {
+            ForEach(self.blocksDataSource.userBlocks, id: \.blockedUserUUID) { block in
+                Menu(content: {
+                    Button(action: { self.blocksDataSource.unblockUser(uuid: block.blockedUserUUID ?? "") }, label: {
+                        Text("Unblock User")
+                    })
+                    Button(action: {}, label: { Text("Cancel") })
+                }, label: {
+                    UserListElement(user: block.blockedUserDTO, displaysChevron: false)
+                })
+            }
+        }
+        .navigationTitle("Blocked Users")
+        .onAppear {
+            self.blocksDataSource.load(for: datasource.currentUser?.userUUID ?? "")
+        }
+    }
+}
+
+class BlockedUsersDataSource: ObservableObject {
+    @Published var userBlocks: [UserBlock] = []
+    @ObservedObject var profileDataSource: GaryPortal = GaryPortal.shared
+    var currentUUID = ""
+    
+    func load(for uuid: String) {
+        self.currentUUID = uuid
+        UserService.getBlockedUsers(userUUID: uuid) { (blocks, error) in
+            if let blocks = blocks {
+                DispatchQueue.main.async {
+                    self.userBlocks = blocks
+                    self.profileDataSource.currentUser?.blockedUsers = blocks
+                }
+            }
+        }
+    }
+    
+    func unblockUser(uuid: String) {
+        UserService.unblockUser(blockerUUID: GaryPortal.shared.currentUser?.userUUID ?? "", blockedUUID: uuid) {
+            DispatchQueue.main.async {
+                self.userBlocks.removeAll(where: { $0.blockedUserUUID == uuid })
+                self.load(for: self.currentUUID)
+            }
+        }
+    }
+}
+
+struct SettingsPreview: PreviewProvider {
+    static var previews: some View {
+        ProfileSettingsView(datasource: ProfileViewDataSource())
     }
 }

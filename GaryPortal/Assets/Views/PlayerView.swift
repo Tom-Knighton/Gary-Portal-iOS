@@ -45,10 +45,7 @@ class PlayerUIView: UIView {
             self.playerLayer.player = self.avPlayer
             self.playerLayer.videoGravity = gravity?.avGravity ?? .resizeAspect
             layer.addSublayer(playerLayer)
-        } else {
-            print("fail")
         }
-       
     }
     
     required init?(coder: NSCoder) {

@@ -115,7 +115,6 @@ struct MediaPicker: UIViewControllerRepresentable {
                 itemProvider.loadObject(ofClass: objectType) { object, error in
                     if let error = error {
                         completion(nil)
-                        print(error.localizedDescription)
                     }
                     
                     if !isLivePhoto {
@@ -138,7 +137,6 @@ struct MediaPicker: UIViewControllerRepresentable {
             itemProvider.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { url, error in
                 if let error = error {
                     completion(nil)
-                    print(error.localizedDescription)
                 }
                 
                 guard let url = url else { completion(nil); return }
@@ -169,7 +167,6 @@ struct MediaPicker: UIViewControllerRepresentable {
                     }
                 } catch {
                     completion(nil)
-                    print(error.localizedDescription)
                 }
             }
         }

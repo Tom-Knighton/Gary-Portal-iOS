@@ -24,6 +24,10 @@ class ChatListDataSource: ObservableObject {
         NotificationCenter.default.removeObserver(self, name: .newChatMember, object: nil)
     }
     
+    func getChatsFiltered() -> [Chat] {
+        return self.chats.filter( { $0.isDMAndBlocked() == false})
+    }
+    
     func loadChats() {
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
             DispatchQueue.main.async {

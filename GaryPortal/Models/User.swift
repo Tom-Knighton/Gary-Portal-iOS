@@ -73,13 +73,13 @@ class User: Codable, ObservableObject {
     public func ConvertToDTO() -> UserDTO {
         return UserDTO(userUUID: self.userUUID, userFullName: self.userFullName, userProfileImageUrl: self.userProfileImageUrl, userIsAdmin: self.userIsAdmin, userIsStaff: self.userIsStaff)
     }
-    
-    public func HasBlockedUUID(userUUID: String) -> Bool {
-        return self.blockedUsers?.contains(where: { $0.blockedUserUUID == userUUID }) ?? true
-    }
-    
+
     public func RemoveBan(banId: Int) {
         self.userBans?.removeAll(where: { $0.userBanId == banId })
+    }
+    
+    public func hasBlockedUUID(uuid: String) -> Bool {
+        return self.blockedUsers?.contains(where: { $0.blockedUserUUID == uuid && $0.isBlocked == true}) == true
     }
 }
 
@@ -143,6 +143,7 @@ struct UserBlock: Codable {
     
     let blockerUser: User?
     let blockedUser: User?
+    let blockedUserDTO: UserDTO?
 }
 
 struct UserRegistration: Codable {

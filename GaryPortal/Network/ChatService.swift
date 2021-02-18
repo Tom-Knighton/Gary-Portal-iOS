@@ -137,9 +137,7 @@ struct ChatService {
         let request = APIRequest(method: .post, path: "chat/\(chatUUUID)/Attachment")
         var boundary = ""
         if let url = videoURL, let videoURL = URL(string: url) {
-            print("video")
             do {
-                print(videoURL.absoluteString)
                 let videoData = try Data(contentsOf: videoURL)
                 boundary = "Boundary-\(UUID().uuidString)"
                 let paramName = "video"
@@ -160,7 +158,6 @@ struct ChatService {
                 let photoData = try Data(contentsOf: photoURL)
                 let image = UIImage(data: photoData)
                 let imgData = image?.jpegData(compressionQuality: 0.5)
-                print("image")
                 boundary = "Boundary-\(UUID().uuidString)"
                 let paramName = "image"
                 let fileName = "image.jpg"
@@ -177,17 +174,10 @@ struct ChatService {
             }
             
         } else {
-            print("?")
             completion(nil, .dataNotFound)
             return
         }
         
-        print("Boundary: \(boundary)")
-        let bcf = ByteCountFormatter()
-        bcf.allowedUnits = [.useMB] // optional: restricts the units to MB only
-        bcf.countStyle = .file
-        let string = bcf.string(fromByteCount: Int64(request.body?.count ?? 0))
-        print("formatted result: \(string)")
         APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
             switch result {
             case .success(let response):

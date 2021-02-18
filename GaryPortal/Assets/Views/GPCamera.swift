@@ -306,9 +306,7 @@ struct MediaEditor: View {
             let merge = Merge(config: MergeConfiguration(frameRate: 30, directory: NSTemporaryDirectory(), quality: .medium, placement: .stretchFit))
             merge.overlayVideo(video: asset, overlayImage: self.drawingImage) { (url) in
                 self.onFinishedEditing(true, true, url)
-            } progressHandler: { (progress) in
-                print(progress)
-            }
+            } progressHandler: { (_) in }
         } else {
             if let photoData = self.photoData {
                 let oldImage = UIImage(data: photoData)

@@ -85,6 +85,10 @@ struct Chat: Codable {
     func getListImageName() -> String {
         return (self.chatMembers?.count ?? 0) >= 3 ? "person.3" : self.chatMembers?.count == 2 ? "person.2" : "person"
     }
+    
+    func isDMAndBlocked() -> Bool {
+        return self.chatMembers?.count == 2 && GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: self.chatMembers?[1].userUUID ?? "") == true
+    }
 }
 
 struct ChatEditDetails: Codable {
@@ -136,6 +140,10 @@ struct ChatMessage: Codable, Identifiable {
         let overTwoHours = !(thisDate?.compareCloseTo(lastDate ?? Date(), precision: 2.hours.timeInterval) ?? false)
         let sameDay = thisDate?.day == lastDate?.day
         return !sameDay || overTwoHours
+    }
+    
+    func isSenderBlocked() -> Bool {
+        return GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: userUUID ?? "") == true
     }
 }
 

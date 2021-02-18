@@ -116,4 +116,50 @@ struct UserService {
             }
         }
     }
+    
+    static func getBlockedUsers(userUUID: String, _ completion: @escaping (([UserBlock]?, APIError?) -> Void)) {
+        let request = APIRequest(method: .get, path: "users/getblockedusersfor/\(userUUID)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: [UserBlock].self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func blockUser(blockerUUID: String, blockedUUID: String, _ completion: @escaping ((UserBlock?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "users/blockuser/\(blockerUUID)/\(blockedUUID)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: UserBlock.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func unblockUser(blockerUUID: String, blockedUUID: String, _ completion: @escaping (() -> Void)) {
+        let request = APIRequest(method: .post, path: "users/unblockuser/\(blockerUUID)/\(blockedUUID)")
+        APIClient().perform(request) { (result) in
+            completion()
+        }
+    }
+    
+    static func reportUser(uuid: String, reportedBy: String, reason: String) {
+        let report = UserReport(userReportId: 0, userUUID: uuid, reportReason: reason, reportIssuedAt: Date(), reportByUUID: reportedBy, isDeleted: false, reportedUser: nil, reporter: nil)
+        let request = APIRequest(method: .post, path: "users/reportuser/\(uuid)")
+        request.body = report.jsonEncode()
+        APIClient().perform(request, nil)
+    }
 }

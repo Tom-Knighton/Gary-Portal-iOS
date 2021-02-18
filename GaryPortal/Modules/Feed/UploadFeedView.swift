@@ -185,10 +185,8 @@ struct UploadPostView: View {
             FeedPollAnswer(pollAnswerId: 0, pollId: 0, answer: self.pollAnswer2, votes: nil),
         ])
         if let poll = poll {
-            print("poll")
             FeedService.postPollPost(poll) { (finalPost, error) in
                 if let finalPost = finalPost {
-                    print("final")
                     self.datasource.posts.insert(finalPost, at: 0)
                     self.presentationMode.wrappedValue.dismiss()
                 }

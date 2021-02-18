@@ -49,7 +49,6 @@ struct FeedService {
         var boundary = ""
         if let url = videoURL, let videoURL = URL(string: url) {
             do {
-                print(videoURL.absoluteString)
                 let videoData = try Data(contentsOf: videoURL)
                 boundary = "Boundary-\(UUID().uuidString)"
                 let paramName = "video"
@@ -71,7 +70,6 @@ struct FeedService {
                 let photoData = try Data(contentsOf: photoURL)
                 let image = UIImage(data: photoData)
                 let imgData = image?.jpegData(compressionQuality: 0.5)
-                print("image")
                 boundary = "Boundary-\(UUID().uuidString)"
                 let paramName = "image"
                 let fileName = "image.jpg"
@@ -111,7 +109,6 @@ struct FeedService {
         var boundary = ""
         if let url = videoURL, let videoURL = URL(string: url) {
             do {
-                print(videoURL.absoluteString)
                 let videoData = try Data(contentsOf: videoURL)
                 boundary = "Boundary-\(UUID().uuidString)"
                 let paramName = "video"

@@ -28,7 +28,6 @@ class GaryPortal: NSObject, ObservableObject {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
-                //let vc = HostController()
                 let vc = UIHostingController(rootView: ContentView())
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)
@@ -51,6 +50,14 @@ class GaryPortal: NSObject, ObservableObject {
                 let vc = UIHostingController(rootView: SignInNavigationHost())
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)
+            }
+        }
+    }
+    
+    func updateBlocks() {
+        UserService.getBlockedUsers(userUUID: self.currentUser?.userUUID ?? "") { (blocks, error) in
+            if let blocks = blocks {
+                self.currentUser?.blockedUsers = blocks
             }
         }
     }

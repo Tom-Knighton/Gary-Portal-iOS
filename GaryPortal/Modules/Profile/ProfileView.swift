@@ -29,12 +29,36 @@ struct ProfileView: View {
     @Binding var uuid: String
     @ObservedObject var datasource = ProfileViewDataSource()
     
+    @State var alertContent: [String] = []
+    @State var isShowingAlert = false
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
                 ProfileHeaderView(datasource: self.datasource)
                     .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                 Spacer().frame(height: 16)
+                
+                if self.datasource.hasLoaded && GaryPortal.shared.currentUser?.userUUID != self.datasource.user?.userUUID {
+                    
+                    Menu(content: {
+                        Text("Select Report Reason:")
+                        Divider()
+                        Button(action: { self.reportUser(reason: "Harassment") }) { Text("Harassment") }
+                        Button(action: { self.reportUser(reason: "Breaks Policy") }) { Text("Breaks Policy") }
+                        Button(action: { self.reportUser(reason: "Spam") }) { Text("Spam") }
+                        Button(action: { self.reportUser(reason: "Threatening Behaviour") }) { Text("Threatening Behaviour") }
+                        Divider()
+                        Button(action: {}) { Text("Cancel")}
+                    }, label: {
+                        GPGradientButton(action: {}, buttonText: "Report User", gradientColours: [Color.red])
+                            .padding()
+                    })
+                    
+                    GPGradientButton(action: { self.blockUser() }, buttonText: "Block User", gradientColours: [Color.red])
+                        .padding()
+                }
+                
                 ProfilePointsView(datasource: self.datasource)
                     .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                 Spacer().frame(height: 16)
@@ -52,6 +76,26 @@ struct ProfileView: View {
         .onAppear {
             self.datasource.setup(for: uuid)
         }
+        .alert(isPresented: $isShowingAlert, content: {
+            Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
+        })
+    }
+    
+    func blockUser() {
+        UserService.blockUser(blockerUUID: GaryPortal.shared.currentUser?.userUUID ?? "", blockedUUID: self.datasource.user?.userUUID ?? "") { (userblock, error) in
+            if let _ = userblock {
+                GaryPortal.shared.updateBlocks()
+            }
+            self.alertContent = ["Success", "User has been blocked, you may have to refresh the chat and feed in order to properly block their content"]
+            self.isShowingAlert = true
+        }
+        
+    }
+    
+    func reportUser(reason: String) {
+        UserService.reportUser(uuid: self.datasource.user?.userUUID ?? "", reportedBy: GaryPortal.shared.currentUser?.userUUID ?? "", reason: reason)
+        self.alertContent = ["Success", "User reported succesfully, an admin will review the report and may contact you if necessary. You can also block this user if needed."]
+        self.isShowingAlert = true
     }
     
 }
@@ -227,14 +271,17 @@ struct ProfileStatsView: View {
 
 struct ProfileMiscView: View {
     
+    enum ActiveSheet: Identifiable {
+        case none, rules, book, feedback
+        var id: ActiveSheet { self }
+    }
+    
     @ObservedObject var datasource: ProfileViewDataSource
     @State var image: UIImageView?
     @State var isShowingPrayerRoom = false
     @State var isShowingSettings = false
     
-    @State var showSafari = false
-    @State var safariURL: String? = ""
-
+    @State var activeSheet: ActiveSheet?
     
     var prayerGradient: [Color] = [Color(UIColor(hexString: "#8E2DE2")), Color(UIColor(hexString: "#4A00E0"))]
     var rulesGradient: [Color] = [Color(UIColor(hexString: "#8A2387")), Color(UIColor(hexString: "#E94057"))]
@@ -254,18 +301,12 @@ struct ProfileMiscView: View {
                
                 Group {
                     GPGradientButton(action: self.showPrayerRoom, buttonText: "PRAYER ROOM", gradientColours: prayerGradient)
-                        .sheet(isPresented: $isShowingPrayerRoom, content: {
-                            PrayerRoomView(datasource: self.datasource)
-                        })
                     Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: GaryPortalConstants.URLs.RulesURL )}, buttonText: "RULES AND REGULATIONS", gradientColours: rulesGradient)
-                        .sheet(isPresented: $showSafari, content: {
-                            SafariView(url: self.safariURL)
-                        })
+                    GPGradientButton(action: { openURL(url: .rules )}, buttonText: "RULES AND REGULATIONS", gradientColours: rulesGradient)
                     Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: GaryPortalConstants.URLs.ComputerDatingURL )}, buttonText: "COMPUTER DATING", gradientColours: bookGradient)
+                    GPGradientButton(action: { openURL(url: .book )}, buttonText: "COMPUTER DATING", gradientColours: bookGradient)
                     Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: GaryPortalConstants.URLs.FeedbackURL )}, buttonText: "APP FEEDBACK", gradientColours: feedbackGradient)
+                    GPGradientButton(action: { openURL(url: .feedback )}, buttonText: "APP FEEDBACK", gradientColours: feedbackGradient)
                     Spacer().frame(height: 16)
                     GPGradientButton(action: self.showSettings, buttonText: "SETTINGS", gradientColours: settingsGradient)
                         .sheet(isPresented: $isShowingSettings, content: {
@@ -275,6 +316,15 @@ struct ProfileMiscView: View {
                 
                 Spacer().frame(height: 16)
             }
+            .sheet(item: self.$activeSheet) { item in
+                if item == ActiveSheet.rules {
+                    SafariView(url: GaryPortalConstants.URLs.RulesURL)
+                } else if item == ActiveSheet.book {
+                    SafariView(url: GaryPortalConstants.URLs.ComputerDatingURL)
+                } else {
+                    SafariView(url: GaryPortalConstants.URLs.FeedbackURL)
+                }
+            }
             .frame(maxWidth: .infinity)
             .background(Color(UIColor.secondarySystemBackground))
             .cornerRadius(20)
@@ -283,9 +333,8 @@ struct ProfileMiscView: View {
         }
     }
     
-    func openURL(url: String) {
-        self.safariURL = url
-        self.showSafari = true
+    func openURL(url: ActiveSheet) {
+        self.activeSheet = url
     }
     
     func showPrayerRoom() {
