@@ -132,8 +132,18 @@ struct ChatMessageBarView: View {
     @State var imageURL: String? = nil
     @State var videoURL: String? = nil
     
+    var isCameraAllowed = true
+    var placeHolderText = "Your message..."
+    
     init(content: Binding<String>, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
         self.onSendAction = onSend
+        _text = content
+    }
+    
+    init(content: Binding<String>, isCameraAllowed: Bool, placeHolderText: String, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
+        self.onSendAction = onSend
+        self.isCameraAllowed = isCameraAllowed
+        self.placeHolderText = placeHolderText
         _text = content
     }
     
@@ -179,7 +189,7 @@ struct ChatMessageBarView: View {
                                 if self.text.isEmpty {
                                     HStack {
                                         Spacer().frame(width: 1)
-                                        Text("Your message...")
+                                        Text(self.placeHolderText)
                                             .foregroundColor(.gray)
                                             .disabled(true)
                                         Spacer()
@@ -187,12 +197,13 @@ struct ChatMessageBarView: View {
                                 }
                             }
                         )
-                    
-                    Button(action: { self.isShowingCamera = true }) {
-                        Image(systemName: "camera.fill")
-                            .font(.body)
+                    if self.isCameraAllowed {
+                        Button(action: { self.isShowingCamera = true }) {
+                            Image(systemName: "camera.fill")
+                                .font(.body)
+                        }
+                        .foregroundColor(.gray)
                     }
-                    .foregroundColor(.gray)
                     
                 }
                 .padding(.horizontal, 8)

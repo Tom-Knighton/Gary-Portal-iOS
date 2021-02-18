@@ -214,6 +214,44 @@ struct FeedService {
         }
     }
     
+    static func getCommentsForPost(_ postId: Int, _ completion: @escaping(([FeedComment]?, APIError?) -> Void)) {
+        let request = APIRequest(method: .get, path: "feed/getcommentsforpost/\(postId)")
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: [FeedComment].self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func postComment(_ comment: FeedComment, _ completion: @escaping ((FeedComment?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "feed/commentonpost")
+        request.body = comment.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: FeedComment.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure:
+                completion(nil, .networkFail)
+            }
+        }
+    }
+    
+    static func deleteComment(_ commentId: Int) {
+        let request = APIRequest(method: .put, path: "feed/deletecomment/\(commentId)")
+        APIClient().perform(request, nil)
+    }
+    
     
     static func watchAditLog(_ aditLogId: Int, uuid: String) {
         let request = APIRequest(method: .put, path: "feed/watchedaditlog/\(aditLogId)/\(uuid)")

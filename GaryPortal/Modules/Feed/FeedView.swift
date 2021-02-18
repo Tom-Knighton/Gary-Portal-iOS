@@ -609,11 +609,12 @@ struct PostHeaderView: View {
 
 struct PostActionView: View {
     
-    @ObservedObject var post: FeedPost
+    @State var post: FeedPost
     @ObservedObject var garyportal = GaryPortal.shared
 
     @State var isLiked = false
     @State var likeCount = 0
+    @State var isShowingComments = false
 
     var body: some View {
         HStack {
@@ -634,16 +635,23 @@ struct PostActionView: View {
             Text(String(describing: likeCount))
                 .font(.custom("Montserrat-SemiBold", size: 17))
             Spacer().frame(width: 16)
-            Image(systemName: "bubble.middle.bottom")
+            
+            Button(action: { self.isShowingComments = true }, label: {
+                Text(Image(systemName: "bubble.middle.bottom")) + Text("  \(self.post.comments?.count ?? 0)")
+            })
+            .buttonStyle(PlainButtonStyle())
 
             Spacer()
 
-            Image(systemName: "square.and.arrow.up")
+            //Image(systemName: "square.and.arrow.up")
 
             Spacer().frame(width: 8)
         }
         .padding(.all, 8)
         .onAppear(perform: setup)
+        .fullScreenCover(isPresented: $isShowingComments, content: {
+            CommentsView(post: self.$post)
+        })
     }
     
     func setup() {
@@ -663,6 +671,137 @@ struct PostActionView: View {
             self.post.likes?.append(FeedLike(userUUID: garyportal.currentUser?.userUUID ?? "", postId: post.postId, isLiked: true))
             self.post.postLikeCount = (self.post.postLikeCount ?? 0) + 1
             self.setup()
+        }
+    }
+}
+
+class CommentsDataSource: ObservableObject {
+    private var postId: Int = 0
+    @Published var comments: [FeedComment] = []
+    @Published var scrollToId = 0
+    
+    func setup(for postId: Int) {
+        self.postId = postId
+        self.loadComments()
+    }
+    
+    func loadComments() {
+        FeedService.getCommentsForPost(self.postId) { (comments, error) in
+            DispatchQueue.main.async {
+                self.comments = comments ?? []
+            }
+        }
+    }
+    
+    func getFilteredComments() -> [FeedComment] {
+        return self.comments.filter( { GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: $0.userUUID ?? "" ) == false })
+    }
+    
+    func postComment(_ text: String, _ completion: @escaping((FeedComment?) -> Void)) {
+        let comment = FeedComment(feedCommentId: 0, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", postId: self.postId, comment: text, isAdminComment: false, isDeleted: false, datePosted: Date(), userDTO: nil)
+        FeedService.postComment(comment) { (finalComment, error) in
+            if let finalComment = finalComment {
+                DispatchQueue.main.async {
+                    self.comments.append(finalComment)
+                    completion(finalComment)
+                }
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    func deleteComment(_ commentId: Int) {
+        FeedService.deleteComment(commentId)
+        DispatchQueue.main.async {
+            self.comments.removeAll(where: { $0.feedCommentId == commentId })
+        }
+    }
+}
+
+struct CommentsView: View {
+    
+    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var datasource: CommentsDataSource = CommentsDataSource()
+    @State var commentText = ""
+    @Binding var post: FeedPost
+    @State var isShowingProfile = false
+    @State var viewingUUID = ""
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                ScrollView {
+                    ScrollViewReader { reader in
+                        LazyVStack {
+                            ForEach(self.datasource.getFilteredComments(), id: \.feedCommentId) { comment in
+                                CommentMessageView(comment: comment)
+                                    .contextMenu {
+                                        Button(action: { UIPasteboard.general.string = comment.comment ?? "" }) { Text("Copy Comment") }
+                                        Button(action: { self.viewingUUID = comment.userUUID ?? ""; self.isShowingProfile = true }) { Text("View Profile") }
+                                        if comment.userUUID == GaryPortal.shared.currentUser?.userUUID {
+                                            Button(action: { self.datasource.deleteComment(comment.feedCommentId ?? 0) }) { Text("Delete Message") + Text(Image(systemName: "trash")) }
+                                        }
+                                    }
+                            }
+                        }
+                        .onChange(of: self.datasource.scrollToId, perform: { value in
+                            reader.scrollTo(Optional(value), anchor: .bottom)
+                        })
+                    }
+                }
+                Spacer().frame(height: 1)
+                ChatMessageBarView(content: $commentText, isCameraAllowed: false, placeHolderText: "Your comment...") { text, _, _, _ in
+                    self.datasource.postComment(text) { comment in
+                        if let comment = comment {
+                            self.commentText = ""
+                            self.post.comments?.append(comment)
+                            self.datasource.scrollToId = comment.feedCommentId ?? 0
+                        }
+                    }
+                }
+                .frame(minHeight: 60)
+            }
+            .navigationTitle("Comments")
+            .navigationBarItems(leading:
+                Button(action: { self.presentationMode.wrappedValue.dismiss() }, label: { Text(Image(systemName: "chevron.left")) + Text("  Close")  })
+            )
+            .onAppear {
+                self.datasource.setup(for: self.post.postId ?? 0)
+            }
+            .sheet(isPresented: $isShowingProfile, content: {
+                ProfileView(uuid: $viewingUUID)
+            })
+        }
+        
+    }
+}
+
+struct CommentMessageView: View {
+    
+    @State var comment: FeedComment
+    var otherUserGradient = [Color(UIColor(hexString: "#4568DC")), Color(UIColor(hexString: "#B06AB3"))]
+    var body: some View {
+        VStack {
+            Spacer().frame(height: 8)
+            HStack {
+                Spacer().frame(width: 8)
+                Text("\(self.comment.userDTO?.userFullName ?? ""), \(comment.datePosted?.niceDateAndTime() ?? "")")
+                Spacer()
+            }
+            HStack {
+                Spacer().frame(width: 8)
+                AsyncImage(url: self.comment.userDTO?.userProfileImageUrl ?? "")
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(Circle())
+                    .frame(width: 45, height: 45)
+                Text(self.comment.comment ?? "")
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(LinearGradient(gradient: Gradient(colors: otherUserGradient), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .cornerRadius(10)
+                Spacer()
+            }
         }
     }
 }
