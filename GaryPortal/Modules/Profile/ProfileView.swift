@@ -272,14 +272,11 @@ struct ProfileStatsView: View {
 struct ProfileMiscView: View {
     
     enum ActiveSheet: Identifiable {
-        case none, rules, book, feedback
+        case none, rules, book, feedback, settings, prayer
         var id: ActiveSheet { self }
     }
     
     @ObservedObject var datasource: ProfileViewDataSource
-    @State var image: UIImageView?
-    @State var isShowingPrayerRoom = false
-    @State var isShowingSettings = false
     
     @State var activeSheet: ActiveSheet?
     
@@ -300,7 +297,7 @@ struct ProfileMiscView: View {
                 }
                
                 Group {
-                    GPGradientButton(action: self.showPrayerRoom, buttonText: "PRAYER ROOM", gradientColours: prayerGradient)
+                    GPGradientButton(action: { openURL(url: .prayer )}, buttonText: "PRAYER ROOM", gradientColours: prayerGradient)
                     Spacer().frame(height: 16)
                     GPGradientButton(action: { openURL(url: .rules )}, buttonText: "RULES AND REGULATIONS", gradientColours: rulesGradient)
                     Spacer().frame(height: 16)
@@ -308,10 +305,8 @@ struct ProfileMiscView: View {
                     Spacer().frame(height: 16)
                     GPGradientButton(action: { openURL(url: .feedback )}, buttonText: "APP FEEDBACK", gradientColours: feedbackGradient)
                     Spacer().frame(height: 16)
-                    GPGradientButton(action: self.showSettings, buttonText: "SETTINGS", gradientColours: settingsGradient)
-                        .sheet(isPresented: $isShowingSettings, content: {
-                            ProfileSettingsView(datasource: self.datasource)
-                        })
+                    GPGradientButton(action: { openURL(url: .settings )}, buttonText: "SETTINGS", gradientColours: settingsGradient)
+  
                 }
                 
                 Spacer().frame(height: 16)
@@ -321,8 +316,12 @@ struct ProfileMiscView: View {
                     SafariView(url: GaryPortalConstants.URLs.RulesURL)
                 } else if item == ActiveSheet.book {
                     SafariView(url: GaryPortalConstants.URLs.ComputerDatingURL)
-                } else {
+                } else if item == ActiveSheet.feedback {
                     SafariView(url: GaryPortalConstants.URLs.FeedbackURL)
+                } else if item == ActiveSheet.prayer {
+                    PrayerRoomView(datasource: self.datasource)
+                } else {
+                    ProfileSettingsView(datasource: self.datasource)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -335,14 +334,6 @@ struct ProfileMiscView: View {
     
     func openURL(url: ActiveSheet) {
         self.activeSheet = url
-    }
-    
-    func showPrayerRoom() {
-        self.isShowingPrayerRoom = true
-    }
-    
-    func showSettings() {
-        self.isShowingSettings = true
     }
 }
 
