@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import SwiftDate
 
 struct ChatView: View {
     
@@ -88,8 +89,18 @@ struct ChatView: View {
                     }
                     
                     if !text.isEmptyOrWhitespace() {
+                        
                         let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                         self.datasource.postNewMessage(message: message)
+                        
+                        if text.first == "?" {
+                            ChatService.getBotMessageResponse(for: text) { (response, error) in
+                                if let response = response {
+                                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    self.datasource.postNewMessage(message: message)
+                                }
+                            }
+                        }
                     }
                     self.textMessage = ""
                 }
@@ -301,11 +312,16 @@ struct ChatMessageView: View {
                         Text(chatMessage.messageContent ?? "")
                             .foregroundColor(.white)
                             .padding()
-                            .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#f7ff00")), Color(UIColor(hexString: "#db36a4"))]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#00b09b")), Color(UIColor(hexString: "#96c93d"))]), startPoint: .topLeading, endPoint: .bottomTrailing))
                             .cornerRadius(10)
                         Spacer()
                     }
-                    
+                    .if(GaryPortal.shared.currentUser?.userIsStaff == true) {
+                        $0.contextMenu(menuItems: {
+                            Button("Delete Bot Message") { self.deleteMessage() }
+                        })
+                    }
+                    Divider()
                 } else {
                     
                     if chatMessage.isAdminMessage() {

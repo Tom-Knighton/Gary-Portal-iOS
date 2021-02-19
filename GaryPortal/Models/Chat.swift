@@ -165,3 +165,9 @@ struct ChatMessageType: Codable {
     let chatMessageTypeName: String?
     let isProtected: Bool?
 }
+
+struct BotMessageRequest: Codable {
+    
+    let input: String?
+    let version: String?
+}

@@ -224,4 +224,22 @@ struct ChatService {
             }
         }
     }
+    
+    static func getBotMessageResponse(for input: String, _ completion: @escaping ((String?, APIError?) -> Void)) {
+        let request = APIRequest(method: .post, path: "chat/botmessage")
+        let botmessage = BotMessageRequest(input: input, version: "4.0.0")
+        request.body = botmessage.jsonEncode()
+        APIClient().perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: String.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion("API ERROR", .codingFailure)
+                }
+            case .failure:
+                completion("API ERROR", .networkFail)
+            }
+        }
+    }
 }
