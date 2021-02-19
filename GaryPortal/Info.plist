@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -15,11 +17,19 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>554</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Enables access to library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Enable access to the camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Enables access to microphone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Enables access to photo library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-SemiBold.ttf</string>
@@ -67,15 +77,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Enable access to the camera</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Enables access to library</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Enables access to photo library</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Enables access to microphone</string>
-	<key></key>
-	<string></string>
 </dict>
 </plist>

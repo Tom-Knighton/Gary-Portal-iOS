@@ -97,7 +97,7 @@ struct ProfileSettingsView: View {
     
     func updateSettings(userDetails: UserDetails) {
         UserService.updateUserDetails(userUUID: self.datasource.user?.userUUID ?? "", userDetails: userDetails) { (newUser, error) in
-            if let error = error {
+            if let _ = error {
                 return
             }
             DispatchQueue.main.async {
@@ -295,7 +295,7 @@ struct AppSettingsView: View {
             
             GPGradientButton(action: {}, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: {}, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
-            Text("Gary Portal v4.0.0 ALPHA")
+            Text("\(Bundle.main.appName) v\(Bundle.main.versionNumber) (Build \(Bundle.main.buildNumber))")
             Spacer().frame(height: 16)
             
         }
