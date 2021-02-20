@@ -309,8 +309,7 @@ struct ChatMessageView: View {
                     }
                     HStack {
                         Spacer()
-                        Text(chatMessage.messageContent ?? "")
-                            .foregroundColor(.white)
+                        messageContent(input: self.chatMessage.messageContent ?? "")
                             .padding()
                             .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#00b09b")), Color(UIColor(hexString: "#96c93d"))]), startPoint: .topLeading, endPoint: .bottomTrailing))
                             .cornerRadius(10)
@@ -455,7 +454,7 @@ struct ChatMessageView: View {
     }
 
     @ViewBuilder
-    func messageContent() -> some View {
+    func messageContent(input: String = "") -> some View {
         switch self.chatMessage.messageTypeId {
         case 1:
             Text(self.chatMessage.messageContent ?? "")
@@ -471,6 +470,15 @@ struct ChatMessageView: View {
                     .fixedSize(horizontal: true, vertical: true)
                     .cornerRadius(25)
                     .padding(.all, 8)
+            }
+        case 5, 6:
+            if let _ = URL(string: input) {
+                GIFView(gifUrl: input)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: 250, maxHeight: 400)
+            } else {
+                Text(input)
+                    .foregroundColor(.white)
             }
             
         default:

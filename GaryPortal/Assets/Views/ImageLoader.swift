@@ -48,3 +48,44 @@ struct AsyncImage: View {
             .resizable()
     }
 }
+
+class GIFPlayerView: UIView {
+    private let imageView = UIImageView()
+    
+    convenience init(url: String) {
+        self.init()
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+            let gif = UIImage.gifImageWithURL(url)
+            DispatchQueue.main.async {
+                self.imageView.image = gif
+                self.imageView.contentMode = .scaleToFill
+                self.addSubview(self.imageView)
+            }
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.frame = bounds
+    }
+}
+
+struct GIFView: UIViewRepresentable {
+    var gifUrl: String
+    
+    func makeUIView(context: Context) -> some UIView {
+        return GIFPlayerView(url: gifUrl)
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        
+    }
+}
