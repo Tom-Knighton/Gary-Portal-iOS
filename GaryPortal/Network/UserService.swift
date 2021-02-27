@@ -15,7 +15,7 @@ struct UserService {
     static func getAllUsers(for teamId: Int = 0, completion: @escaping (([User]?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "users")
         request.queryItems = [URLQueryItem(name: "teamId", value: String(describing: teamId))]
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [User].self) {
@@ -29,25 +29,25 @@ struct UserService {
         }
     }
 
-    static func getUser(with uuid: String, completion: @escaping ((User?) -> Void)) {
+    static func getUser(with uuid: String, completion: @escaping ((User?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "users/\(uuid)")
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request, refresh: true) { (result) in
             switch result {
-            case .failure(_):
-                completion(nil)
+            case .failure(let error):
+                completion(nil, error)
             case.success(let response):
                 if let response = try? response.decode(to: User.self) {
-                    completion(response.body)
+                    completion(response.body, nil)
                 } else {
-                    completion(nil)
+                    completion(nil, .codingFailure)
                 }
             }
         }
     }
     
     static func getCurrentUser(completion: @escaping ((User?, APIError?) -> Void)) {
-        UserService.getUser(with: KeychainWrapper.standard.string(forKey: "UUID") ?? "") { (user) in
-            completion(user, nil)
+        UserService.getUser(with: KeychainWrapper.standard.string(forKey: "UUID") ?? "") { (user, error) in
+            completion(user, error)
         }
     }
     
@@ -66,7 +66,7 @@ struct UserService {
             data.append(imgData)
             data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
             request.body = data
-            APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+            APIClient.shared.perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
                 switch result {
                 case .success(let response):
                     if let response = try? response.decode(to: String.self) {
@@ -86,7 +86,7 @@ struct UserService {
     static func updatePointsForUser(userUUID: String, userPoints: UserPoints, completion: @escaping ((UserPoints?, APIError?) -> Void)) {
         let request = APIRequest(method: .put, path: "users/updatepointsforuser/\(userUUID)")
         request.body = try? JSONEncoder().encode(userPoints)
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .failure:
                 completion(nil, .networkFail)
@@ -103,7 +103,7 @@ struct UserService {
     static func updateUserDetails(userUUID: String, userDetails: UserDetails, completion: @escaping ((User?, APIError?) -> Void)) {
         let request = APIRequest(method: .put, path: "users/updatedetailsforuser/\(userUUID)")
         request.body = try? JSONEncoder().encode(userDetails)
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .failure:
                 completion(nil, .networkFail)
@@ -119,7 +119,7 @@ struct UserService {
     
     static func getBlockedUsers(userUUID: String, _ completion: @escaping (([UserBlock]?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "users/getblockedusersfor/\(userUUID)")
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [UserBlock].self) {
@@ -135,7 +135,7 @@ struct UserService {
     
     static func blockUser(blockerUUID: String, blockedUUID: String, _ completion: @escaping ((UserBlock?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "users/blockuser/\(blockerUUID)/\(blockedUUID)")
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: UserBlock.self) {
@@ -151,7 +151,7 @@ struct UserService {
     
     static func unblockUser(blockerUUID: String, blockedUUID: String, _ completion: @escaping (() -> Void)) {
         let request = APIRequest(method: .post, path: "users/unblockuser/\(blockerUUID)/\(blockedUUID)")
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             completion()
         }
     }
@@ -160,6 +160,17 @@ struct UserService {
         let report = UserReport(userReportId: 0, userUUID: uuid, reportReason: reason, reportIssuedAt: Date(), reportByUUID: reportedBy, isDeleted: false, reportedUser: nil, reporter: nil)
         let request = APIRequest(method: .post, path: "users/reportuser/\(uuid)")
         request.body = report.jsonEncode()
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
+    }
+    
+    static func postAPNS(uuid: String, apns: String) {
+        let request = APIRequest(method: .post, path: "users/addapns/\(uuid)/\(apns)")
+        APIClient.shared.perform(request, nil)
+    }
+    
+    static func postNotification(to uuid: String, content: String) {
+        let request = APIRequest(method: .post, path: "users/SendNotification/\(uuid)")
+        request.body = content.jsonEncode()
+        APIClient.shared.perform(request, nil)
     }
 }

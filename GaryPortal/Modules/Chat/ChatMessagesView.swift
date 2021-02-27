@@ -75,6 +75,7 @@ struct ChatView: View {
                                 if let url = url {
                                     let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                                     self.datasource.postNewMessage(message: assetMessage)
+                                    self.datasource.postNotification(for: "posted an image")
                                 }
                             }
                         }
@@ -83,6 +84,7 @@ struct ChatView: View {
                                 if let url = url {
                                     let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                                     self.datasource.postNewMessage(message: assetMessage)
+                                    self.datasource.postNotification(for: "posted a video")
                                 }
                             }
                         }
@@ -92,7 +94,8 @@ struct ChatView: View {
                         
                         let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                         self.datasource.postNewMessage(message: message)
-                        
+                        self.datasource.postNotification(for: message.messageContent ?? "")
+
                         if text.first == "?" {
                             ChatService.getBotMessageResponse(for: text) { (response, error) in
                                 if let response = response {
@@ -479,6 +482,7 @@ struct ChatMessageView: View {
             } else {
                 Text(input)
                     .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
             }
             
         default:

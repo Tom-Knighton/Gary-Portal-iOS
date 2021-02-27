@@ -15,7 +15,7 @@ struct UserAuthentication: Codable {
     let userPhone: String?
     let userEmailConfirmed: Bool?
     let userPhoneConfirmed: Bool?
-
+    let userPassSalt: String?
 }
 
 struct UserAuthenticationTokens: Codable {

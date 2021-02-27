@@ -26,14 +26,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         self.window?.makeKeyAndVisible()
         
-        if KeychainWrapper.standard.string(forKey: "JWT")?.isEmpty == false && UserDefaults.standard.bool(forKey: "hasLoggedIn") {
+        if KeychainWrapper.standard.string(forKey: "JWT")?.isEmpty == false && UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName)?.bool(forKey: "hasLoggedIn") == true {
             //If user has logged in and a JWT is present
             UserService.getCurrentUser { (user, error) in
                 DispatchQueue.main.async {
                     if user != nil {
                         // User logged in successfully
                         GaryPortal.shared.currentUser = user
-                        GaryPortal.shared.loginUser(uuid: user?.userUUID ?? "")
+                        GaryPortal.shared.loginUser(uuid: user?.userUUID ?? "", salt: user?.userAuthentication?.userPassSalt ?? "")
                     } else {
                         // User's login has expired
                         self.window?.rootViewController = UIHostingController(rootView: SignInNavigationHost())
@@ -46,11 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window?.rootViewController = UIHostingController(rootView: SignInNavigationHost())
             self.window?.makeKeyAndVisible()
         }
-        
-        UserDefaults.standard.register(defaults: [
-            GaryPortalConstants.UserDefaults.autoPlayVideos: true,
-            GaryPortalConstants.UserDefaults.notifications: true,
-        ])
+
         FileManager.default.clearTmpDirectory()
     }
 
@@ -82,8 +78,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
 extension SceneDelegate: UIGestureRecognizerDelegate {

@@ -10,18 +10,43 @@ import UIKit
 import SwiftKeychainWrapper
 import SwiftUI
 
+public enum NotificationSheetDisplayMode: Identifiable {
+    case none
+    case chat
+    case feedComments
+    case whatsNew
+    public var id: NotificationSheetDisplayMode { self }
+}
+
 class GaryPortal: NSObject, ObservableObject {
     
     @Published var currentUser: User?
-    @Published var localAppSettings: AppSettings = AppSettings()
+    @Published var notificationSheetDisplayMode: NotificationSheetDisplayMode?
+    @Published var viewingNotificationChat: Chat?
+    @Published var viewingNotificationPost: FeedPost?
+    @Published var notificationFeedID = 0
     
+    @Published var currentNotificationData: GPNotificationData?
+    @Published var showNotification = false
+    
+    @Published var currentPageIndex = 1
+
     var chatConnection: ChatConnection?
+    var hubConnection: GaryPortalHub?
 
     static let shared = GaryPortal()
     
-    func loginUser(uuid: String) {
-        UserDefaults.standard.set(true, forKey: "hasLoggedIn")
+    func loginUser(uuid: String, salt: String) {
+        UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName)?.set(true, forKey: "hasLoggedIn")
         KeychainWrapper.standard.set(uuid, forKey: "UUID")
+        
+        let oldSalt = KeychainWrapper.standard.string(forKey: "salt")
+        if let oldSalt = oldSalt, oldSalt.isEmptyOrWhitespace() == false && salt != oldSalt {
+            self.logoutUser()
+            return
+        }
+        KeychainWrapper.standard.set(salt, forKey: "salt")
+        
         DispatchQueue.main.async {
             let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
             if var topController = keyWindow?.rootViewController {
@@ -32,15 +57,27 @@ class GaryPortal: NSObject, ObservableObject {
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)
             }
+            UIApplication.shared.registerForRemoteNotifications()
+            
+            self.chatConnection = ChatConnection()
+            self.hubConnection = GaryPortalHub()
+            
+            if UserDefaults.standard.bool(forKey: GaryPortalConstants.hasSeenWhatsNew) == false {
+                print(UserDefaults.standard.bool(forKey: GaryPortalConstants.hasSeenWhatsNew))
+                self.notificationSheetDisplayMode = .whatsNew
+            }
         }
-        self.chatConnection = ChatConnection()
+        
     }
     
     func logoutUser() {
+        UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName)?.set(false, forKey: "hasLoggedIn")
+        KeychainWrapper.standard.set("", forKey: "salt")
         KeychainWrapper.standard.set("", forKey: "UUID")
         updateTokens(tokens: UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
         
         DispatchQueue.main.async {
+            UIApplication.shared.unregisterForRemoteNotifications()
             let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
 
             if var topController = keyWindow?.rootViewController {
@@ -70,6 +107,42 @@ class GaryPortal: NSObject, ObservableObject {
     func getTokens() -> UserAuthenticationTokens {
         return UserAuthenticationTokens(authenticationToken: KeychainWrapper.standard.string(forKey: "JWT"), refreshToken: KeychainWrapper.standard.string(forKey: "JWTREFRESH"))
     }
+    
+    func goToChatFromNotification(chatUUID: String) {
+        ChatService.getChat(by: chatUUID) { (chat, error) in
+            if let chat = chat {
+                DispatchQueue.main.async {
+                    self.viewingNotificationChat = chat
+                    self.notificationSheetDisplayMode = .chat
+                }
+            }
+        }
+    }
+    
+    func goToCommentsFromNotification(feedPostId: Int) {
+        FeedService.getPost(by: feedPostId) { (post, error) in
+            if let post = post {
+                DispatchQueue.main.async {
+                    self.viewingNotificationPost = post
+                    self.notificationSheetDisplayMode = .feedComments
+                }
+            }
+        }
+    }
+    
+    private var notificationTimer: Timer?
+    func showNotification(data: GPNotificationData) {
+        self.currentNotificationData = data
+        self.showNotification = true
+        self.notificationTimer?.invalidate()
+        self.notificationTimer = Timer.scheduledTimer(withTimeInterval: 4, repeats: false, block: { _ in
+            self.hideNotification()
+        })
+    }
+    
+    func hideNotification() {
+        self.showNotification = false
+    }
 }
 
 struct GaryPortalConstants {
@@ -84,8 +157,10 @@ struct GaryPortalConstants {
     
     static let APIBaseUrl = "https://api.garyportal.tomk.online/api/"
     static let APIChatHub = "https://api.garyportal.tomk.online/chathub"
+    static let APIMiscHub = "https://api.garyportal.tomk.online/apphub"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
+    static let hasSeenWhatsNew = "hasSeenv400Changelog"
     
     struct Errors {
         
@@ -111,9 +186,7 @@ struct GaryPortalConstants {
     }
     
     struct UserDefaults {
-        
-        static let autoPlayVideos = "appSettingsAutoPlayVideos"
-        static let notifications = "appSettingsNotifications"
+        static let suiteName = "group.garyportal"
     }
     
     struct Messages {

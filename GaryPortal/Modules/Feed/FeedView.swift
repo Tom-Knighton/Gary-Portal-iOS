@@ -23,57 +23,71 @@ struct FeedView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                List {
-                    AditLogView(datasource: datasource)
-                        .listRowBackground(Color.clear)
-                    FeedPostTable(dataSource: datasource)
+            if self.datasource.isFeedBanned {
+                ZStack {
+                    Color.black.cornerRadius(10).edgesIgnoringSafeArea(.all)
+                    Text("You have been temporarily banned from GaryGram, please wait until your ban expires to access the feed again")
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .edgesIgnoringSafeArea(.all)
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height)
-                .listSeparatorStyle(.none)
-                .introspectTableView { (tableView) in
-                    tableView.refreshControl = UIRefreshControl { refreshControl in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            self.datasource.reset()
-                            self.datasource.loadAditLogs()
-                            self.datasource.loadMoreContent()
-                            refreshControl.endRefreshing()
+            } else {
+                ZStack {
+                    List {
+                        AditLogView(datasource: datasource)
+                            .listRowBackground(Color.clear)
+                        FeedPostTable(dataSource: datasource)
+                    }
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .listSeparatorStyle(.none)
+                    .introspectTableView { (tableView) in
+                        tableView.refreshControl = UIRefreshControl { refreshControl in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                self.datasource.reset()
+                                self.datasource.loadAditLogs()
+                                self.datasource.loadMoreContent()
+                                refreshControl.endRefreshing()
+                            }
                         }
+                        
                     }
                     
                 }
-                
-            }
-            VStack {
-                Spacer()
-                HStack {
+                VStack {
                     Spacer()
-                    Button(action: { self.isShowingCreator = true }) {
-                        Image("upload-glyph")
-                            .frame(width: 64, height: 64)
-                            .cornerRadius(10)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))]), startPoint: .topLeading, endPoint: .bottomTrailing).cornerRadius(10))
+                    HStack {
+                        Spacer()
+                        Button(action: { self.isShowingCreator = true }) {
+                            Image("upload-glyph")
+                                .frame(width: 64, height: 64)
+                                .cornerRadius(10)
+                                .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))]), startPoint: .topLeading, endPoint: .bottomTrailing).cornerRadius(10))
+                        }
+                        .opacity(0.75)
+                        .padding()
+                        .shadow(radius: 5)
+                        Spacer().frame(width: 16)
                     }
-                    .opacity(0.75)
-                    .padding()
-                    .shadow(radius: 5)
-                    Spacer().frame(width: 16)
+                    Spacer().frame(height: 16)
                 }
-                Spacer().frame(height: 16)
             }
+            
         }
         .edgesIgnoringSafeArea(.bottom)
         .edgesIgnoringSafeArea(.leading)
         .edgesIgnoringSafeArea(.trailing)
         .onAppear {
             datasource.loadAditLogs()
+            self.datasource.aditLogs = []
+            self.datasource.posts = []
+            datasource.loadMoreContent()
         }
         .sheet(isPresented: $isShowingCreator) {
             UploadPostView(datasource: datasource)
         }
     }
-    
-    
 }
 
 struct AditLogView: View {
@@ -214,11 +228,11 @@ class FeedPostsDataSource: ObservableObject {
     @Published var aditLogGroups = [AditLogGroup]()
     @Published var isLoadingPage = false
     @Published var canLoadMore = true
+    @Published var isFeedBanned = false
     private var isFirstLoad = true
     private var lastDateFrom = Date()
     
     init() {
-        loadMoreContent()
         NotificationCenter.default.addObserver(self, selector: #selector(clearVotes(_:)), name: .postVotesCleared, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(removePost(_:)), name: .postDeleted, object: nil)
     }
@@ -242,7 +256,7 @@ class FeedPostsDataSource: ObservableObject {
                     self.aditLogs = []
                     self.aditLogs = aditLogs ?? []
                     self.mapAditLogs()
-                }
+                } 
             }
         }
     }
@@ -276,7 +290,7 @@ class FeedPostsDataSource: ObservableObject {
         
         isLoadingPage = true
         FeedService.getFeedPosts(startingFrom: lastDateFrom, limit: 10) { (newPosts, error) in
-            if error == nil {
+            if error == nil && GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 3) == nil {
                 DispatchQueue.main.async {
                     newPosts?.forEach({ (newPost) in
                         if !self.posts.contains(where: { $0.postId == newPost.postId }) {
@@ -292,6 +306,12 @@ class FeedPostsDataSource: ObservableObject {
                     if self.isFirstLoad {
                         NotificationCenter.default.post(name: .movedFromFeed, object: nil)
                         self.isFirstLoad = false
+                    }
+                }
+            } else {
+                if error == APIError.feedBan || GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 3) != nil {
+                    DispatchQueue.main.async {
+                        self.isFeedBanned = true
                     }
                 }
             }
@@ -365,8 +385,6 @@ struct PostMediaView: View {
     
     var post: FeedMediaPost
     @State var isPlaying = false
-    @AppStorage(GaryPortalConstants.UserDefaults.autoPlayVideos) var autoPlayVideos = false
-
     
     let disapperPub = NotificationCenter.default.publisher(for: .movedFromFeed)
     let appearPub = NotificationCenter.default.publisher(for: .goneToFeed)
@@ -376,17 +394,32 @@ struct PostMediaView: View {
             PostHeaderView(post: post)
             
             if post.isVideo == true {
-                PlayerView(url: post.postUrl ?? "", play: $isPlaying)
+                PlayerView(url: post.postUrl ?? "", play: $isPlaying, gravity: .fit)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity, minHeight: 50, maxHeight: .infinity)
                     .cornerRadius(15)
-                    .frame(maxWidth: .infinity, minHeight: 350)
                     .padding(8)
                     .shadow(radius: 3)
                     .onTapGesture {
                         self.isPlaying = !self.isPlaying
                     }
                     .onAppear {
-                        self.isPlaying = self.autoPlayVideos
+                        self.isPlaying = false
                     }
+                    .overlay(
+                        VStack {
+                            if !self.isPlaying {
+                                HStack {
+                                    Text(Image(systemName: "play.circle")) + Text("  Paused")
+                                }
+                                .foregroundColor(.white)
+                                .padding(.all, 8)
+                                .background(Color.black.opacity(0.4))
+                                .cornerRadius(10)
+                                .shadow(radius: 3)
+                            }
+                        }
+                    )
                     .onDisappear {
                         self.isPlaying = false
                     }
@@ -414,7 +447,7 @@ struct PostMediaView: View {
             self.isPlaying = false
         })
         .onReceive(appearPub, perform: { _ in
-            self.isPlaying = self.autoPlayVideos
+            self.isPlaying = false
         })
     }
     
@@ -717,6 +750,10 @@ class CommentsDataSource: ObservableObject {
             self.comments.removeAll(where: { $0.feedCommentId == commentId })
         }
     }
+    
+    func postNotification(_ content: String) {
+        FeedService.postCommentNotification(for: self.postId, content: content)
+    }
 }
 
 struct CommentsView: View {
@@ -735,7 +772,7 @@ struct CommentsView: View {
                 ScrollView {
                     ScrollViewReader { reader in
                         LazyVStack {
-                            if self.post.postType == "media" {
+                            if self.post.postType == "media" && post.postDescription?.isEmptyOrWhitespace() == false {
                                 CommentMessageView(comment: descComment)
                                     .contextMenu {
                                         Button(action: { UIPasteboard.general.string = descComment.comment ?? "" }) { Text("Copy Description") }
@@ -765,6 +802,7 @@ struct CommentsView: View {
                             self.commentText = ""
                             self.post.comments?.append(comment)
                             self.datasource.scrollToId = comment.feedCommentId ?? 0
+                            self.datasource.postNotification((GaryPortal.shared.currentUser?.userName ?? "") + " commented on your post: \(comment.comment ?? "")")
                         }
                     }
                 }

@@ -13,12 +13,8 @@ struct StaffRoomView: View {
     
     var body: some View {
         NavigationView {
-            GradientBackground()
-                .overlay(StaffRoomHome())
+            StaffRoomHome()
                 .navigationTitle("Staff Room")
-                .onAppear {
-                    UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.systemBackground]
-                }
         }
     }
 }
@@ -41,60 +37,59 @@ struct StaffRoomHome: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: AnnouncementsView(announcements: $announcements)) {
-                VStack {
+            ScrollView {
+                NavigationLink(destination: AnnouncementsView(announcements: $announcements)) {
+                    VStack {
+                        Spacer().frame(height: 16)
+                        Text(announcements.first?.announcement ?? "Test announcement 2")
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .padding(.leading, 8)
+                            .padding(.trailing, 8)
+                            .padding(.bottom, 8)
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(.primary)
+                        Text("See all announcements ➜")
+                            .padding(.bottom, 8)
+                            .font(.subheadline)
+                            .foregroundColor(.primary)
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 5).stroke()
+                            .foregroundColor(Color.primary)
+                    )
+                    .padding()
+                }
+                
+                Text("Team: \(garyportal.currentUser?.userTeam?.team?.teamName ?? "Team")")
+                    .font(.custom("Montserrat-SemiBold", size: 19))
+                
+                Group {
                     Spacer().frame(height: 16)
-                    Text(announcements.first?.announcement ?? "Test announcement 2")
-                        .bold()
-                        .multilineTextAlignment(.center)
-                        .padding(.leading, 8)
-                        .padding(.trailing, 8)
-                        .padding(.bottom, 8)
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(Color(UIColor.systemBackground))
-                    Text("See all announcements ➜")
-                        .padding(.bottom, 8)
-                        .font(.subheadline)
-                        .foregroundColor(Color(UIColor.systemBackground))
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 5).stroke()
-                        .foregroundColor(Color(UIColor.systemBackground))
-                )
-                .padding()
-            }
-            
-            Text("Team: \(garyportal.currentUser?.userTeam?.team?.teamName ?? "Team")")
-                .font(.custom("Montserrat-SemiBold", size: 19))
-                .foregroundColor(Color(UIColor.systemBackground))
-            
-            Group {
-                Spacer().frame(height: 32)
-                GPGradientButton(action: { self.isShowingTeamList = true }, buttonText: "Manage Team ➜", gradientColours: manageTeamGradient)
-                    .padding()
-                    .sheet(isPresented: $isShowingTeamList, content: {
-                        UserList(teamId: garyportal.currentUser?.userTeam?.teamId ?? 0)
-                    })
-                
-                if garyportal.currentUser?.userIsAdmin ?? true {
-                    GPGradientButton(action: { self.isShowingQueueList = true }, buttonText: "Manage Queue ➜", gradientColours: queueGradient)
+                    GPGradientButton(action: { self.isShowingTeamList = true }, buttonText: "Manage Team ➜", gradientColours: manageTeamGradient)
                         .padding()
-                        .sheet(isPresented: $isShowingQueueList, content: {
-                            UserList(teamId: 0, isQueue: true)
+                        .sheet(isPresented: $isShowingTeamList, content: {
+                            UserList(teamId: garyportal.currentUser?.userTeam?.teamId ?? 0)
                         })
+                    
+                    if garyportal.currentUser?.userIsAdmin ?? true {
+                        GPGradientButton(action: { self.isShowingQueueList = true }, buttonText: "Manage Queue ➜", gradientColours: queueGradient)
+                            .padding()
+                            .sheet(isPresented: $isShowingQueueList, content: {
+                                UserList(teamId: 0, isQueue: true)
+                            })
+                    }
+                    
+                    GPGradientButton(action: { self.isShowingRelieveSelf = true }, buttonText: "Relieve Self ➜", gradientColours: relieveGradient)
+                        .padding()
+                        .sheet(isPresented: $isShowingRelieveSelf, content: {
+                            StaffRoomRelieveView()
+                        })
+                    GPGradientButton(action: { getJoke() }, buttonText: "Tell me a joke", gradientColours: jokeGradient)
+                        .padding()
                 }
-                
-                GPGradientButton(action: { self.isShowingRelieveSelf = true }, buttonText: "Relieve Self ➜", gradientColours: relieveGradient)
-                    .padding()
-                    .sheet(isPresented: $isShowingRelieveSelf, content: {
-                        StaffRoomRelieveView()
-                    })
-                GPGradientButton(action: { getJoke() }, buttonText: "Tell me a joke", gradientColours: jokeGradient)
-                    .padding()
-                
+                Spacer()
             }
-            
-            Spacer()
         }
         .alert(isPresented: $isShowingMessage, content: {
             Alert(title: Text(messageTitle), message: Text(message), dismissButton: .default(Text("Haha! :)")))

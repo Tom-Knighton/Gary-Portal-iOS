@@ -10,11 +10,27 @@ import UIKit
 
 struct FeedService {
     
+    static func getPost(by id: Int, _ completion: @escaping ((FeedPost?, APIError?) -> Void)) {
+        let request = APIRequest(method: .get, path: "feed/\(id)")
+        APIClient.shared.perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: FeedPost.self) {
+                    completion(response.body, nil)
+                } else {
+                    completion(nil, .codingFailure)
+                }
+            case .failure(let fail):
+                completion(nil, fail)
+            }
+        }
+    }
+    
     static func getFeedPosts(startingFrom: Date? = Date(), limit: Int = 10, completion: @escaping(([FeedPost]?, APIError?) -> Void)) {
         let timefrom = String(describing: Int((startingFrom?.timeIntervalSince1970.rounded() ?? 0) * 1000) + 60000)
         let request = APIRequest(method: .get, path: "feed")
         request.queryItems = [URLQueryItem(name: "startfrom", value: timefrom), URLQueryItem(name: "limit", value: String(describing: limit))]
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [ClassWrapper<FeedFamily, FeedPost>].self) {
@@ -22,15 +38,15 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
     
     static func getAditLogs(completion: @escaping (([AditLog]?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "feed/aditlogs")
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [AditLog].self) {
@@ -38,8 +54,8 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
@@ -90,7 +106,7 @@ struct FeedService {
             return
         }
         
-        APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+        APIClient.shared.perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: AditLogUrlResult.self) {
@@ -98,8 +114,8 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
@@ -149,7 +165,7 @@ struct FeedService {
             return
         }
         
-        APIClient().perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+        APIClient.shared.perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: String.self) {
@@ -157,8 +173,8 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
@@ -166,7 +182,7 @@ struct FeedService {
     static func postAditLog(_ aditLog: AditLog, _ completion: @escaping((AditLog?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "feed/aditlog")
         request.body = aditLog.jsonEncode()
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: AditLog.self) {
@@ -174,8 +190,8 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
@@ -183,7 +199,7 @@ struct FeedService {
     static func postMediaPost(_ mediaPost: FeedMediaPost, _ completion: @escaping((FeedMediaPost?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "feed")
         request.body = mediaPost.jsonEncode()
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: FeedMediaPost.self) {
@@ -191,8 +207,8 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
@@ -200,7 +216,7 @@ struct FeedService {
     static func postPollPost(_ pollPost: FeedPollPost, _ completion: @escaping((FeedPollPost?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "feed")
         request.body = pollPost.jsonEncode()
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: FeedPollPost.self) {
@@ -208,15 +224,15 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
     
     static func getCommentsForPost(_ postId: Int, _ completion: @escaping(([FeedComment]?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "feed/getcommentsforpost/\(postId)")
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [FeedComment].self) {
@@ -224,8 +240,8 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
@@ -233,7 +249,7 @@ struct FeedService {
     static func postComment(_ comment: FeedComment, _ completion: @escaping ((FeedComment?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "feed/commentonpost")
         request.body = comment.jsonEncode()
-        APIClient().perform(request) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: FeedComment.self) {
@@ -241,47 +257,53 @@ struct FeedService {
                 } else {
                     completion(nil, .codingFailure)
                 }
-            case .failure:
-                completion(nil, .networkFail)
+            case .failure(let fail):
+                completion(nil, fail)
             }
         }
     }
     
     static func deleteComment(_ commentId: Int) {
         let request = APIRequest(method: .put, path: "feed/deletecomment/\(commentId)")
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
     
     static func watchAditLog(_ aditLogId: Int, uuid: String) {
         let request = APIRequest(method: .put, path: "feed/watchedaditlog/\(aditLogId)/\(uuid)")
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
     static func reportPost(_ postId: Int, from uuid: String, for reason: String) {
         let report = FeedReport(feedReportId: 0, feedPostId: postId, reportReason: reason, reportIssuedAt: Date(), reportByUUID: uuid, isDeleted: false, reportedPost: nil, reporter: nil)
         let request = APIRequest(method: .post, path: "feed/reportpost/\(postId)")
         request.body = report.jsonEncode()
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
     static func deletePost(postId: Int) {
         let request = APIRequest(method: .put, path: "feed/deletepost/\(postId)")
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
     static func toggleLikeForPost(postId: Int, userUUID: String) {
         let request = APIRequest(method: .put, path: "feed/togglelike/\(postId)/\(userUUID)")
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
     static func voteOnPoll(for answerId: Int, userUUID: String) {
         let request = APIRequest(method: .put, path: "feed/votefor/\(answerId)/\(userUUID)")
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
     static func resetPollVotes(for postId: Int) {
         let request = APIRequest(method: .put, path: "feed/resetvotes/\(postId)")
-        APIClient().perform(request, nil)
+        APIClient.shared.perform(request, nil)
+    }
+    
+    static func postCommentNotification(for postId: Int, content: String) {
+        let request = APIRequest(method: .post, path: "feed/commentnotification/\(postId)")
+        request.body = content.jsonEncode()
+        APIClient.shared.perform(request, nil)
     }
 }

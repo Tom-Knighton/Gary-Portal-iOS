@@ -36,88 +36,101 @@ struct ChatListView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            List {
-                ForEach(dataSource.getChatsFiltered(), id: \.chatUUID) { chat in
-                    ZStack {
-                        NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
-                            EmptyView()
-                        }
-                        .frame(width: 0)
-                        .opacity(0)
-                        
-                        ChatListItem(chat: chat)
-                            .contextMenu(menuItems: {
-                                if chat.chatIsProtected == false {
-                                    if chat.canRenameChat() {
-                                        Button(action: { self.beginEditChat(chat: chat) }, label: {
-                                            Text("Rename chat")
-                                            Image(systemName: "pencil")
+            if self.dataSource.isChatBanned {
+                ZStack {
+                    Color.black.cornerRadius(5).edgesIgnoringSafeArea(.all)
+                    Text("You have been temporarily banned from GaryChat, please wait until your ban expires to access GaryChat again")
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .edgesIgnoringSafeArea(.all)
+                }
+            } else {
+                List {
+                    ForEach(dataSource.getChatsFiltered(), id: \.chatUUID) { chat in
+                        ZStack {
+                            NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
+                                EmptyView()
+                            }
+                            .frame(width: 0)
+                            .opacity(0)
+                            
+                            ChatListItem(chat: chat)
+                                .contextMenu(menuItems: {
+                                    if chat.chatIsProtected == false {
+                                        if chat.canRenameChat() {
+                                            Button(action: { self.beginEditChat(chat: chat) }, label: {
+                                                Text("Rename chat")
+                                                Image(systemName: "pencil")
+                                            })
+                                        }
+
+                                        Button(action: { self.leaveChat(chat: chat) }, label: {
+                                            Text("Leave chat")
+                                            Image(systemName: "hand.wave.fill")
                                         })
                                     }
+                                })
+                        }
+                        .animation(Animation.spring())
+                        .listRowBackground(Color.clear)
+                        .background(Color.clear)
 
-                                    Button(action: { self.leaveChat(chat: chat) }, label: {
-                                        Text("Leave chat")
-                                        Image(systemName: "hand.wave.fill")
-                                    })
-                                }
-                            })
-                    }
-                    .animation(Animation.spring())
-                    .listRowBackground(Color.clear)
-                    .background(Color.clear)
-
-                    }
-                   
-            }
-            .listSeparatorStyle(.none)
-            .introspectTableView { (tableView) in
-                tableView.refreshControl = UIRefreshControl { refreshControl in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        self.dataSource.loadChats()
-                        refreshControl.endRefreshing()
-                    }
+                        }
+                       
                 }
-                
-            }
-            .onAppear {
-                self.dataSource.loadChats()
-            }
-            .background(Color.clear)
-            
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: { self.isShowingCreator = true }) {
-                        Image(systemName: "plus.circle")
-                            .foregroundColor(.white)
-                            .frame(width: 64, height: 64)
-                            .cornerRadius(10)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))]), startPoint: .topLeading, endPoint: .bottomTrailing).cornerRadius(10))
+                .listSeparatorStyle(.none)
+                .introspectTableView { (tableView) in
+                    tableView.refreshControl = UIRefreshControl { refreshControl in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            self.dataSource.loadChats()
+                            refreshControl.endRefreshing()
+                        }
                     }
-                    .opacity(0.85)
-                    .padding()
-                    .shadow(radius: 5)
-                    Spacer().frame(width: 16)
-                }
-                Spacer().frame(height: 16)
-            }
-            .sheet(isPresented: $isShowingCreator, onDismiss: { self.dataSource.loadChats() }, content: {
-                CreateChatView(chatDataSource: self.dataSource)
-            })
-            
-            AZAlert(title: "New Chat Name", message: "Enter a new chat name for: \(self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? "")", isShown: $isShowingNameAlert, text: $newName) { (newName) in
-                let newName = newName.trim()
-                if !newName.isEmptyOrWhitespace() {
-                    guard let selectedChat = self.selectedChat else { return }
                     
-                    self.dataSource.changeChatName(chat: selectedChat, newName: newName)
-                    GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
-                } else {
-                    self.alertContent = ["Error", "Please enter a valid chat name"]
-                    self.isShowingAlert = true
+                }
+                .onAppear {
+                    self.dataSource.loadChats()
+                }
+                .background(Color.clear)
+                
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: { self.isShowingCreator = true }) {
+                            Image(systemName: "plus.circle")
+                                .foregroundColor(.white)
+                                .frame(width: 64, height: 64)
+                                .cornerRadius(10)
+                                .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor(hexString: "#ad5389")), Color(UIColor(hexString: "#3c1053"))]), startPoint: .topLeading, endPoint: .bottomTrailing).cornerRadius(10))
+                        }
+                        .opacity(0.85)
+                        .padding()
+                        .shadow(radius: 5)
+                        Spacer().frame(width: 16)
+                    }
+                    Spacer().frame(height: 16)
+                }
+                .sheet(isPresented: $isShowingCreator, onDismiss: { self.dataSource.loadChats() }, content: {
+                    CreateChatView(chatDataSource: self.dataSource)
+                })
+                
+                AZAlert(title: "New Chat Name", message: "Enter a new chat name for: \(self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? "")", isShown: $isShowingNameAlert, text: $newName) { (newName) in
+                    let newName = newName.trim()
+                    if !newName.isEmptyOrWhitespace() {
+                        guard let selectedChat = self.selectedChat else { return }
+                        
+                        self.dataSource.changeChatName(chat: selectedChat, newName: newName)
+                        GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
+                    } else {
+                        self.alertContent = ["Error", "Please enter a valid chat name"]
+                        self.isShowingAlert = true
+                    }
                 }
             }
+            
             
 
         }

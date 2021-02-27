@@ -20,7 +20,7 @@ class ProfileViewDataSource: ObservableObject {
 
     
     func setup(for uuid: String) {
-        UserService.getUser(with: uuid) { (user) in
+        UserService.getUser(with: uuid) { (user, error) in
             DispatchQueue.main.async {
                 if let user = user {
                     self.user = user
@@ -143,8 +143,10 @@ struct ProfileView: View {
                         return existing.count == uuids.count && existing == uuids
                     }
                     if let chat = chat {
-                        self.viewingChat = chat
-                        self.datasource.activeSheet = .otherProfile
+                        DispatchQueue.main.async {
+                            self.viewingChat = chat
+                            self.datasource.activeSheet = .otherProfile
+                        }
                     }
                 } else {
                     createDM()

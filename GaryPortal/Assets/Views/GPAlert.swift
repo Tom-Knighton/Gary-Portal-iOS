@@ -55,7 +55,7 @@ struct AZAlert: View {
     
     
     var body: some View {
-    
+        
         VStack(spacing: 20) {
             Text(title)
                 .font(.headline)
@@ -85,7 +85,65 @@ struct AZAlert: View {
         .offset(y: isShown ? 0 : screenSize.height)
         .animation(.spring())
         .shadow(color: Color("Section"), radius: 6, x: -9, y: -9)
-
+        
     }
 }
 
+struct GPNotificationData {
+    var title: String
+    var subtitle: String
+    var isChat: Bool = false
+    var isFeed: Bool = false
+    var onTap: () -> ()
+}
+
+struct GPNotification: View {
+    
+    var data: GPNotificationData
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Spacer().frame(width: 8)
+                HStack {
+                    VStack(alignment: .center) {
+                        if !data.title.isEmptyOrWhitespace() {
+                            Text(data.title)
+                                .lineLimit(1)
+                                .font(.headline)
+                        }
+                        
+                        if !data.subtitle.isEmptyOrWhitespace() {
+                            Text(data.subtitle)
+                                .lineLimit(1)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                    }.padding(.horizontal)
+                }
+                .frame(minHeight: 56)
+                .padding(.horizontal, 8)
+                .background(Color("Section"))
+                .cornerRadius(28)
+                .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
+                Spacer().frame(width: 8)
+            }
+            .animation(.interactiveSpring())
+            .gesture(
+                TapGesture()
+                    .onEnded {
+                        self.data.onTap()
+                    }
+                    .simultaneously(with:
+                        DragGesture()
+                            .onEnded { value in
+                                GaryPortal.shared.hideNotification()
+                            })
+            )
+            
+            Spacer()
+        }
+        
+    }
+}

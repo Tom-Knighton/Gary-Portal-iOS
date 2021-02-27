@@ -10,12 +10,12 @@ import UIKit
 
 class ChatListDataSource: ObservableObject {
     @Published var chats = [Chat]()
+    @Published var isChatBanned = false
 
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatMemberAdded(_:)), name: .newChatMember, object: nil)
-        self.loadChats()
     }
     
     deinit {
@@ -28,10 +28,14 @@ class ChatListDataSource: ObservableObject {
         return self.chats.filter( { $0.isDMAndBlocked() == false})
     }
     
-    func loadChats() {
+    func loadChats(callingMethod: String = #function ) {
+        print("called by \(callingMethod)")
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
             DispatchQueue.main.async {
                 self.chats = newChats ?? []
+                if error == APIError.chatBan || GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 2) != nil {
+                    self.isChatBanned = true
+                }
             }
         }
     }
@@ -208,6 +212,10 @@ class ChatMessagesDataSource: ObservableObject {
                 GaryPortal.shared.chatConnection?.sendMessage(newMessage.chatMessageUUID ?? "", to: newMessage.chatUUID ?? "", from: newMessage.userUUID ?? "")
             }
         }
+    }
+    
+    func postNotification(for content: String) {
+        ChatService.postNotification(to: self.chat?.chatUUID ?? "", from: GaryPortal.shared.currentUser?.userUUID ?? "", content: content)
     }
     
     func deleteMessage(messageUUID: String) {

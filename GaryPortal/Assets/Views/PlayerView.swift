@@ -10,41 +10,48 @@ import SwiftUI
 import AVKit
 
 class PlayerUIView: UIView {
-    private var avPlayer = AVPlayer()
-    private let playerLayer = AVPlayerLayer()
     var isPlaying = false
     var url = ""
     
-    @AppStorage(GaryPortalConstants.UserDefaults.autoPlayVideos) var autoPlayVideos = false
-        
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    var avPlayer: AVPlayer? {
+        get {
+            return playerLayer.player
+        }
+        set {
+            playerLayer.player = newValue
+        }
+    }
+    
+    var playerLayer: AVPlayerLayer {
+        return layer as! AVPlayerLayer
+    }
+    
+    override static var layerClass: AnyClass {
+        return AVPlayerLayer.self
+    }
+    
+    init() {
+        super.init(frame: .zero)
     }
     
     func setup(url: String, gravity: PlayerViewGravity? = .fit) {
         self.url = url
         if let url = URL(string: url) {
             self.avPlayer = AVPlayer(url: url)
-            
             do {
-               try AVAudioSession.sharedInstance().setCategory(.playback)
+                try AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
             } catch let error {
                 print(error.localizedDescription)
             }
-            self.avPlayer.isMuted = false
+            self.avPlayer?.isMuted = false
             
-            if autoPlayVideos {
-                self.avPlayer.play()
-                _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer.currentItem, queue: nil) { _ in
-                    self.avPlayer.seek(to: CMTime.zero)
-                    self.avPlayer.play()
-                }
-                self.isPlaying = true
+            _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer?.currentItem, queue: nil) { _ in
+                self.avPlayer?.seek(to: CMTime.zero)
+                self.avPlayer?.play()
             }
             
             self.playerLayer.player = self.avPlayer
             self.playerLayer.videoGravity = gravity?.avGravity ?? .resizeAspect
-            layer.addSublayer(playerLayer)
         }
     }
     
@@ -53,8 +60,8 @@ class PlayerUIView: UIView {
     }
     
     public func togglePlay(play: Bool) {
-        self.avPlayer.seek(to: CMTime.zero)
-        play ? self.avPlayer.play() : self.avPlayer.pause()
+        self.avPlayer?.seek(to: CMTime.zero)
+        play ? self.avPlayer?.play() : self.avPlayer?.pause()
         self.isPlaying = play
     }
     
@@ -98,7 +105,7 @@ struct PlayerView: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> PlayerUIView {
-        let playerview = PlayerUIView(frame: .zero)
+        let playerview = PlayerUIView()
         playerview.setup(url: url, gravity: gravity)
         return playerview
     }

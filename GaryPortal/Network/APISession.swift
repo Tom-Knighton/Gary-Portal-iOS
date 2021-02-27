@@ -58,6 +58,10 @@ enum APIError: Error {
     case invalidUrl
     case notAuthorized
     case invalidUserDetails
+    case chatBan
+    case feedBan
+    case globalBan
+    case badRequest
 }
 
 enum APIResult<Body> {
@@ -77,19 +81,58 @@ class APIRequest {
     var queryItems: [URLQueryItem]?
     var headers: [HttpHeader]?
     var body: Data?
+    var contentType: String = "application/json"
     
     init(method: HttpMethod, path: String) {
         self.method = method; self.path = path
     }
 }
 
-struct APIClient {
+protocol TokenRefreshing {
+    func refreshAccessToken(_ refreshToken: String, completion: @escaping (Result<UserAuthenticationTokens, Error>) -> Void)
+}
+protocol AuthenticationInfoStorage {
+    var userAuthInfo: UserAuthenticationTokens? { get set }
+    func persistUserAuthInfo(_ authInfo: UserAuthenticationTokens?)
+    func wipeUserAuthInfo()
+}
+
+final class APIClient {
     
     typealias APIClientCompletion = (APIResult<Data?>) -> Void
     private let session = URLSession.shared
     private let BASEURL = URL(string: "https://api.garyportal.tomk.online/api/")
     
-    func perform(_ request: APIRequest, contentType: String = "application/json", refresh: Bool = true, _ completion: APIClientCompletion?) {
+    private var isRefreshingToken = false
+    private var savedRequests: [DispatchWorkItem] = []
+    
+    static let shared = APIClient()
+    
+    private func saveRequest(_ block: @escaping () -> Void) {
+        // Save request to DispatchWorkItem array
+        savedRequests.append( DispatchWorkItem {
+          block()
+        })
+    }
+    
+    private func executeAllSavedRequests() {
+       savedRequests.forEach({ DispatchQueue.global().async(execute: $0) })
+       savedRequests.removeAll()
+    }
+    
+    
+    func performRequest(_ request: APIRequest, _ completion: APIClientCompletion?) {
+        if isRefreshingToken && !request.path.contains("refresh") {
+            print("already refreshing off bat")
+            if !request.path.contains("refresh") {
+                print("saving request off bat")
+                self.saveRequest {
+                    self.performRequest(request, completion)
+                }
+            }
+            return
+        }
+        
         var urlComponents = URLComponents()
         guard let BASEURL = BASEURL else { return }
         
@@ -102,43 +145,173 @@ struct APIClient {
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue(request.contentType, forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         urlRequest.addValue("Bearer \(String(describing: GaryPortal.shared.getTokens().authenticationToken ?? ""))", forHTTPHeaderField: "Authorization")
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.httpBody = request.body
         
         request.headers?.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.field) }
+        
         let task = session.dataTask(with: urlRequest) { (data, response, _) in
             guard let httpResponse = response as? HTTPURLResponse else {
+                print("network fail, call: \(url.absoluteString)")
                 completion?(.failure(.networkFail))
                 return
             }
-            if (httpResponse.statusCode == 401) {
-                if refresh {
-                    AuthService.refreshTokens(uuid: KeychainWrapper.standard.string(forKey: "UUID") ?? "", currentTokens: GaryPortal.shared.getTokens()) { (newTokens, error) in
-                        if let error = error {
-                            print("API Failed to refresh")
-                            print(error.localizedDescription)
-                            GaryPortal.shared.logoutUser()
+            
+            if httpResponse.statusCode == 401 && request.path.contains("refresh") == false { // Unauthorised
+                print("received 401")
+                if self.isRefreshingToken { // If already refreshing
+                    print("already refreshing, saving")
+                    self.saveRequest { // Save request to stack
+                        self.performRequest(request, completion)
+                    }
+                    return
+                } else { // Else
+                    self.isRefreshingToken = true // Set refresh to true
+                    self.saveRequest {
+                        self.performRequest(request, completion)
+                    }
+                    print("told to refresh")
+                    AuthService.refreshTokens(uuid: KeychainWrapper.standard.string(forKey: "UUID") ?? "", currentTokens: GaryPortal.shared.getTokens()) { (newTokens, error) in // Call Refresh
+                        print("response")
+                        if let newTokens = newTokens { // If tokens received
+                            print("got new tokens")
+                            GaryPortal.shared.updateTokens(tokens: newTokens)
+                            self.isRefreshingToken = false
+                            self.executeAllSavedRequests()
                             return
                         } else {
-                            GaryPortal.shared.updateTokens(tokens: newTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
-                            perform(request, refresh: false) { (result) in
-                                completion?(result)
-                            }
+                            print("Failed to refresh tokens, logging out")
+                            self.isRefreshingToken = false
+                            GaryPortal.shared.logoutUser()
                             return
                         }
                     }
-                } else {
-                    GaryPortal.shared.logoutUser()
-                    return
                 }
+                return
+            } else if (httpResponse.statusCode == 400) { // Bad Request
+                if let data = data {
+                    if String(data: data, encoding: .utf8) == "Invalid login attempt" {
+                        completion?(.failure(.invalidUserDetails))
+                    } else if String(data: data, encoding: .utf8) == "User has been banned from Chat" {
+                        completion?(.failure(.chatBan))
+                    } else if String(data: data, encoding: .utf8) == "User has been banned from Feed" {
+                        completion?(.failure(.feedBan))
+                    } else {
+                        completion?(.failure(.badRequest))
+                    }
+                }
+                return
             }
+            
+            print("calling completion")
             completion?(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
         }
         task.resume()
         
+    }
+
+    
+    func perform(_ request: APIRequest, contentType: String = "application/json", refresh: Bool = true, override: Bool = false, _ completion: APIClientCompletion?) {
+        
+        self.performRequest(request, completion)
+//        print("Calling request \(request.path) and isRefreshing = \(isRefreshingToken)")
+//        if isRefreshingToken && !override && request.path.contains("refresh") == false {
+//            print("saving! \(request.path)")
+//            saveRequest {
+//                self.perform(request, contentType: contentType, completion)
+//            }
+//            return
+//        }
+//
+//
+//        var urlComponents = URLComponents()
+//        guard let BASEURL = BASEURL else { return }
+//
+//        urlComponents.scheme = BASEURL.scheme; urlComponents.host = BASEURL.host
+//        urlComponents.path = BASEURL.path; urlComponents.queryItems = request.queryItems
+//
+//        guard let url = urlComponents.url?.appendingPathComponent(request.path) else {
+//            completion?(.failure(.invalidUrl))
+//            return
+//        }
+//
+//        var urlRequest = URLRequest(url: url)
+//        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
+//        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+//        urlRequest.addValue("Bearer \(String(describing: GaryPortal.shared.getTokens().authenticationToken ?? ""))", forHTTPHeaderField: "Authorization")
+//        urlRequest.httpMethod = request.method.rawValue
+//        urlRequest.httpBody = request.body
+//
+//        request.headers?.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.field) }
+//        let task = session.dataTask(with: urlRequest) { (data, response, _) in
+//            guard let httpResponse = response as? HTTPURLResponse else {
+//                print("network fail, call: \(url.absoluteString)")
+//                completion?(.failure(.networkFail))
+//                return
+//            }
+//            if (httpResponse.statusCode == 401 && urlRequest.url?.absoluteString.contains("refresh") == false) { // Unauthorised
+//                print("reached unauth, call: \(url.absoluteString)")
+//                if refresh {
+//                    self.isRefreshingToken = true
+//                    print("reached refresh, call: \(url.absoluteString)")
+//
+//                    if urlRequest.url?.absoluteString.contains("https://api.garyportal.tomk.online/api/auth/refresh/") == false {
+//                        print("saving \(urlRequest.url?.absoluteString)")
+//                        self.saveRequest {
+//                            self.perform(request, contentType: contentType, completion)
+//                        }
+//                    }
+//
+//                    AuthService.refreshTokens(uuid: KeychainWrapper.standard.string(forKey: "UUID") ?? "", currentTokens: GaryPortal.shared.getTokens()) { (newTokens, error) in
+//                        if let error = error {
+//                            print("API Failed to refresh, call: \(url.absoluteString)")
+//                            print(error.localizedDescription)
+//                            self.isRefreshingToken = false
+//                            GaryPortal.shared.logoutUser()
+//                            return
+//                        } else {
+//                            print("updating tokens, call: \(url.absoluteString)")
+//                            GaryPortal.shared.updateTokens(tokens: newTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
+//                            self.isRefreshingToken = false
+//                            self.executeAllSavedRequests()
+//                            return
+//                        }
+//                    }
+//                    return
+//                } else {
+//                    print("told not to refresh and received 401, call: \(url.absoluteString)")
+//                    GaryPortal.shared.logoutUser()
+//                    return
+//                }
+//            } else if (httpResponse.statusCode == 400) { // Bad Request
+//                if let data = data {
+//                    if String(data: data, encoding: .utf8) == "Invalid login attempt" {
+//                        completion?(.failure(.invalidUserDetails))
+//                    } else if String(data: data, encoding: .utf8) == "User has been banned from Chat" {
+//                        completion?(.failure(.chatBan))
+//                    } else if String(data: data, encoding: .utf8) == "User has been banned from Feed" {
+//                        completion?(.failure(.feedBan))
+//                    } else {
+//                        completion?(.failure(.networkFail))
+//                    }
+//                }
+//                return
+//            }
+//
+////            DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+////                DispatchQueue.main.async(execute: {
+////                    self.perform(request, completion)
+////                })
+////            }
+//
+//            print("success with \(httpResponse.statusCode), call: \(url.absoluteString)")
+//            completion?(.success(APIResponse<Data?>(statusCode: httpResponse.statusCode, body: data)))
+//        }
+//        task.resume()
+//
     }
 }
 

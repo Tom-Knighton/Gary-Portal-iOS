@@ -27,6 +27,7 @@
 		E249D96925D53DF50056B027 /* GPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D96825D53DF50056B027 /* GPCamera.swift */; };
 		E249D98025D54B6C0056B027 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D97F25D54B6C0056B027 /* CameraService.swift */; };
 		E249D98225D599380056B027 /* ColourPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D98125D599380056B027 /* ColourPicker.swift */; };
+		E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */; };
 		E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25C1DAA25B1AAC90046EA6C /* AdminService.swift */; };
 		E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25C1DAD25B1AC360046EA6C /* ProfileSettingsView.swift */; };
 		E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25CC1B125AF702B00B1FA55 /* Team.swift */; };
@@ -51,6 +52,7 @@
 		E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */; };
 		E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D925DD636A00C16E18 /* Merge.swift */; };
 		E278E1DC25DDC71000C16E18 /* ListSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1DB25DDC71000C16E18 /* ListSeparator.swift */; };
+		E28084D225E96926008599B0 /* GPWhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28084D125E96926008599B0 /* GPWhatsNew.swift */; };
 		E28DC01925C707E800A6EBEB /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01825C707E800A6EBEB /* Chat.swift */; };
 		E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01A25C7090000A6EBEB /* ChatService.swift */; };
 		E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */; };
@@ -82,6 +84,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		E22B7D7225E523A8004824F5 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E23B21DF25C354B5007E0629 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -116,6 +128,7 @@
 		E249D96825D53DF50056B027 /* GPCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamera.swift; sourceTree = "<group>"; };
 		E249D97F25D54B6C0056B027 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		E249D98125D599380056B027 /* ColourPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourPicker.swift; sourceTree = "<group>"; };
+		E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortalHub.swift; sourceTree = "<group>"; };
 		E25C1DAA25B1AAC90046EA6C /* AdminService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminService.swift; sourceTree = "<group>"; };
 		E25C1DAD25B1AC360046EA6C /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		E25CC1B125AF702B00B1FA55 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
@@ -125,6 +138,7 @@
 		E25CC1B525AF702B00B1FA55 /* Rank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
 		E25CC1B625AF702B00B1FA55 /* UserAuthentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthentication.swift; sourceTree = "<group>"; };
 		E25CC1BF25AF724400B1FA55 /* ZeroPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroPage.swift; sourceTree = "<group>"; };
+		E2636B2425E3FD5700534FF3 /* GaryPortal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GaryPortal.entitlements; sourceTree = "<group>"; };
 		E26A68A025B22C5C00CD0662 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		E26A68A325B2630D00CD0662 /* StaffRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffRoomView.swift; sourceTree = "<group>"; };
 		E26A68A625B2D08800CD0662 /* StaffService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffService.swift; sourceTree = "<group>"; };
@@ -140,6 +154,7 @@
 		E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFeedView.swift; sourceTree = "<group>"; };
 		E278E1D925DD636A00C16E18 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		E278E1DB25DDC71000C16E18 /* ListSeparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSeparator.swift; sourceTree = "<group>"; };
+		E28084D125E96926008599B0 /* GPWhatsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPWhatsNew.swift; sourceTree = "<group>"; };
 		E28DC01825C707E800A6EBEB /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		E28DC01A25C7090000A6EBEB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRootView.swift; sourceTree = "<group>"; };
@@ -201,6 +216,7 @@
 		E23100AB25AF6F8E00739E9E /* GaryPortal */ = {
 			isa = PBXGroup;
 			children = (
+				E2636B2425E3FD5700534FF3 /* GaryPortal.entitlements */,
 				E23100C125AF6F9600739E9E /* Modules */,
 				E23100C325AF6FAB00739E9E /* Assets */,
 				E23100C225AF6F9C00739E9E /* Utilities */,
@@ -281,6 +297,7 @@
 				E23B908125BA048000C0C201 /* FeedService.swift */,
 				E28DC01A25C7090000A6EBEB /* ChatService.swift */,
 				E2F4930425D2F1C7007A0775 /* ChatHub.swift */,
+				E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -374,6 +391,7 @@
 				E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */,
 				E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */,
 				E2BB736B25B06DCD00CDB422 /* GPTextField.swift */,
+				E28084D125E96926008599B0 /* GPWhatsNew.swift */,
 				E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */,
 				E2BB736E25B0897F00CDB422 /* ImagePicker.swift */,
 				E278E1DB25DDC71000C16E18 /* ListSeparator.swift */,
@@ -396,6 +414,7 @@
 				E241B40025E02BD300B15219 /* ShellScript */,
 				E23100A725AF6F8E00739E9E /* Resources */,
 				E23B21DF25C354B5007E0629 /* Embed Frameworks */,
+				E22B7D7225E523A8004824F5 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -420,7 +439,7 @@
 		E23100A125AF6F8D00739E9E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
 					E23100A825AF6F8E00739E9E = {
@@ -529,6 +548,7 @@
 				E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */,
 				E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */,
 				E23B907925B9C4AF00C0C201 /* Misc.swift in Sources */,
+				E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */,
 				E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */,
 				E25CC1C025AF724400B1FA55 /* ZeroPage.swift in Sources */,
 				E25CC1BC25AF702B00B1FA55 /* UserAuthentication.swift in Sources */,
@@ -555,6 +575,7 @@
 				E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */,
 				E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */,
 				E249D98225D599380056B027 /* ColourPicker.swift in Sources */,
+				E28084D225E96926008599B0 /* GPWhatsNew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,8 +712,10 @@
 		E23100BE25AF6F8F00739E9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
@@ -708,15 +731,17 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		E23100BF25AF6F8F00739E9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
@@ -732,7 +757,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

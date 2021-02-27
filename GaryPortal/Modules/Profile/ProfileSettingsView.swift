@@ -18,6 +18,7 @@ struct ProfileSettingsView: View {
     @State var hasChosenNewImage = false
     @State var newImage: Image?
     @State var newUIImage: UIImage = UIImage()
+    @State var notificationsMuted = false
     
     @State var isShowingError = false
     @State var errorMessage = ""
@@ -31,7 +32,7 @@ struct ProfileSettingsView: View {
                     Divider()
                     SecuritySettingsView()
                     Divider()
-                    AppSettingsView()
+                    AppSettingsView(datasource: self.datasource, notifications: $notificationsMuted)
                 }
                 .padding()
             }
@@ -63,9 +64,9 @@ struct ProfileSettingsView: View {
     }
     
     func saveSettings() {
-        guard let oldUsername = self.datasource.user?.userName, let oldEmail = self.datasource.user?.userAuthentication?.userEmail, let oldFullName = self.datasource.user?.userFullName else { return }
+        guard let oldUsername = self.datasource.user?.userName, let oldEmail = self.datasource.user?.userAuthentication?.userEmail, let oldFullName = self.datasource.user?.userFullName, let oldMute = self.datasource.user?.notificationsMuted else { return }
         
-        if oldUsername != usernameText || oldEmail != emailText || oldFullName != fullNameText || hasChosenNewImage {
+        if oldUsername != usernameText || oldEmail != emailText || oldFullName != fullNameText || hasChosenNewImage || oldMute != notificationsMuted {
             AuthService.isEmailFree(email: emailText.trim()) { (isEmailFree) in
                 if !isEmailFree && oldEmail != emailText.trim() {
                     self.isShowingError = true
@@ -80,7 +81,7 @@ struct ProfileSettingsView: View {
                         return
                     }
                     
-                    var newDetails = UserDetails(userName: usernameText, userEmail: emailText, fullName: fullNameText, profilePictureUrl: self.datasource.user?.userProfileImageUrl ?? "")
+                    var newDetails = UserDetails(userName: usernameText, userEmail: emailText, fullName: fullNameText, profilePictureUrl: self.datasource.user?.userProfileImageUrl ?? "", notificationsMuted: notificationsMuted)
                     
                     if hasChosenNewImage {
                         UserService.updateUserProfileImage(userUUID: self.datasource.user?.userUUID ?? "", newImage: self.newUIImage) { (newURL) in
@@ -247,6 +248,9 @@ struct AccountSettingsView: View {
 
 struct SecuritySettingsView: View {
        
+    @State var isShowingAlert = false
+    @State var alertContent: [String] = []
+    
     var body: some View {
         VStack {
             Spacer().frame(height: 8)
@@ -257,20 +261,29 @@ struct SecuritySettingsView: View {
                 Spacer()
             }
            
-            GPGradientButton(action: {}, buttonText: "Reset Password", gradientColours: [Color(UIColor.darkText)])
-            GPGradientButton(action: {}, buttonText: "Log Out", gradientColours: [Color(UIColor.darkText)])
+            GPGradientButton(action: { self.sendResetEmail() }, buttonText: "Reset Password", gradientColours: [Color(UIColor.darkText)])
+            GPGradientButton(action: { GaryPortal.shared.logoutUser() }, buttonText: "Log Out", gradientColours: [Color(UIColor.darkText)])
             Spacer().frame(height: 16)
             
         }
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
+        }
+    }
+    
+    func sendResetEmail() {
+        AuthService.requestPassReset(uuid: GaryPortal.shared.currentUser?.userUUID ?? "")
+        self.alertContent = ["Password Reset", "An e-mail has been sent to the email address associated with your account, allowing you to reset your password. Please allow up to 15 minutes for this email to arrive and please note it may appear in your 'spam' or 'junk' inboxes."]
+        self.isShowingAlert = true
     }
 }
 
 struct AppSettingsView: View {
     
-    @AppStorage(GaryPortalConstants.UserDefaults.autoPlayVideos) var autoPlayVideos = false
-    @AppStorage(GaryPortalConstants.UserDefaults.notifications) var notifications = false
+    @ObservedObject var datasource: ProfileViewDataSource
+    @Binding var notifications: Bool
     
     var body: some View {
         VStack {
@@ -284,14 +297,10 @@ struct AppSettingsView: View {
            
             HStack {
                 Spacer().frame(width: 8)
-                Toggle("Automatically play gifs and videos", isOn: $autoPlayVideos)
+                Toggle("Mute all notifications", isOn: $notifications)
                 Spacer().frame(width: 8)
             }
-            HStack {
-                Spacer().frame(width: 8)
-                Toggle("Enable Notifications", isOn: $notifications)
-                Spacer().frame(width: 8)
-            }
+            .padding()
             
             GPGradientButton(action: {}, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: {}, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
@@ -301,6 +310,9 @@ struct AppSettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
+        .onAppear {
+            self.notifications = datasource.user?.notificationsMuted ?? false
+        }
         .cornerRadius(radius: 15, corners: [.bottomLeft, .bottomRight])
     }
 }

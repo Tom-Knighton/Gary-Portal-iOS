@@ -6,14 +6,23 @@
 //
 
 import UIKit
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Override point for customization after application launch.\
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, _) in }
+        
+        if let notification = launchOptions?[.remoteNotification] as? [AnyHashable: Any] {
+            if let chatUUID = notification["chatUUID"] as? String {
+                GaryPortal.shared.goToChatFromNotification(chatUUID: chatUUID)
+            } else if let feedPostId = notification["feedPostId"] as? Int {
+                GaryPortal.shared.goToCommentsFromNotification(feedPostId: feedPostId)
+            }
+        }
         return true
     }
 
@@ -31,6 +40,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        UserService.postAPNS(uuid: GaryPortal.shared.currentUser?.userUUID ?? "", apns: deviceToken.map { String(format: "%02.2hhx", $0) }.joined())
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        //TODO: Did fail
+    }
+    
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        let content = notification.request.content
+        var data = GPNotificationData(title: content.title, subtitle: content.subtitle, onTap: {})
+        if let chatUUID = content.userInfo["chatUUID"] as? String {
+            data.isChat = true
+            data.onTap = {
+                GaryPortal.shared.goToChatFromNotification(chatUUID: chatUUID)
+            }
+        } else if let feedPostId = content.userInfo["feedPostId"] as? Int {
+            data.isFeed = true
+            GaryPortal.shared.notificationFeedID = feedPostId
+            GaryPortal.shared.goToCommentsFromNotification(feedPostId: feedPostId)
+        }
+        
+        GaryPortal.shared.showNotification(data: data)
+        completionHandler([])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if let chatUUID = userInfo["chatUUID"] as? String {
+            GaryPortal.shared.goToChatFromNotification(chatUUID: chatUUID)
+        } else if let feedPostId = userInfo["feedPostId"] as? Int {
+            GaryPortal.shared.notificationFeedID = feedPostId
+            GaryPortal.shared.goToCommentsFromNotification(feedPostId: feedPostId)
+        }
+        completionHandler()
+    }
+}

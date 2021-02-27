@@ -177,7 +177,7 @@ struct EditUserView: View {
     }
     
     func loadFullUser() {
-        UserService.getUser(with: editingUser?.userUUID ?? "") { (completeUser) in
+        UserService.getUser(with: editingUser?.userUUID ?? "") { (completeUser, error) in
             self.oldUser = completeUser
             self.tempUser.load(from: self.oldUser)
             self.chosenTeam = self.oldUser?.userTeam?.team
@@ -274,7 +274,7 @@ struct ManageUserBans: View {
     
     @State var isShowingAlert = false
     @State var alertMessage = ""
-    @State var selectedBanId = 0
+    @State var selectedBan: UserBan?
     
     let secondaryButton = Alert.Button.cancel(Text("Cancel"))
     
@@ -294,11 +294,13 @@ struct ManageUserBans: View {
                     Spacer()
                     Text("Expires: \(ban.banExpires ?? Date())")
                         .multilineTextAlignment(.center)
-                    GPGradientButton(action: { self.selectedBanId = ban.userBanId ?? 0; isShowingAlert = true; alertMessage = "Are you sure you want to revoke this ban?" }, buttonText: "Revoke Ban", gradientColours: [Color(UIColor(hexString: "#333333")), Color(UIColor(hexString: "#dd1818"))])
+                    GPGradientButton(action: { self.selectedBan = ban; isShowingAlert = true; alertMessage = "Are you sure you want to revoke this ban?" }, buttonText: "Revoke Ban", gradientColours: [Color(UIColor(hexString: "#333333")), Color(UIColor(hexString: "#dd1818"))])
                         
                         .alert(isPresented: $isShowingAlert, content: {
                             Alert(title: Text("Warning"), message: Text(alertMessage), primaryButton: Alert.Button.default(Text("Revoke Ban")) {
-                                revokeBan(banId: selectedBanId)
+                                if let ban = self.selectedBan {
+                                    revokeBan(ban: ban)
+                                }
                             }, secondaryButton: secondaryButton)
                         })
                         
@@ -312,13 +314,14 @@ struct ManageUserBans: View {
        
     }
     
-    func revokeBan(banId: Int) {
-        StaffService.revokeBan(banId: banId, userUUID: garyportal.currentUser?.userUUID ?? "")
-        user?.RemoveBan(banId: banId)
+    func revokeBan(ban: UserBan) {
+        StaffService.revokeBan(banId: ban.userBanId ?? 0, userUUID: garyportal.currentUser?.userUUID ?? "")
+        user?.RemoveBan(banId: ban.userBanId ?? 0)
+        self.garyportal.hubConnection?.propogateBan(userUUID: ban.userUUID ?? "")
     }
     
     func loadUser() {
-        UserService.getUser(with: user?.userUUID ?? "") { (newUser) in
+        UserService.getUser(with: user?.userUUID ?? "") { (newUser, error) in
             if newUser != nil {
                 self.user = newUser
             }
@@ -416,6 +419,7 @@ struct StaffCreateBanView: View {
             if error == nil {
                 DispatchQueue.main.async {
                     self.presentationMode.wrappedValue.dismiss()
+                    self.garyportal.hubConnection?.propogateBan(userUUID: user?.userUUID ?? "")
                 }
             }
         }

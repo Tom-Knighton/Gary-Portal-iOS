@@ -28,6 +28,7 @@ struct UserDetails: Codable {
     var userEmail: String?
     var fullName: String?
     var profilePictureUrl: String?
+    var notificationsMuted: Bool?
 }
 
 struct StaffManagedUserDetails: Codable {
@@ -60,7 +61,8 @@ class User: Codable, ObservableObject {
     let userDateOfBirth: Date?
     let isDeleted: Bool?
     let isQueued: Bool?
-    
+    var notificationsMuted: Bool?
+
     let userAuthTokens: UserAuthenticationTokens?
     let userAuthentication: UserAuthentication?
     var userTeam: UserTeam?
@@ -80,6 +82,10 @@ class User: Codable, ObservableObject {
     
     public func hasBlockedUUID(uuid: String) -> Bool {
         return self.blockedUsers?.contains(where: { $0.blockedUserUUID == uuid && $0.isBlocked == true}) == true
+    }
+    
+    public func getFirstBanOfType(banTypeId: Int) -> UserBan? {
+        return self.userBans?.first(where: { $0.banTypeId == banTypeId && ($0.banExpires ?? Date()) > Date()})
     }
 }
 

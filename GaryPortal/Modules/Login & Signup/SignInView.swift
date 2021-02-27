@@ -47,7 +47,7 @@ struct SignInView: View {
     @State var passwordText: String = ""
     
     @State var showingAlert = false
-    @State var alertMessage = ""
+    @State var alertContent: [String] = []
     
     let emailCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_@-."
     let passCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.&!%$£*"
@@ -61,8 +61,11 @@ struct SignInView: View {
             
             Spacer()
            
-            Text("Forgot Your Password? ->")
-                .foregroundColor( Color(UIColor.secondarySystemBackground))
+            Button(action: { self.requestReset() } ) {
+                Text("Forgot Your Password? ->")
+                    .foregroundColor(Color(UIColor.secondarySystemBackground))
+            }
+            
 
             Button(action: { login() }, label: {
                 Text("LOGIN")
@@ -96,7 +99,7 @@ struct SignInView: View {
             }
         }
         .alert(isPresented: $showingAlert, content: {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("Ok")))
+            Alert(title: Text(self.alertContent[0]), message: Text(self.alertContent[1]), dismissButton: .default(Text("Ok")))
         })
        
     }
@@ -106,19 +109,37 @@ struct SignInView: View {
         AuthService.authenticate(user: authUser) { (user, error) in
             if let error = error {
                 if error == APIError.invalidUserDetails {
-                    self.alertMessage = "Email or password is incorrect"
+                    self.alertContent = ["Error", "Email or password is incorrect"]
                     self.showingAlert = true
-                    return
+                } else if error == APIError.globalBan {
+                    self.alertContent = ["Error", "You have been temporarily banned from Gary Portal. Please wait until your ban expires to be able to access the app again"]
+                    self.showingAlert = true
+                } else {
+                    self.alertContent = ["Error", "There was a network issue signing you in"]
+                    self.showingAlert = true
                 }
                 return
             }
-            GaryPortal.shared.currentUser = user
-            GaryPortal.shared.updateTokens(tokens: user?.userAuthTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
-            GaryPortal.shared.loginUser(uuid: user?.userUUID ?? "")
+            DispatchQueue.main.async {
+                GaryPortal.shared.currentUser = user
+                GaryPortal.shared.updateTokens(tokens: user?.userAuthTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
+                GaryPortal.shared.loginUser(uuid: user?.userUUID ?? "", salt: user?.userAuthentication?.userPassSalt ?? "")
+            }
         }
     }
     
-    
+    func requestReset() {
+        let email = self.emailText.trim()
+        if email.isEmptyOrWhitespace() {
+            self.alertContent = ["Error", "Please enter an email address to reset your password for"]
+            self.showingAlert = true
+            return
+        }
+        
+        AuthService.requesPassReset(email: email)
+        self.alertContent = ["Password Reset", "If the email entered matches a valid user, you should receive an e-mail detailing how to reset your password shortly. Please be aware this can take up to 15 minutes to arrive and may arrive in your 'spam' or 'junk' inbox"]
+        self.showingAlert = true
+    }
 }
 
 struct SignUpView: View {
@@ -275,7 +296,7 @@ struct SignUpView: View {
             }
             GaryPortal.shared.currentUser = newUser
             GaryPortal.shared.updateTokens(tokens: newUser?.userAuthTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
-            GaryPortal.shared.loginUser(uuid: newUser?.userUUID ?? "")
+            GaryPortal.shared.loginUser(uuid: newUser?.userUUID ?? "", salt: newUser?.userAuthentication?.userPassSalt ?? "")
             UserService.updateUserProfileImage(userUUID: newUser?.userUUID ?? "", newImage: viewModel.chosenUIImage) { (newURL) in
                 GaryPortal.shared.currentUser?.userProfileImageUrl = newURL
             }
