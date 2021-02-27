@@ -53,6 +53,7 @@ struct UploadPostView: View {
                     .padding()
                     
                     if self.postType == "GaryGram Post" {
+                        Spacer().frame(height: 16)
                         mediaView
                             .animation(.easeInOut)
                     } else {
@@ -83,13 +84,13 @@ struct UploadPostView: View {
             mediaPreview
                 .aspectRatio(contentMode: .fit)
                 .cornerRadius(15)
-                .frame(maxHeight: 350)
-                .padding(8)
+                .frame(minHeight: 100, maxHeight: 350)
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
                         .stroke(Color.gray, lineWidth: 1)
                         .shadow(radius: 3)
                 )
+                .padding(8)
                 .onTapGesture {
                     self.isShowingCamera = true
                 }
@@ -97,7 +98,6 @@ struct UploadPostView: View {
             TextEditor(text: $postDesc)
                 .padding()
                 .shadow(radius: 5)
-                .cornerRadius(10)
                 .frame(minHeight: 100)
                 .overlay(
                     ZStack(alignment: .leading) {
@@ -110,6 +110,8 @@ struct UploadPostView: View {
                     }
                     .cornerRadius(10)
                 )
+                .cornerRadius(10)
+
             GPGradientButton(action: { self.postMediaPost() }, buttonText: "Post", gradientColours: [Color.red, Color.blue])
                 .padding()
             Spacer()
@@ -194,5 +196,12 @@ struct UploadPostView: View {
                 }
             }
         }
+    }
+}
+
+struct UploadFeedPreview: PreviewProvider {
+    
+    static var previews: some View {
+        UploadPostView(datasource: FeedPostsDataSource())
     }
 }
