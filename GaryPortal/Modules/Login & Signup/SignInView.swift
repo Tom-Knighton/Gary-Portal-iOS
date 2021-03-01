@@ -136,7 +136,7 @@ struct SignInView: View {
             return
         }
         
-        AuthService.requesPassReset(email: email)
+        AuthService.requestPassReset(email: email)
         self.alertContent = ["Password Reset", "If the email entered matches a valid user, you should receive an e-mail detailing how to reset your password shortly. Please be aware this can take up to 15 minutes to arrive and may arrive in your 'spam' or 'junk' inbox"]
         self.showingAlert = true
     }

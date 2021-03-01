@@ -232,16 +232,25 @@ struct EditUserView: View {
 
             var userdetails = StaffManagedUserDetails(userName: tempUser.usernameText, spanishName: tempUser.spanishtext, profilePictureUrl: oldUser?.userProfileImageUrl ?? "", teamId: chosenTeam?.teamId, amigoPoints: Int(tempUser.amigoPoints), positivePoints: Int(tempUser.positivePoints), amigoRankId: selectedAmigoRank?.rankId ?? 0, positiveRankId: selectedPositivityRank?.rankId ?? 0, isQueued: isQueued)
 
+            let group = DispatchGroup()
+            group.enter()
             if tempUser.hasChosenImage {
                 UserService.updateUserProfileImage(userUUID: oldUser?.userUUID ?? "", newImage: tempUser.chosenUIImage) { (newURL) in
-                    userdetails.profilePictureUrl = newURL
+                    DispatchQueue.main.async {
+                        userdetails.profilePictureUrl = newURL
+                        group.leave()
+                    }
                 }
+            } else {
+                group.leave()
             }
             
-            StaffService.staffEditUser(userUUID: oldUser?.userUUID ?? "", details: userdetails) { (newUser, error) in
-                DispatchQueue.main.async {
-                    if error == nil {
-                        self.presentationMode.wrappedValue.dismiss()
+            group.notify(queue: .main) {
+                StaffService.staffEditUser(userUUID: oldUser?.userUUID ?? "", details: userdetails) { (newUser, error) in
+                    DispatchQueue.main.async {
+                        if error == nil {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
             }

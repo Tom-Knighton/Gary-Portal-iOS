@@ -101,7 +101,7 @@ final class APIClient {
     
     typealias APIClientCompletion = (APIResult<Data?>) -> Void
     private let session = URLSession.shared
-    private let BASEURL = URL(string: "https://api.garyportal.tomk.online/api/")
+    private let BASEURL = URL(string: GaryPortalConstants.APIBaseUrl)
     
     private var isRefreshingToken = false
     private var savedRequests: [DispatchWorkItem] = []
@@ -121,11 +121,11 @@ final class APIClient {
     }
     
     
-    func performRequest(_ request: APIRequest, _ completion: APIClientCompletion?) {
+    func perform(_ request: APIRequest, _ completion: APIClientCompletion?) {
         if isRefreshingToken && !request.path.contains("refresh") {
             if !request.path.contains("refresh") {
                 self.saveRequest {
-                    self.performRequest(request, completion)
+                    self.perform(request, completion)
                 }
             }
             return
@@ -160,13 +160,13 @@ final class APIClient {
             if httpResponse.statusCode == 401 && request.path.contains("refresh") == false { // Unauthorised
                 if self.isRefreshingToken { // If already refreshing
                     self.saveRequest { // Save request to stack
-                        self.performRequest(request, completion)
+                        self.perform(request, completion)
                     }
                     return
                 } else { // Else
                     self.isRefreshingToken = true // Set refresh to true
                     self.saveRequest {
-                        self.performRequest(request, completion)
+                        self.perform(request, completion)
                     }
                     AuthService.refreshTokens(uuid: KeychainWrapper.standard.string(forKey: "UUID") ?? "", currentTokens: GaryPortal.shared.getTokens()) { (newTokens, error) in // Call Refresh
                         if let newTokens = newTokens { // If tokens received
@@ -175,7 +175,6 @@ final class APIClient {
                             self.executeAllSavedRequests()
                             return
                         } else {
-                            print("Failed to refresh tokens, logging out")
                             self.isRefreshingToken = false
                             GaryPortal.shared.logoutUser()
                             return
@@ -202,11 +201,6 @@ final class APIClient {
         }
         task.resume()
         
-    }
-
-    
-    func perform(_ request: APIRequest, contentType: String = "application/json", refresh: Bool = true, override: Bool = false, _ completion: APIClientCompletion?) {
-        self.performRequest(request, completion)
     }
 }
 

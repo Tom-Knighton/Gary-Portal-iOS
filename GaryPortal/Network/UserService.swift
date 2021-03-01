@@ -31,7 +31,7 @@ struct UserService {
 
     static func getUser(with uuid: String, completion: @escaping ((User?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "users/\(uuid)")
-        APIClient.shared.perform(request, refresh: true) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .failure(let error):
                 completion(nil, error)
@@ -66,7 +66,8 @@ struct UserService {
             data.append(imgData)
             data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
             request.body = data
-            APIClient.shared.perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+            request.contentType = "multipart/form-data; boundary=\(boundary)"
+            APIClient.shared.perform(request) { (result) in
                 switch result {
                 case .success(let response):
                     if let response = try? response.decode(to: String.self) {
@@ -75,10 +76,12 @@ struct UserService {
                         completion(nil)
                     }
                 case .failure:
+                    print("fail")
                     completion(nil)
                 }
             }
         } else {
+            print("no imgdata")
             completion(nil)
         }
     }

@@ -88,7 +88,7 @@ struct AuthService {
     static func refreshTokens(uuid: String, currentTokens: UserAuthenticationTokens, completion: @escaping ((UserAuthenticationTokens?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "auth/refresh/\(uuid)")
         request.body = try? JSONEncoder().encode(currentTokens)
-        APIClient.shared.perform(request, refresh: false, override: true) { (result) in
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .failure:
                 completion(nil, .notAuthorized)
@@ -104,11 +104,11 @@ struct AuthService {
     
     static func requestPassReset(uuid: String) {
         let request = APIRequest(method: .post, path: "auth/requestpassreset/\(uuid)")
-        APIClient.shared.performRequest(request, nil)
+        APIClient.shared.perform(request, nil)
     }
     
-    static func requesPassReset(email: String) {
+    static func requestPassReset(email: String) {
         let request = APIRequest(method: .post, path: "auth/requestpassresetemail/\(email)")
-        APIClient.shared.performRequest(request, nil)
+        APIClient.shared.perform(request, nil)
     }
 }

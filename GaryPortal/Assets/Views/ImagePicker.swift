@@ -113,7 +113,7 @@ struct MediaPicker: UIViewControllerRepresentable {
                         
             if itemProvider.canLoadObject(ofClass: objectType) {
                 itemProvider.loadObject(ofClass: objectType) { object, error in
-                    if let error = error {
+                    if let _ = error {
                         completion(nil)
                     }
                     

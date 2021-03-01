@@ -101,7 +101,7 @@ struct StaffRoomHome: View {
     
     func loadAnnouncements() {
         StaffService.getStaffAnnouncements { (announcements, error) in
-            if let error = error {
+            if let _ = error {
                 return
             }
             self.announcements = announcements ?? []

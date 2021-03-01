@@ -106,7 +106,8 @@ struct FeedService {
             return
         }
         
-        APIClient.shared.perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+        request.contentType = "multipart/form-data; boundary=\(boundary)"
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: AditLogUrlResult.self) {
@@ -165,7 +166,8 @@ struct FeedService {
             return
         }
         
-        APIClient.shared.perform(request, contentType: "multipart/form-data; boundary=\(boundary)") { (result) in
+        request.contentType = "multipart/form-data; boundary=\(boundary)"
+        APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: String.self) {
