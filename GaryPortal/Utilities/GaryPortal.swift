@@ -148,7 +148,12 @@ struct GaryPortalConstants {
     
     static let AppName = "Gary Portal"
     static let AppMainVersion = "4.0.0"
-    static let AppIsDev = true
+    
+    #if DEBUG
+        static let AppIsDev = true
+    #else
+        static let AppIsDev = false
+    #endif
     
     static let EmailRegex = """
                             ^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
