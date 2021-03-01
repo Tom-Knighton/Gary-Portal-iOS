@@ -70,7 +70,6 @@ struct GPWhatsNew: View {
             DispatchQueue.main.async {
                 UserDefaults.standard.set(true, forKey: GaryPortalConstants.hasSeenWhatsNew)
                 UserDefaults.standard.synchronize()
-                print(UserDefaults.standard.bool(forKey: GaryPortalConstants.hasSeenWhatsNew))
             }
         }
         

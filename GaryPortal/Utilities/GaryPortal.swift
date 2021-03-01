@@ -63,7 +63,6 @@ class GaryPortal: NSObject, ObservableObject {
             self.hubConnection = GaryPortalHub()
             
             if UserDefaults.standard.bool(forKey: GaryPortalConstants.hasSeenWhatsNew) == false {
-                print(UserDefaults.standard.bool(forKey: GaryPortalConstants.hasSeenWhatsNew))
                 self.notificationSheetDisplayMode = .whatsNew
             }
         }

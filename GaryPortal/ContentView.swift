@@ -25,6 +25,16 @@ struct ContentView: View {
                             .padding()
                             .edgesIgnoringSafeArea(.all)
                     }
+                } else if self.garyPortal.currentUser?.isQueued == true {
+                    ZStack {
+                        GradientBackground().edgesIgnoringSafeArea(.all)
+                        Text("You are still in the queue, your account will be created by an admin shortly, hang in there!")
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .edgesIgnoringSafeArea(.all)
+                    }
                 } else {
                     GPNavigationController(view: AnyView(
                         HostControllerRepresentable()

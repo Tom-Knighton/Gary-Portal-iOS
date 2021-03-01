@@ -58,7 +58,6 @@ class HostController: GaryPortalSwipeController {
     }
     
     func changedToPageIndex(_ index: Int) {
-        print("changing")
         GaryPortal.shared.currentPageIndex = index
         if index != 0 { //Has moved from feed and need to deactivate
             self.viewControllerData().first?.dismiss(animated: false, completion: nil)

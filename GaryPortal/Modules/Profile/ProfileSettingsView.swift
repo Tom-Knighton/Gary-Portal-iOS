@@ -237,7 +237,6 @@ struct AccountSettingsView: View {
                     if let items = items,
                        let item = items.items.first,
                        item.mediaType == .photo, let photo = item.photo {
-                        print("hmm")
                         self.newUIImage = photo
                         self.isShowingImageCropper = true
                     }

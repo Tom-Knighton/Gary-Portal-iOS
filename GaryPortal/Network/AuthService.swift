@@ -17,13 +17,11 @@ struct AuthService {
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil, .networkFail)
+                completion(nil, error)
             case .success(let response):
                 if let response = try? response.decode(to: User.self) {
                     completion(response.body, nil)
                 } else {
-                    print(response.statusCode)
                     if response.statusCode == 404 {
                         completion(nil, .invalidUserDetails)
                     } else if response.statusCode == 400 {
@@ -70,7 +68,7 @@ struct AuthService {
     
     static func registerUser(userRegistration: UserRegistration, completion: @escaping ((User?, APIError?) -> Void)) {
         let request = APIRequest(method: .post, path: "auth/registeruser")
-        request.body = try? JSONEncoder().encode(userRegistration)
+        request.body = userRegistration.jsonEncode()
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .failure:

@@ -76,12 +76,10 @@ struct UserService {
                         completion(nil)
                     }
                 case .failure:
-                    print("fail")
                     completion(nil)
                 }
             }
         } else {
-            print("no imgdata")
             completion(nil)
         }
     }

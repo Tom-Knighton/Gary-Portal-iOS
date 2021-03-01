@@ -25,7 +25,6 @@ class GaryPortalHub: HubConnectionDelegate {
         connection.on(method: "KeepAlive") { _ in }
         
         connection.on(method: "BanStatusUpdated", callback: { (userUUID: String) in
-            print("update")
             self.banStatusUpdated(userUUID: userUUID)
         })
         
@@ -63,7 +62,6 @@ class GaryPortalHub: HubConnectionDelegate {
     func banStatusUpdated(userUUID: String) {
         do {
             if let myUUID = GaryPortal.shared.currentUser?.userUUID, myUUID == userUUID {
-                print("reached call to update")
                 UserService.getUser(with: userUUID) { (newUser, error) in
                     DispatchQueue.main.async {
                         GaryPortal.shared.currentUser = newUser

@@ -177,8 +177,8 @@ struct SignUpView: View {
                     GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "envelope", isSecure: false, placeHolder: "Your email address", characterSet: emailCharacterSet, autoCapitalisation: .none, disableCorrection: true)
                     GPTextField(text: $viewModel.usernameText, isSystemImage: true, imageName: "person.crop.circle", isSecure: false, placeHolder: "Your new username", characterLimit: 32, characterSet: usernameCharacterSet, autoCapitalisation: .none, disableCorrection: true)
                     GPTextField(text: $viewModel.fullNameText, isSystemImage: true, imageName: "person", isSecure: false, placeHolder: "Your full name", characterSet: nameCharacterSet)
-                    GPTextField(text: $viewModel.passwordText, isSystemImage: true, imageName: "lock", isSecure: false, placeHolder: "Your new password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
-                    GPTextField(text: $viewModel.confirmPasswordText, isSystemImage: true, imageName: "lock.fill", isSecure: false, placeHolder: "Confirm your password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
+                    GPTextField(text: $viewModel.passwordText, isSystemImage: true, imageName: "lock", isSecure: true, placeHolder: "Your new password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
+                    GPTextField(text: $viewModel.confirmPasswordText, isSystemImage: true, imageName: "lock.fill", isSecure: true, placeHolder: "Confirm your password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
                     
                     DatePicker("Your date of birth:", selection: $viewModel.dateOfBirth, in: ...Calendar.current.date(byAdding: .year, value: -13, to: Date())!, displayedComponents: [.date])
                         .datePickerStyle(CompactDatePickerStyle())
@@ -295,19 +295,37 @@ struct SignUpView: View {
         let userRegistration = UserRegistration(userEmail: viewModel.emailText.trim(), userName: viewModel.usernameText.trim(), userFullName: viewModel.fullNameText.trim(), userPassword: viewModel.passwordText.trim(), userGender: viewModel.genders[viewModel.gender], userDOB: viewModel.dateOfBirth)
         
         AuthService.registerUser(userRegistration: userRegistration) { (newUser, error) in
-            if let _ = error {
-                self.errorText = "An error occurred signing you up"
-                self.isShowingError = true
-                return
-            }
-            GaryPortal.shared.currentUser = newUser
-            GaryPortal.shared.updateTokens(tokens: newUser?.userAuthTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
-            GaryPortal.shared.loginUser(uuid: newUser?.userUUID ?? "", salt: newUser?.userAuthentication?.userPassSalt ?? "")
-            UserService.updateUserProfileImage(userUUID: newUser?.userUUID ?? "", newImage: viewModel.chosenUIImage) { (newURL) in
-                GaryPortal.shared.currentUser?.userProfileImageUrl = newURL
+            if let newUser = newUser {
+               
+                let authUser = AuthenticatingUser(authenticatorString: viewModel.emailText, password: viewModel.passwordText)
+                AuthService.authenticate(user: authUser) { (finalUser, error) in
+                    if let finalUser = finalUser {
+                       
+                        GaryPortal.shared.currentUser = finalUser
+                        GaryPortal.shared.updateTokens(tokens: finalUser.userAuthTokens ?? UserAuthenticationTokens(authenticationToken: "", refreshToken: ""))
+                        
+                        let group = DispatchGroup()
+                        group.enter()
+                        UserService.updateUserProfileImage(userUUID: finalUser.userUUID ?? "", newImage: viewModel.chosenUIImage) { (newURL) in
+                            DispatchQueue.main.async {
+                                GaryPortal.shared.currentUser?.userProfileImageUrl = newURL
+                                group.leave()
+                            }
+                        }
+                        
+                        group.notify(queue: .main) {
+                            GaryPortal.shared.loginUser(uuid: finalUser.userUUID ?? "", salt: finalUser.userAuthentication?.userPassSalt ?? "")
+                        }
+                    }
+                }
+            } else {
+                if let _ = error {
+                    self.errorText = "An error occurred signing you up"
+                    self.isShowingError = true
+                    return
+                }
             }
         }
-        
     }
 }
 
