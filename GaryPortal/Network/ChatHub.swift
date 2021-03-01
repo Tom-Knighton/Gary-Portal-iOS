@@ -41,6 +41,10 @@ class ChatConnection: HubConnectionDelegate {
             self.chatMemberAdded(chatUUID: chatUUID, member: newChatMember)
         }
         
+        connection.on(method: "AddedToChat") { (chatUUID: String, memberUUID: String) in
+            self.addedToChat(chatUUID: chatUUID, memberUUID: memberUUID)
+        }
+        
         connection.start()
     }
     
@@ -78,6 +82,14 @@ class ChatConnection: HubConnectionDelegate {
         }
     }
     
+    func subscribeToChat(_ chatUUID: String) {
+        self.connection.invoke(method: "SubscribeToGroup", chatUUID) { error in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    
     func sendMessage(_ messageUUID: String, to chatUUID: String, from userUUID: String) {
         self.connection.invoke(method: "SendMessage", userUUID, chatUUID, messageUUID) { error in
             if error != nil {
@@ -103,8 +115,16 @@ class ChatConnection: HubConnectionDelegate {
         }
     }
     
-    func addUserToChat(_ member: ChatMember, to chatUUID: String) {
+    func addedUserToChat(_ member: ChatMember, to chatUUID: String) {
         self.connection.invoke(method: "AddedUserToChat", chatUUID, member) { error in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    
+    func notifyUserAdded(_ memberUUID: String, to chatUUID: String) {
+        self.connection.invoke(method: "AddedToChat") { (error) in
             if error != nil {
                 print(error?.localizedDescription ?? "")
             }
@@ -138,6 +158,17 @@ class ChatConnection: HubConnectionDelegate {
         do {
             let dataDict: [String: Any] = ["chatUUID": chatUUID, "chatMember": member]
             NotificationCenter.default.post(Notification(name: .newChatMember, object: self, userInfo: dataDict))
+        }
+    }
+    
+    func addedToChat(chatUUID: String, memberUUID: String) {
+        if let currentUUID = GaryPortal.shared.currentUser?.userUUID,
+           memberUUID == currentUUID {
+            do {
+                let dataDict: [String: Any] = ["chatUUID": chatUUID]
+                NotificationCenter.default.post(Notification(name: .addedToChat, object: self, userInfo: dataDict))
+                self.subscribeToChat(chatUUID)
+            }
         }
     }
     

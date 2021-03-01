@@ -88,9 +88,18 @@ struct EditUserView: View {
                         }
                     }
                     .sheet(isPresented: $isShowingImagePicker, onDismiss: showCropper, content: {
-                        ImagePicker(image: $tempUser.chosenUIImage)
+                        MediaPicker(limit: 1, filter: .images) { (picked, items) in
+                            self.isShowingImagePicker = false
+                            if picked {
+                                if let items = items,
+                                   let item = items.items.first,
+                                   item.mediaType == .photo, let photo = item.photo {
+                                    self.tempUser.chosenUIImage = photo
+                                    self.isShowingImageCropper = true
+                                }
+                            }
+                        }
                     })
-                    
                 }
                 
                 Section {

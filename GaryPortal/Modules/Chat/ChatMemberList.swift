@@ -49,7 +49,8 @@ struct ChatMemberList: View {
     func addUser(_ username: String) {
         ChatService.addUserToChat(username.trim(), chatUUID: self.chatUUID) { (newMember, error) in
             if let newMember = newMember {
-                GaryPortal.shared.chatConnection?.addUserToChat(newMember, to: self.chatUUID)
+                GaryPortal.shared.chatConnection?.addedUserToChat(newMember, to: self.chatUUID)
+                GaryPortal.shared.chatConnection?.notifyUserAdded(newMember.userUUID ?? "", to: self.chatUUID)
                 self.alertContent = ["Success", "User added successfully"]
                 self.showingAlert = true
             }

@@ -217,26 +217,35 @@ struct AccountSettingsView: View {
                 Spacer().frame(height: 16)
             }
             .cornerRadius(radius: 15, corners: [.allCorners])
-            .sheet(isPresented: $isShowingImageCropper, content: {
+            
+            if self.isShowingImageCropper {
                 ImageCropper(image: self.$newUIImage, visible: self.$isShowingImageCropper) { (finalImage) in
                     self.newUIImage = finalImage
                     self.newImage = Image(uiImage: finalImage)
                     self.hasChosenNewImage = true
                 }
-            })
+            }
+            
         }
         .frame(maxWidth: .infinity)
         .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
         .background(Color("Section"))
-        .sheet(isPresented: $isShowingImagePicker, onDismiss: loadImage) {
-            ImagePicker(image: $newUIImage)
+        .sheet(isPresented: $isShowingImagePicker) {
+            MediaPicker(limit: 1, filter: .images) { (picked, items) in
+                self.isShowingImagePicker = false
+                if picked {
+                    if let items = items,
+                       let item = items.items.first,
+                       item.mediaType == .photo, let photo = item.photo {
+                        print("hmm")
+                        self.newUIImage = photo
+                        self.isShowingImageCropper = true
+                    }
+                }
+            }
         }
         .onAppear(perform: loadData)
         .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
-    }
-    
-    func loadImage() {
-        self.isShowingImageCropper = true
     }
     
     func loadData() {

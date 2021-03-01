@@ -18,6 +18,7 @@ extension NSNotification.Name {
     static let deleteChatMessage = Notification.Name("deleteChatMessage")
     static let chatNameChanged = Notification.Name("chatNameChanged")
     static let newChatMember = Notification.Name("chatMemberAdded")
+    static let addedToChat = Notification.Name("addedToChat")
     
     static let banStatusUpdated = Notification.Name("banStatusUpdated")
 }

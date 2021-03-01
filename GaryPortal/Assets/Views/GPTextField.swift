@@ -18,6 +18,8 @@ struct GPTextField: View {
     @State var textContentType: UITextContentType?
     @State var characterLimit: Int?
     @State var characterSet: String?
+    @State var autoCapitalisation: UITextAutocapitalizationType = .words
+    @State var disableCorrection = false
     
     var body: some View {
         HStack {
@@ -39,6 +41,8 @@ struct GPTextField: View {
                 SecureField(placeHolder, text: $text)
                     .textContentType(textContentType)
                     .keyboardType(getKeyboardType())
+                    .autocapitalization(self.autoCapitalisation)
+                    .disableAutocorrection(self.disableCorrection)
                     .onReceive(Just(self.text), perform: { inputValue in
                         var isValid = true
                         if let chars = self.characterSet, !filtered(range: chars, text: inputValue) {
@@ -59,6 +63,8 @@ struct GPTextField: View {
                 TextField(placeHolder, text: $text)
                     .textContentType(textContentType)
                     .keyboardType(getKeyboardType())
+                    .autocapitalization(self.autoCapitalisation)
+                    .disableAutocorrection(self.disableCorrection)
                     .onReceive(Just(self.text), perform: { inputValue in
                         var isValid = true
                         if let chars = self.characterSet, !filtered(range: chars, text: inputValue) {

@@ -135,7 +135,7 @@ struct MediaPicker: UIViewControllerRepresentable {
         
         private func getVideo(from itemProvider: NSItemProvider, typeIdentifier: String, _ completion: @escaping((URL?) -> Void)) {
             itemProvider.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { url, error in
-                if let error = error {
+                if let _ = error {
                     completion(nil)
                 }
                 
@@ -230,45 +230,6 @@ class PickedMediaItems: ObservableObject {
         items.removeAll()
     }
 }
-
-@available(*, deprecated, message: "ImagePicker deprecated, Use MediaPicker instead", renamed: "MediaPicker")
-struct ImagePicker: UIViewControllerRepresentable {
-    
-    @Environment(\.presentationMode) var presentationMode
-    @Binding var image: UIImage
-    
-    func makeUIViewController(context: Context) -> some UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
-    }
-    
-    func makeCoordinator() -> ImagePickerCoordinator {
-        ImagePickerCoordinator(self)
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
-    }
-}
-
-class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    
-    let parent: ImagePicker
-    
-    init(_ parent: ImagePicker) {
-        self.parent = parent
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let uiImage = info[.originalImage] as? UIImage {
-            parent.image = uiImage
-        }
-        
-        parent.presentationMode.wrappedValue.dismiss()
-    }
-}
-
 
 struct ImageCropper: UIViewControllerRepresentable {
     

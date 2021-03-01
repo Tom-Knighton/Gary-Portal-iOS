@@ -16,12 +16,14 @@ class ChatListDataSource: ObservableObject {
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatMemberAdded(_:)), name: .newChatMember, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onAddedToChat(_:)), name: .addedToChat, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .newChatMessage, object: nil)
         NotificationCenter.default.removeObserver(self, name: .chatNameChanged, object: nil)
         NotificationCenter.default.removeObserver(self, name: .newChatMember, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .addedToChat, object: nil)
     }
     
     func getChatsFiltered() -> [Chat] {
@@ -29,7 +31,6 @@ class ChatListDataSource: ObservableObject {
     }
     
     func loadChats(callingMethod: String = #function ) {
-        print("called by \(callingMethod)")
         ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
             DispatchQueue.main.async {
                 self.chats = newChats ?? []
@@ -111,6 +112,21 @@ class ChatListDataSource: ObservableObject {
             DispatchQueue.main.async {
                 if self.chats[index].chatMembers?.contains(where: { $0.userUUID == newMember.userUUID }) == false {
                     self.chats[index].chatMembers?.append(newMember)
+                }
+            }
+        }
+    }
+    
+    @objc
+    func onAddedToChat(_ notification: NSNotification) {
+        if let chatUUID = notification.userInfo?["chatUUID"] as? String {
+            ChatService.getChat(by: chatUUID) { (chat, error) in
+                if let chat = chat {
+                    DispatchQueue.main.async {
+                        if self.chats.contains(where: { $0.chatUUID == chat.chatUUID }) == false {
+                            self.chats.append(chat)
+                        }
+                    }
                 }
             }
         }

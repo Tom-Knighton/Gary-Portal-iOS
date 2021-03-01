@@ -148,16 +148,17 @@ class GaryPortal: NSObject, ObservableObject {
 struct GaryPortalConstants {
     
     static let AppName = "Gary Portal"
-    static let AppMainVersion = "4.0"
+    static let AppMainVersion = "4.0.0"
+    static let AppIsDev = true
     
     static let EmailRegex = """
                             ^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$
                             """
     static let PasswordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}"
     
-    static let APIBaseUrl = "https://api.garyportal.tomk.online/api/"
-    static let APIChatHub = "https://api.garyportal.tomk.online/chathub"
-    static let APIMiscHub = "https://api.garyportal.tomk.online/apphub"
+    static let APIBaseUrl = AppIsDev ? "https://api-dev.garyportal.tomk.online/api/" : "https://api.garyportal.tomk.online/api/"
+    static let APIChatHub = AppIsDev ? "https://api-dev.garyportal.tomk.online/chathub/" : "https://api.garyportal.tomk.online/chathub/"
+    static let APIMiscHub = AppIsDev ? "https://api-dev.garyportal.tomk.online/apphub/" : "https://api.garyportal.tomk.online/apphub/"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
     static let hasSeenWhatsNew = "hasSeenv400Changelog"

@@ -104,7 +104,11 @@ struct CreateChatView: View {
         ChatService.createChat(chat: chat) { (createdChat, error) in
             if var chat = createdChat {
                 for id in self.toggledUUIDS {
-                    ChatService.addUserToChatByUUID(id, chatUUID: chat.chatUUID ?? "") { (_, _) in }
+                    ChatService.addUserToChatByUUID(id, chatUUID: chat.chatUUID ?? "") { (member, _) in
+                        if let member = member {
+                            GaryPortal.shared.chatConnection?.notifyUserAdded(member.userUUID ?? "", to: chat.chatUUID ?? "")
+                        }
+                    }
                 }
                 let creationMessage = ChatMessage(chatMessageUUID: "", chatUUID: chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID, messageContent: "Chat Created", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 6, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                 

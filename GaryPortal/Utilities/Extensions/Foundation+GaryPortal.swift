@@ -243,7 +243,16 @@ extension UIApplication {
         window.addGestureRecognizer(tapGesture)
     }
     
-    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    class func topViewController(base: UIViewController? = nil) -> UIViewController? {
+        let keyWindow = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .map({$0 as? UIWindowScene})
+                .compactMap({$0})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+        
+        let base = base ?? keyWindow?.rootViewController
+
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
         }

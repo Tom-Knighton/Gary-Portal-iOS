@@ -55,9 +55,9 @@ struct SignInView: View {
     var body: some View {
         VStack {
             
-            GPTextField(text: $emailText, isSystemImage: false, imageName: "user-glyph", isSecure: false, placeHolder: "Email", textContentType: .emailAddress, characterSet: emailCharacterSet)
+            GPTextField(text: $emailText, isSystemImage: false, imageName: "user-glyph", isSecure: false, placeHolder: "Email", textContentType: .emailAddress, characterSet: emailCharacterSet, autoCapitalisation: .none, disableCorrection: true)
             
-            GPTextField(text: $passwordText, isSystemImage: false, imageName: "password-glyph", isSecure: true, placeHolder: "Password", characterSet: passCharacterSet)
+            GPTextField(text: $passwordText, isSystemImage: false, imageName: "password-glyph", isSecure: true, placeHolder: "Password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
             
             Spacer()
            
@@ -153,7 +153,7 @@ struct SignUpView: View {
     let emailCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_@-."
     let passCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.&!%$£*"
     let nameCharacterSet = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    let usernameCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+    let usernameCharacterSet = "abcdefghijklmnopqrstuvwxyz0123456789_"
     
     var body: some View {
         if self.isShowingImageCropper {
@@ -164,6 +164,7 @@ struct SignUpView: View {
             }
             .zIndex(10)
         }
+        
         ScrollView {
             VStack {
                 Text("We need some details to get you signed up!")
@@ -173,11 +174,11 @@ struct SignUpView: View {
                 Spacer().frame(height: 32)
                 
                 Group {
-                    GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "envelope", isSecure: false, placeHolder: "Your email address", characterSet: emailCharacterSet)
-                    GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "person.crop.circle", isSecure: false, placeHolder: "Your new username", characterLimit: 32, characterSet: usernameCharacterSet)
-                    GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "person", isSecure: false, placeHolder: "Your full name", characterSet: nameCharacterSet)
-                    GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "lock", isSecure: false, placeHolder: "Your new password", characterSet: passCharacterSet)
-                    GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "lock.fill", isSecure: false, placeHolder: "Confirm your password", characterSet: passCharacterSet)
+                    GPTextField(text: $viewModel.emailText, isSystemImage: true, imageName: "envelope", isSecure: false, placeHolder: "Your email address", characterSet: emailCharacterSet, autoCapitalisation: .none, disableCorrection: true)
+                    GPTextField(text: $viewModel.usernameText, isSystemImage: true, imageName: "person.crop.circle", isSecure: false, placeHolder: "Your new username", characterLimit: 32, characterSet: usernameCharacterSet, autoCapitalisation: .none, disableCorrection: true)
+                    GPTextField(text: $viewModel.fullNameText, isSystemImage: true, imageName: "person", isSecure: false, placeHolder: "Your full name", characterSet: nameCharacterSet)
+                    GPTextField(text: $viewModel.passwordText, isSystemImage: true, imageName: "lock", isSecure: false, placeHolder: "Your new password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
+                    GPTextField(text: $viewModel.confirmPasswordText, isSystemImage: true, imageName: "lock.fill", isSecure: false, placeHolder: "Confirm your password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
                     
                     DatePicker("Your date of birth:", selection: $viewModel.dateOfBirth, in: ...Calendar.current.date(byAdding: .year, value: -13, to: Date())!, displayedComponents: [.date])
                         .datePickerStyle(CompactDatePickerStyle())
@@ -238,18 +239,23 @@ struct SignUpView: View {
                                                 
             }
         }
-        .sheet(isPresented: $isShowingImagePicker, onDismiss: loadImage) {
-        ImagePicker(image: $viewModel.chosenUIImage)
+        .sheet(isPresented: $isShowingImagePicker) {
+            MediaPicker(limit: 1, filter: .images) { (picked, items) in
+                self.isShowingImagePicker = false
+                if picked {
+                    if let items = items,
+                       let item = items.items.first,
+                       item.mediaType == .photo, let photo = item.photo {
+                        self.viewModel.chosenUIImage = photo
+                        self.isShowingImageCropper = true
+                    }
+                }
+            }
         }
         .alert(isPresented: $isShowingError, content: {
             Alert(title: Text("Error"), message: Text(errorText), dismissButton: .default(Text("Ok")))
         })
         
-    }
-    
-    func loadImage() {
-        self.isShowingImageCropper = true
-       
     }
     
     func signUp() {
