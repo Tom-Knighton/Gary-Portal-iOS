@@ -80,8 +80,6 @@ struct FeedView: View {
         .edgesIgnoringSafeArea(.trailing)
         .onAppear {
             datasource.loadAditLogs()
-            self.datasource.aditLogs = []
-            self.datasource.posts = []
             datasource.loadMoreContent()
         }
         .sheet(isPresented: $isShowingCreator) {
