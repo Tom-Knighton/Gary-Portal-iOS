@@ -290,6 +290,11 @@ struct SecuritySettingsView: View {
 
 struct AppSettingsView: View {
     
+    enum SheetMode: Identifiable {
+        case none, rate, whatsNew
+        var id: SheetMode { self }
+    }
+    @State var sheetDisplayMode: SheetMode?
     @ObservedObject var datasource: ProfileViewDataSource
     @Binding var notifications: Bool
     
@@ -310,19 +315,26 @@ struct AppSettingsView: View {
             }
             .padding()
             
-            GPGradientButton(action: {}, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
-            GPGradientButton(action: {}, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
+            GPGradientButton(action: { self.sheetDisplayMode = .whatsNew }, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
+            GPGradientButton(action: { self.sheetDisplayMode = .rate }, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
             Text("\(Bundle.main.appName) v\(Bundle.main.versionNumber) (Build \(Bundle.main.buildNumber))")
             Spacer().frame(height: 16)
-            
         }
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
         .onAppear {
             self.notifications = datasource.user?.notificationsMuted ?? false
         }
+        .sheet(item: $sheetDisplayMode) { item in
+            if item == .rate {
+                SafariView(url: GaryPortalConstants.AppReviewUrl)
+            } else if item == .whatsNew {
+                GPWhatsNew()
+            }
+        }
         .cornerRadius(radius: 15, corners: [.bottomLeft, .bottomRight])
     }
+    
 }
 
 struct BlockedUsersManagement: View {

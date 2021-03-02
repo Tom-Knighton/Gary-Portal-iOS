@@ -295,8 +295,7 @@ struct SignUpView: View {
         let userRegistration = UserRegistration(userEmail: viewModel.emailText.trim(), userName: viewModel.usernameText.trim(), userFullName: viewModel.fullNameText.trim(), userPassword: viewModel.passwordText.trim(), userGender: viewModel.genders[viewModel.gender], userDOB: viewModel.dateOfBirth)
         
         AuthService.registerUser(userRegistration: userRegistration) { (newUser, error) in
-            if let newUser = newUser {
-               
+            if let _ = newUser {
                 let authUser = AuthenticatingUser(authenticatorString: viewModel.emailText, password: viewModel.passwordText)
                 AuthService.authenticate(user: authUser) { (finalUser, error) in
                     if let finalUser = finalUser {
