@@ -244,6 +244,8 @@ class FeedPostsDataSource: ObservableObject {
         self.aditLogs = []
         self.posts = []
         self.lastDateFrom = Date()
+        self.canLoadMore = true
+        self.isLoadingPage = false
         self.isFirstLoad = true
     }
     
@@ -287,7 +289,7 @@ class FeedPostsDataSource: ObservableObject {
         }
         
         isLoadingPage = true
-        FeedService.getFeedPosts(startingFrom: lastDateFrom, limit: 10) { (newPosts, error) in
+        FeedService.getFeedPosts(startingFrom: lastDateFrom, limit: 10, teamId: GaryPortal.shared.currentUser?.userTeam?.teamId ?? 0) { (newPosts, error) in
             if error == nil && GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 3) == nil {
                 DispatchQueue.main.async {
                     newPosts?.forEach({ (newPost) in

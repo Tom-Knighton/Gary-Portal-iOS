@@ -26,10 +26,10 @@ struct FeedService {
         }
     }
     
-    static func getFeedPosts(startingFrom: Date? = Date(), limit: Int = 10, completion: @escaping(([FeedPost]?, APIError?) -> Void)) {
+    static func getFeedPosts(startingFrom: Date? = Date(), limit: Int = 10, teamId: Int = 0, completion: @escaping(([FeedPost]?, APIError?) -> Void)) {
         let timefrom = String(describing: Int((startingFrom?.timeIntervalSince1970.rounded() ?? 0) * 1000) + 60000)
         let request = APIRequest(method: .get, path: "feed")
-        request.queryItems = [URLQueryItem(name: "startfrom", value: timefrom), URLQueryItem(name: "limit", value: String(describing: limit))]
+        request.queryItems = [URLQueryItem(name: "startfrom", value: timefrom), URLQueryItem(name: "limit", value: String(describing: limit)), URLQueryItem(name: "teamId", value: String(describing: teamId))]
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
