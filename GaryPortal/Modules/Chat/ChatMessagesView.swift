@@ -115,11 +115,16 @@ struct ChatView: View {
                     Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
                        Image(systemName: "chevron.backward")
                 }, trailing:
-                    NavigationLink(
-                        destination: NavigationLazyView(ChatMemberList(chatUUID: self.chat.chatUUID ?? "", users: self.datasource.chat?.chatMembers ?? [])),
-                        label: {
-                            Image(systemName: self.chat.getListImageName())
-                        })
+                    HStack {
+                        if self.chat.chatIsProtected == false {
+                            NavigationLink(
+                                destination: NavigationLazyView(ChatMemberList(chatUUID: self.chat.chatUUID ?? "", users: self.datasource.chat?.chatMembers ?? [])),
+                                label: {
+                                    Image(systemName: self.chat.getListImageName())
+                                })
+                        }
+                    }
+                    
             )
         }
         .onAppear {
