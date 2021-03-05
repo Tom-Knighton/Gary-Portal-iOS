@@ -11,6 +11,7 @@ Gary Portal is a social media application that mimicks popular features from top
   - Staff Powers
   - SwiftUI
   - Dark mode support
+  - Own chat system
  
 # Features:
  - Profile signup / login
@@ -26,10 +27,14 @@ Gary Portal uses a number of open source projects to work properly:
 
 * [TOCropViewController](https://github.com/TimOliver/TOCropViewController)
 * [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
+* [Introspect](https://github.com/siteline/SwiftUI-Introspect)
+* [ActionClosurable](https://github.com/takasek/ActionClosurable)
+* [SwiftDate](https://github.com/malcommac/SwiftDate)
+* [SignalRClient](https://github.com/moozzyk/SignalR-Client-Swift)
 
 ### Setup
 
-Gary Portal comes with the required files and API client to run. The API is hosted at [https://api.garyportal.tomk.online/api/](https://api.garyportal.tomk.online/api/]) however the base urls used within the application can easily be swapped out for locally/externally hosted ones, from Network/APISesson.swift
+Gary Portal comes with the required files and API client to run. The API is hosted at [https://api-dev.garyportal.tomk.online/api/](https://api-dev.garyportal.tomk.online/api/]) however the base urls used within the application can easily be swapped out for locally/externally hosted ones, from GaryPortal.swift -> GaryPortalConstants
 The app relies on a JWT token from the API server to authenticate
 
 ### Development
