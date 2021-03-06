@@ -383,7 +383,7 @@ struct ChatMessageView: View {
                         if ownMessage { Spacer() }
                         
                         if !ownMessage {
-                            if (isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage) {
+                            if (isWithinNextMessage && !isWithinLastMessage) || (!isWithinNextMessage && !isWithinLastMessage) || lastMessage?.isBotMessage() == true {
                                 AsyncImage(url: chatMessage.userDTO?.userProfileImageUrl ?? "")
                                     .aspectRatio(contentMode: .fill)
                                     .clipShape(Circle())
@@ -471,12 +471,21 @@ struct ChatMessageView: View {
     @ViewBuilder
     func messageBackground() -> some View {
         let ownMessage = chatMessage.userUUID == GaryPortal.shared.currentUser?.userUUID ?? ""
+        let text = self.chatMessage.messageContent ?? ""
         if chatMessage.isAdminMessage() {
             LinearGradient(gradient: adminGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
         } else if ownMessage {
-            Color(UIColor(hexString: "#323232"))
+            if text.containsOnlyEmojis() && text.emojiCharacterCount() < 6 {
+                EmptyView()
+            } else {
+                Color(UIColor(hexString: "#323232"))
+            }
         } else {
-            LinearGradient(gradient: otherMsgGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+            if text.containsOnlyEmojis() && text.emojiCharacterCount() < 6 {
+                EmptyView()
+            } else {
+                LinearGradient(gradient: otherMsgGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+            }
         }
     }
 
@@ -484,8 +493,15 @@ struct ChatMessageView: View {
     func messageContent(input: String = "") -> some View {
         switch self.chatMessage.messageTypeId {
         case 1:
-            Text(self.chatMessage.messageContent ?? "")
-                .padding()
+            let text = self.chatMessage.messageContent ?? ""
+            if text.containsOnlyEmojis() && text.emojiCharacterCount() < 6 {
+                Text(text)
+                    .padding()
+                    .font(.system(size: 50))
+            } else {
+                Text(self.chatMessage.messageContent ?? "")
+                    .padding()
+            }
         case 2:
             AsyncImage(url: self.chatMessage.messageContent ?? "")
                 .aspectRatio(contentMode: .fill)
