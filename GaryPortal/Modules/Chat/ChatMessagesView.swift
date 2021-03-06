@@ -67,47 +67,66 @@ struct ChatView: View {
                     }
                 }
                 
-                ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL in
-                    
-                    if hasMedia {
-                        if let imageURL = imageURL {
-                            ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
-                                if let url = url {
-                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                                    self.datasource.postNewMessage(message: assetMessage)
-                                    self.datasource.postNotification(for: "posted an image")
-                                }
-                            }
-                        }
-                        if let videoURL = videoURL {
-                            ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
-                                if let url = url {
-                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                                    self.datasource.postNewMessage(message: assetMessage)
-                                    self.datasource.postNotification(for: "posted a video")
-                                }
-                            }
-                        }
-                    }
-                    
-                    if !text.isEmptyOrWhitespace() {
+                if (self.chat.chatIsProtected == true && GaryPortal.shared.currentUser?.userIsAdmin == true) || self.chat.chatIsProtected == false {
+                    ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL in
                         
-                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                        self.datasource.postNewMessage(message: message)
-                        self.datasource.postNotification(for: message.messageContent ?? "")
-
-                        if text.first == "?" {
-                            ChatService.getBotMessageResponse(for: text) { (response, error) in
-                                if let response = response {
-                                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                                    self.datasource.postNewMessage(message: message)
+                        if hasMedia {
+                            if let imageURL = imageURL {
+                                ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
+                                    if let url = url {
+                                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                        self.datasource.postNewMessage(message: assetMessage)
+                                        self.datasource.postNotification(for: "posted an image")
+                                    }
+                                }
+                            }
+                            if let videoURL = videoURL {
+                                ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
+                                    if let url = url {
+                                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                        self.datasource.postNewMessage(message: assetMessage)
+                                        self.datasource.postNotification(for: "posted a video")
+                                    }
                                 }
                             }
                         }
+                        
+                        if !text.isEmptyOrWhitespace() {
+                            
+                            let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                            self.datasource.postNewMessage(message: message)
+                            self.datasource.postNotification(for: message.messageContent ?? "")
+
+                            if text.first == "?" {
+                                ChatService.getBotMessageResponse(for: text) { (response, error) in
+                                    if let response = response {
+                                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                        self.datasource.postNewMessage(message: message)
+                                    }
+                                }
+                            }
+                        }
+                        self.textMessage = ""
                     }
-                    self.textMessage = ""
+                } else {
+                    HStack {
+                        Spacer().frame(width: 16)
+                        HStack {
+                            Spacer()
+                            Text("You are unable to send mesages to this chat")
+                                .fontWeight(.light)
+                                .multilineTextAlignment(.center)
+                            Spacer()
+                        }
+                        .padding(8)
+                        .background(Color("Section"))
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+                        Spacer().frame(width: 16)
+
+                    }
+                    .padding(.bottom, 8)
                 }
-                    
             }
             .navigationTitle(self.datasource.chatName)
             .navigationBarItems(
