@@ -323,6 +323,7 @@ struct ChatMessageView: View {
     
     @State var viewingUUID = ""
     @State var activeSheet: ActiveSheet?
+    @State var viewingImageURL: String?
     
     var body: some View {
         let isWithinLastMessage = lastMessage?.isWithinMessage(chatMessage) ?? false
@@ -380,6 +381,9 @@ struct ChatMessageView: View {
             } else if item == ActiveSheet.profile {
                 ProfileView(uuid: self.$viewingUUID)
             }
+        }
+        .fullScreenCover(item: self.$viewingImageURL) { url in
+            FullScreenAsyncImageView(url: url)
         }
     }
     
@@ -439,6 +443,13 @@ struct ChatMessageView: View {
                     Button(action: { self.loadDinoGame() }, label : {
                         Text("🐸 Dinosaur Game 🐸")
                     })
+                    
+                    if self.chatMessage.messageTypeId == 2 {
+                        Button(action: { self.viewingImageURL = self.chatMessage.messageContent ?? "" }, label: {
+                            Text("View Image Full Screen")
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                        })
+                    }
                     
                     if self.chatMessage.isMediaMessage() {
                         Button(action: { self.downloadContent() }, label: {

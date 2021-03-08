@@ -157,3 +157,46 @@ extension View {
         self.modifier(PinchToZoom())
     }
 }
+
+struct FullScreenAsyncImageView: View {
+    
+    @State var url: String
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                AsyncImage(url: url)
+                    .aspectRatio(contentMode: .fit)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Spacer().frame(height: 32)
+                    HStack {
+                        Spacer()
+                        Button(action: { self.closeView() }, label: {
+                            HStack {
+                                Text("Close")
+                                    .fontWeight(.semibold)
+                            }
+                            .foregroundColor(Color.primary.opacity(0.7))
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background(Color("Section").opacity(0.6))
+                            .clipShape(Capsule())
+                            .shadow(radius: 3)
+                        })
+                        .padding()
+                        Spacer().frame(width: 16)
+                    }
+                    Spacer()
+                }
+            }
+        }
+        .edgesIgnoringSafeArea(.all)
+    }
+    
+    func closeView() {
+        self.presentationMode.wrappedValue.dismiss()
+    }
+}

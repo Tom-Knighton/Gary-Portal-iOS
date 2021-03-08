@@ -10,7 +10,9 @@ import UIKit
 import SwiftDate
 import ImageIO
 
-extension String {
+extension String: Identifiable {
+    
+    public var id: String { return self }
     
     ///Returns the string without extraneous whitespaces
     func trim() -> String {
