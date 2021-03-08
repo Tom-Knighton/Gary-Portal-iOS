@@ -250,7 +250,7 @@ class FeedPostsDataSource: ObservableObject {
     }
     
     func loadAditLogs() {
-        FeedService.getAditLogs { (aditLogs, error) in
+        FeedService.getAditLogs(teamId: GaryPortal.shared.currentUser?.userTeam?.teamId ?? 0) { (aditLogs, error) in
             DispatchQueue.main.async {
                 if error == nil {
                     self.aditLogs = []
@@ -266,7 +266,9 @@ class FeedPostsDataSource: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             self?.aditLogGroups = []
             keys.forEach { (dto) in
-                self?.aditLogGroups.append(AditLogGroup(aditLogGroupHash: UUID(), posterDTO: dto, aditLogs: self?.aditLogs.filter { $0.posterDTO == dto }))
+                if GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: dto?.userUUID ?? "") == false {
+                    self?.aditLogGroups.append(AditLogGroup(aditLogGroupHash: UUID(), posterDTO: dto, aditLogs: self?.aditLogs.filter { $0.posterDTO == dto }))
+                }
             }
         }
     }
