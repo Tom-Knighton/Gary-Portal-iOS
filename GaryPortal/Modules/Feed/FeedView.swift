@@ -429,8 +429,8 @@ struct PostMediaView: View {
                 AsyncImage(url: post.postUrl ?? "")
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(15)
+                    .pinchToZoom()
                     .frame(maxWidth: .infinity, maxHeight: 350)
-
                     .padding(8)
                     .shadow(radius: 3)
             }

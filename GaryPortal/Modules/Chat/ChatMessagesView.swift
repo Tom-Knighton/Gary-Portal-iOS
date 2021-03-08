@@ -133,7 +133,9 @@ struct ChatView: View {
                 leading:
                     Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
                        Image(systemName: "chevron.backward")
-                }, trailing:
+                    }
+                    .padding()
+                , trailing:
                     HStack {
                         if self.chat.chatIsProtected == false {
                             NavigationLink(
@@ -525,6 +527,7 @@ struct ChatMessageView: View {
         case 2:
             AsyncImage(url: self.chatMessage.messageContent ?? "")
                 .aspectRatio(contentMode: .fill)
+                .pinchToZoom()
                 .frame(maxWidth: 250, maxHeight: 400)
         case 3:
             if let content = self.chatMessage.messageContent, let url = URL(string: content) {

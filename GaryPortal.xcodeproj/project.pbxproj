@@ -76,6 +76,7 @@
 		E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1725D498620069E153 /* ChatMemberList.swift */; };
 		E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */; };
 		E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */; };
+		E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F3282125F6C10000F744E9 /* PinchToZoom.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
 		E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F925D2C62F007A0775 /* ActionClosurable */; };
@@ -178,6 +179,7 @@
 		E2E0FA1725D498620069E153 /* ChatMemberList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMemberList.swift; sourceTree = "<group>"; };
 		E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomView.swift; sourceTree = "<group>"; };
 		E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPGradientButton.swift; sourceTree = "<group>"; };
+		E2F3282125F6C10000F744E9 /* PinchToZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchToZoom.swift; sourceTree = "<group>"; };
 		E2F492F625D2C193007A0775 /* RefreshScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshScrollView.swift; sourceTree = "<group>"; };
 		E2F4930425D2F1C7007A0775 /* ChatHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -401,6 +403,7 @@
 				E2F492F625D2C193007A0775 /* RefreshScrollView.swift */,
 				E26A68A025B22C5C00CD0662 /* SafariView.swift */,
 				E2155E5025F4155200E48DFA /* ActivityView.swift */,
+				E2F3282125F6C10000F744E9 /* PinchToZoom.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
+				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
