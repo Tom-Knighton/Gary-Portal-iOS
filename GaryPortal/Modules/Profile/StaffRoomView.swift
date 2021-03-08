@@ -143,6 +143,7 @@ struct UserList: View {
                                 }, content: { (tappedUser) in
                                     EditUserView(editingUser: tappedUser)
                                 })
+                                .disabled((user.userIsAdmin ?? false) && garyportal.currentUser?.userIsAdmin == false)
                         }
                     }
                     .padding()
@@ -166,7 +167,7 @@ struct UserList: View {
             }
         } else {
             UserService.getAllUsers(for: self.teamId) { (returned, error) in
-                self.users = (returned?.compactMap { $0.ConvertToDTO() }) ?? []
+                self.users = (returned?.filter { $0.userUUID != garyportal.currentUser?.userUUID ?? ""}.compactMap { $0.ConvertToDTO() }) ?? []
             }
         }
     }
