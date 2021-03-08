@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2155E5025F4155200E48DFA /* ActivityView.swift */; };
 		E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */; };
 		E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */; };
 		E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755A25B0BC4D0006B7CA /* HostController.swift */; };
@@ -107,6 +108,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E2155E5025F4155200E48DFA /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
 		E217755A25B0BC4D0006B7CA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaryPortalSwipeController.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				E23B908425BB1DCB00C0C201 /* PlayerView.swift */,
 				E2F492F625D2C193007A0775 /* RefreshScrollView.swift */,
 				E26A68A025B22C5C00CD0662 /* SafariView.swift */,
+				E2155E5025F4155200E48DFA /* ActivityView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */,
+				E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,

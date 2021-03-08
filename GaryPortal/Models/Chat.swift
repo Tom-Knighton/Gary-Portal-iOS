@@ -157,6 +157,10 @@ struct ChatMessage: Codable, Identifiable {
     func isBotMessage() -> Bool {
         return messageTypeId == 5 || messageTypeId == 6
     }
+    
+    func isMediaMessage() -> Bool {
+        return messageTypeId == 2 || messageTypeId == 3 || messageTypeId == 4
+    }
 }
 
 struct ChatMessageType: Codable {
