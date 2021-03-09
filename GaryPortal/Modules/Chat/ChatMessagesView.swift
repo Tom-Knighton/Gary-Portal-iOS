@@ -375,13 +375,6 @@ struct ChatMessageView: View {
         .alert(isPresented: $isAlertShowing, content: {
             Alert(title: Text(self.alertContent[0]), message: Text(self.alertContent[1]), dismissButton: .default(Text("Ok")))
         })
-        .sheet(item: $activeSheet) { item in
-            if item == ActiveSheet.dino {
-                SafariView(url: GaryPortalConstants.URLs.DinoGameURL)
-            } else if item == ActiveSheet.profile {
-                ProfileView(uuid: self.$viewingUUID)
-            }
-        }
         .fullScreenCover(item: self.$viewingImageURL) { url in
             FullScreenAsyncImageView(url: url)
         }
@@ -445,7 +438,7 @@ struct ChatMessageView: View {
                     })
                     
                     if self.chatMessage.messageTypeId == 2 {
-                        Button(action: { self.viewingImageURL = self.chatMessage.messageContent ?? "" }, label: {
+                        Button(action: { self.viewImageFullScreen(self.chatMessage.messageContent ?? "") }, label: {
                             Text("View Image Full Screen")
                             Image(systemName: "arrow.up.left.and.arrow.down.right")
                         })
@@ -496,6 +489,7 @@ struct ChatMessageView: View {
             if !ownMessage { Spacer() }
             Spacer().frame(width: 8)
         }
+       
         if chatMessage.isAdminMessage() {
             Divider()
         }
@@ -567,7 +561,8 @@ struct ChatMessageView: View {
     
     func goToProfile() {
         self.viewingUUID = self.chatMessage.userUUID ?? ""
-        self.activeSheet = .profile
+        let profileView = UIHostingController(rootView: ProfileView(uuid: $viewingUUID))
+        UIApplication.topViewController()?.present(profileView, animated: true, completion: nil)
     }
     
     func deleteMessage() {
@@ -582,7 +577,14 @@ struct ChatMessageView: View {
     }
     
     func loadDinoGame() {
-        self.activeSheet = .dino
+        let safariView = UIHostingController(rootView: SafariView(url: GaryPortalConstants.URLs.DinoGameURL))
+        UIApplication.topViewController()?.present(safariView, animated: true, completion: nil)
+    }
+    
+    func viewImageFullScreen(_ url: String) {
+//        let imageView = UIHostingController(rootView: FullScreenAsyncImageView(url: url))
+//        UIApplication.topViewController()?.present(imageView, animated: true, completion: nil)
+        self.viewingImageURL = url
     }
     
     func downloadContent() {
