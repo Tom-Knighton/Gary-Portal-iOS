@@ -204,6 +204,7 @@ struct ProfileHeaderView: View {
                         Circle().stroke(Color.white, lineWidth: 1)
                             .shadow(radius: 15)
                     )
+                    .pinchToZoom()
                     .frame(width: 180, height: 180)
                 
                 Group {

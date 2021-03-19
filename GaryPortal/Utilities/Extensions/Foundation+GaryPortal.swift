@@ -10,7 +10,9 @@ import UIKit
 import SwiftDate
 import ImageIO
 
-extension String {
+extension String: Identifiable {
+    
+    public var id: String { return self }
     
     ///Returns the string without extraneous whitespaces
     func trim() -> String {
@@ -32,6 +34,47 @@ extension String {
     var isValidPassword: Bool {
         let regex = try? NSRegularExpression(pattern: GaryPortalConstants.PasswordRegex, options: [])
         return regex?.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count)) != nil
+    }
+    
+    func containsOnlyEmojis() -> Bool {
+        if count == 0 {
+            return false
+        }
+        for character in self {
+            if !character.isEmoji {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func emojiCharacterCount() -> Int {
+        guard count > 0 else { return count }
+        
+        var emojiCount = 0
+        for character in self {
+            if character.isEmoji {
+                emojiCount += 1
+            }
+        }
+        print(emojiCount)
+        return emojiCount
+    }
+    
+    func containsEmoji() -> Bool {
+        for character in self {
+            if character.isEmoji {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+extension Character {
+    var isEmoji: Bool {
+        guard let scalar = unicodeScalars.first else { return false }
+        return scalar.properties.isEmoji && (scalar.value > 0x238C || unicodeScalars.count > 1)
     }
 }
 
@@ -109,7 +152,7 @@ extension UIImage {
         }
         
         return UIImage.animatedImageWithSource(source)
-       
+        
     }
     
     public class func gifImageWithURL(_ gifUrl:String) -> UIImage? {
@@ -245,14 +288,14 @@ extension UIApplication {
     
     class func topViewController(base: UIViewController? = nil) -> UIViewController? {
         let keyWindow = UIApplication.shared.connectedScenes
-                .filter({$0.activationState == .foregroundActive})
-                .map({$0 as? UIWindowScene})
-                .compactMap({$0})
-                .first?.windows
-                .filter({$0.isKeyWindow}).first
+            .filter({$0.activationState == .foregroundActive})
+            .map({$0 as? UIWindowScene})
+            .compactMap({$0})
+            .first?.windows
+            .filter({$0.isKeyWindow}).first
         
         let base = base ?? keyWindow?.rootViewController
-
+        
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
         }

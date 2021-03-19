@@ -135,7 +135,7 @@ struct ChatMessage: Codable, Identifiable {
     func isWithinMessage(_ otherMessage: ChatMessage?) -> Bool {
         let isSameSender = self.userUUID == otherMessage?.userUUID ?? ""
         let isValidDateDistance = (self.messageCreatedAt?.minutesBetweenDates(otherMessage?.messageCreatedAt ?? Date()) ?? CGFloat(0)) <= CGFloat(7)
-        return isSameSender && isValidDateDistance
+        return isSameSender && isValidDateDistance && otherMessage?.isBotMessage() == false
     }
     
     func shouldDisplayDate(from lastMessage: ChatMessage?) -> Bool {
@@ -156,6 +156,10 @@ struct ChatMessage: Codable, Identifiable {
     
     func isBotMessage() -> Bool {
         return messageTypeId == 5 || messageTypeId == 6
+    }
+    
+    func isMediaMessage() -> Bool {
+        return messageTypeId == 2 || messageTypeId == 3 || messageTypeId == 4
     }
 }
 

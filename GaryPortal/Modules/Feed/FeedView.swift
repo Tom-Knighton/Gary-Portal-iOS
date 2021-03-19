@@ -250,7 +250,7 @@ class FeedPostsDataSource: ObservableObject {
     }
     
     func loadAditLogs() {
-        FeedService.getAditLogs { (aditLogs, error) in
+        FeedService.getAditLogs(teamId: GaryPortal.shared.currentUser?.userTeam?.teamId ?? 0) { (aditLogs, error) in
             DispatchQueue.main.async {
                 if error == nil {
                     self.aditLogs = []
@@ -264,9 +264,11 @@ class FeedPostsDataSource: ObservableObject {
     func mapAditLogs() {
         let keys = Array(Set(aditLogs.map { $0.posterDTO }))
         DispatchQueue.main.async { [weak self] in
+            self?.aditLogGroups = []
             keys.forEach { (dto) in
-                self?.aditLogGroups = []
-                self?.aditLogGroups.append(AditLogGroup(aditLogGroupHash: UUID(), posterDTO: dto, aditLogs: self?.aditLogs.filter { $0.posterDTO == dto }))
+                if GaryPortal.shared.currentUser?.hasBlockedUUID(uuid: dto?.userUUID ?? "") == false {
+                    self?.aditLogGroups.append(AditLogGroup(aditLogGroupHash: UUID(), posterDTO: dto, aditLogs: self?.aditLogs.filter { $0.posterDTO == dto }))
+                }
             }
         }
     }
@@ -427,8 +429,8 @@ struct PostMediaView: View {
                 AsyncImage(url: post.postUrl ?? "")
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(15)
+                    .pinchToZoom()
                     .frame(maxWidth: .infinity, maxHeight: 350)
-
                     .padding(8)
                     .shadow(radius: 3)
             }

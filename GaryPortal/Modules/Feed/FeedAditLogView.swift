@@ -31,7 +31,9 @@ struct FeedAditLogView: View {
             }
             .edgesIgnoringSafeArea(.all)
             
-            overlay
+            if (self.aditLogs.aditLogs?.count ?? 0) > 1 {
+                overlay
+            }
             
             gestures
             

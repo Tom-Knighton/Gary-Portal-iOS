@@ -11,17 +11,9 @@ struct GPWhatsNew: View {
     
     @Environment(\.presentationMode) var presentationMode
     var updateInfo400: [GPWhatsNewEntry] = [
-        GPWhatsNewEntry(imageName: "mustache", title: "All New!", description: "The entire app has been completely rebuilt, from the ground up. It's is now good!"),
-        GPWhatsNewEntry(imageName: "moon.circle", title: "After Dark :)", description: "The app (after two years 👀) supports dark mode! Rest your eyes after a hard day on Gary Portal"),
-        GPWhatsNewEntry(imageName: "newspaper", title: "Updated Feed!", description: "After a lot of manual labour, the feed has been smushed together, now all the posts, polls and aDit LoGs appear all in the same place!"),
-        GPWhatsNewEntry(imageName: "camera", title: "Wow! Camera!", description: "Snap, marvel at the new camera that appears throughout the app, including when posting aDit LoGs and feed posts! Snap your pics and videos, then draw on them! Gary is your canvas"),
-        GPWhatsNewEntry(imageName: "text.bubble", title: "Chit Chat", description: "If you do want to talk to your friends, message them right here! The chat has been updated to, get this, no longer crash when people start typing! You can also use some fancy style messages, maybe '?help' will send you on your journey 🥸"),
-        GPWhatsNewEntry(imageName: "hand.thumbsdown", title: "You Go Queen", description: "You can now block users, and happily ignore their posts, aDit LoGs, and messages! Of course, if you are feeling benevolent, you can then unblock them at any time. You can also choose to report users, posts and messages"),
-        GPWhatsNewEntry(imageName: "envelope.badge", title: "Red Alert!", description: "Notifications! Notifications for chat messages, notifications for feed comments, notifications! Also, (you can) disable notifications!"),
-        GPWhatsNewEntry(imageName: "bolt", title: "Power", description: "Staff members and admins can now manage users right inside the app! Fear Them, Love Them."),
-        GPWhatsNewEntry(imageName: "ant.circle", title: "Fixes!", description: "Multiple bugs have been fixed, including UI issues, videos in chats, issues in the points room, crashing when logging out, and many more! Some new bugs were also added for fun."),
-        GPWhatsNewEntry(imageName: "ear", title: "Whats's that?", description: "Who's all new UI is that? I think I know.\nIt's owner is quite happy though.\nFull of joy like a vivid rainbow,\nI cry hello. (fin)\nThe app uses an all new design language to properly fit on every device, as well as that, many improvements have been made to battery life, memory management and data usage! And we are also banned for poetry"),
-        GPWhatsNewEntry(imageName: "figure.wave", title: "More!", description: "There's a lot more included in this updated, too much to fit here. Have fun!"),
+        GPWhatsNewEntry(imageName: "ant.circle", title: "Wow! Much bug fixed yay", description: "Thank you for all taking the time out of your day to report some bugs respectfully and peacefully 🥲. Some of your favourite bugs have been fixed in this version! Including:\n- Multiple Adit Log fixes\n- Announcements chat being poopy :(\n- Crashes when exiting chats\n- The back button being **too small* for your sausage fingers\nAnd more!"),
+        GPWhatsNewEntry(imageName: "arrow.up.left.and.arrow.down.right", title: "Images!", description: "For this version of Gary Portal, Al Murray has invented images! That's right, and they're super fun too. Pinch to zoom on someone's (or your own) profile picture, or a feed image post or even an image in a chat! Or, be even more adventurous and hold down on an image in chat to view it in full screen"),
+        GPWhatsNewEntry(imageName: "mustache", title: "Share with your friends", description: "You now have the  ability to hold down on images or videos in chat and select 'Download' to download or share the image or video, right from inside Gary Portal! - Your One Stop Gary")
     ]
     
     var body: some View {
@@ -29,7 +21,7 @@ struct GPWhatsNew: View {
             VStack {
                 Group {
                     Spacer()
-                    Text("What's new in Gary Portal 4.0.0")
+                    Text("What's new in Gary Portal 4.0.1")
                         .font(.largeTitle)
                         .bold()
                         .multilineTextAlignment(.center)

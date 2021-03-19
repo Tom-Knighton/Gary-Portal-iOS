@@ -44,8 +44,9 @@ struct FeedService {
         }
     }
     
-    static func getAditLogs(completion: @escaping (([AditLog]?, APIError?) -> Void)) {
+    static func getAditLogs(teamId: Int = 0, completion: @escaping (([AditLog]?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "feed/aditlogs")
+        request.queryItems = [URLQueryItem(name: "teamId", value: String(describing: teamId))]
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2155E5025F4155200E48DFA /* ActivityView.swift */; };
 		E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */; };
 		E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */; };
 		E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755A25B0BC4D0006B7CA /* HostController.swift */; };
@@ -75,6 +76,7 @@
 		E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1725D498620069E153 /* ChatMemberList.swift */; };
 		E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */; };
 		E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */; };
+		E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F3282125F6C10000F744E9 /* PinchToZoom.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
 		E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F925D2C62F007A0775 /* ActionClosurable */; };
@@ -107,6 +109,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E2155E5025F4155200E48DFA /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
 		E217755A25B0BC4D0006B7CA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaryPortalSwipeController.swift; sourceTree = "<group>"; };
@@ -176,6 +179,7 @@
 		E2E0FA1725D498620069E153 /* ChatMemberList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMemberList.swift; sourceTree = "<group>"; };
 		E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRoomView.swift; sourceTree = "<group>"; };
 		E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPGradientButton.swift; sourceTree = "<group>"; };
+		E2F3282125F6C10000F744E9 /* PinchToZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchToZoom.swift; sourceTree = "<group>"; };
 		E2F492F625D2C193007A0775 /* RefreshScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshScrollView.swift; sourceTree = "<group>"; };
 		E2F4930425D2F1C7007A0775 /* ChatHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -398,6 +402,8 @@
 				E23B908425BB1DCB00C0C201 /* PlayerView.swift */,
 				E2F492F625D2C193007A0775 /* RefreshScrollView.swift */,
 				E26A68A025B22C5C00CD0662 /* SafariView.swift */,
+				E2155E5025F4155200E48DFA /* ActivityView.swift */,
+				E2F3282125F6C10000F744E9 /* PinchToZoom.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -518,12 +524,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */,
+				E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
+				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
@@ -728,7 +736,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 4.0.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -756,7 +764,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 4.0.1;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
