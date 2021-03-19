@@ -53,6 +53,7 @@ class GaryPortal: NSObject, ObservableObject {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
+                print("presenting vc")
                 let vc = UIHostingController(rootView: ContentView())
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)

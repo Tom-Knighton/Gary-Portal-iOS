@@ -85,6 +85,7 @@ struct FeedView: View {
         .sheet(isPresented: $isShowingCreator) {
             UploadPostView(datasource: datasource)
         }
+        .navigationBarHidden(true)
     }
 }
 

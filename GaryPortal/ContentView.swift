@@ -10,63 +10,64 @@ import AVKit
 
 struct ContentView: View {
     
+    var body: some View {
+        GPNavigationController {
+            GPTabBar()
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.automatic)
+                .navigationBarHidden(true)
+        }
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct GPTabBar: View {
+    
     @ObservedObject var garyPortal = GaryPortal.shared
+    @State var selectedTab = 1
+    @State var tabIcons = ["note", "person", "bubble.left"]
+    @State var tabNames = [0, 1, 2]
+    @State var edge = UIApplication.shared.windows.first?.safeAreaInsets
     
     var body: some View {
-        ZStack {
-            GeometryReader { geometry in
-                if self.garyPortal.currentUser?.getFirstBanOfType(banTypeId: 1) != nil {
-                    ZStack {
-                        Color.black.cornerRadius(10).edgesIgnoringSafeArea(.all)
-                        Text("You have been temporarily banned from Gary Portal, please wait until your ban expires to access the app again")
-                            .fontWeight(.bold)
-                            .foregroundColor(.red)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .edgesIgnoringSafeArea(.all)
-                    }
-                } else if self.garyPortal.currentUser?.isQueued == true {
-                    ZStack {
-                        GradientBackground().edgesIgnoringSafeArea(.all)
-                        Text("You are still in the queue, your account will be created by an admin shortly, hang in there!")
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .edgesIgnoringSafeArea(.all)
-                    }
-                } else {
-                    GPNavigationController(view: AnyView(
-                        HostControllerRepresentable()
-                            .edgesIgnoringSafeArea(.all)
-                    ))
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    .onAppear {
-                        UIApplication.shared.addTapGestureRecognizer()
-                    }
-                    .sheet(item: $garyPortal.notificationSheetDisplayMode) { item in
-                        if item == .chat, let chat = garyPortal.viewingNotificationChat {
-                            ChatView(chat: chat)
-                        } else if item == .feedComments, let post = garyPortal.viewingNotificationPost {
-                            CommentsView(post: .constant(post))
-                        } else if item == .whatsNew {
-                            GPWhatsNew()
-                        }
-                    }
-                }
-            }
-            .edgesIgnoringSafeArea(.all)
+        
+        ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
             
-            if self.garyPortal.showNotification,
-               let data = self.garyPortal.currentNotificationData {
-                let isChatAndOnChat = data.isChat && (self.garyPortal.currentPageIndex == 2 || self.garyPortal.notificationSheetDisplayMode == .chat)
-                let isFeedAndInComments = data.isFeed && self.garyPortal.notificationSheetDisplayMode == .feedComments
-                
-                if !isChatAndOnChat && !isFeedAndInComments {
-                    GPNotification(data: data)
-                        .transition(.move(edge: .top))
+            HostControllerRepresentable(selectedIndex: $selectedTab)
+                .edgesIgnoringSafeArea(.all)
+            
+            Spacer()
+            
+            HStack {
+                ForEach(0..<3) { index in
+                    Button(action: { self.selectedTab = self.tabNames[index] }, label: {
+                        Spacer()
+                        Image(systemName: self.tabIcons[index])
+                            .font(.system(size: 24, weight: self.selectedTab == index ? .bold : .regular))
+                            .foregroundColor(Color(.label))
+                        Spacer()
+                    })
                 }
             }
+            .frame(height: 25)
+            .padding(.horizontal, 25)
+            .padding(.vertical, 15)
+            .background(Color("Section"))
+            .clipShape(Capsule())
+            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 5, y: 5)
+            .shadow(color: Color.black.opacity(0.15), radius: 5, x: -5, y: -5)
+            .padding(.horizontal)
+            .padding(.bottom, edge?.bottom == 0 ? 20 : 10)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
+}
+
+struct ContentPreview: PreviewProvider {
+    
+    static var previews: some View {
+        ContentView()
+            .previewDevice("iPhone 12 Pro Max")
+            .preferredColorScheme(.dark)
     }
 }

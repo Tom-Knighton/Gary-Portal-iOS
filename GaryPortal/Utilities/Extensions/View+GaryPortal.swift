@@ -65,10 +65,31 @@ extension View {
         ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
     }
     
-//    public func listSeparatorStyleNone() -> some View {
-//        modifier(ListSeparatorStyleNoneModifier())
-//    }
-    
+    func onFirstAppear(perform: @escaping () -> Void) -> some View {
+        let kAppearAction = "appear_action"
+        let queue = OperationQueue.main
+        let delayOperation = BlockOperation {
+            Thread.sleep(forTimeInterval: 0.001)
+        }
+        let appearOperation = BlockOperation {
+            perform()
+        }
+        appearOperation.name = kAppearAction
+        appearOperation.addDependency(delayOperation)
+        return onAppear {
+            if !delayOperation.isFinished, !delayOperation.isExecuting {
+                queue.addOperation(delayOperation)
+            }
+            if !appearOperation.isFinished, !appearOperation.isExecuting {
+                queue.addOperation(appearOperation)
+            }
+        }
+        .onDisappear {
+            queue.operations
+                .first { $0.name == kAppearAction }?
+                .cancel()
+        }
+    }
 }
 
 struct CornerRadiusStyle: ViewModifier {

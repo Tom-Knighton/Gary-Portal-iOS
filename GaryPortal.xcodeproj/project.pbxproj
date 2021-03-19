@@ -501,7 +501,7 @@
 		E241B40025E02BD300B15219 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -512,7 +512,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"----\"\necho \"Info.plist for target: ${PRODUCT_SETTINGS_PATH}\"\n\nbuildNum=$(/usr/libexec/Plistbuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\necho \"Current build #: $buildNum\"\n\nif [ -z \"$buildNum\" ]; then\necho \"No build number found in $PRODUCT_SETTINGS_PATH\"\nexit 2\nfi\n\nbuildNum=$(expr $buildNum + 1)\necho \"Build # incremented to: $buildNum\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNum\" \"$PRODUCT_SETTINGS_PATH\"\necho \"----\"\nexit 0 \n";
 		};

@@ -14,16 +14,40 @@ class HostNavigation: UINavigationController {
     }
 }
 
+protocol HostControllerDelegate: class {
+    func didChangeIndex(_ index: Int)
+}
+
 struct HostControllerRepresentable: UIViewControllerRepresentable {
     
-    func makeUIViewController(context: Context) -> some UIViewController {
+    @Binding var selectedIndex: Int
+    
+    func makeUIViewController(context: Context) -> HostController {
         let hostController = HostController()
+        hostController.delegate = context.coordinator
         return hostController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
+    func updateUIViewController(_ uiViewController: HostController, context: Context) {
+        uiViewController.moveToPage(selectedIndex, animated: true)
     }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(self)
+    }
+
+    final class Coordinator: NSObject, HostControllerDelegate {
+        var parent: HostControllerRepresentable
+        
+        init(_ parent: HostControllerRepresentable) {
+            self.parent = parent
+        }
+        
+        func didChangeIndex(_ index: Int) {
+            self.parent.selectedIndex = index
+        }
+    }
+    
 }
 
 
@@ -32,6 +56,8 @@ class HostController: GaryPortalSwipeController {
     func indexOfStartingPage() -> Int {
         return 1
     }
+    
+    weak var delegate: HostControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +91,7 @@ class HostController: GaryPortalSwipeController {
         } else {
             NotificationCenter.default.post(name: .goneToFeed, object: nil)
         }
+        self.delegate?.didChangeIndex(index)
     }
 }
 
