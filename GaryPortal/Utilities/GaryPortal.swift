@@ -146,7 +146,7 @@ class GaryPortal: NSObject, ObservableObject {
 struct GaryPortalConstants {
     
     static let AppName = "Gary Portal"
-    static let AppMainVersion = "4.0.1"
+    static let AppMainVersion = "4.1"
     
     #if DEBUG
         static let AppIsDev = true

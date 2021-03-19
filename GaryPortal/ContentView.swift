@@ -36,28 +36,28 @@ struct GPTabBar: View {
             HostControllerRepresentable(selectedIndex: $selectedTab)
                 .edgesIgnoringSafeArea(.all)
             
-            Spacer()
-            
-            HStack {
-                ForEach(0..<3) { index in
-                    Button(action: { self.selectedTab = self.tabNames[index] }, label: {
-                        Spacer()
-                        Image(systemName: self.tabIcons[index])
-                            .font(.system(size: 24, weight: self.selectedTab == index ? .bold : .regular))
-                            .foregroundColor(Color(.label))
-                        Spacer()
-                    })
-                }
-            }
-            .frame(height: 25)
-            .padding(.horizontal, 25)
-            .padding(.vertical, 15)
-            .background(Color("Section"))
-            .clipShape(Capsule())
-            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 5, y: 5)
-            .shadow(color: Color.black.opacity(0.15), radius: 5, x: -5, y: -5)
-            .padding(.horizontal)
-            .padding(.bottom, edge?.bottom == 0 ? 20 : 10)
+//            Spacer()
+//
+//            HStack {
+//                ForEach(0..<3) { index in
+//                    Button(action: { self.selectedTab = self.tabNames[index] }, label: {
+//                        Spacer()
+//                        Image(systemName: self.tabIcons[index])
+//                            .font(.system(size: 24, weight: self.selectedTab == index ? .bold : .regular))
+//                            .foregroundColor(Color(.label))
+//                        Spacer()
+//                    })
+//                }
+//            }
+//            .frame(height: 25)
+//            .padding(.horizontal, 25)
+//            .padding(.vertical, 15)
+//            .background(Color("Section"))
+//            .clipShape(Capsule())
+//            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 5, y: 5)
+//            .shadow(color: Color.black.opacity(0.15), radius: 5, x: -5, y: -5)
+//            .padding(.horizontal)
+//            .padding(.bottom, edge?.bottom == 0 ? 20 : 10)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
