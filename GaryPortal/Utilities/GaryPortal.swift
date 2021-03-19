@@ -46,14 +46,12 @@ class GaryPortal: NSObject, ObservableObject {
             return
         }
         KeychainWrapper.standard.set(salt, forKey: "salt")
-        
         DispatchQueue.main.async {
             let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
             if var topController = keyWindow?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }
-                print("presenting vc")
                 let vc = UIHostingController(rootView: ContentView())
                 vc.modalPresentationStyle = .fullScreen
                 topController.present(vc, animated: false, completion: nil)

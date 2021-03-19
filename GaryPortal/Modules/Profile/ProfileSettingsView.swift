@@ -297,6 +297,8 @@ struct AppSettingsView: View {
     @State var sheetDisplayMode: SheetMode?
     @ObservedObject var datasource: ProfileViewDataSource
     @Binding var notifications: Bool
+    @State var alertContent: [String] = []
+    @State var isShowingAlert = false
     
     var body: some View {
         VStack {
@@ -315,6 +317,7 @@ struct AppSettingsView: View {
             }
             .padding()
             
+            GPGradientButton(action: { self.clearCache() }, buttonText: "Clear App Cache", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: { self.sheetDisplayMode = .whatsNew }, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: { self.sheetDisplayMode = .rate }, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
             Text("\(Bundle.main.appName) v\(Bundle.main.versionNumber) (Build \(Bundle.main.buildNumber))")
@@ -332,7 +335,17 @@ struct AppSettingsView: View {
                 GPWhatsNew()
             }
         }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
+        }
         .cornerRadius(radius: 15, corners: [.bottomLeft, .bottomRight])
+    }
+    
+    func clearCache() {
+        let size = Shared.dataCache.size
+        Shared.dataCache.removeAll()
+        self.alertContent = ["Success", "App cache successfully cleared (\(Double(size) / 1e+6))"]
+        self.isShowingAlert = true
     }
     
 }

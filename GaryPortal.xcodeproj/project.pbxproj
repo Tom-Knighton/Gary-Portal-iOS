@@ -49,11 +49,32 @@
 		E26C629525B0569900FC2D0D /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629125B0569900FC2D0D /* Montserrat-ExtraLight.ttf */; };
 		E26C629625B0569900FC2D0D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */; };
 		E26C629725B0569900FC2D0D /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */; };
-		E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */; };
+		E278BF2225B0DD3700DE8D44 /* GPImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278BF2125B0DD3700DE8D44 /* GPImageLoader.swift */; };
 		E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */; };
 		E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D925DD636A00C16E18 /* Merge.swift */; };
 		E278E1DC25DDC71000C16E18 /* ListSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1DB25DDC71000C16E18 /* ListSeparator.swift */; };
 		E28084D225E96926008599B0 /* GPWhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28084D125E96926008599B0 /* GPWhatsNew.swift */; };
+		E2813A7E2605084100E395E9 /* FeedDataSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A7D2605084100E395E9 /* FeedDataSources.swift */; };
+		E2813A9726050B6D00E395E9 /* NSURLResponse+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8026050B6C00E395E9 /* NSURLResponse+Haneke.swift */; };
+		E2813A9826050B6D00E395E9 /* String+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8126050B6C00E395E9 /* String+Haneke.swift */; };
+		E2813A9A26050B6D00E395E9 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8326050B6C00E395E9 /* Format.swift */; };
+		E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8426050B6C00E395E9 /* Fetch.swift */; };
+		E2813A9D26050B6D00E395E9 /* UIButton+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8626050B6C00E395E9 /* UIButton+Haneke.swift */; };
+		E2813A9E26050B6D00E395E9 /* Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8726050B6C00E395E9 /* Haneke.swift */; };
+		E2813A9F26050B6D00E395E9 /* UIImage+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8826050B6D00E395E9 /* UIImage+Haneke.swift */; };
+		E2813AA026050B6D00E395E9 /* UIImageView+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8926050B6D00E395E9 /* UIImageView+Haneke.swift */; };
+		E2813AA126050B6D00E395E9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8B26050B6D00E395E9 /* Log.swift */; };
+		E2813AA226050B6D00E395E9 /* UIView+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8C26050B6D00E395E9 /* UIView+Haneke.swift */; };
+		E2813AA326050B6D00E395E9 /* CryptoSwiftMD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8D26050B6D00E395E9 /* CryptoSwiftMD5.swift */; };
+		E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8E26050B6D00E395E9 /* NetworkFetcher.swift */; };
+		E2813AA526050B6D00E395E9 /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8F26050B6D00E395E9 /* DiskCache.swift */; };
+		E2813AA626050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9026050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift */; };
+		E2813AA726050B6D00E395E9 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9126050B6D00E395E9 /* Cache.swift */; };
+		E2813AA826050B6D00E395E9 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9226050B6D00E395E9 /* Fetcher.swift */; };
+		E2813AA926050B6D00E395E9 /* NSFileManager+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9326050B6D00E395E9 /* NSFileManager+Haneke.swift */; };
+		E2813AAA26050B6D00E395E9 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9426050B6D00E395E9 /* Data.swift */; };
+		E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9526050B6D00E395E9 /* CGSize+Swift.swift */; };
+		E2813AAC26050B6D00E395E9 /* DiskFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9626050B6D00E395E9 /* DiskFetcher.swift */; };
 		E28DC01925C707E800A6EBEB /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01825C707E800A6EBEB /* Chat.swift */; };
 		E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01A25C7090000A6EBEB /* ChatService.swift */; };
 		E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */; };
@@ -153,11 +174,33 @@
 		E26C629125B0569900FC2D0D /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
 		E26C629225B0569900FC2D0D /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
-		E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		E278BF2125B0DD3700DE8D44 /* GPImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPImageLoader.swift; sourceTree = "<group>"; };
 		E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFeedView.swift; sourceTree = "<group>"; };
 		E278E1D925DD636A00C16E18 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		E278E1DB25DDC71000C16E18 /* ListSeparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSeparator.swift; sourceTree = "<group>"; };
 		E28084D125E96926008599B0 /* GPWhatsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPWhatsNew.swift; sourceTree = "<group>"; };
+		E2813A7D2605084100E395E9 /* FeedDataSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataSources.swift; sourceTree = "<group>"; };
+		E2813A8026050B6C00E395E9 /* NSURLResponse+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURLResponse+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A8126050B6C00E395E9 /* String+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A8326050B6C00E395E9 /* Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
+		E2813A8426050B6C00E395E9 /* Fetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetch.swift; sourceTree = "<group>"; };
+		E2813A8626050B6C00E395E9 /* UIButton+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A8726050B6C00E395E9 /* Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Haneke.swift; sourceTree = "<group>"; };
+		E2813A8826050B6D00E395E9 /* UIImage+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A8926050B6D00E395E9 /* UIImageView+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A8A26050B6D00E395E9 /* Haneke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Haneke.h; sourceTree = "<group>"; };
+		E2813A8B26050B6D00E395E9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		E2813A8C26050B6D00E395E9 /* UIView+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A8D26050B6D00E395E9 /* CryptoSwiftMD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoSwiftMD5.swift; sourceTree = "<group>"; };
+		E2813A8E26050B6D00E395E9 /* NetworkFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkFetcher.swift; sourceTree = "<group>"; };
+		E2813A8F26050B6D00E395E9 /* DiskCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCache.swift; sourceTree = "<group>"; };
+		E2813A9026050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSHTTPURLResponse+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A9126050B6D00E395E9 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		E2813A9226050B6D00E395E9 /* Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
+		E2813A9326050B6D00E395E9 /* NSFileManager+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFileManager+Haneke.swift"; sourceTree = "<group>"; };
+		E2813A9426050B6D00E395E9 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		E2813A9526050B6D00E395E9 /* CGSize+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Swift.swift"; sourceTree = "<group>"; };
+		E2813A9626050B6D00E395E9 /* DiskFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskFetcher.swift; sourceTree = "<group>"; };
 		E28DC01825C707E800A6EBEB /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		E28DC01A25C7090000A6EBEB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRootView.swift; sourceTree = "<group>"; };
@@ -258,6 +301,7 @@
 		E23100C225AF6F9C00739E9E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E2813A7F26050B6500E395E9 /* Cache */,
 				E2BB736525B062CC00CDB422 /* Extensions */,
 				E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */,
 				E2BB737A25B0946F00CDB422 /* GaryPortal.swift */,
@@ -286,6 +330,7 @@
 				E23B907D25B9CB3E00C0C201 /* FeedView.swift */,
 				E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */,
 				E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */,
+				E2813A7D2605084100E395E9 /* FeedDataSources.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -343,6 +388,34 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		E2813A7F26050B6500E395E9 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				E2813A9126050B6D00E395E9 /* Cache.swift */,
+				E2813A9526050B6D00E395E9 /* CGSize+Swift.swift */,
+				E2813A8D26050B6D00E395E9 /* CryptoSwiftMD5.swift */,
+				E2813A9426050B6D00E395E9 /* Data.swift */,
+				E2813A8F26050B6D00E395E9 /* DiskCache.swift */,
+				E2813A9626050B6D00E395E9 /* DiskFetcher.swift */,
+				E2813A8426050B6C00E395E9 /* Fetch.swift */,
+				E2813A9226050B6D00E395E9 /* Fetcher.swift */,
+				E2813A8326050B6C00E395E9 /* Format.swift */,
+				E2813A8A26050B6D00E395E9 /* Haneke.h */,
+				E2813A8726050B6C00E395E9 /* Haneke.swift */,
+				E2813A8B26050B6D00E395E9 /* Log.swift */,
+				E2813A8E26050B6D00E395E9 /* NetworkFetcher.swift */,
+				E2813A9326050B6D00E395E9 /* NSFileManager+Haneke.swift */,
+				E2813A9026050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift */,
+				E2813A8026050B6C00E395E9 /* NSURLResponse+Haneke.swift */,
+				E2813A8126050B6C00E395E9 /* String+Haneke.swift */,
+				E2813A8626050B6C00E395E9 /* UIButton+Haneke.swift */,
+				E2813A8826050B6D00E395E9 /* UIImage+Haneke.swift */,
+				E2813A8926050B6D00E395E9 /* UIImageView+Haneke.swift */,
+				E2813A8C26050B6D00E395E9 /* UIView+Haneke.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
 		E28DC01C25C7097500A6EBEB /* Chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,7 +469,7 @@
 				E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */,
 				E2BB736B25B06DCD00CDB422 /* GPTextField.swift */,
 				E28084D125E96926008599B0 /* GPWhatsNew.swift */,
-				E278BF2125B0DD3700DE8D44 /* ImageLoader.swift */,
+				E278BF2125B0DD3700DE8D44 /* GPImageLoader.swift */,
 				E2BB736E25B0897F00CDB422 /* ImagePicker.swift */,
 				E278E1DB25DDC71000C16E18 /* ListSeparator.swift */,
 				E23B908425BB1DCB00C0C201 /* PlayerView.swift */,
@@ -525,26 +598,38 @@
 			files = (
 				E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */,
 				E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */,
+				E2813AAC26050B6D00E395E9 /* DiskFetcher.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
+				E2813A9F26050B6D00E395E9 /* UIImage+Haneke.swift in Sources */,
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
+				E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
+				E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
+				E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
 				E25CC1BB25AF702B00B1FA55 /* Rank.swift in Sources */,
 				E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */,
 				E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */,
+				E2813AA026050B6D00E395E9 /* UIImageView+Haneke.swift in Sources */,
+				E2813A9726050B6D00E395E9 /* NSURLResponse+Haneke.swift in Sources */,
+				E2813A9D26050B6D00E395E9 /* UIButton+Haneke.swift in Sources */,
+				E2813AA526050B6D00E395E9 /* DiskCache.swift in Sources */,
 				E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */,
 				E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */,
+				E2813AA926050B6D00E395E9 /* NSFileManager+Haneke.swift in Sources */,
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,
+				E2813AA226050B6D00E395E9 /* UIView+Haneke.swift in Sources */,
 				E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */,
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,
 				E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */,
 				E28DC01925C707E800A6EBEB /* Chat.swift in Sources */,
+				E2813A9E26050B6D00E395E9 /* Haneke.swift in Sources */,
 				E278E1DC25DDC71000C16E18 /* ListSeparator.swift in Sources */,
 				E2E0FA1425D478B60069E153 /* Report.swift in Sources */,
 				E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */,
@@ -553,21 +638,28 @@
 				E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */,
 				E25CC1BA25AF702B00B1FA55 /* Feed.swift in Sources */,
 				E2E0FA1625D47DAA0069E153 /* GPAlert.swift in Sources */,
+				E2813AA326050B6D00E395E9 /* CryptoSwiftMD5.swift in Sources */,
 				E26A68A725B2D08800CD0662 /* StaffService.swift in Sources */,
 				E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */,
+				E2813AA126050B6D00E395E9 /* Log.swift in Sources */,
 				E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */,
 				E23B907925B9C4AF00C0C201 /* Misc.swift in Sources */,
+				E2813AA826050B6D00E395E9 /* Fetcher.swift in Sources */,
 				E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */,
 				E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */,
 				E25CC1C025AF724400B1FA55 /* ZeroPage.swift in Sources */,
 				E25CC1BC25AF702B00B1FA55 /* UserAuthentication.swift in Sources */,
 				E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */,
+				E2813AAA26050B6D00E395E9 /* Data.swift in Sources */,
 				E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */,
 				E26C628A25B053BD00FC2D0D /* UserService.swift in Sources */,
+				E2813A7E2605084100E395E9 /* FeedDataSources.swift in Sources */,
 				E26C628725B053B400FC2D0D /* APISession.swift in Sources */,
-				E278BF2225B0DD3700DE8D44 /* ImageLoader.swift in Sources */,
+				E2813A9A26050B6D00E395E9 /* Format.swift in Sources */,
+				E278BF2225B0DD3700DE8D44 /* GPImageLoader.swift in Sources */,
 				E23B908225BA048000C0C201 /* FeedService.swift in Sources */,
 				E26A68A425B2630D00CD0662 /* StaffRoomView.swift in Sources */,
+				E2813AA726050B6D00E395E9 /* Cache.swift in Sources */,
 				E249D98025D54B6C0056B027 /* CameraService.swift in Sources */,
 				E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
@@ -585,6 +677,8 @@
 				E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */,
 				E249D98225D599380056B027 /* ColourPicker.swift in Sources */,
 				E28084D225E96926008599B0 /* GPWhatsNew.swift in Sources */,
+				E2813A9826050B6D00E395E9 /* String+Haneke.swift in Sources */,
+				E2813AA626050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -726,7 +820,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 595;
+				CURRENT_PROJECT_VERSION = 720;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
@@ -754,7 +848,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 595;
+				CURRENT_PROJECT_VERSION = 720;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
