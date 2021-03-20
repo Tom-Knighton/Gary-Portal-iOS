@@ -318,6 +318,7 @@ struct AppSettingsView: View {
             .padding()
             
             GPGradientButton(action: { self.clearCache() }, buttonText: "Clear App Cache", gradientColours: [Color(UIColor.darkText)])
+            GPGradientButton(action: { self.clearBadgeCount() }, buttonText: "Clear App Badge Count", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: { self.sheetDisplayMode = .whatsNew }, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: { self.sheetDisplayMode = .rate }, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
             Text("\(Bundle.main.appName) v\(Bundle.main.versionNumber) (Build \(Bundle.main.buildNumber))")
@@ -348,6 +349,14 @@ struct AppSettingsView: View {
         self.isShowingAlert = true
     }
     
+    func clearBadgeCount() {
+        if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
+            userDefaults.set(0, forKey: "appBadgeCount")
+            userDefaults.set(0, forKey: "feedBadgeCount")
+            userDefaults.set(0, forKey: "chatBadgeCount")
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 }
 
 struct BlockedUsersManagement: View {

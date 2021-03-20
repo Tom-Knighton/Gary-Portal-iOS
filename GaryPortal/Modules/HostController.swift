@@ -91,6 +91,16 @@ class HostController: GaryPortalSwipeController {
         } else {
             NotificationCenter.default.post(name: .goneToFeed, object: nil)
         }
+        
+        if index == 2 { // Has Moved to chat
+            if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
+                let oldChat = userDefaults.integer(forKey: "chatBadgeCount")
+                userDefaults.set(0, forKey: "appBadgeCount")
+                userDefaults.set(0, forKey: "chatBadgeCount")
+                UIApplication.shared.applicationIconBadgeNumber -= oldChat
+            }
+        }
+        
         self.delegate?.didChangeIndex(index)
     }
 }

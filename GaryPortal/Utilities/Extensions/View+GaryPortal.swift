@@ -90,6 +90,26 @@ extension View {
                 .cancel()
         }
     }
+    
+    func badge(count: Int = 0) -> some View {
+        ZStack(alignment: .topTrailing) {
+            self
+            ZStack {
+                let countStr = count > 99 ? "99+" : "\(count)"
+                if count != 0 {
+                    Text(countStr)
+                        .foregroundColor(.white)
+                        .font(.footnote)
+                        .frame(width: 24, height: 24)
+                        .background(Circle().fill(Color.red))
+                        .animation(nil)
+                        .transition(.scale)
+                }
+            }
+            .offset(x: 12, y: -12)
+            .shadow(color: Color.black.opacity(0.5), radius: 3)
+        }
+    }
 }
 
 struct CornerRadiusStyle: ViewModifier {

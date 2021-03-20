@@ -12,6 +12,8 @@
 		E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */; };
 		E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755A25B0BC4D0006B7CA /* HostController.swift */; };
 		E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */; };
+		E2249D6D2606974400969824 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2249D6C2606974400969824 /* NotificationService.swift */; };
+		E2249D712606974400969824 /* GPNotifcations.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2249D6A2606974400969824 /* GPNotifcations.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E22C032A25DC6FD2001E78BC /* FeedAditLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */; };
 		E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AC25AF6F8E00739E9E /* AppDelegate.swift */; };
 		E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */; };
@@ -106,6 +108,16 @@
 		E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4930425D2F1C7007A0775 /* ChatHub.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E2249D6F2606974400969824 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E23100A125AF6F8D00739E9E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2249D692606974400969824;
+			remoteInfo = GPNotifcations;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		E22B7D7225E523A8004824F5 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -113,6 +125,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				E2249D712606974400969824 /* GPNotifcations.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,6 +147,10 @@
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
 		E217755A25B0BC4D0006B7CA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaryPortalSwipeController.swift; sourceTree = "<group>"; };
+		E2249D6A2606974400969824 /* GPNotifcations.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GPNotifcations.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2249D6C2606974400969824 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		E2249D6E2606974400969824 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2249D7626069EA400969824 /* GPNotifcations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GPNotifcations.entitlements; sourceTree = "<group>"; };
 		E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAditLogView.swift; sourceTree = "<group>"; };
 		E23100A925AF6F8E00739E9E /* GaryPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaryPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23100AC25AF6F8E00739E9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -228,6 +245,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E2249D672606974400969824 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E23100A625AF6F8E00739E9E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,10 +268,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E2249D6B2606974400969824 /* GPNotifcations */ = {
+			isa = PBXGroup;
+			children = (
+				E2249D7626069EA400969824 /* GPNotifcations.entitlements */,
+				E2249D6C2606974400969824 /* NotificationService.swift */,
+				E2249D6E2606974400969824 /* Info.plist */,
+			);
+			path = GPNotifcations;
+			sourceTree = "<group>";
+		};
 		E23100A025AF6F8D00739E9E = {
 			isa = PBXGroup;
 			children = (
 				E23100AB25AF6F8E00739E9E /* GaryPortal */,
+				E2249D6B2606974400969824 /* GPNotifcations */,
 				E23100AA25AF6F8E00739E9E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -256,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				E23100A925AF6F8E00739E9E /* GaryPortal.app */,
+				E2249D6A2606974400969824 /* GPNotifcations.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -484,6 +520,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E2249D692606974400969824 /* GPNotifcations */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2249D742606974400969824 /* Build configuration list for PBXNativeTarget "GPNotifcations" */;
+			buildPhases = (
+				E2249D662606974400969824 /* Sources */,
+				E2249D672606974400969824 /* Frameworks */,
+				E2249D682606974400969824 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GPNotifcations;
+			productName = GPNotifcations;
+			productReference = E2249D6A2606974400969824 /* GPNotifcations.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		E23100A825AF6F8E00739E9E /* GaryPortal */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E23100BD25AF6F8F00739E9E /* Build configuration list for PBXNativeTarget "GaryPortal" */;
@@ -498,6 +551,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E2249D702606974400969824 /* PBXTargetDependency */,
 			);
 			name = GaryPortal;
 			packageProductDependencies = (
@@ -521,6 +575,9 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
+					E2249D692606974400969824 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					E23100A825AF6F8E00739E9E = {
 						CreatedOnToolsVersion = 12.2;
 					};
@@ -548,11 +605,19 @@
 			projectRoot = "";
 			targets = (
 				E23100A825AF6F8E00739E9E /* GaryPortal */,
+				E2249D692606974400969824 /* GPNotifcations */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E2249D682606974400969824 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E23100A725AF6F8E00739E9E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -592,6 +657,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E2249D662606974400969824 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2249D6D2606974400969824 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E23100A525AF6F8E00739E9E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -684,6 +757,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E2249D702606974400969824 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2249D692606974400969824 /* GPNotifcations */;
+			targetProxy = E2249D6F2606974400969824 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		E23100B725AF6F8F00739E9E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -696,6 +777,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E2249D722606974400969824 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8H3J46CN24;
+				INFOPLIST_FILE = GPNotifcations/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.GPNotifcations;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E2249D732606974400969824 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8H3J46CN24;
+				INFOPLIST_FILE = GPNotifcations/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.GPNotifcations;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E23100BB25AF6F8F00739E9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -830,7 +953,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.1;
+				MARKETING_VERSION = 4.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -858,7 +981,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.1;
+				MARKETING_VERSION = 4.1;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -871,6 +994,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E2249D742606974400969824 /* Build configuration list for PBXNativeTarget "GPNotifcations" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2249D722606974400969824 /* Debug */,
+				E2249D732606974400969824 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E23100A425AF6F8D00739E9E /* Build configuration list for PBXProject "GaryPortal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

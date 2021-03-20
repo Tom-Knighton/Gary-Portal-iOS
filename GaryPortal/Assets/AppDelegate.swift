@@ -61,14 +61,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             data.onTap = {
                 GaryPortal.shared.goToChatFromNotification(chatUUID: chatUUID)
             }
+            data.subtitle = content.body
         } else if let feedPostId = content.userInfo["feedPostId"] as? Int {
             data.isFeed = true
             data.onTap = {
                 GaryPortal.shared.notificationFeedID = feedPostId
                 GaryPortal.shared.goToCommentsFromNotification(feedPostId: feedPostId)
             }
+            data.title = content.body
         }
-        
+
         GaryPortal.shared.showNotification(data: data)
         completionHandler([])
     }
