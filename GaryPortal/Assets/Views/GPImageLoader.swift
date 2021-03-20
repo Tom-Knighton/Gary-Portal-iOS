@@ -22,7 +22,8 @@ final class Loader: ObservableObject {
                     DispatchQueue.main.async {
                         if let data = data {
                             self?.data = data
-                            self?.cache.set(value: data, key: url.absoluteString)
+                            let compressedData = try? (data as NSData).compressed(using: .lzfse) as Data
+                            self?.cache.set(value: compressedData ?? data, key: url.absoluteString)
                         }
                         
                     }
@@ -30,7 +31,7 @@ final class Loader: ObservableObject {
                 self?.task?.resume()
             }
             .onSuccess { [weak self] (data) in
-                self?.data = data
+                self?.data = try? (data as NSData).decompressed(using: .lzfse) as Data
             }
         
     }
