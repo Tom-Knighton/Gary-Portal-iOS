@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Bugsnag",
+        "repositoryURL": "https://github.com/bugsnag/bugsnag-cocoa",
+        "state": {
+          "branch": null,
+          "revision": "3196f905d5933b4a90678ca9fd755616ea89dc84",
+          "version": "6.8.0"
+        }
+      },
+      {
         "package": "SignalRClient",
         "repositoryURL": "https://github.com/moozzyk/SignalR-Client-Swift",
         "state": {

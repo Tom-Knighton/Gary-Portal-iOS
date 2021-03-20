@@ -92,6 +92,7 @@
 		E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737A25B0946F00CDB422 /* GaryPortal.swift */; };
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
+		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
 		E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */; };
 		E2E0FA1425D478B60069E153 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1325D478B60069E153 /* Report.swift */; };
@@ -258,6 +259,7 @@
 			files = (
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2F492F525D2BEED007A0775 /* Introspect in Frameworks */,
+				E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */,
 				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
 				E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */,
@@ -561,6 +563,7 @@
 				E2F492F925D2C62F007A0775 /* ActionClosurable */,
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
 				E2F4930225D2F140007A0775 /* SignalRClient */,
+				E2DB20AC2606A69900F507AB /* Bugsnag */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
@@ -599,6 +602,7 @@
 				E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
+				E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -1040,6 +1044,14 @@
 				minimumVersion = 2.6.0;
 			};
 		};
+		E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bugsnag/bugsnag-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.8.0;
+			};
+		};
 		E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
@@ -1084,6 +1096,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = CropViewController;
+		};
+		E2DB20AC2606A69900F507AB /* Bugsnag */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
+			productName = Bugsnag;
 		};
 		E2F492F425D2BEED007A0775 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
