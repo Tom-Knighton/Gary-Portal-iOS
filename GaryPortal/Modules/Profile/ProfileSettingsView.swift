@@ -230,16 +230,21 @@ struct AccountSettingsView: View {
         .frame(maxWidth: .infinity)
         .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
         .background(Color("Section"))
-        .sheet(isPresented: $isShowingImagePicker) {
-            MediaPicker(limit: 1, filter: .images) { (picked, items) in
-                self.isShowingImagePicker = false
-                if picked {
-                    if let items = items,
-                       let item = items.items.first,
-                       item.mediaType == .photo, let photo = item.photo {
-                        self.newUIImage = photo
-                        self.isShowingImageCropper = true
+        .fullScreenCover(isPresented: $isShowingImagePicker, onDismiss: showCropper) {
+            CameraView(timeLimit: 0, allowsGallery: true, allowsVideo: false) { (success, _, url) in
+                if success, let url = url {
+                    print(url)
+                    do {
+                        let data = try Data(contentsOf: url)
+                        let image = UIImage(data: data)
+                        self.newUIImage = image ?? UIImage()
+                        self.isShowingImagePicker = false
+                    } catch {
+                        self.isShowingImagePicker = false
                     }
+                    
+                } else {
+                    self.isShowingImagePicker = false
                 }
             }
         }
@@ -251,6 +256,10 @@ struct AccountSettingsView: View {
         self.usernameText = self.datasource.user?.userName ?? ""
         self.emailText = self.datasource.user?.userAuthentication?.userEmail ?? ""
         self.fullNameText = self.datasource.user?.userFullName ?? ""
+    }
+    
+    func showCropper() {
+        self.isShowingImageCropper = true
     }
 }
 

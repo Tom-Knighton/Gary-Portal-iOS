@@ -18,12 +18,14 @@ struct CameraView: View {
     @State var timeLimit = 30
     @State var allowsGallery = true
     @State var isShowingPicker = false
+    @State var allowsVideo = true
     var onFinalAction: (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()
     
-    init(timeLimit: Int = 30, allowsGallery: Bool = true, _ finishedEditing: @escaping(_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
+    init(timeLimit: Int = 30, allowsGallery: Bool = true, allowsVideo: Bool = true,  _ finishedEditing: @escaping(_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
         self.onFinalAction = finishedEditing
         self.timeLimit = timeLimit
         self.allowsGallery = allowsGallery
+        self.allowsVideo = allowsVideo
     }
     
     var body: some View {
@@ -106,17 +108,20 @@ struct CameraView: View {
                             
                             
                         })
-                        .simultaneousGesture(
-                            LongPressGesture(minimumDuration: 1.0)
-                                .sequenced(before: LongPressGesture(minimumDuration: .infinity))
-                                .updating($isPressingDown, body: { (value, state, transaction) in
-                                    switch value {
-                                    case .second(true, nil):
-                                        state = true
-                                    default: break
-                                    }
-                                })
-                        )
+                        .if(allowsVideo) {
+                            $0.simultaneousGesture(
+                                LongPressGesture(minimumDuration: 1.0)
+                                    .sequenced(before: LongPressGesture(minimumDuration: .infinity))
+                                    .updating($isPressingDown, body: { (value, state, transaction) in
+                                        switch value {
+                                        case .second(true, nil):
+                                            state = true
+                                        default: break
+                                        }
+                                    })
+                            )
+                        }
+                        
                     }
                 }
                 .frame(height: 75)
@@ -137,7 +142,7 @@ struct CameraView: View {
             camera.checkAccess(self.timeLimit)
         }
         .sheet(isPresented: $isShowingPicker) {
-            MediaPicker(limit: 1, filter: .imagesAndVideos) { (didPick, items) in
+            MediaPicker(limit: 1, filter: allowsVideo ? .imagesAndVideos : .images) { (didPick, items) in
                 self.isShowingPicker = false
                 if didPick {
                     if let items = items, let item = items.items.first {
