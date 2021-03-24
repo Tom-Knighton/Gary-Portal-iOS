@@ -193,6 +193,9 @@ struct MediaEditor: View {
     @State private var isInDrawingMode = false
     @State private var didDraw = false
     
+    @State private var subviewCount = 0
+    @State private var overlayView = UIImage()
+    
     var onFinishedEditing: (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()
     
     init(isShowing: Binding<Bool>, isVideo: Bool = false, photoData: Data? = nil, videoURL: URL? = nil, wasFromLibrary: Bool, cameraUsed: CameraPosition, action: @escaping (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
@@ -223,12 +226,20 @@ struct MediaEditor: View {
                     }
                 }
                 
+               
+                
                 if !self.isVideo || (self.isVideo && !self.wasFromLibrary) {
                     DrawingViewRepresentable(isDrawing: $isInDrawingMode, finalImage: $drawingImage, didDraw: $didDraw)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .edgesIgnoringSafeArea(.all)
                 }
                 
+                CamTextViewRepresentable(subviewCount: $subviewCount, overlayViewImage: $overlayView)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .edgesIgnoringSafeArea(.all)
+                    .disabled(isInDrawingMode)
+                    .allowsHitTesting(!isInDrawingMode)
+
                 VStack {
                     if !isInDrawingMode {
                         HStack(alignment: .top) {
@@ -243,15 +254,29 @@ struct MediaEditor: View {
                             })
                             
                             Spacer()
-                            Button(action: { self.isInDrawingMode = true }, label: {
-                                Image(systemName: "pencil.and.outline")
-                                    .foregroundColor(.primary)
-                                    .padding()
-                                    .background(Color("Section"))
-                                    .clipShape(Circle())
-                                    .padding(.top, 24)
-                            })
-                            .if(self.isVideo && self.wasFromLibrary) { $0.hidden() }
+
+                            VStack {
+                                Button(action: { self.isInDrawingMode = true }, label: {
+                                    Image(systemName: "pencil.and.outline")
+                                        .foregroundColor(.primary)
+                                        .padding()
+                                        .background(Color("Section"))
+                                        .clipShape(Circle())
+                                        .padding(.top, 24)
+                                })
+                                .if(self.isVideo && self.wasFromLibrary) { $0.hidden() }
+                                
+                                Spacer().frame(height: 16)
+                                Button(action: { self.notifyAddText() }, label: {
+                                    Image(systemName: "text.cursor")
+                                        .foregroundColor(.primary)
+                                        .padding()
+                                        .background(Color("Section"))
+                                        .clipShape(Circle())
+                                        .padding(.top, 24)
+                                })
+                            }
+                            
 
                             Spacer().frame(width: 16)
                         }
@@ -308,15 +333,16 @@ struct MediaEditor: View {
             guard let videoURL = self.videoURL else { self.onFinishedEditing(false, true, nil); return }
             let asset = AVURLAsset(url: videoURL) 
            
-            let merge = Merge(config: MergeConfiguration(frameRate: 30, directory: NSTemporaryDirectory(), quality: .medium, placement: .stretchFit))
-            merge.overlayVideo(video: asset, overlayImage: self.drawingImage) { (url) in
+            let merge = Merge(config: MergeConfiguration(frameRate: 30, directory: NSTemporaryDirectory(), quality: .high, placement: .stretchFit))
+            merge.overlayVideo(video: asset, overlayImages: [self.drawingImage, self.overlayView]) { (url) in
                 self.onFinishedEditing(true, true, url)
             } progressHandler: { (_) in }
         } else {
             if let photoData = self.photoData {
                 let oldImage = UIImage(data: photoData)
                 let newImage = oldImage?.imageByCombiningImage(withImage: self.drawingImage)
-                let fileUrl = newImage?.saveImageToDocumentsDirectory(withName: UUID().uuidString)
+                let imageWithTexts = newImage?.imageByCombiningImage(withImage: self.overlayView)
+                let fileUrl = imageWithTexts?.saveImageToDocumentsDirectory(withName: UUID().uuidString)
                 if let url = URL(string: fileUrl ?? "") {
                     self.onFinishedEditing(true, false, url)
                 } else {
@@ -326,36 +352,17 @@ struct MediaEditor: View {
         }
     }
     
-    private func compositionLayerInstruction(for track: AVCompositionTrack, assetTrack: AVAssetTrack) -> AVMutableVideoCompositionLayerInstruction {
-        let instruction = AVMutableVideoCompositionLayerInstruction(assetTrack: track)
-        let transform = assetTrack.preferredTransform
-        
-        instruction.setTransform(transform, at: .zero)
-        
-        return instruction
-    }
-    
-    private func orientation(from transform: CGAffineTransform) -> (orientation: UIImage.Orientation, isPortrait: Bool) {
-        var assetOrientation = UIImage.Orientation.up
-        var isPortrait = false
-        if transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0 {
-            assetOrientation = .right
-            isPortrait = true
-        } else if transform.a == 0 && transform.b == -1.0 && transform.c == 1.0 && transform.d == 0 {
-            assetOrientation = .left
-            isPortrait = true
-        } else if transform.a == 1.0 && transform.b == 0 && transform.c == 0 && transform.d == 1.0 {
-            assetOrientation = .up
-        } else if transform.a == -1.0 && transform.b == 0 && transform.c == 0 && transform.d == -1.0 {
-            assetOrientation = .down
-        }
-        
-        return (assetOrientation, isPortrait)
+    func notifyAddText() {
+        NotificationCenter.default.post(name: .addTextLabelPressed, object: nil)
     }
 }
 
-class DrawingView: UIView, ColourPickerDelegate {
+class DrawingView: UIView, ColourPickerDelegate, GPColourPickerDelegate {
     
+    func changedColour(to colour: UIColor) {
+        self.colour = Color(colour.cgColor)
+    }
+
     var lastPoint: CGPoint = .zero
     var colour: Color = .black
     var brushWidth: CGFloat = 10
@@ -372,7 +379,6 @@ class DrawingView: UIView, ColourPickerDelegate {
     
     var delegate: DrawingViewProtocol?
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -381,15 +387,16 @@ class DrawingView: UIView, ColourPickerDelegate {
         self.mainImageView.bindFrameToSuperviewBounds()
         self.tempImageView.bindFrameToSuperviewBounds()
         
-        let hostVC = UIHostingController(rootView: ColourPickerView(chosenColor: colour, delegate: self))
-        self.colourPickerView = hostVC.view
+        let hostVC = GPColourPicker(frame: CGRect(x: 0, y: 0, width: 0, height: 0), delegate: self)
+        self.colourPickerView = hostVC
         if let colourview = self.colourPickerView {
             self.addSubview(colourview)
             self.bringSubviewToFront(colourview)
             colourview.backgroundColor = .clear
             colourview.translatesAutoresizingMaskIntoConstraints = false
-            colourview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14).isActive = true
-            colourview.topAnchor.constraint(equalTo: self.topAnchor, constant: 100).isActive = true
+            colourview.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 16).isActive = true
+            colourview.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+            colourview.heightAnchor.constraint(equalToConstant: 100).isActive = true
         }
         self.backButton = UIButton()
         backButton?.translatesAutoresizingMaskIntoConstraints = false

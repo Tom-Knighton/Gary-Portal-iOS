@@ -21,4 +21,6 @@ extension NSNotification.Name {
     static let addedToChat = Notification.Name("addedToChat")
     
     static let banStatusUpdated = Notification.Name("banStatusUpdated")
+    
+    static let addTextLabelPressed = Notification.Name("addTextLabelBtnPressed")
 }

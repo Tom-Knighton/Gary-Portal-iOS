@@ -32,7 +32,7 @@ final class Merge {
      - Parameter progressHandler: Returns the progress every 500 milliseconds.
      */
     func overlayVideo(video: AVAsset,
-                      overlayImage: UIImage,
+                      overlayImages: [UIImage],
                       completion: @escaping (_ URL: URL?) -> Void,
                       progressHandler: @escaping (_ progress: Float) -> Void) {
         let videoTracks = video.tracks(withMediaType: AVMediaType.video)
@@ -49,7 +49,7 @@ final class Merge {
         let layerInstruction = LayerInstruction(track: composition.videoTrack, transform: videoTrack.preferredTransform, duration: video.duration)
         let instruction = Instruction(length: video.duration, layerInstructions: [layerInstruction.instruction])
         let size = Size(isPortrait: videoTransform.isPortrait, size: videoTrack.naturalSize)
-        let layer = Layer(overlay: overlayImage, size: size.naturalSize, placement: configuration.placement)
+        let layer = Layer(overlays: overlayImages, size: size.naturalSize, placement: configuration.placement)
         let videoComposition = VideoComposition(size: size.naturalSize, instruction: instruction,
                                                 frameRate: configuration.frameRate,
                                                 layer: layer
@@ -173,12 +173,12 @@ fileprivate final class VideoComposition {
 
 fileprivate final class Layer {
 
-    fileprivate let overlay: UIImage
+    fileprivate let overlays: [UIImage]
     fileprivate let size: CGSize
     fileprivate let placement: Placement
 
-    init(overlay: UIImage, size: CGSize, placement: Placement) {
-        self.overlay = overlay
+    init(overlays: [UIImage], size: CGSize, placement: Placement) {
+        self.overlays = overlays
         self.size = size
         self.placement = placement
     }
@@ -192,19 +192,22 @@ fileprivate final class Layer {
     }
 
     lazy var videoAndParent: VideoAndParent = {
-        let overlayLayer = CALayer()
-        overlayLayer.contents = self.overlay.cgImage
-        overlayLayer.frame = self.overlayFrame
-        overlayLayer.masksToBounds = true
-
+        
         let videoLayer = CALayer()
         videoLayer.frame = self.frame
-
+        
         let parentLayer = CALayer()
         parentLayer.frame = self.frame
         parentLayer.addSublayer(videoLayer)
-        parentLayer.addSublayer(overlayLayer)
-
+        
+        self.overlays.forEach { (overlay) in
+            let overlayLayer = CALayer()
+            overlayLayer.contents = overlay.cgImage
+            overlayLayer.frame = self.overlayFrame
+            overlayLayer.masksToBounds = true
+            parentLayer.addSublayer(overlayLayer)
+        }
+        
         return VideoAndParent(video: videoLayer, parent: parentLayer)
     }()
 

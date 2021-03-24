@@ -24,6 +24,23 @@ extension UIView {
         self.trailingAnchor.constraint(lessThanOrEqualTo: superview.trailingAnchor, constant: 0).isActive = true
         self.widthAnchor.constraint(equalTo: superview.widthAnchor, multiplier: percentageMultiplier).isActive = true
     }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIView.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        self.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.endEditing(true)
+    }
+    
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
 }
 
 class AnyGestureRecognizer: UIGestureRecognizer {
