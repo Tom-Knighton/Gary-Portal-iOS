@@ -95,7 +95,7 @@
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
 		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
-		E2DB20B226091BEA00F507AB /* GPCam+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCam+Text.swift */; };
+		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
 		E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */; };
 		E2E0FA1425D478B60069E153 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1325D478B60069E153 /* Report.swift */; };
@@ -238,7 +238,7 @@
 		E2BB737A25B0946F00CDB422 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E2BB737D25B0951500CDB422 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
-		E2DB20B126091BEA00F507AB /* GPCam+Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GPCam+Text.swift"; sourceTree = "<group>"; };
+		E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamOverlay.swift; sourceTree = "<group>"; };
 		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
 		E2E0FA1325D478B60069E153 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
@@ -529,7 +529,7 @@
 			isa = PBXGroup;
 			children = (
 				E249D96825D53DF50056B027 /* GPCamera.swift */,
-				E2DB20B126091BEA00F507AB /* GPCam+Text.swift */,
+				E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */,
 				E253732026094F5F00EF6247 /* GPCamTextView.swift */,
 				E253732426095AF100EF6247 /* GPColourPicker.swift */,
 			);
@@ -754,7 +754,7 @@
 				E278BF2225B0DD3700DE8D44 /* GPImageLoader.swift in Sources */,
 				E23B908225BA048000C0C201 /* FeedService.swift in Sources */,
 				E26A68A425B2630D00CD0662 /* StaffRoomView.swift in Sources */,
-				E2DB20B226091BEA00F507AB /* GPCam+Text.swift in Sources */,
+				E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */,
 				E2813AA726050B6D00E395E9 /* Cache.swift in Sources */,
 				E249D98025D54B6C0056B027 /* CameraService.swift in Sources */,
 				E253732126094F5F00EF6247 /* GPCamTextView.swift in Sources */,

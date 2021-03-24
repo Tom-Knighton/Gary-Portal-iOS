@@ -275,6 +275,14 @@ struct MediaEditor: View {
                                         .clipShape(Circle())
                                         .padding(.top, 24)
                                 })
+                                Spacer().frame(height: 16)
+                                Button(action: { self.notifyAddSticker() }, label: {
+                                    Image(systemName: "mustache")
+                                        .foregroundColor(.primary)
+                                        .padding(20)
+                                        .background(Color("Section"))
+                                        .clipShape(Circle())
+                                })
                             }
                             
 
@@ -354,6 +362,10 @@ struct MediaEditor: View {
     
     func notifyAddText() {
         NotificationCenter.default.post(name: .addTextLabelPressed, object: nil)
+    }
+    
+    func notifyAddSticker() {
+        NotificationCenter.default.post(name: .addStickerLabelPressed, object: nil)
     }
 }
 

@@ -68,6 +68,7 @@ class CamTextView: UIView {
         super.init(frame: frame)
         self.bindFrameToSuperviewBounds()
         NotificationCenter.default.addObserver(self, selector: #selector(addTextBtn(_:)), name: .addTextLabelPressed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(addStickerBtn(_:)), name: .addStickerLabelPressed, object: nil)
         self.hideKeyboardWhenTappedAround()
         
         self.deleteButton = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -83,6 +84,7 @@ class CamTextView: UIView {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .addTextLabelPressed, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .addStickerLabelPressed, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -96,6 +98,18 @@ class CamTextView: UIView {
         self.addSubview(textView)
         self.addGestures(view: textView)
         textView.becomeFirstResponder()
+        self.delegate?.addedSubview()
+        self.delegate?.updateImage(image: self.asImage())
+    }
+    
+    @objc
+    func addStickerBtn(_ sender: Notification) {
+        let stickerView = UIImageView(image: UIImage(named: "beaver"))
+        stickerView.frame.size = CGSize(width: 75, height: 75)
+        stickerView.contentMode = .scaleAspectFit
+        stickerView.center = self.center
+        self.addSubview(stickerView)
+        self.addGestures(view: stickerView)
         self.delegate?.addedSubview()
         self.delegate?.updateImage(image: self.asImage())
     }
@@ -150,28 +164,22 @@ class CamTextView: UIView {
             view.transform = view.transform.scaledBy(x: recogniser.scale, y: recogniser.scale)
         }
         recogniser.scale = 1
-        self.delegate?.updateImage(image: self.asImage())
+        
+        if recogniser.state == .ended {
+            self.delegate?.updateImage(image: self.asImage())
+        }
     }
     
     @objc
     func rotationGesture(_ recogniser: UIRotationGestureRecognizer) {
         guard let view = recogniser.view, !(view is GPCamTextView) else { return }
 
-        let oldFrame = view.frame
-        DispatchQueue.main.async {
-            view.transform = view.transform.rotated(by: recogniser.rotation)
-            view.frame = oldFrame
-            recogniser.rotation = 0
-            
-            if view is GPCamTextView, let textView = view as? GPCamTextView {
-                let width = min(textView.intrinsicContentSize.width, UIScreen.main.bounds.width)
-                let sizeToFit = textView.sizeThatFits(CGSize(width: width, height:CGFloat.greatestFiniteMagnitude))
-                textView.bounds.size = CGSize(width: sizeToFit.width, height: sizeToFit.height)
-                textView.setNeedsDisplay()
-            }
-
+        view.transform = view.transform.rotated(by: recogniser.rotation)
+        recogniser.rotation = 0
+        
+        if recogniser.state == .ended {
+            self.delegate?.updateImage(image: self.asImage())
         }
-        self.delegate?.updateImage(image: self.asImage())
     }
     
     @objc
@@ -233,7 +241,6 @@ class CamTextView: UIView {
             if deleteButton?.frame.contains(point) == true {
                 view.removeFromSuperview()
                 self.delegate?.removedSubview()
-                self.delegate?.updateImage(image: self.asImage())
                 let generator = UINotificationFeedbackGenerator()
                 generator.notificationOccurred(.success)
                 self.deleteButton?.transform = self.deleteButton?.transform.scaledBy(x: 0.5, y: 0.5) ?? .identity
@@ -242,8 +249,8 @@ class CamTextView: UIView {
                     view.center = self.center
                 }
             }
+            self.delegate?.updateImage(image: self.asImage())
         }
-        self.delegate?.updateImage(image: self.asImage())
     }
 }
 
