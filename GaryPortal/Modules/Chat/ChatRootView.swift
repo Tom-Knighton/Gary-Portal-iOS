@@ -81,7 +81,7 @@ struct ChatListView: View {
                         .onAppear {
                             self.dataSource.loadChats()
                         }
-                        Spacer().frame(height: (edges?.bottom ?? 0) + 30)
+                        Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
                     }
                 }
                 
@@ -102,7 +102,7 @@ struct ChatListView: View {
                         .shadow(radius: 5)
                         Spacer().frame(width: 16)
                     }
-                    Spacer().frame(height: (edges?.bottom ?? 0) + 30)
+                    Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
                 }
                 .sheet(isPresented: $isShowingCreator, onDismiss: { self.dataSource.loadChats() }, content: {
                     CreateChatView(chatDataSource: self.dataSource)

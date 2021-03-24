@@ -82,7 +82,7 @@ struct ProfileView: View {
                         .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                     Spacer().frame(height: 16)
                 }
-                Spacer().frame(height: (edges?.bottom ?? 0) + 30)
+                Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
             }
             .frame(width: geometry.size.width)
         }

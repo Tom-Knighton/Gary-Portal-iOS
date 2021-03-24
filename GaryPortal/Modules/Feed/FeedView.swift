@@ -14,7 +14,8 @@ struct FeedView: View {
     @ObservedObject var garyportal = GaryPortal.shared
     @ObservedObject var datasource = FeedPostsDataSource()
     @State var isShowingCreator = false
-    
+    @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
+
     init(){
         UITableView.appearance().backgroundColor = .clear
         UITableView.appearance().separatorStyle = .none
@@ -35,25 +36,27 @@ struct FeedView: View {
                 }
             } else {
                 ZStack {
-                    List {
-                        AditLogView(datasource: datasource)
-                            .listRowBackground(Color.clear)
-                        FeedPostTable(dataSource: datasource)
-                    }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    .listSeparatorStyle(.none)
-                    .introspectTableView { (tableView) in
-                        tableView.refreshControl = UIRefreshControl { refreshControl in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                self.datasource.reset()
-                                self.datasource.loadAditLogs()
-                                self.datasource.loadMoreContent()
-                                refreshControl.endRefreshing()
+                    VStack {
+                        List {
+                            AditLogView(datasource: datasource)
+                                .listRowBackground(Color.clear)
+                            FeedPostTable(dataSource: datasource)
+                            Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 100 : 30))
+                                .listRowBackground(Color.clear)
+                        }
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .listSeparatorStyle(.none)
+                        .introspectTableView { (tableView) in
+                            tableView.refreshControl = UIRefreshControl { refreshControl in
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                    self.datasource.reset()
+                                    self.datasource.loadAditLogs()
+                                    self.datasource.loadMoreContent()
+                                    refreshControl.endRefreshing()
+                                }
                             }
                         }
-                        
                     }
-                    
                 }
                 VStack {
                     Spacer()
@@ -70,7 +73,7 @@ struct FeedView: View {
                         .shadow(radius: 5)
                         Spacer().frame(width: 16)
                     }
-                    Spacer().frame(height: 16)
+                    Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 60))
                 }
             }
             
@@ -224,7 +227,7 @@ struct AditLogListItem: View {
 struct FeedPostTable: View {
     
     @ObservedObject var dataSource = FeedPostsDataSource()
-    
+    @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
    
     var body: some View {
         ForEach(dataSource.posts, id: \.postId) { post in
