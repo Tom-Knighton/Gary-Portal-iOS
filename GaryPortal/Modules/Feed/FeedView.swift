@@ -630,7 +630,7 @@ struct CommentsView: View {
                     }
                 }
                 Spacer().frame(height: 1)
-                ChatMessageBarView(content: $commentText, isCameraAllowed: false, placeHolderText: "Your comment...") { text, _, _, _ in
+                ChatMessageBarView(content: $commentText, isCameraAllowed: false, placeHolderText: "Your comment...") { text, _, _, _, _  in
                     self.datasource.postComment(text) { comment in
                         if let comment = comment {
                             self.commentText = ""

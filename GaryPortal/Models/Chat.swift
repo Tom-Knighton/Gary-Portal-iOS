@@ -54,11 +54,13 @@ struct Chat: Codable {
         case 3:
             return "\(senderName) sent a video"
         case 4:
-            return "\(senderName) send a file"
+            return "\(senderName) sent a file"
         case 5, 6:
             return "Bot Message"
         case 7:
             return "-- ADMIN MESSAGE --"
+        case 8:
+            return "\(senderName) sent a sticker"
         default:
             return "\(senderName): \(lastMessage.messageContent ?? "")"
         }
@@ -156,6 +158,10 @@ struct ChatMessage: Codable, Identifiable {
     
     func isBotMessage() -> Bool {
         return messageTypeId == 5 || messageTypeId == 6
+    }
+    
+    func isStickerMessage() -> Bool {
+        return messageTypeId == 8
     }
     
     func isMediaMessage() -> Bool {

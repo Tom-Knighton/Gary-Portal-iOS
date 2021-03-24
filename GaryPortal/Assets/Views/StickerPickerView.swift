@@ -31,31 +31,36 @@ class StickerPickerDataSource: ObservableObject {
 struct StickerPickerView: View {
     @ObservedObject var datasource = StickerPickerDataSource()
     @State var filterText = ""
+    @Environment(\.presentationMode) var presentationMode
     
     var onSelectedSticker: (_ urlToSticker: String) -> ()
     
     init(_ completion: @escaping (_ urlToSticker: String) -> ()) {
         self.onSelectedSticker = completion
+        self.datasource.loadStickers()
     }
     
     var body: some View {
-        ScrollView {
-            SearchBar(text: $filterText).padding(.top, 30)
-            LazyVGrid(columns: [
-                GridItem(.flexible(minimum: 100, maximum: 150)),
-                GridItem(.flexible(minimum: 100, maximum: 150)),
-                GridItem(.flexible(minimum: 100, maximum: 150)),
-            ], spacing: 12) {
-                ForEach(datasource.filteredStickers(filter: self.filterText), id: \.self) { sticker in
-                    Button(action: { self.onSelectedSticker(sticker.stickerURL ?? "") }) {
-                        AsyncImage(url: sticker.stickerURL ?? "")
-                            .aspectRatio(contentMode: .fit)
+        NavigationView {
+            ScrollView {
+                SearchBar(text: $filterText)
+                LazyVGrid(columns: [
+                    GridItem(.flexible(minimum: 100, maximum: 150)),
+                    GridItem(.flexible(minimum: 100, maximum: 150)),
+                    GridItem(.flexible(minimum: 100, maximum: 150)),
+                ], spacing: 12) {
+                    ForEach(datasource.filteredStickers(filter: self.filterText), id: \.self) { sticker in
+                        Button(action: { self.onSelectedSticker(sticker.stickerURL ?? "") }) {
+                            AsyncImage(url: sticker.stickerURL ?? "")
+                                .aspectRatio(contentMode: .fit)
+                        }
                     }
-                }
-            }.padding(.horizontal, 12)
-        }
-        .onAppear {
-            self.datasource.loadStickers()
+                }.padding(.horizontal, 12)
+            }
+            .navigationTitle("Stickers")
+            .navigationBarItems(leading: Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                Text("Close")
+            })
         }
     }
 }

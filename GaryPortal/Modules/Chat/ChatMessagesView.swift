@@ -67,7 +67,7 @@ struct ChatView: View {
             }
             
             if (self.chat.chatIsProtected == true && GaryPortal.shared.currentUser?.userIsAdmin == true) || self.chat.chatIsProtected == false {
-                ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL in
+                ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL, stickerURL in
                     
                     if hasMedia {
                         if let imageURL = imageURL {
@@ -75,7 +75,7 @@ struct ChatView: View {
                                 if let url = url {
                                     let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                                     self.datasource.postNewMessage(message: assetMessage)
-                                    self.datasource.postNotification(for: "posted an image")
+                                    self.datasource.postNotification(for: "sent an image")
                                 }
                             }
                         }
@@ -84,17 +84,21 @@ struct ChatView: View {
                                 if let url = url {
                                     let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                                     self.datasource.postNewMessage(message: assetMessage)
-                                    self.datasource.postNotification(for: "posted a video")
+                                    self.datasource.postNotification(for: "sent a video")
                                 }
                             }
                         }
                     }
                     
-                    if !text.isEmptyOrWhitespace() {
+                    if !text.isEmptyOrWhitespace() || stickerURL != nil {
+                        var message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
                         
-                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                        if hasMedia, let stickerURL = stickerURL {
+                            message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: stickerURL, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 8, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                        }
+                        
                         self.datasource.postNewMessage(message: message)
-                        self.datasource.postNotification(for: message.messageContent ?? "")
+                        self.datasource.postNotification(for: message.messageTypeId == 8 ? "sent a sticker" : message.messageContent ?? "")
 
                         if text.first == "?" {
                             ChatService.getBotMessageResponse(for: text) { (response, error) in
@@ -156,9 +160,10 @@ struct ChatMessageBarView: View {
     
     @Binding var text: String
     
-    var onSendAction: (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()
+    var onSendAction: (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?, _ stickerURL: String?) -> ()
     
     @State var isShowingCamera = false
+    @State var isShowingStickers = false
     
     @State var play = true
     
@@ -169,12 +174,12 @@ struct ChatMessageBarView: View {
     var isCameraAllowed = true
     var placeHolderText = "Your message..."
     
-    init(content: Binding<String>, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
+    init(content: Binding<String>, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?, _ stickerURL: String?) -> ()) {
         self.onSendAction = onSend
         _text = content
     }
     
-    init(content: Binding<String>, isCameraAllowed: Bool, placeHolderText: String, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
+    init(content: Binding<String>, isCameraAllowed: Bool, placeHolderText: String, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?, _ stickerURL: String?) -> ()) {
         self.onSendAction = onSend
         self.isCameraAllowed = isCameraAllowed
         self.placeHolderText = placeHolderText
@@ -211,6 +216,12 @@ struct ChatMessageBarView: View {
                 }
             }
             Spacer().frame(height: 8)
+                .sheet(isPresented: $isShowingStickers) {
+                    StickerPickerView() { url in
+                        self.isShowingStickers = false
+                        self.onSendAction("", true, "", "", url)
+                    }
+                }
             HStack {
                 
                 HStack(spacing: 8) {
@@ -237,6 +248,11 @@ struct ChatMessageBarView: View {
                                 .font(.body)
                         }
                         .foregroundColor(.gray)
+                        
+                        Button(action: { self.isShowingStickers = true }) {
+                            Image(systemName: "mustache")
+                                .font(.body)
+                        }
                     }
                     
                 }
@@ -247,7 +263,7 @@ struct ChatMessageBarView: View {
                 
                 if !text.trim().isEmptyOrWhitespace() || self.hasMedia {
                     withAnimation(.easeIn) {
-                        Button(action: { self.onSendAction(self.text, self.hasMedia, self.imageURL, self.videoURL); self.hasMedia = false; self.imageURL = ""; self.videoURL = "" }) {
+                        Button(action: { self.onSendAction(self.text, self.hasMedia, self.imageURL, self.videoURL, ""); self.hasMedia = false; self.imageURL = ""; self.videoURL = "";}) {
                             Image(systemName: "paperplane.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -290,7 +306,6 @@ struct ChatMessageBarView: View {
        
         
     }
-    
 }
 
 extension Data: Identifiable {
@@ -416,8 +431,12 @@ struct ChatMessageView: View {
             }
 
             self.messageContent()
-                .background(messageBackground())
-                .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
+                .if(chatMessage.isStickerMessage() == false) {
+                    $0.background(messageBackground())
+                }
+                .if(chatMessage.isStickerMessage() == false) {
+                    $0.clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
+                }
                 .foregroundColor(.white)
                 .contextMenu(menuItems: {
                     if self.chatMessage.messageTypeId == 1 {
@@ -546,6 +565,11 @@ struct ChatMessageView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
             }
+        case 8:
+            AsyncImage(url: self.chatMessage.messageContent ?? "")
+                .aspectRatio(contentMode: .fit)
+                .pinchToZoom()
+                .frame(width: 150, height: 150)
             
         default:
             Text(self.chatMessage.messageContent ?? "")
