@@ -59,6 +59,8 @@ class CamTextView: UIView {
     private var lastPanPoint: CGPoint?
     private var lastTextViewTransform: CGAffineTransform?
     private var lastTextViewCenter: CGPoint?
+    private var panningView: UIView?
+    private var pinchingView: UIView?
     
     private var deleteButton: UIImageView?
     
@@ -104,14 +106,17 @@ class CamTextView: UIView {
     
     @objc
     func addStickerBtn(_ sender: Notification) {
-        let stickerView = UIImageView(image: UIImage(named: "beaver"))
-        stickerView.frame.size = CGSize(width: 75, height: 75)
-        stickerView.contentMode = .scaleAspectFit
-        stickerView.center = self.center
-        self.addSubview(stickerView)
-        self.addGestures(view: stickerView)
-        self.delegate?.addedSubview()
-        self.delegate?.updateImage(image: self.asImage())
+        if let url = sender.object as? String {
+            let stickerView = UIImageView()
+            stickerView.downloaded(from: url)
+            stickerView.frame.size = CGSize(width: 150, height: 150)
+            stickerView.contentMode = .scaleAspectFit
+            stickerView.center = self.center
+            self.addSubview(stickerView)
+            self.addGestures(view: stickerView)
+            self.delegate?.addedSubview()
+            self.delegate?.updateImage(image: self.asImage())
+        }
     }
     
     func addGestures(view: UIView) {
@@ -135,10 +140,39 @@ class CamTextView: UIView {
         view.addGestureRecognizer(tapGesture)
     }
     
+    func getImageViews() -> [UIImageView] {
+        var imageViews: [UIImageView] = []
+        for view in self.subviews {
+            if view is UIImageView, let imageView = view as? UIImageView {
+                imageViews.append(imageView)
+            }
+        }
+        return imageViews
+    }
+    
     @objc
     func panGesture(_ recogniser: UIPanGestureRecognizer) {
-        if let view = recogniser.view {
-            moveView(view: view, recogniser: recogniser)
+        if recogniser.state == .began {
+            for view in self.subviews.reversed() {
+                let location = recogniser.location(in: view)
+                
+                let imageView: UIImageView = view is UIImageView ? (view as! UIImageView) : UIImageView(image: view.asImage())
+                
+                if imageView.alphaAtPoint(location) > 0 {
+                    print(view.description)
+                    self.panningView = view
+                    break
+                }
+            }
+            
+        }
+        
+        if let panningImage = self.panningView {
+            moveView(view: panningImage, recogniser: recogniser)
+        }
+        
+        if recogniser.state == .ended {
+            self.panningView = nil
         }
     }
     
@@ -184,18 +218,27 @@ class CamTextView: UIView {
     
     @objc
     func tapGesture(_ recogniser: UITapGestureRecognizer) {
-        guard let view = recogniser.view else { return }
+        guard var viewToTap = recogniser.view else { return }
         
-        view.superview?.bringSubviewToFront(view)
+        for view in self.subviews.reversed() {
+            let location = recogniser.location(in: view)
+            
+            let imageView: UIImageView = view is UIImageView ? (view as! UIImageView) : UIImageView(image: view.asImage())
+            
+            if imageView.alphaAtPoint(location) > 0 {
+                viewToTap = view
+                break
+            }
+        }
         
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
-        let oldTransform = view.transform
+        let oldTransform = viewToTap.transform
         UIView.animate(withDuration: 0.2) {
-            view.transform = view.transform.scaledBy(x: 1.2, y: 1.2)
+            viewToTap.transform = viewToTap.transform.scaledBy(x: 1.2, y: 1.2)
         } completion: { (_) in
             UIView.animate(withDuration: 0.2) {
-                view.transform = oldTransform
+                viewToTap.transform = oldTransform
             }
         }
         self.delegate?.updateImage(image: self.asImage())
@@ -218,7 +261,6 @@ class CamTextView: UIView {
                 UIView.animate(withDuration: 0.3) {
                     view.transform = view.transform.scaledBy(x: 0.25, y: 0.25)
                     view.center = recogniser.location(in: self)
-                    
                     self.deleteButton?.transform = self.deleteButton?.transform.scaledBy(x: 2, y: 2) ?? .identity
                 }
             } else if deleteButton?.frame.contains(previousPoint) == true && deleteButton?.frame.contains(pointToSuperView) == false {

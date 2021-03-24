@@ -17,8 +17,14 @@ struct CameraView: View {
     @State var isShowingEditor = false
     @State var timeLimit = 30
     @State var allowsGallery = true
-    @State var isShowingPicker = false
     @State var allowsVideo = true
+    
+    enum ActiveSheet: Identifiable {
+        case none, picker, stickers
+        var id: ActiveSheet { self }
+    }
+    @State var activeSheet: ActiveSheet?
+    
     var onFinalAction: (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()
     
     init(timeLimit: Int = 30, allowsGallery: Bool = true, allowsVideo: Bool = true,  _ finishedEditing: @escaping(_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
@@ -77,7 +83,7 @@ struct CameraView: View {
                 HStack {
                     if !camera.isTaken && !camera.isRecording && self.allowsGallery {
                         Spacer()
-                        Button(action: { self.isShowingPicker = true }, label: {
+                        Button(action: { self.activeSheet = .picker }, label: {
                             Image(systemName: "photo.on.rectangle.angled")
                                 .foregroundColor(.primary)
                                 .padding()
@@ -132,7 +138,7 @@ struct CameraView: View {
             }
             
             if self.camera.shouldShowEditor {
-                MediaEditor(isShowing: Binding(get: { camera.shouldShowEditor} , set: {camera.shouldShowEditor = $0}), isVideo: self.camera.outputURL != nil, photoData: self.camera.picData, videoURL: self.camera.outputURL, wasFromLibrary: self.camera.wasFromLibrary, cameraUsed: self.camera.currentCamera, action: self.onFinalAction)
+                MediaEditor(isShowing: Binding(get: { camera.shouldShowEditor } , set: { camera.shouldShowEditor = $0 }), activeSheet: self.$activeSheet, isVideo: self.camera.outputURL != nil, photoData: self.camera.picData, videoURL: self.camera.outputURL, wasFromLibrary: self.camera.wasFromLibrary, cameraUsed: self.camera.currentCamera, action: self.onFinalAction)
                     .onDisappear {
                         self.camera.reTake()
                     }
@@ -141,39 +147,52 @@ struct CameraView: View {
         .onAppear {
             camera.checkAccess(self.timeLimit)
         }
-        .sheet(isPresented: $isShowingPicker) {
-            MediaPicker(limit: 1, filter: allowsVideo ? .imagesAndVideos : .images) { (didPick, items) in
-                self.isShowingPicker = false
-                if didPick {
-                    if let items = items, let item = items.items.first {
-                        if item.mediaType == .photo {
-                            guard let imageData = item.photo?.jpegData(compressionQuality: 0.7) else { return }
-                            
-                            DispatchQueue.global(qos: .background).async {
-                                self.camera.session.stopRunning()
-                            }
-                            self.camera.picData = imageData
-                            self.camera.isTaken = true
-                            self.camera.wasFromLibrary = true
-                            self.camera.shouldShowEditor = true
-                        } else if item.mediaType == .video {
-                            DispatchQueue.main.async {
-                                self.camera.session.stopRunning()
-                                self.camera.outputURL = item.url
-                                self.camera.isRecording = false
-                                self.camera.picData = Data(count: 0)
+        .sheet(item: $activeSheet) { item in
+            if item == .picker {
+                MediaPicker(limit: 1, filter: allowsVideo ? .imagesAndVideos : .images) { (didPick, items) in
+                    self.activeSheet = nil
+                    if didPick {
+                        if let items = items, let item = items.items.first {
+                            if item.mediaType == .photo {
+                                guard let imageData = item.photo?.jpegData(compressionQuality: 0.7) else { return }
+                                
+                                DispatchQueue.global(qos: .background).async {
+                                    self.camera.session.stopRunning()
+                                }
+                                self.camera.picData = imageData
                                 self.camera.isTaken = true
                                 self.camera.wasFromLibrary = true
                                 self.camera.shouldShowEditor = true
+                            } else if item.mediaType == .video {
+                                DispatchQueue.main.async {
+                                    self.camera.session.stopRunning()
+                                    self.camera.outputURL = item.url
+                                    self.camera.isRecording = false
+                                    self.camera.picData = Data(count: 0)
+                                    self.camera.isTaken = true
+                                    self.camera.wasFromLibrary = true
+                                    self.camera.shouldShowEditor = true
+                                }
                             }
                         }
                     }
                 }
+            } else if item == .stickers {
+                StickerPickerView() { url in
+                    self.activeSheet = nil
+                    self.notifyAddSticker(url)
+                }
             }
+            
         }
         .alert(isPresented: $camera.alert, content: {
             Alert(title: Text("Please enable camera"))
         })
+    }
+    
+    
+    func notifyAddSticker(_ url: String) {
+        NotificationCenter.default.post(name: .addStickerLabelPressed, object: url)
     }
 }
 
@@ -187,6 +206,8 @@ struct MediaEditor: View {
     var wasFromLibrary: Bool
     
     @Binding var isShowing: Bool
+    @Binding var activeSheet: CameraView.ActiveSheet?
+    
     @State private var play = true
     @State private var chosenColour: Color = .clear
     @State private var drawingImage = UIImage()
@@ -196,9 +217,11 @@ struct MediaEditor: View {
     @State private var subviewCount = 0
     @State private var overlayView = UIImage()
     
+    @State private var showStickerView = false
+    
     var onFinishedEditing: (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()
     
-    init(isShowing: Binding<Bool>, isVideo: Bool = false, photoData: Data? = nil, videoURL: URL? = nil, wasFromLibrary: Bool, cameraUsed: CameraPosition, action: @escaping (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
+    init(isShowing: Binding<Bool>, activeSheet: Binding<CameraView.ActiveSheet?>, isVideo: Bool = false, photoData: Data? = nil, videoURL: URL? = nil, wasFromLibrary: Bool, cameraUsed: CameraPosition, action: @escaping (_ success: Bool, _ isVideo: Bool, _ urlToMedia: URL?) -> ()) {
         self.isVideo = isVideo
         self.photoData = photoData
         self.videoURL = videoURL
@@ -206,6 +229,7 @@ struct MediaEditor: View {
         self.onFinishedEditing = action
         self.wasFromLibrary = wasFromLibrary
         self._isShowing = isShowing
+        self._activeSheet = activeSheet
     }
     
     var body: some View {
@@ -225,9 +249,7 @@ struct MediaEditor: View {
                             .if(self.cameraUsed == .front) { $0.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0)) }
                     }
                 }
-                
-               
-                
+ 
                 if !self.isVideo || (self.isVideo && !self.wasFromLibrary) {
                     DrawingViewRepresentable(isDrawing: $isInDrawingMode, finalImage: $drawingImage, didDraw: $didDraw)
                         .frame(width: geometry.size.width, height: geometry.size.height)
@@ -276,7 +298,7 @@ struct MediaEditor: View {
                                         .padding(.top, 24)
                                 })
                                 Spacer().frame(height: 16)
-                                Button(action: { self.notifyAddSticker() }, label: {
+                                Button(action: { self.activeSheet = .stickers }, label: {
                                     Image(systemName: "mustache")
                                         .foregroundColor(.primary)
                                         .padding(20)
@@ -364,9 +386,6 @@ struct MediaEditor: View {
         NotificationCenter.default.post(name: .addTextLabelPressed, object: nil)
     }
     
-    func notifyAddSticker() {
-        NotificationCenter.default.post(name: .addStickerLabelPressed, object: nil)
-    }
 }
 
 class DrawingView: UIView, ColourPickerDelegate, GPColourPickerDelegate {

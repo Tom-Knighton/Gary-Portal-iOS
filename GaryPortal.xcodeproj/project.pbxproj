@@ -85,6 +85,10 @@
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
+		E2A554DA260B8E8D0086B66C /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554D9260B8E8D0086B66C /* AppService.swift */; };
+		E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554DC260B8EC80086B66C /* Sticker.swift */; };
+		E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E0260B90400086B66C /* StickerPickerView.swift */; };
+		E2A554E4260B96160086B66C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E3260B96160086B66C /* SearchBar.swift */; };
 		E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */; };
 		E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */; };
 		E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */; };
@@ -230,6 +234,10 @@
 		E2930CC025B6089700186364 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		E2930CC825B60C3400186364 /* toilet.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toilet.mp3; sourceTree = "<group>"; };
 		E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffManageUserViews.swift; sourceTree = "<group>"; };
+		E2A554D9260B8E8D0086B66C /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
+		E2A554DC260B8EC80086B66C /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
+		E2A554E0260B90400086B66C /* StickerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerView.swift; sourceTree = "<group>"; };
+		E2A554E3260B96160086B66C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPNavigation.swift; sourceTree = "<group>"; };
 		E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+GaryPortal.swift"; sourceTree = "<group>"; };
@@ -383,14 +391,15 @@
 			isa = PBXGroup;
 			children = (
 				E26C628625B053B400FC2D0D /* APISession.swift */,
-				E26C628925B053BD00FC2D0D /* UserService.swift */,
-				E2BB737D25B0951500CDB422 /* AuthService.swift */,
 				E25C1DAA25B1AAC90046EA6C /* AdminService.swift */,
-				E26A68A625B2D08800CD0662 /* StaffService.swift */,
-				E23B908125BA048000C0C201 /* FeedService.swift */,
-				E28DC01A25C7090000A6EBEB /* ChatService.swift */,
+				E2A554D9260B8E8D0086B66C /* AppService.swift */,
+				E2BB737D25B0951500CDB422 /* AuthService.swift */,
 				E2F4930425D2F1C7007A0775 /* ChatHub.swift */,
+				E28DC01A25C7090000A6EBEB /* ChatService.swift */,
+				E23B908125BA048000C0C201 /* FeedService.swift */,
 				E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */,
+				E26A68A625B2D08800CD0662 /* StaffService.swift */,
+				E26C628925B053BD00FC2D0D /* UserService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -408,6 +417,7 @@
 				E23B907825B9C4AF00C0C201 /* Misc.swift */,
 				E28DC01825C707E800A6EBEB /* Chat.swift */,
 				E2E0FA1325D478B60069E153 /* Report.swift */,
+				E2A554DC260B8EC80086B66C /* Sticker.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -521,6 +531,8 @@
 				E26A68A025B22C5C00CD0662 /* SafariView.swift */,
 				E2155E5025F4155200E48DFA /* ActivityView.swift */,
 				E2F3282125F6C10000F744E9 /* PinchToZoom.swift */,
+				E2A554E0260B90400086B66C /* StickerPickerView.swift */,
+				E2A554E3260B96160086B66C /* SearchBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -693,6 +705,7 @@
 				E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */,
 				E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */,
 				E2813AAC26050B6D00E395E9 /* DiskFetcher.swift in Sources */,
+				E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
 				E2813A9F26050B6D00E395E9 /* UIImage+Haneke.swift in Sources */,
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
@@ -712,6 +725,7 @@
 				E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */,
 				E2813AA026050B6D00E395E9 /* UIImageView+Haneke.swift in Sources */,
 				E2813A9726050B6D00E395E9 /* NSURLResponse+Haneke.swift in Sources */,
+				E2A554DA260B8E8D0086B66C /* AppService.swift in Sources */,
 				E2813A9D26050B6D00E395E9 /* UIButton+Haneke.swift in Sources */,
 				E2813AA526050B6D00E395E9 /* DiskCache.swift in Sources */,
 				E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */,
@@ -750,6 +764,7 @@
 				E26C628A25B053BD00FC2D0D /* UserService.swift in Sources */,
 				E2813A7E2605084100E395E9 /* FeedDataSources.swift in Sources */,
 				E26C628725B053B400FC2D0D /* APISession.swift in Sources */,
+				E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */,
 				E2813A9A26050B6D00E395E9 /* Format.swift in Sources */,
 				E278BF2225B0DD3700DE8D44 /* GPImageLoader.swift in Sources */,
 				E23B908225BA048000C0C201 /* FeedService.swift in Sources */,
@@ -764,6 +779,7 @@
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
 				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
 				E25CC1B825AF702B00B1FA55 /* AppSettings.swift in Sources */,
+				E2A554E4260B96160086B66C /* SearchBar.swift in Sources */,
 				E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */,
 				E2BB736F25B0897F00CDB422 /* ImagePicker.swift in Sources */,
 				E23100B125AF6F8E00739E9E /* ContentView.swift in Sources */,
@@ -967,7 +983,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 760;
+				CURRENT_PROJECT_VERSION = 777;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
@@ -995,7 +1011,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 760;
+				CURRENT_PROJECT_VERSION = 777;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
