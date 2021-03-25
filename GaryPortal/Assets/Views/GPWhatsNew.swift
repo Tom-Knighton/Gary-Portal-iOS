@@ -10,10 +10,15 @@ import SwiftUI
 struct GPWhatsNew: View {
     
     @Environment(\.presentationMode) var presentationMode
-    var updateInfo400: [GPWhatsNewEntry] = [
-        GPWhatsNewEntry(imageName: "ant.circle", title: "Wow! Much bug fixed yay", description: "Thank you for all taking the time out of your day to report some bugs respectfully and peacefully 🥲. Some of your favourite bugs have been fixed in this version! Including:\n- Multiple Adit Log fixes\n- Announcements chat being poopy :(\n- Crashes when exiting chats\n- The back button being **too small* for your sausage fingers\nAnd more!"),
-        GPWhatsNewEntry(imageName: "arrow.up.left.and.arrow.down.right", title: "Images!", description: "For this version of Gary Portal, Al Murray has invented images! That's right, and they're super fun too. Pinch to zoom on someone's (or your own) profile picture, or a feed image post or even an image in a chat! Or, be even more adventurous and hold down on an image in chat to view it in full screen"),
-        GPWhatsNewEntry(imageName: "mustache", title: "Share with your friends", description: "You now have the  ability to hold down on images or videos in chat and select 'Download' to download or share the image or video, right from inside Gary Portal! - Your One Stop Gary")
+    var updateInfo4_1: [GPWhatsNewEntry] = [
+        GPWhatsNewEntry(imageName: "hands.sparkles", title: "4.1 - The Update's update", description: "Many things! 4.1 includes multiple new things and some fixes, there's sure to be something here for you, if not, feel free to file a complaint"),
+        GPWhatsNewEntry(imageName: "globe", title: "Circumnavigation", description: "A new way to navigate! Sail the seas of Gary Portal with the new tab bar, it floats right there at the bottom of the screen and you can tap the cute little buttons to go to the cute little pages. Of course, you can also swipe between pages just like before."),
+        GPWhatsNewEntry(imageName: "scribble.variable", title: "An update's best friend", description: "Gary Portal 4.1 has added MUCH to the Gary Media Editor. In addition to being able to draw on images and videos, you can now add text labels and stickers!"),
+        GPWhatsNewEntry(imageName: "mustache", title: "Text labels and stickers!", description: "Wow, text labels and stickers. You can add as many of these as you want, and resize them, move them around, rotate them, delete them. It's your world. You can also send stickers to chats, look for the moustache button to begin your journey."),
+        GPWhatsNewEntry(imageName: "mustache", title: "Cache Money", description: "Some of you have bad WiFi, and blame Gary Portal for that, so now Gary Portal caches images so they display instantly if you've already loaded them before :). You can clear your cache in settings"),
+        GPWhatsNewEntry(imageName: "exclamationmark.bubble", title: "Does anyone read these", description: "Gary portal now included Crashylitics, any crashes are reported to Gary with no user data, so issues are more easily spotted and fixed"),
+        GPWhatsNewEntry(imageName: "ant.circle", title: "Fixes and more!", description: "A number of issues have been fixed in this update, including a memory leak, a crash and a sound that refused to play. See if you can spot them all. In addition, the app no longer crashed when you go to change your profile picture. On a completely unrelated note, the process to change your profile picture has changed! You can now use the Gary Camera to select a new photo, including ones from your library, and add text, stickers, and drawings to them"),
+        
     ]
     
     var body: some View {
@@ -21,7 +26,7 @@ struct GPWhatsNew: View {
             VStack {
                 Group {
                     Spacer()
-                    Text("What's new in Gary Portal 4.0.1")
+                    Text("What's new in Gary Portal 4.1")
                         .font(.largeTitle)
                         .bold()
                         .multilineTextAlignment(.center)
@@ -32,7 +37,7 @@ struct GPWhatsNew: View {
                 Group {
                     ScrollView {
                         LazyVStack {
-                            ForEach(self.updateInfo400, id: \.self) { item in
+                            ForEach(self.updateInfo4_1, id: \.self) { item in
                                 GPWhatsNewItem(data: item)
                             }
                         }

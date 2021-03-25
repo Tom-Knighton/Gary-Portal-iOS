@@ -388,7 +388,7 @@ struct MediaEditor: View {
     
 }
 
-class DrawingView: UIView, ColourPickerDelegate, GPColourPickerDelegate {
+class DrawingView: UIView, GPColourPickerDelegate {
     
     func changedColour(to colour: UIColor) {
         self.colour = Color(colour.cgColor)
