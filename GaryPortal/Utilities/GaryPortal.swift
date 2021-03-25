@@ -164,7 +164,7 @@ struct GaryPortalConstants {
     static let APIMiscHub = AppIsDev ? "https://api-dev.garyportal.tomk.online/apphub/" : "https://api.garyportal.tomk.online/apphub/"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
-    static let hasSeenWhatsNew = "hasSeenv401Changelog"
+    static let hasSeenWhatsNew = "hasSeenv4_1Changelog"
     
     struct Errors {
         
