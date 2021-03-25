@@ -31,10 +31,10 @@ class NotificationService: UNNotificationServiceExtension {
                 userDefaults.setValue(chatCount + 1, forKey: "chatBadgeCount")
             }
             
-//            if let feedPostId = bestAttemptContent?.userInfo["feedPostId"] as? Int, feedPostId != 0 {
-//                let chatCount = userDefaults.integer(forKey: "feedBadgeCount")
-//                userDefaults.setValue(chatCount + 1, forKey: "feedBadgeCount")
-//            }
+            if let feedPostId = bestAttemptContent?.userInfo["feedPostId"] as? Int, feedPostId != 0 {
+                let chatCount = userDefaults.integer(forKey: "feedBadgeCount")
+                userDefaults.setValue(chatCount + 1, forKey: "feedBadgeCount")
+            }
         }
         
         if let bestAttemptContent = bestAttemptContent {
