@@ -14,6 +14,7 @@ class GPUINavController: UINavigationController, UIGestureRecognizerDelegate {
         self.topViewController?.view.backgroundColor = .clear
         self.navigationBar.prefersLargeTitles = true
         self.navigationBar.isHidden = true
+        self.isNavigationBarHidden = true
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -21,19 +22,24 @@ class GPUINavController: UINavigationController, UIGestureRecognizerDelegate {
     }
 }
 
-struct GPNavigationController: UIViewControllerRepresentable {
+struct GPNavigationController<Content>: UIViewControllerRepresentable where Content: View {
     
-    @State var view: AnyView
+    var content: () -> Content
+    
+    public init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+    }
     
     typealias UIViewControllerType = GPUINavController
     
     func makeUIViewController(context: Context) -> GPUINavController {
-        let navController = GPUINavController(rootViewController: UIHostingController(rootView: view))
+        let navController = GPUINavController(rootViewController: UIHostingController(rootView: self.content()))
         return navController
     }
     
     func updateUIViewController(_ uiViewController: GPUINavController, context: Context) {
-        
+        uiViewController.isNavigationBarHidden = true
+        uiViewController.navigationBar.isHidden = true
     }
 }
 

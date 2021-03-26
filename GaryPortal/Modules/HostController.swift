@@ -14,16 +14,40 @@ class HostNavigation: UINavigationController {
     }
 }
 
+protocol HostControllerDelegate: class {
+    func didChangeIndex(_ index: Int)
+}
+
 struct HostControllerRepresentable: UIViewControllerRepresentable {
     
-    func makeUIViewController(context: Context) -> some UIViewController {
+    @Binding var selectedIndex: Int
+    
+    func makeUIViewController(context: Context) -> HostController {
         let hostController = HostController()
+        hostController.delegate = context.coordinator
         return hostController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
+    func updateUIViewController(_ uiViewController: HostController, context: Context) {
+        uiViewController.moveToPage(selectedIndex, animated: true)
     }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(self)
+    }
+
+    final class Coordinator: NSObject, HostControllerDelegate {
+        var parent: HostControllerRepresentable
+        
+        init(_ parent: HostControllerRepresentable) {
+            self.parent = parent
+        }
+        
+        func didChangeIndex(_ index: Int) {
+            self.parent.selectedIndex = index
+        }
+    }
+    
 }
 
 
@@ -32,6 +56,8 @@ class HostController: GaryPortalSwipeController {
     func indexOfStartingPage() -> Int {
         return 1
     }
+    
+    weak var delegate: HostControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +91,26 @@ class HostController: GaryPortalSwipeController {
         } else {
             NotificationCenter.default.post(name: .goneToFeed, object: nil)
         }
+        
+        if index == 2 { // Has Moved to chat
+            if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
+                let oldChat = userDefaults.integer(forKey: "chatBadgeCount")
+                userDefaults.set(UIApplication.shared.applicationIconBadgeNumber - oldChat, forKey: "appBadgeCount")
+                userDefaults.set(0, forKey: "chatBadgeCount")
+                UIApplication.shared.applicationIconBadgeNumber -= oldChat
+            }
+        }
+        
+        if index == 0 { // Has moved to feed
+            if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
+                let oldFeed = userDefaults.integer(forKey: "feedBadgeCount")
+                userDefaults.set(UIApplication.shared.applicationIconBadgeNumber - oldFeed, forKey: "appBadgeCount")
+                userDefaults.set(0, forKey: "feedBadgeCount")
+                UIApplication.shared.applicationIconBadgeNumber -= oldFeed
+            }
+        }
+        
+        self.delegate?.didChangeIndex(index)
     }
 }
 

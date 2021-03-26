@@ -230,16 +230,21 @@ struct AccountSettingsView: View {
         .frame(maxWidth: .infinity)
         .cornerRadius(radius: 15, corners: [.topLeft, .topRight])
         .background(Color("Section"))
-        .sheet(isPresented: $isShowingImagePicker) {
-            MediaPicker(limit: 1, filter: .images) { (picked, items) in
-                self.isShowingImagePicker = false
-                if picked {
-                    if let items = items,
-                       let item = items.items.first,
-                       item.mediaType == .photo, let photo = item.photo {
-                        self.newUIImage = photo
-                        self.isShowingImageCropper = true
+        .fullScreenCover(isPresented: $isShowingImagePicker, onDismiss: showCropper) {
+            CameraView(timeLimit: 0, allowsGallery: true, allowsVideo: false) { (success, _, url) in
+                if success, let url = url {
+                    print(url)
+                    do {
+                        let data = try Data(contentsOf: url)
+                        let image = UIImage(data: data)
+                        self.newUIImage = image ?? UIImage()
+                        self.isShowingImagePicker = false
+                    } catch {
+                        self.isShowingImagePicker = false
                     }
+                    
+                } else {
+                    self.isShowingImagePicker = false
                 }
             }
         }
@@ -251,6 +256,10 @@ struct AccountSettingsView: View {
         self.usernameText = self.datasource.user?.userName ?? ""
         self.emailText = self.datasource.user?.userAuthentication?.userEmail ?? ""
         self.fullNameText = self.datasource.user?.userFullName ?? ""
+    }
+    
+    func showCropper() {
+        self.isShowingImageCropper = true
     }
 }
 
@@ -297,6 +306,8 @@ struct AppSettingsView: View {
     @State var sheetDisplayMode: SheetMode?
     @ObservedObject var datasource: ProfileViewDataSource
     @Binding var notifications: Bool
+    @State var alertContent: [String] = []
+    @State var isShowingAlert = false
     
     var body: some View {
         VStack {
@@ -315,6 +326,8 @@ struct AppSettingsView: View {
             }
             .padding()
             
+            GPGradientButton(action: { self.clearCache() }, buttonText: "Clear App Cache", gradientColours: [Color(UIColor.darkText)])
+            GPGradientButton(action: { self.clearBadgeCount() }, buttonText: "Clear App Badge Count", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: { self.sheetDisplayMode = .whatsNew }, buttonText: "View Latest Changelog", gradientColours: [Color(UIColor.darkText)])
             GPGradientButton(action: { self.sheetDisplayMode = .rate }, buttonText: "Rate App", gradientColours: [Color(UIColor.darkText)])
             Text("\(Bundle.main.appName) v\(Bundle.main.versionNumber) (Build \(Bundle.main.buildNumber))")
@@ -332,9 +345,27 @@ struct AppSettingsView: View {
                 GPWhatsNew()
             }
         }
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
+        }
         .cornerRadius(radius: 15, corners: [.bottomLeft, .bottomRight])
     }
     
+    func clearCache() {
+        let size = Shared.dataCache.size
+        Shared.dataCache.removeAll()
+        self.alertContent = ["Success", "App cache successfully cleared (\(Double(size) / 1e+6))"]
+        self.isShowingAlert = true
+    }
+    
+    func clearBadgeCount() {
+        if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
+            userDefaults.set(0, forKey: "appBadgeCount")
+            userDefaults.set(0, forKey: "feedBadgeCount")
+            userDefaults.set(0, forKey: "chatBadgeCount")
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 }
 
 struct BlockedUsersManagement: View {

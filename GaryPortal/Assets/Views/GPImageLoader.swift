@@ -13,14 +13,27 @@ final class Loader: ObservableObject {
     
     var task: URLSessionDataTask?
     @Published var data: Data? = nil
+    let cache = Shared.dataCache
     
     func setup(_ url: URL) {
-        task = URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
-            DispatchQueue.main.async {
-                self.data = data
+        cache.fetch(key: url.absoluteString)
+            .onFailure { [weak self] _ in
+                self?.task = URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
+                    DispatchQueue.main.async {
+                        if let data = data {
+                            self?.data = data
+                            let compressedData = try? (data as NSData).compressed(using: .lzfse) as Data
+                            self?.cache.set(value: compressedData ?? data, key: url.absoluteString)
+                        }
+                        
+                    }
+                })
+                self?.task?.resume()
             }
-        })
-        task?.resume()
+            .onSuccess { [weak self] (data) in
+                self?.data = try? (data as NSData).decompressed(using: .lzfse) as Data
+            }
+        
     }
     
     deinit {

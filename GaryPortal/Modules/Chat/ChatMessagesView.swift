@@ -17,143 +17,141 @@ struct ChatView: View {
     @State var textMessage: String = ""
     
     var body: some View {
-        NavigationView {
-            VStack {
-                ScrollView(.vertical) {
-                    ScrollViewReader { reader in
-                        LazyVStack(spacing: 0) {
-                            ForEach(datasource.messages, id: \.chatMessageUUID) { message in
-                                let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
-                                let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
-                                let nextMessage = index == datasource.messages.count - 1 ? nil : self.datasource.messages[(index ?? 0) + 1]
-                                ChatMessageView(chatMessage: message, nextMessage: nextMessage, lastMessage: lastMessage)
-                                    .id(message.chatMessageUUID)
-                                    .onAppear(perform: {
-                                        datasource.loadMoreContentIfNeeded(currentMessage: message)
-                                    })
-                            }
-                            
+        VStack {
+            ScrollView(.vertical) {
+                ScrollViewReader { reader in
+                    LazyVStack(spacing: 0) {
+                        ForEach(datasource.messages, id: \.chatMessageUUID) { message in
+                            let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
+                            let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
+                            let nextMessage = index == datasource.messages.count - 1 ? nil : self.datasource.messages[(index ?? 0) + 1]
+                            ChatMessageView(chatMessage: message, nextMessage: nextMessage, lastMessage: lastMessage)
+                                .id(message.chatMessageUUID)
+                                .onAppear(perform: {
+                                    datasource.loadMoreContentIfNeeded(currentMessage: message)
+                                })
                         }
-                        .animation(.spring())
-                        .onAppear {
-                            reader.scrollTo(datasource.messages.last?.chatMessageUUID, anchor: .bottom)
-                            if self.datasource.messages.isEmpty {
-                                self.datasource.loadMoreContent()
-                            }
-                            self.datasource.shouldRespondToNewMessages = true
+                        
+                    }
+                    .animation(.spring())
+                    .onAppear {
+                        reader.scrollTo(datasource.messages.last?.chatMessageUUID, anchor: .bottom)
+                        if self.datasource.messages.isEmpty {
+                            self.datasource.loadMoreContent()
                         }
-                        .onDisappear {
-                            self.datasource.shouldRespondToNewMessages = false
-                            self.datasource.hasLoadedFirst = false
-                        }
-                        .onChange(of: datasource.lastMessageUUID) { (newValue) in
-                            if datasource.hasLoadedFirst {
-                                withAnimation(.easeInOut(duration: 0.5)) {
-                                    reader.scrollTo(newValue, anchor: .bottom)
-                                    self.datasource.lastMessageUUID = ""
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                        self.datasource.isLoadingPage = false
-                                    }
-                                }
-                            }
-                            ChatService.markChatAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "", chatUUID: self.chat.chatUUID ?? "")
-                            self.chat.markViewAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "")
-                        }
-                        .onChange(of: self.textMessage, perform: { value in
+                        self.datasource.shouldRespondToNewMessages = true
+                    }
+                    .onDisappear {
+                        self.datasource.shouldRespondToNewMessages = false
+                        self.datasource.hasLoadedFirst = false
+                    }
+                    .onChange(of: datasource.lastMessageUUID) { (newValue) in
+                        if datasource.hasLoadedFirst {
                             withAnimation(.easeInOut(duration: 0.5)) {
-                                reader.scrollTo(self.datasource.messages.last?.chatMessageUUID, anchor: .bottom)
-                            }
-                        })
-                    }
-                }
-                
-                if (self.chat.chatIsProtected == true && GaryPortal.shared.currentUser?.userIsAdmin == true) || self.chat.chatIsProtected == false {
-                    ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL in
-                        
-                        if hasMedia {
-                            if let imageURL = imageURL {
-                                ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
-                                    if let url = url {
-                                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                                        self.datasource.postNewMessage(message: assetMessage)
-                                        self.datasource.postNotification(for: "posted an image")
-                                    }
-                                }
-                            }
-                            if let videoURL = videoURL {
-                                ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
-                                    if let url = url {
-                                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                                        self.datasource.postNewMessage(message: assetMessage)
-                                        self.datasource.postNotification(for: "posted a video")
-                                    }
+                                reader.scrollTo(newValue, anchor: .bottom)
+                                self.datasource.lastMessageUUID = ""
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                    self.datasource.isLoadingPage = false
                                 }
                             }
                         }
-                        
-                        if !text.isEmptyOrWhitespace() {
-                            
-                            let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                            self.datasource.postNewMessage(message: message)
-                            self.datasource.postNotification(for: message.messageContent ?? "")
-
-                            if text.first == "?" {
-                                ChatService.getBotMessageResponse(for: text) { (response, error) in
-                                    if let response = response {
-                                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
-                                        self.datasource.postNewMessage(message: message)
-                                    }
-                                }
-                            }
-                        }
-                        self.textMessage = ""
+                        ChatService.markChatAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "", chatUUID: self.chat.chatUUID ?? "")
+                        self.chat.markViewAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "")
                     }
-                } else {
-                    HStack {
-                        Spacer().frame(width: 16)
-                        HStack {
-                            Spacer()
-                            Text("You are unable to send mesages to this chat")
-                                .fontWeight(.light)
-                                .multilineTextAlignment(.center)
-                            Spacer()
+                    .onChange(of: self.textMessage, perform: { value in
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            reader.scrollTo(self.datasource.messages.last?.chatMessageUUID, anchor: .bottom)
                         }
-                        .padding(8)
-                        .background(Color("Section"))
-                        .cornerRadius(10)
-                        .shadow(radius: 3)
-                        Spacer().frame(width: 16)
-
-                    }
-                    .padding(.bottom, 8)
+                    })
                 }
             }
-            .navigationTitle(self.datasource.chatName)
-            .navigationBarItems(
-                leading:
-                    Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
-                       Image(systemName: "chevron.backward")
-                    }
-                    .padding()
-                , trailing:
-                    HStack {
-                        if self.chat.chatIsProtected == false {
-                            NavigationLink(
-                                destination: NavigationLazyView(ChatMemberList(chatUUID: self.chat.chatUUID ?? "", users: self.datasource.chat?.chatMembers ?? [])),
-                                label: {
-                                    Image(systemName: self.chat.getListImageName())
-                                })
+            
+            if (self.chat.chatIsProtected == true && GaryPortal.shared.currentUser?.userIsAdmin == true) || self.chat.chatIsProtected == false {
+                ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL, stickerURL in
+                    
+                    if hasMedia {
+                        if let imageURL = imageURL {
+                            ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
+                                if let url = url {
+                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    self.datasource.postNewMessage(message: assetMessage)
+                                    self.datasource.postNotification(for: "sent an image")
+                                }
+                            }
+                        }
+                        if let videoURL = videoURL {
+                            ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
+                                if let url = url {
+                                    let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    self.datasource.postNewMessage(message: assetMessage)
+                                    self.datasource.postNotification(for: "sent a video")
+                                }
+                            }
                         }
                     }
                     
-            )
+                    if !text.isEmptyOrWhitespace() || stickerURL != nil {
+                        var message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                        
+                        if hasMedia, let stickerURL = stickerURL {
+                            message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: stickerURL, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 8, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                        }
+                        
+                        self.datasource.postNewMessage(message: message)
+                        self.datasource.postNotification(for: message.messageTypeId == 8 ? "sent a sticker" : message.messageContent ?? "")
+
+                        if text.first == "?" {
+                            ChatService.getBotMessageResponse(for: text) { (response, error) in
+                                if let response = response {
+                                    let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil)
+                                    self.datasource.postNewMessage(message: message)
+                                }
+                            }
+                        }
+                    }
+                    self.textMessage = ""
+                }
+            } else {
+                HStack {
+                    Spacer().frame(width: 16)
+                    HStack {
+                        Spacer()
+                        Text("You are unable to send mesages to this chat")
+                            .fontWeight(.light)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+                    .padding(8)
+                    .background(Color("Section"))
+                    .cornerRadius(10)
+                    .shadow(radius: 3)
+                    Spacer().frame(width: 16)
+
+                }
+                .padding(.bottom, 8)
+            }
         }
+        .navigationTitle(self.datasource.chatName)
+        .navigationBarItems(
+            trailing:
+                HStack {
+                    if self.chat.chatIsProtected == false {
+                        NavigationLink(
+                            destination: NavigationLazyView(ChatMemberList(chatUUID: self.chat.chatUUID ?? "", users: self.datasource.chat?.chatMembers ?? [])),
+                            label: {
+                                Image(systemName: self.chat.getListImageName())
+                            })
+                    }
+                }
+                
+        )
         .onAppear {
             self.datasource.setup(for: chat)
             self.datasource.loadMoreContentIfNeeded(currentMessage: nil)
             ChatService.markChatAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "", chatUUID: self.chat.chatUUID ?? "")
             self.chat.markViewAsRead(for: GaryPortal.shared.currentUser?.userUUID ?? "")
         }
+        
     }
     
 }
@@ -162,9 +160,10 @@ struct ChatMessageBarView: View {
     
     @Binding var text: String
     
-    var onSendAction: (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()
+    var onSendAction: (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?, _ stickerURL: String?) -> ()
     
     @State var isShowingCamera = false
+    @State var isShowingStickers = false
     
     @State var play = true
     
@@ -175,12 +174,12 @@ struct ChatMessageBarView: View {
     var isCameraAllowed = true
     var placeHolderText = "Your message..."
     
-    init(content: Binding<String>, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
+    init(content: Binding<String>, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?, _ stickerURL: String?) -> ()) {
         self.onSendAction = onSend
         _text = content
     }
     
-    init(content: Binding<String>, isCameraAllowed: Bool, placeHolderText: String, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?) -> ()) {
+    init(content: Binding<String>, isCameraAllowed: Bool, placeHolderText: String, _ onSend: @escaping (_ text: String, _ hasMedia: Bool, _ imageURL: String?, _ videoURL: String?, _ stickerURL: String?) -> ()) {
         self.onSendAction = onSend
         self.isCameraAllowed = isCameraAllowed
         self.placeHolderText = placeHolderText
@@ -217,6 +216,12 @@ struct ChatMessageBarView: View {
                 }
             }
             Spacer().frame(height: 8)
+                .sheet(isPresented: $isShowingStickers) {
+                    StickerPickerView() { url in
+                        self.isShowingStickers = false
+                        self.onSendAction("", true, "", "", url)
+                    }
+                }
             HStack {
                 
                 HStack(spacing: 8) {
@@ -243,6 +248,11 @@ struct ChatMessageBarView: View {
                                 .font(.body)
                         }
                         .foregroundColor(.gray)
+                        
+                        Button(action: { self.isShowingStickers = true }) {
+                            Image(systemName: "mustache")
+                                .font(.body)
+                        }
                     }
                     
                 }
@@ -253,7 +263,7 @@ struct ChatMessageBarView: View {
                 
                 if !text.trim().isEmptyOrWhitespace() || self.hasMedia {
                     withAnimation(.easeIn) {
-                        Button(action: { self.onSendAction(self.text, self.hasMedia, self.imageURL, self.videoURL); self.hasMedia = false; self.imageURL = ""; self.videoURL = "" }) {
+                        Button(action: { self.onSendAction(self.text, self.hasMedia, self.imageURL, self.videoURL, ""); self.hasMedia = false; self.imageURL = ""; self.videoURL = "";}) {
                             Image(systemName: "paperplane.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -296,7 +306,6 @@ struct ChatMessageBarView: View {
        
         
     }
-    
 }
 
 extension Data: Identifiable {
@@ -422,8 +431,12 @@ struct ChatMessageView: View {
             }
 
             self.messageContent()
-                .background(messageBackground())
-                .clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
+                .if(chatMessage.isStickerMessage() == false) {
+                    $0.background(messageBackground())
+                }
+                .if(chatMessage.isStickerMessage() == false) {
+                    $0.clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
+                }
                 .foregroundColor(.white)
                 .contextMenu(menuItems: {
                     if self.chatMessage.messageTypeId == 1 {
@@ -552,6 +565,11 @@ struct ChatMessageView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
             }
+        case 8:
+            AsyncImage(url: self.chatMessage.messageContent ?? "")
+                .aspectRatio(contentMode: .fit)
+                .pinchToZoom()
+                .frame(width: 150, height: 150)
             
         default:
             Text(self.chatMessage.messageContent ?? "")

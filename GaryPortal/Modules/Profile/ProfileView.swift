@@ -16,6 +16,7 @@ class ProfileViewDataSource: ObservableObject {
         case none, rules, book, feedback, settings, prayer, otherProfile, staff, website
         var id: ActiveSheet { self }
     }
+    
     @Published var activeSheet: ActiveSheet?
 
     
@@ -35,7 +36,8 @@ struct ProfileView: View {
     
     @Binding var uuid: String
     @ObservedObject var datasource = ProfileViewDataSource()
-    
+    @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
+
     @State var alertContent: [String] = []
     @State var isShowingAlert = false
     @State var viewingChat: Chat?
@@ -80,11 +82,13 @@ struct ProfileView: View {
                         .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                     Spacer().frame(height: 16)
                 }
+                Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
             }
             .frame(width: geometry.size.width)
         }
         .onAppear {
             self.datasource.setup(for: uuid)
+            print("on appear profile")
         }
         .alert(isPresented: $isShowingAlert, content: {
             Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
@@ -110,6 +114,7 @@ struct ProfileView: View {
                 StaffRoomView()
             }
         }
+        .navigationBarHidden(true)
     }
     
     func blockUser() {

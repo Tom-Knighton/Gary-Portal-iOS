@@ -14,6 +14,7 @@ struct ChatRootView: View {
     
     var body: some View {
         ChatListView()
+            .navigationBarHidden(true)
     }
 }
 
@@ -28,7 +29,8 @@ struct ChatListView: View {
     @State var newName: String = ""
     
     @State var isShowingCreator = false
-    
+    @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
+
     init() {
         UITableView.appearance().backgroundColor = UIColor.clear
         UITableViewCell.appearance().selectionStyle = .none
@@ -47,54 +49,43 @@ struct ChatListView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
             } else {
-                List {
-                    ForEach(dataSource.getChatsFiltered(), id: \.chatUUID) { chat in
-                        ZStack {
-                            NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
-                                EmptyView()
-                            }
-                            .frame(width: 0)
-                            .opacity(0)
-                            
-                            ChatListItem(chat: chat)
-                                .contextMenu(menuItems: {
-                                    if chat.chatIsProtected == false {
-                                        if chat.canRenameChat() {
-                                            Button(action: { self.beginEditChat(chat: chat) }, label: {
-                                                Text("Rename chat")
-                                                Image(systemName: "pencil")
-                                            })
-                                        }
+                GeometryReader { gr in
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(dataSource.getChatsFiltered(), id: \.chatUUID) { chat in
+                                NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
+                                    ChatListItem(chat: chat)
+                                        .contextMenu(menuItems: {
+                                            if chat.chatIsProtected == false {
+                                                if chat.canRenameChat() {
+                                                    Button(action: { self.beginEditChat(chat: chat) }, label: {
+                                                        Text("Rename chat")
+                                                        Image(systemName: "pencil")
+                                                    })
+                                                }
 
-                                        Button(action: { self.leaveChat(chat: chat) }, label: {
-                                            Text("Leave chat")
-                                            Image(systemName: "hand.wave.fill")
+                                                Button(action: { self.leaveChat(chat: chat) }, label: {
+                                                    Text("Leave chat")
+                                                    Image(systemName: "hand.wave.fill")
+                                                })
+                                            }
                                         })
-                                    }
-                                })
+                                }
+                                .animation(Animation.spring())
+                                .listRowBackground(Color.clear)
+                                .background(Color.clear)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 4)
+                            }
                         }
-                        .animation(Animation.spring())
-                        .listRowBackground(Color.clear)
-                        .background(Color.clear)
-
-                        }
-                       
-                }
-                .listSeparatorStyle(.none)
-                .introspectTableView { (tableView) in
-                    tableView.refreshControl = UIRefreshControl { refreshControl in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        .onAppear {
                             self.dataSource.loadChats()
-                            refreshControl.endRefreshing()
                         }
+                        Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
                     }
-                    
                 }
-                .onAppear {
-                    self.dataSource.loadChats()
-                }
-                .background(Color.clear)
                 
+
                 VStack {
                     Spacer()
                     HStack {
@@ -111,29 +102,30 @@ struct ChatListView: View {
                         .shadow(radius: 5)
                         Spacer().frame(width: 16)
                     }
-                    Spacer().frame(height: 16)
+                    Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
                 }
                 .sheet(isPresented: $isShowingCreator, onDismiss: { self.dataSource.loadChats() }, content: {
                     CreateChatView(chatDataSource: self.dataSource)
                 })
                 
-                AZAlert(title: "New Chat Name", message: "Enter a new chat name for: \(self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? "")", isShown: $isShowingNameAlert, text: $newName) { (newName) in
-                    let newName = newName.trim()
-                    if !newName.isEmptyOrWhitespace() {
-                        guard let selectedChat = self.selectedChat else { return }
-                        
-                        self.dataSource.changeChatName(chat: selectedChat, newName: newName)
-                        GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
-                    } else {
-                        self.alertContent = ["Error", "Please enter a valid chat name"]
-                        self.isShowingAlert = true
-                    }
-                }
+//                AZAlert(title: "New Chat Name", message: "Enter a new chat name for: \(self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? "")", isShown: $isShowingNameAlert, text: $newName) { (newName) in
+//                    let newName = newName.trim()
+//                    if !newName.isEmptyOrWhitespace() {
+//                        guard let selectedChat = self.selectedChat else { return }
+//
+//                        self.dataSource.changeChatName(chat: selectedChat, newName: newName)
+//                        GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
+//                    } else {
+//                        self.alertContent = ["Error", "Please enter a valid chat name"]
+//                        self.isShowingAlert = true
+//                    }
+//                }
             }
             
             
 
         }
+        .navigationBarHidden(true)
         
     }
     

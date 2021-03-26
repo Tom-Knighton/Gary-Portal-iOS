@@ -24,6 +24,23 @@ extension UIView {
         self.trailingAnchor.constraint(lessThanOrEqualTo: superview.trailingAnchor, constant: 0).isActive = true
         self.widthAnchor.constraint(equalTo: superview.widthAnchor, multiplier: percentageMultiplier).isActive = true
     }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIView.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        self.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.endEditing(true)
+    }
+    
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
 }
 
 class AnyGestureRecognizer: UIGestureRecognizer {
@@ -65,10 +82,51 @@ extension View {
         ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
     }
     
-//    public func listSeparatorStyleNone() -> some View {
-//        modifier(ListSeparatorStyleNoneModifier())
-//    }
+    func onFirstAppear(perform: @escaping () -> Void) -> some View {
+        let kAppearAction = "appear_action"
+        let queue = OperationQueue.main
+        let delayOperation = BlockOperation {
+            Thread.sleep(forTimeInterval: 0.001)
+        }
+        let appearOperation = BlockOperation {
+            perform()
+        }
+        appearOperation.name = kAppearAction
+        appearOperation.addDependency(delayOperation)
+        return onAppear {
+            if !delayOperation.isFinished, !delayOperation.isExecuting {
+                queue.addOperation(delayOperation)
+            }
+            if !appearOperation.isFinished, !appearOperation.isExecuting {
+                queue.addOperation(appearOperation)
+            }
+        }
+        .onDisappear {
+            queue.operations
+                .first { $0.name == kAppearAction }?
+                .cancel()
+        }
+    }
     
+    func badge(count: Int = 0) -> some View {
+        ZStack(alignment: .topTrailing) {
+            self
+            ZStack {
+                let countStr = count > 99 ? "99+" : "\(count)"
+                if count != 0 {
+                    Text(countStr)
+                        .foregroundColor(.white)
+                        .font(.footnote)
+                        .frame(width: 24, height: 24)
+                        .background(Circle().fill(Color.red))
+                        .animation(nil)
+                        .transition(.scale)
+                }
+            }
+            .offset(x: 12, y: -12)
+            .shadow(color: Color.black.opacity(0.5), radius: 3)
+        }
+    }
 }
 
 struct CornerRadiusStyle: ViewModifier {

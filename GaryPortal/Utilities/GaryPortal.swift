@@ -46,7 +46,6 @@ class GaryPortal: NSObject, ObservableObject {
             return
         }
         KeychainWrapper.standard.set(salt, forKey: "salt")
-        
         DispatchQueue.main.async {
             let keyWindow = UIApplication.shared.windows.first { $0.isKeyWindow }
             if var topController = keyWindow?.rootViewController {
@@ -147,7 +146,7 @@ class GaryPortal: NSObject, ObservableObject {
 struct GaryPortalConstants {
     
     static let AppName = "Gary Portal"
-    static let AppMainVersion = "4.0.1"
+    static let AppMainVersion = "4.1"
     
     #if DEBUG
         static let AppIsDev = true
@@ -165,7 +164,7 @@ struct GaryPortalConstants {
     static let APIMiscHub = AppIsDev ? "https://api-dev.garyportal.tomk.online/apphub/" : "https://api.garyportal.tomk.online/apphub/"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
-    static let hasSeenWhatsNew = "hasSeenv401Changelog"
+    static let hasSeenWhatsNew = "hasSeenv4_1Changelog"
     
     struct Errors {
         
