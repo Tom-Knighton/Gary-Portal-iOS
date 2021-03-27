@@ -99,14 +99,19 @@ class HostController: GaryPortalSwipeController {
                 userDefaults.set(0, forKey: "chatBadgeCount")
                 UIApplication.shared.applicationIconBadgeNumber -= oldChat
             }
-        }
-        
-        if index == 0 { // Has moved to feed
+        } else if index == 0 { // Has moved to feed
             if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
                 let oldFeed = userDefaults.integer(forKey: "feedBadgeCount")
                 userDefaults.set(UIApplication.shared.applicationIconBadgeNumber - oldFeed, forKey: "appBadgeCount")
                 userDefaults.set(0, forKey: "feedBadgeCount")
                 UIApplication.shared.applicationIconBadgeNumber -= oldFeed
+            }
+        } else {
+            if let userDefaults = UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName) {
+                let oldOther = userDefaults.integer(forKey: "otherBadgeCount")
+                userDefaults.set(UIApplication.shared.applicationIconBadgeNumber - oldOther, forKey: "appBadgeCount")
+                userDefaults.set(0, forKey: "otherBadgeCount")
+                UIApplication.shared.applicationIconBadgeNumber -= oldOther
             }
         }
         
