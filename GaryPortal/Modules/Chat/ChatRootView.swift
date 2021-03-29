@@ -58,7 +58,7 @@ struct ChatListView: View {
                                         .contextMenu(menuItems: {
                                             if chat.chatIsProtected == false {
                                                 if chat.canRenameChat() {
-                                                    Button(action: { self.beginEditChat(chat: chat) }, label: {
+                                                    Button(action: { beginEditChat(chat: chat) }, label: {
                                                         Text("Rename chat")
                                                         Image(systemName: "pencil")
                                                     })
@@ -131,12 +131,36 @@ struct ChatListView: View {
     
     func beginEditChat(chat: Chat) {
         self.selectedChat = chat
-        self.isShowingNameAlert = true
+        self.textFieldAlert()
     }
     
     func leaveChat(chat: Chat) {
         ChatService.leaveChat(userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", chatUUID: chat.chatUUID ?? "")
         self.dataSource.chats.removeAll(where: { $0.chatUUID == chat.chatUUID })
+    }
+    
+    func textFieldAlert() {
+        let oldChatName = self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? ""
+        let alert = UIAlertController(title: "New Chat Name", message: "Enter a new chat name for: \(oldChatName)", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = oldChatName
+            textField.autocapitalizationType = .words
+            textField.autocorrectionType = .yes
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
+            guard let textField = alert.textFields?[0], let newName = textField.text?.trim() else { return }
+            if !newName.isEmptyOrWhitespace() {
+                guard let selectedChat = self.selectedChat else { return }
+
+                self.dataSource.changeChatName(chat: selectedChat, newName: newName)
+                GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
+            } else {
+                self.alertContent = ["Error", "Please enter a valid chat name"]
+                self.isShowingAlert = true
+            }
+        }))
+        UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
     }
 }
 
