@@ -13,7 +13,7 @@ class ProfileViewDataSource: ObservableObject {
     @Published var hasLoaded = false
     
     enum ActiveSheet: Identifiable {
-        case none, rules, book, feedback, settings, prayer, otherProfile, staff, website
+        case none, rules, book, feedback, settings, prayer, otherProfile, staff, website, commandments
         var id: ActiveSheet { self }
     }
     
@@ -110,8 +110,10 @@ struct ProfileView: View {
                 }
             } else if item == ProfileViewDataSource.ActiveSheet.website {
                 SafariView(url: GaryPortalConstants.URLs.WebsiteURL)
-            } else {
+            } else if item == ProfileViewDataSource.ActiveSheet.staff {
                 StaffRoomView()
+            } else {
+                CommandmentsView()
             }
         }
         .navigationBarHidden(true)
@@ -378,16 +380,28 @@ struct ProfileMiscView: View {
                 }
                
                 Group {
-                    GPGradientButton(action: { openURL(url: .prayer )}, buttonText: "PRAYER ROOM", gradientColours: prayerGradient)
-                    Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: .rules )}, buttonText: "RULES AND REGULATIONS", gradientColours: rulesGradient)
-                    Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: .book )}, buttonText: "COMPUTER DATING", gradientColours: bookGradient)
-                    Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: .feedback )}, buttonText: "APP FEEDBACK", gradientColours: feedbackGradient)
-                    Spacer().frame(height: 16)
-                    GPGradientButton(action: { openURL(url: .settings )}, buttonText: "SETTINGS", gradientColours: settingsGradient)
-  
+                    Group {
+                        GPGradientButton(action: { openURL(url: .prayer )}, buttonText: "PRAYER ROOM", gradientColours: prayerGradient)
+                        Spacer().frame(height: 16)
+                        GPGradientButton(action: { openURL(url: .rules )}, buttonText: "RULES AND REGULATIONS", gradientColours: rulesGradient)
+                        Spacer().frame(height: 16)
+                    }
+                    Group {
+                        GPGradientButton(action: { openURL(url: .commandments) }, buttonText: "COMMANDMENTS", gradientColours: rulesGradient)
+                        Spacer().frame(height: 16)
+                        NavigationLink(destination: CommandmentsView()) {
+                            GPGradientButton(action: {}, buttonText: "CAlENDAR", gradientColours: rulesGradient)
+                                .allowsHitTesting(false)
+                        }
+                        Spacer().frame(height: 16)
+                    }
+                    Group {
+                        GPGradientButton(action: { openURL(url: .book )}, buttonText: "COMPUTER DATING", gradientColours: bookGradient)
+                        Spacer().frame(height: 16)
+                        GPGradientButton(action: { openURL(url: .feedback )}, buttonText: "APP FEEDBACK", gradientColours: feedbackGradient)
+                        Spacer().frame(height: 16)
+                        GPGradientButton(action: { openURL(url: .settings )}, buttonText: "SETTINGS", gradientColours: settingsGradient)
+                    }
                 }
                 
                 Spacer().frame(height: 16)

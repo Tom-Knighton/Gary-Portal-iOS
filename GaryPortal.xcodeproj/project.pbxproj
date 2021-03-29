@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2059F8E261221E500729D8D /* CommandmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2059F8D261221E500729D8D /* CommandmentsView.swift */; };
 		E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2155E5025F4155200E48DFA /* ActivityView.swift */; };
 		E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */; };
 		E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */; };
@@ -150,6 +151,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E2059F8D261221E500729D8D /* CommandmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandmentsView.swift; sourceTree = "<group>"; };
 		E2155E5025F4155200E48DFA /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
 		E217755A25B0BC4D0006B7CA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
@@ -282,6 +284,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E2059F8B261221D200729D8D /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				E2059F8D261221E500729D8D /* CommandmentsView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
 		E2249D6B2606974400969824 /* GPNotifcations */ = {
 			isa = PBXGroup;
 			children = (
@@ -491,6 +501,7 @@
 		E2ABC7B825B0CE7400EB1B22 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				E2059F8B261221D200729D8D /* SubViews */,
 				E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */,
 				E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */,
 				E25C1DAD25B1AC360046EA6C /* ProfileSettingsView.swift */,
@@ -794,6 +805,7 @@
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
 				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
+				E2059F8E261221E500729D8D /* CommandmentsView.swift in Sources */,
 				E25CC1B825AF702B00B1FA55 /* AppSettings.swift in Sources */,
 				E2A554E4260B96160086B66C /* SearchBar.swift in Sources */,
 				E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */,
