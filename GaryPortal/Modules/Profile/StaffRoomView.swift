@@ -16,6 +16,7 @@ struct StaffRoomView: View {
             StaffRoomHome()
                 .navigationTitle("Staff Room")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
@@ -151,6 +152,7 @@ struct UserList: View {
             }
             .navigationTitle("Users")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.label]
             self.loadView(queued: isQueue)

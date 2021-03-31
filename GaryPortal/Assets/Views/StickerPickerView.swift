@@ -62,5 +62,6 @@ struct StickerPickerView: View {
                 Text("Close")
             })
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }

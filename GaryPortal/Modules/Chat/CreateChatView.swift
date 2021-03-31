@@ -74,6 +74,7 @@ struct CreateChatView: View {
                 self.datasource.load()
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     func makeChat() {

@@ -57,6 +57,7 @@ struct ProfileSettingsView: View {
                 .cornerRadius(5)
             })
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .background(Color.red)
         .alert(isPresented: $isShowingError, content: {
             Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("Ok")))

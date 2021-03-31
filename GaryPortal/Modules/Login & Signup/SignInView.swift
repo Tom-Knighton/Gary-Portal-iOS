@@ -30,6 +30,7 @@ struct SignInNavigationHost: View {
                 .overlay(SignInView().padding())
                 .navigationTitle("Gary Portal")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

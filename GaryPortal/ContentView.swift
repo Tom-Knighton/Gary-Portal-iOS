@@ -77,6 +77,7 @@ struct GPTabBar: View {
     @ObservedObject var garyPortal = GaryPortal.shared
     @State var selectedTab = 1
     @State var tabIcons = ["note", "person", "bubble.left"]
+    @State var selectedTabIcons = ["note", "person.fill", "bubble.left.fill"]
     @State var tabNames = [0, 1, 2]
     @State var edge = UIApplication.shared.windows.first?.safeAreaInsets
     
@@ -97,8 +98,8 @@ struct GPTabBar: View {
                 ForEach(0..<3) { index in
                     Button(action: { self.selectedTab = self.tabNames[index] }, label: {
                         Spacer()
-                        Image(systemName: self.tabIcons[index])
-                            .font(.system(size: 24, weight: self.selectedTab == index ? .bold : .regular))
+                        Image(systemName: self.selectedTab == index ?  self.selectedTabIcons[index] : self.tabIcons[index])
+                            .font(.system(size: 24, weight: self.selectedTab == index && index != 2 ? .bold : .regular))
                             .foregroundColor(Color(.label))
                             .if(index == 0) {
                                 $0.badge(count: feedBadge ?? 0)
@@ -112,18 +113,18 @@ struct GPTabBar: View {
                         Spacer()
                     })
                 }
+                .padding(.bottom, edge?.bottom)
             }
-            .frame(height: 25)
-            .padding(.horizontal, 25)
+            .frame(minHeight: 25)
             .padding(.vertical, 15)
             .background(Color("Section"))
-            .clipShape(Capsule())
+            .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
             .shadow(color: Color.black.opacity(0.15), radius: 5, x: 5, y: 5)
             .shadow(color: Color.black.opacity(0.15), radius: 5, x: -5, y: -5)
-            .padding(.horizontal)
-            .padding(.bottom, edge?.bottom == 0 ? 20 : 10)
+            .edgesIgnoringSafeArea(.bottom)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 

@@ -179,6 +179,8 @@ struct EditUserView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+
     }
     
     func showCropper() {

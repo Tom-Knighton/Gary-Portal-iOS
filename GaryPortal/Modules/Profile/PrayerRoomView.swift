@@ -41,6 +41,7 @@ struct PrayerRoomView: View {
             }
             .navigationTitle("Prayer Room")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             self.counter = self.datasource.user?.userPoints?.prayers ?? 0
             self.meaningfulCounter = self.datasource.user?.userPoints?.meaningfulPrayers ?? 0

@@ -656,6 +656,8 @@ struct CommentsView: View {
                 ProfileView(uuid: $viewingUUID)
             })
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+
         
     }
 }

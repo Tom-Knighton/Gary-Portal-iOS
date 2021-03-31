@@ -13,6 +13,9 @@
 		E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */; };
 		E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217755A25B0BC4D0006B7CA /* HostController.swift */; };
 		E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */; };
+		E22367992613A4C1002D3B1A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22367982613A4C1002D3B1A /* ProfileHeaderView.swift */; };
+		E223679D2614B062002D3B1A /* ProfileStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E223679C2614B062002D3B1A /* ProfileStatisticsView.swift */; };
+		E22367A02614B873002D3B1A /* ProfileMiscView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E223679F2614B873002D3B1A /* ProfileMiscView.swift */; };
 		E2249D6D2606974400969824 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2249D6C2606974400969824 /* NotificationService.swift */; };
 		E2249D712606974400969824 /* GPNotifcations.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2249D6A2606974400969824 /* GPNotifcations.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E22C032A25DC6FD2001E78BC /* FeedAditLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */; };
@@ -152,10 +155,16 @@
 
 /* Begin PBXFileReference section */
 		E2059F8D261221E500729D8D /* CommandmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandmentsView.swift; sourceTree = "<group>"; };
+		E209AB7726133AEF00515E3B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		E209AB7926133AEF00515E3B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		E209AB922613422000515E3B /* GaryPortalAccountWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GaryPortalAccountWidgetExtension.entitlements; sourceTree = "<group>"; };
 		E2155E5025F4155200E48DFA /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
 		E217755A25B0BC4D0006B7CA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
 		E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaryPortalSwipeController.swift; sourceTree = "<group>"; };
+		E22367982613A4C1002D3B1A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		E223679C2614B062002D3B1A /* ProfileStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsView.swift; sourceTree = "<group>"; };
+		E223679F2614B873002D3B1A /* ProfileMiscView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMiscView.swift; sourceTree = "<group>"; };
 		E2249D6A2606974400969824 /* GPNotifcations.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GPNotifcations.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2249D6C2606974400969824 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E2249D6E2606974400969824 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -288,8 +297,20 @@
 			isa = PBXGroup;
 			children = (
 				E2059F8D261221E500729D8D /* CommandmentsView.swift */,
+				E22367982613A4C1002D3B1A /* ProfileHeaderView.swift */,
+				E223679C2614B062002D3B1A /* ProfileStatisticsView.swift */,
+				E223679F2614B873002D3B1A /* ProfileMiscView.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		E209AB7626133AEF00515E3B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E209AB7726133AEF00515E3B /* WidgetKit.framework */,
+				E209AB7926133AEF00515E3B /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		E2249D6B2606974400969824 /* GPNotifcations */ = {
@@ -305,8 +326,10 @@
 		E23100A025AF6F8D00739E9E = {
 			isa = PBXGroup;
 			children = (
+				E209AB922613422000515E3B /* GaryPortalAccountWidgetExtension.entitlements */,
 				E23100AB25AF6F8E00739E9E /* GaryPortal */,
 				E2249D6B2606974400969824 /* GPNotifcations */,
+				E209AB7626133AEF00515E3B /* Frameworks */,
 				E23100AA25AF6F8E00739E9E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -740,6 +763,7 @@
 				E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
 				E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */,
+				E22367A02614B873002D3B1A /* ProfileMiscView.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
@@ -761,6 +785,7 @@
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,
 				E2813AA226050B6D00E395E9 /* UIView+Haneke.swift in Sources */,
 				E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */,
+				E22367992613A4C1002D3B1A /* ProfileHeaderView.swift in Sources */,
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,
 				E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */,
 				E28DC01925C707E800A6EBEB /* Chat.swift in Sources */,
@@ -775,6 +800,7 @@
 				E2E0FA1625D47DAA0069E153 /* GPAlert.swift in Sources */,
 				E2813AA326050B6D00E395E9 /* CryptoSwiftMD5.swift in Sources */,
 				E26A68A725B2D08800CD0662 /* StaffService.swift in Sources */,
+				E223679D2614B062002D3B1A /* ProfileStatisticsView.swift in Sources */,
 				E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */,
 				E253732526095AF100EF6247 /* GPColourPicker.swift in Sources */,
 				E2813AA126050B6D00E395E9 /* Log.swift in Sources */,
@@ -858,10 +884,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.GPNotifcations;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -881,10 +908,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.GPNotifcations;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1014,7 +1042,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 811;
+				CURRENT_PROJECT_VERSION = 817;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
@@ -1024,10 +1052,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 5.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1042,7 +1072,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 811;
+				CURRENT_PROJECT_VERSION = 817;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
@@ -1052,10 +1082,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 5.0;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

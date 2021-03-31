@@ -498,6 +498,7 @@ struct ChatMessageView: View {
                         
                     }
                 })
+                
 
             if !ownMessage { Spacer() }
             Spacer().frame(width: 8)

@@ -64,6 +64,7 @@ struct UploadPostView: View {
             }
             .navigationTitle("Upload Post")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .alert(isPresented: $isShowingAlert) {
             Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
         }
