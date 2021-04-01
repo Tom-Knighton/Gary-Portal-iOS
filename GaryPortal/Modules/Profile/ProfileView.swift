@@ -84,6 +84,10 @@ struct ProfileView: View {
                         .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                         .padding(.horizontal)
                     Spacer().frame(height: 16)
+                    ProfilePostsView(datasource: self.datasource)
+                        .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
+                        .padding(.horizontal)
+                    Spacer().frame(height: 16)
                     if GaryPortal.shared.currentUser?.userUUID == self.datasource.user?.userUUID {
                         ProfileMiscView(datasource: self.datasource)
                             .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
@@ -96,7 +100,6 @@ struct ProfileView: View {
         }
         .onAppear {
             self.datasource.setup(for: uuid)
-            print("on appear profile")
         }
         .alert(isPresented: $isShowingAlert, content: {
             Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))

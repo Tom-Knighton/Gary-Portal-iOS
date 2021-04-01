@@ -37,7 +37,7 @@ struct ContentView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
             } else {
-                GPNavigationController {
+                NavigationView {
                     GPTabBar()
                         .navigationTitle("")
                         .navigationBarTitleDisplayMode(.automatic)

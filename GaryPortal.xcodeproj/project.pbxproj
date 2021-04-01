@@ -101,6 +101,8 @@
 		E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737A25B0946F00CDB422 /* GaryPortal.swift */; };
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
+		E2CE5ACD2616626B00A43D7B /* ProfilePostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE5ACC2616626B00A43D7B /* ProfilePostsView.swift */; };
+		E2CE5AD0261674DC00A43D7B /* SingleFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE5ACF261674DC00A43D7B /* SingleFeedPost.swift */; };
 		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
@@ -255,6 +257,8 @@
 		E2BB737A25B0946F00CDB422 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E2BB737D25B0951500CDB422 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
+		E2CE5ACC2616626B00A43D7B /* ProfilePostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePostsView.swift; sourceTree = "<group>"; };
+		E2CE5ACF261674DC00A43D7B /* SingleFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFeedPost.swift; sourceTree = "<group>"; };
 		E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamOverlay.swift; sourceTree = "<group>"; };
 		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
@@ -300,6 +304,7 @@
 				E22367982613A4C1002D3B1A /* ProfileHeaderView.swift */,
 				E223679C2614B062002D3B1A /* ProfileStatisticsView.swift */,
 				E223679F2614B873002D3B1A /* ProfileMiscView.swift */,
+				E2CE5ACC2616626B00A43D7B /* ProfilePostsView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -414,6 +419,7 @@
 				E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */,
 				E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */,
 				E2813A7D2605084100E395E9 /* FeedDataSources.swift */,
+				E2CE5ACF261674DC00A43D7B /* SingleFeedPost.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -762,6 +768,7 @@
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
 				E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
+				E2CE5AD0261674DC00A43D7B /* SingleFeedPost.swift in Sources */,
 				E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */,
 				E22367A02614B873002D3B1A /* ProfileMiscView.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
@@ -784,6 +791,7 @@
 				E2813AA926050B6D00E395E9 /* NSFileManager+Haneke.swift in Sources */,
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,
 				E2813AA226050B6D00E395E9 /* UIView+Haneke.swift in Sources */,
+				E2CE5ACD2616626B00A43D7B /* ProfilePostsView.swift in Sources */,
 				E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */,
 				E22367992613A4C1002D3B1A /* ProfileHeaderView.swift in Sources */,
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,

@@ -102,6 +102,17 @@ class FeedPost: Codable, ObservableObject, Identifiable, Equatable {
     }
 }
 
+struct FeedPostDTO: Codable, Identifiable, Hashable {
+    
+    let postId: Int?
+    let posterUUID: String?
+    let postType: String?
+    let postUrl: String?
+    let isVideo: Bool?
+    
+    var id: String { return UUID().uuidString }
+}
+
 class FeedMediaPost: FeedPost {
     
     var postUrl: String?

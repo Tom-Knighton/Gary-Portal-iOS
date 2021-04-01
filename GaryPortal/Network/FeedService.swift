@@ -15,8 +15,8 @@ struct FeedService {
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
-                if let response = try? response.decode(to: FeedPost.self) {
-                    completion(response.body, nil)
+                if let response = try? response.decode(to: ClassWrapper<FeedFamily, FeedPost>.self) {
+                    completion(response.body.object, nil)
                 } else {
                     completion(nil, .codingFailure)
                 }
@@ -41,6 +41,24 @@ struct FeedService {
             case .failure(let fail):
                 completion(nil, fail)
             }
+        }
+    }
+    
+    static func getFeedDTOs(for uuid: String? = nil, _ completion: @escaping(([FeedPostDTO]?) -> Void)) {
+        let request = APIRequest(method: .get, path: "feed/GetPostDTOs")
+        request.queryItems = [URLQueryItem(name: "uuid", value: uuid)]
+        APIClient.shared.perform(request) { (result) in
+            switch result {
+            case .success(let response):
+                if let response = try? response.decode(to: [FeedPostDTO].self) {
+                    completion(response.body)
+                } else {
+                    completion([])
+                }
+            case .failure:
+                completion([])
+            }
+        
         }
     }
     
