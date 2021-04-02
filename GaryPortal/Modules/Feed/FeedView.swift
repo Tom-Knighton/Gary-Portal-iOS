@@ -252,7 +252,7 @@ struct FeedPostTable: View {
                         .padding(.all, 4)
                         .shadow(color: Color.black, radius: 15)
                 } else if post is FeedPollPost {
-                    PostPollView(pollModel: PollPostViewModel(post: post as! FeedPollPost))
+                    PostPollView(pollModel: PollPostViewModel(post: post as? FeedPollPost))
                         .onAppear {
                             self.dataSource.loadMoreContentIfNeeded(currentPost: post)
                         }
