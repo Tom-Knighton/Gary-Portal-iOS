@@ -10,6 +10,7 @@ import SwiftUI
 class ProfileViewDataSource: ObservableObject {
     
     @Published var user: User?
+    @Published var posts: [FeedPostDTO]?
     @Published var hasLoaded = false
     
     enum ActiveSheet: Identifiable {
@@ -25,7 +26,16 @@ class ProfileViewDataSource: ObservableObject {
                 if let user = user {
                     self.user = user
                     self.hasLoaded = true
+                    self.loadPostDTOs(for: uuid)
                 }
+            }
+        }
+    }
+    
+    func loadPostDTOs(for uuid: String) {
+        FeedService.getFeedDTOs(for: uuid) { (dtos) in
+            DispatchQueue.main.async {
+                self.posts = dtos ?? []
             }
         }
     }
@@ -51,11 +61,10 @@ struct ProfileView: View {
                         .offset(y: geometry.frame(in: .global).minY > 0 ? -geometry.frame(in: .global).minY : 0)
                         .frame(height: (geometry.frame(in: .global).minY > 0 ? geometry.size.height + geometry.frame(in: .global).minY : geometry.size.height) + (edges?.top ?? 0))
                         .edgesIgnoringSafeArea(.all)
-
                         
                 }
+                .frame(height: 16)
                 ProfileHeaderView(datasource: datasource)
-                    .edgesIgnoringSafeArea(.top)
                 Spacer().frame(height: 16)
                 
                 if self.datasource.hasLoaded && GaryPortal.shared.currentUser?.userUUID != self.datasource.user?.userUUID {

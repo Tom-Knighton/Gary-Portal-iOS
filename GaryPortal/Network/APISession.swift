@@ -122,6 +122,7 @@ final class APIClient {
     
     
     func perform(_ request: APIRequest, _ completion: APIClientCompletion?) {
+        print(request.path)
         if isRefreshingToken && !request.path.contains("refresh") {
             if !request.path.contains("refresh") {
                 self.saveRequest {

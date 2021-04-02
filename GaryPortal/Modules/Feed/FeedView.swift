@@ -44,7 +44,7 @@ struct FeedView: View {
                             Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 100 : 30))
                                 .listRowBackground(Color.clear)
                         }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .listStyle(PlainListStyle())
                         .listSeparatorStyle(.none)
                         .introspectTableView { (tableView) in
                             tableView.refreshControl = UIRefreshControl { refreshControl in
@@ -341,14 +341,14 @@ struct PostMediaView: View {
 }
 
 class PollPostViewModel: ObservableObject {
-    @Published var post: FeedPollPost
+    @Published var post: FeedPollPost?
     @Published var totalVotes: Int
     @Published var hasVoted = false
     
-    init(post: FeedPollPost) {
+    init(post: FeedPollPost?) {
         self.post = post
-        self.totalVotes = post.pollAnswers?.map({ $0.votes?.count ?? 0 }).reduce(0, +) ?? -1
-        self.hasVoted = post.hasBeenVotedOn(by: GaryPortal.shared.currentUser?.userUUID ?? "")
+        self.totalVotes = post?.pollAnswers?.map({ $0.votes?.count ?? 0 }).reduce(0, +) ?? -1
+        self.hasVoted = post?.hasBeenVotedOn(by: GaryPortal.shared.currentUser?.userUUID ?? "") ?? false
     }
 }
 
@@ -358,23 +358,24 @@ struct PostPollView: View {
     
     var body: some View {
         VStack {
-            PostHeaderView(post: pollModel.post)
-            
-            HStack {
-                Text(pollModel.post.pollQuestion ?? "")
-                    .font(.custom("Montserrat-SemiBold", size: 19))
-                    .padding()
-                Spacer()
-            }
-            
-            LazyVStack {
-                ForEach(pollModel.post.pollAnswers ?? [], id: \.pollAnswerId) { answer in
-                    PollPostVoteButton(pollModel: self.pollModel, pollAnswer: answer)
+            if let post = pollModel.post {
+                PostHeaderView(post: post)
+                
+                HStack {
+                    Text(post.pollQuestion ?? "")
+                        .font(.custom("Montserrat-SemiBold", size: 19))
+                        .padding()
+                    Spacer()
                 }
+                
+                LazyVStack {
+                    ForEach(post.pollAnswers ?? [], id: \.pollAnswerId) { answer in
+                        PollPostVoteButton(pollModel: self.pollModel, pollAnswer: answer)
+                    }
+                }
+                
+                PostActionView(post: post)
             }
-            
-            PostActionView(post: pollModel.post)
-            
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.secondarySystemBackground))
@@ -427,8 +428,8 @@ struct PollPostVoteButton: View {
         DispatchQueue.main.async {
             let newVote = FeedAnswerVote(pollAnswerId: self.pollAnswer?.pollAnswerId ?? 0, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", isDeleted: false)
             FeedService.voteOnPoll(for: self.pollAnswer?.pollAnswerId ?? 0, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "")
-            let indexOf = self.pollModel.post.pollAnswers?.firstIndex(where: { $0.pollAnswerId == self.pollAnswer?.pollAnswerId ?? 0 }) ?? 0
-            self.pollModel.post.pollAnswers?[indexOf].votes?.append(newVote)
+            let indexOf = self.pollModel.post?.pollAnswers?.firstIndex(where: { $0.pollAnswerId == self.pollAnswer?.pollAnswerId ?? 0 }) ?? 0
+            self.pollModel.post?.pollAnswers?[indexOf].votes?.append(newVote)
             self.pollModel.hasVoted = true
             self.pollModel.totalVotes += 1
         }

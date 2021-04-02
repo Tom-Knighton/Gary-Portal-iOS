@@ -22,19 +22,13 @@ class ProfilePostsData: ObservableObject {
 struct ProfilePostsView: View {
     
     @ObservedObject var datasource: ProfileViewDataSource
-    @ObservedObject var data = ProfilePostsData()
     
     let gridItems = [
         GridItem(),
         GridItem(),
         GridItem(),
     ]
-    
-    init(datasource: ProfileViewDataSource) {
-        self.datasource = datasource
-        self.data = ProfilePostsData()
-        self.data.load(for: self.datasource.user?.userUUID ?? "")
-    }
+
     
     var body: some View {
         VStack {
@@ -47,7 +41,7 @@ struct ProfilePostsView: View {
             }
             
             LazyVGrid(columns: gridItems, alignment: .center, spacing: 8) {
-                ForEach(self.data.postDTOs, id: \.self) { post in
+                ForEach(self.datasource.posts ?? [], id: \.self) { post in
                     NavigationLink(destination: NavigationLazyView(SingleFeedPost(postID: post.postId ?? -1))) {
                         if post.postType == "media" {
                             SmallMediaCard(url: post.postUrl ?? "", isVideo: post.isVideo ?? false)
@@ -64,7 +58,7 @@ struct ProfilePostsView: View {
             Spacer().frame(width: 16)
         }
         .onAppear {
-            self.data.load(for: datasource.user?.userUUID ?? "")
+            print("dtos init")
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.secondarySystemBackground))

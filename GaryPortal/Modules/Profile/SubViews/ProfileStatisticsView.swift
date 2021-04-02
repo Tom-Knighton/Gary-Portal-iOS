@@ -22,10 +22,12 @@ struct ProfileStatisticsView: View {
                             .font(Font.custom("Montserrat-SemiBold", size: 26))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                         Text("Amigo Points")
                             .font(Font.custom("Montserrat-Regular", size: 22))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                     }
                     
                     Spacer()
@@ -34,10 +36,12 @@ struct ProfileStatisticsView: View {
                             .font(Font.custom("Montserrat-SemiBold", size: 26))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                         Text("Positive Points")
                             .font(Font.custom("Montserrat-Regular", size: 22))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                     }
                     Spacer()
                 }
@@ -49,10 +53,12 @@ struct ProfileStatisticsView: View {
                             .font(Font.custom("Montserrat-SemiBold", size: 26))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                         Text("Prayers")
                             .font(Font.custom("Montserrat-Regular", size: 22))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                     }
                     Spacer()
                     VStack {
@@ -60,10 +66,12 @@ struct ProfileStatisticsView: View {
                             .font(Font.custom("Montserrat-SemiBold", size: 26))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                         Text("Meaningful")
                             .font(Font.custom("Montserrat-Regular", size: 22))
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
+                            .minimumScaleFactor(0.7)
                     }
                     Spacer()
                 }

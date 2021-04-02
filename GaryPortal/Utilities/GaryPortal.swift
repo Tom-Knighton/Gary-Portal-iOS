@@ -159,9 +159,9 @@ struct GaryPortalConstants {
                             """
     static let PasswordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}"
     
-    static let APIBaseUrl = AppIsDev ? "https://api-dev.garyportal.tomk.online/api/" : "https://api.garyportal.tomk.online/api/"
-    static let APIChatHub = AppIsDev ? "https://api-dev.garyportal.tomk.online/chathub/" : "https://api.garyportal.tomk.online/chathub/"
-    static let APIMiscHub = AppIsDev ? "https://api-dev.garyportal.tomk.online/apphub/" : "https://api.garyportal.tomk.online/apphub/"
+    static let APIBaseUrl = AppIsDev ? "https://api-dev-v5.garyportal.tomk.online/api/" : "https://api.garyportal.tomk.online/api/"
+    static let APIChatHub = AppIsDev ? "https://api-dev-v5.garyportal.tomk.online/chathub/" : "https://api.garyportal.tomk.online/chathub/"
+    static let APIMiscHub = AppIsDev ? "https://api-dev-v5.garyportal.tomk.online/apphub/" : "https://api.garyportal.tomk.online/apphub/"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
     static let hasSeenWhatsNew = "hasSeenv4_1Changelog"
