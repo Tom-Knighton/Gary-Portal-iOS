@@ -39,7 +39,7 @@ struct SingleFeedPost: View {
     var body: some View {
         if let post = self.datasource.post {
             VStack {
-                Spacer().frame(height: 16)
+                Spacer().frame(height: 8)
                 PostHeaderView(post: post)
                 
                 if let post = post as? FeedMediaPost {
