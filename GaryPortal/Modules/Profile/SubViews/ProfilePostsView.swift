@@ -23,13 +23,6 @@ struct ProfilePostsView: View {
     
     @ObservedObject var datasource: ProfileViewDataSource
     
-    let gridItems = [
-        GridItem(),
-        GridItem(),
-        GridItem(),
-    ]
-
-    
     var body: some View {
         VStack {
             Spacer().frame(width: 8)
@@ -40,25 +33,26 @@ struct ProfilePostsView: View {
                 Spacer()
             }
             
-            LazyVGrid(columns: gridItems, alignment: .center, spacing: 8) {
-                ForEach(self.datasource.posts ?? [], id: \.self) { post in
-                    NavigationLink(destination: NavigationLazyView(SingleFeedPost(postID: post.postId ?? -1))) {
-                        if post.postType == "media" {
-                            SmallMediaCard(url: post.postUrl ?? "", isVideo: post.isVideo ?? false)
-                        } else if post.postType == "poll" {
-                            SmallPollCard()
-                                .frame(width: 100, height: 100)
-                                .shadow(radius: 3)
+            ScrollView(.horizontal) {
+                LazyHStack {
+                    Spacer().frame(width: 16)
+                    ForEach(self.datasource.posts ?? [], id: \.self) { post in
+                        NavigationLink(destination: NavigationLazyView(SingleFeedPost(postID: post.postId ?? -1))) {
+                            if post.postType == "media" {
+                                SmallMediaCard(url: post.postUrl ?? "", isVideo: post.isVideo ?? false)
+                            } else if post.postType == "poll" {
+                                SmallPollCard()
+                                    .shadow(radius: 3)
+                            }
                         }
                     }
+                    Spacer().frame(width: 16)
                 }
             }
+            .frame(height: 300)
             
-            
+            Spacer()
             Spacer().frame(width: 16)
-        }
-        .onAppear {
-            print("dtos init")
         }
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.secondarySystemBackground))
@@ -76,7 +70,7 @@ fileprivate struct SmallMediaCard: View {
         if isVideo {
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("Section"))
-                .frame(width: 100, height: 100)
+                .frame(width: 150, height: 150)
                 .shadow(radius: 3)
                 .overlay(
                     Image(systemName: "play.circle")
@@ -88,8 +82,9 @@ fileprivate struct SmallMediaCard: View {
                 AsyncImage(url: url)
                     .scaledToFill()
                     .aspectRatio(1, contentMode: .fit)
+                    .cornerRadius(15)
             }
-            .frame(width: 100, height: 100)
+            .frame(width: 150, height: 300)
             .cornerRadius(15)
             .shadow(radius: 3)
         }
@@ -98,19 +93,15 @@ fileprivate struct SmallMediaCard: View {
 
 fileprivate struct SmallPollCard: View {
     var body: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 15)
-                .fill(Color("Section"))
-                .overlay(
-                    Image("poll")
-                        .renderingMode(.template)
-                        .foregroundColor(Color.primary)
-                )
-                .shadow(radius: 3)
-        }
-        .frame(width: 100, height: 100)
-        .cornerRadius(15)
-        .shadow(radius: 3)
-       
+        RoundedRectangle(cornerRadius: 15)
+            .fill(Color("Section"))
+            .overlay(
+                Image("poll")
+                    .renderingMode(.template)
+                    .foregroundColor(Color.primary)
+            )
+            .shadow(radius: 3)
+            .frame(width: 150, height: 150)
+            .cornerRadius(15)
     }
 }
