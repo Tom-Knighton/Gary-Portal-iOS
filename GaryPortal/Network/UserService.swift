@@ -118,6 +118,15 @@ struct UserService {
         }
     }
     
+    static func updateUserBio(userUUID: String = "", to bio: String) {
+        let request = APIRequest(method: .put, path: "users/updatebio")
+        request.body = bio.jsonEncode()
+        if userUUID != "" {
+            request.queryItems = [URLQueryItem(name: "uuid", value: userUUID)]
+        }
+        APIClient.shared.perform(request, nil)
+    }
+    
     static func getBlockedUsers(userUUID: String, _ completion: @escaping (([UserBlock]?, APIError?) -> Void)) {
         let request = APIRequest(method: .get, path: "users/getblockedusersfor/\(userUUID)")
         APIClient.shared.perform(request) { (result) in

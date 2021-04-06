@@ -42,14 +42,13 @@ struct ProfilePostsView: View {
                                 SmallMediaCard(url: post.postUrl ?? "", isVideo: post.isVideo ?? false)
                             } else if post.postType == "poll" {
                                 SmallPollCard()
-                                    .shadow(radius: 3)
                             }
                         }
                     }
                     Spacer().frame(width: 16)
                 }
             }
-            .frame(height: 300)
+            .frame(height: 110)
             
             Spacer()
             Spacer().frame(width: 16)
@@ -70,7 +69,7 @@ fileprivate struct SmallMediaCard: View {
         if isVideo {
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("Section"))
-                .frame(width: 150, height: 150)
+                .frame(width: 100, height: 100)
                 .shadow(radius: 3)
                 .overlay(
                     Image(systemName: "play.circle")
@@ -84,7 +83,7 @@ fileprivate struct SmallMediaCard: View {
                     .aspectRatio(1, contentMode: .fit)
                     .cornerRadius(15)
             }
-            .frame(width: 150, height: 300)
+            .frame(width: 100, height: 100)
             .cornerRadius(15)
             .shadow(radius: 3)
         }
@@ -100,8 +99,8 @@ fileprivate struct SmallPollCard: View {
                     .renderingMode(.template)
                     .foregroundColor(Color.primary)
             )
-            .shadow(radius: 3)
-            .frame(width: 150, height: 150)
+            .frame(width: 100, height: 100)
             .cornerRadius(15)
+            .shadow(radius: 3)
     }
 }

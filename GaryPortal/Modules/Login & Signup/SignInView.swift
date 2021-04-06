@@ -348,6 +348,7 @@ class SignUpViewModel: ObservableObject {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
+        SignInNavigationHost()
         SignUpHost()
             .environment(\.colorScheme, .dark)
         

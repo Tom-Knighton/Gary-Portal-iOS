@@ -179,6 +179,8 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
 
     @Binding var text: String
     @Binding var calculatedHeight: CGFloat
+    @State var characterLimit: Int?
+    
     var onDone: (() -> Void)?
 
     func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> UITextView {
@@ -190,11 +192,14 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         textField.isSelectable = true
         textField.isUserInteractionEnabled = true
         textField.backgroundColor = UIColor.clear
+        textField.textAlignment = .center
         if nil != onDone {
             textField.returnKeyType = .done
         }
 
+        textField.text = self.text
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        print("INIT TEXT TO \(text)")
         return textField
     }
 
@@ -202,6 +207,9 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         if uiView.text != self.text {
             uiView.text = self.text
         }
+        uiView.text = self.text
+        context.coordinator.limit = self.characterLimit
+        print("UPDATE TEXT TO \(text)")
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
     }
 
@@ -209,21 +217,23 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
         if result.wrappedValue != newSize.height {
             DispatchQueue.main.async {
-                result.wrappedValue = newSize.height // !! must be called asynchronously
+                result.wrappedValue = newSize.height
             }
         }
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(text: $text, height: $calculatedHeight, onDone: onDone)
+        return Coordinator(text: $text, height: $calculatedHeight, limit: characterLimit, onDone: onDone)
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
         var text: Binding<String>
         var calculatedHeight: Binding<CGFloat>
         var onDone: (() -> Void)?
+        var limit: Int?
 
-        init(text: Binding<String>, height: Binding<CGFloat>, onDone: (() -> Void)? = nil) {
+        init(text: Binding<String>, height: Binding<CGFloat>, limit: Int? = Int.max, onDone: (() -> Void)? = nil) {
+            self.limit = limit
             self.text = text
             self.calculatedHeight = height
             self.onDone = onDone
@@ -240,7 +250,18 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
                 onDone()
                 return false
             }
+            
+            if (textView.text as NSString).replacingCharacters(in: range, with: text).count > (self.limit ?? Int.max) {
+                return false
+            }
+            
             return true
+        }
+        
+        func textViewDidEndEditing(_ textView: UITextView) {
+            if let onDone = self.onDone {
+                onDone()
+            }
         }
     }
 
@@ -252,35 +273,37 @@ struct MultilineTextField: View {
     private var onCommit: (() -> Void)?
 
     @Binding private var text: String
-    private var internalText: Binding<String> {
-        Binding<String>(get: { self.text } ) {
-            self.text = $0
-            self.showingPlaceholder = $0.isEmpty
-        }
-    }
 
     @State private var dynamicHeight: CGFloat = 100
-    @State private var showingPlaceholder = false
+    @State private var characterLimit: Int?
+    @State var characterSet: String?
 
-    init (_ placeholder: String = "", text: Binding<String>, onCommit: (() -> Void)? = nil) {
+    init (_ placeholder: String = "", text: Binding<String>, limit: Int?, onCommit: (() -> Void)? = nil) {
         self.placeholder = placeholder
         self.onCommit = onCommit
         self._text = text
-        self._showingPlaceholder = State<Bool>(initialValue: self.text.isEmpty)
+        self._characterLimit = State(wrappedValue: limit)
     }
 
     var body: some View {
-        UITextViewWrapper(text: self.internalText, calculatedHeight: $dynamicHeight, onDone: onCommit)
-            .frame(minHeight: dynamicHeight, maxHeight: dynamicHeight)
-            .background(placeholderView, alignment: .topLeading)
+        ZStack {
+            UITextViewWrapper(text: self.$text, calculatedHeight: $dynamicHeight, characterLimit: self.characterLimit, onDone: onCommit)
+                .frame(minHeight: dynamicHeight, maxHeight: dynamicHeight)
+                .background(placeholderView, alignment: .topLeading)
+        }
+        .background(Color("Section"))
+        .cornerRadius(10)
+        .shadow(radius: 3)
     }
 
     var placeholderView: some View {
         Group {
-            if showingPlaceholder {
+            if self.text.isEmptyOrWhitespace() {
                 Text(placeholder).foregroundColor(.gray)
                     .padding(.leading, 4)
                     .padding(.top, 8)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
             }
         }
     }

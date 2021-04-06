@@ -15,9 +15,9 @@ struct ProfileHeaderView: View {
     
     @State var isShowingStaff = false
     @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
-
+    @State var bioText: String = ""
+    
     var body: some View {
-        
         VStack {
             HStack {
                 Spacer().frame(width: 16)
@@ -49,7 +49,25 @@ struct ProfileHeaderView: View {
                 Spacer()
                 Spacer().frame(width: 16)
             }
-            Spacer().frame(height: 16)
+            Spacer().frame(height: 8)
+            
+            if self.datasource.user?.userUUID == GaryPortal.shared.currentUser?.userUUID {
+                MultilineTextField("Your status here...", text: $bioText, limit: 120, onCommit: {
+                        UserService.updateUserBio(to: self.bioText)
+                    })
+                .frame(maxHeight: 150)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding()
+            } else {
+                Text(bioText)
+                    .font(.custom("Montserrat-Light", size: 16))
+                    .frame(maxWidth: .infinity, maxHeight: 150)
+                    .padding()
+            }
+           
+                
+
+            Spacer().frame(height: 8)
             if GaryPortal.shared.currentUser?.userUUID == datasource.user?.userUUID {
                 if GaryPortal.shared.currentUser?.userIsAdmin == true || GaryPortal.shared.currentUser?.userIsStaff == true {
                     GPGradientButton(action: { self.datasource.activeSheet = .staff }, buttonText: "Staff Panel", gradientColours: privilegedGradient)
@@ -65,5 +83,8 @@ struct ProfileHeaderView: View {
         .cornerRadius(radius: 20, corners: [.bottomLeft, .bottomRight])
         .edgesIgnoringSafeArea(.top)
         .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 10)
+        .onChange(of: self.datasource.user?.userBio, perform: { value in
+            self.bioText = value ?? "fail"
+        })
     }
 }

@@ -52,7 +52,7 @@ class User: Codable, ObservableObject {
     let userName: String?
     var userProfileImageUrl: String?
     let userQuote: String?
-    let userBio: String?
+    var userBio: String?
     let userGender: String?
     let userIsStaff: Bool?
     let userIsAdmin: Bool?

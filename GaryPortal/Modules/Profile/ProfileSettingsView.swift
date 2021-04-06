@@ -234,7 +234,6 @@ struct AccountSettingsView: View {
         .fullScreenCover(isPresented: $isShowingImagePicker, onDismiss: showCropper) {
             CameraView(timeLimit: 0, allowsGallery: true, allowsVideo: false) { (success, _, url) in
                 if success, let url = url {
-                    print(url)
                     do {
                         let data = try Data(contentsOf: url)
                         let image = UIImage(data: data)
