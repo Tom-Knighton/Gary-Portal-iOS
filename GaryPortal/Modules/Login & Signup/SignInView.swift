@@ -26,20 +26,29 @@ struct SignInNavigationHost: View {
     
     var body: some View {
         NavigationView {
-            GradientBackground()
-                .overlay(SignInView().padding())
-                .navigationTitle("Gary Portal")
+            ZStack {
+                GradientBackground()
+                    .blur(radius: 20, opaque: true)
+                SignInView().padding()
+            }
+            .navigationTitle("Gary Portal")
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+            UIApplication.shared.addTapGestureRecognizer()
+        }
     }
 }
 
 struct SignUpHost: View {
     
     var body: some View {
-        GradientBackground()
-            .overlay(SignUpView().padding())
-            .navigationTitle("Sign Up")
+        ZStack {
+            GradientBackground()
+                .blur(radius: 20, opaque: true)
+            SignUpView().padding()
+        }
+        .navigationTitle("Sign Up")
     }
 }
 
@@ -57,17 +66,11 @@ struct SignInView: View {
         VStack {
             
             GPTextField(text: $emailText, isSystemImage: false, imageName: "user-glyph", isSecure: false, placeHolder: "Email", textContentType: .emailAddress, characterSet: emailCharacterSet, autoCapitalisation: .none, disableCorrection: true)
-            
+            Spacer().frame(height: 16)
             GPTextField(text: $passwordText, isSystemImage: false, imageName: "password-glyph", isSecure: true, placeHolder: "Password", characterSet: passCharacterSet, autoCapitalisation: .none, disableCorrection: true)
             
-            Spacer()
-           
-            Button(action: { self.requestReset() } ) {
-                Text("Forgot Your Password? ->")
-                    .foregroundColor(Color(UIColor.secondarySystemBackground))
-            }
+            Spacer().frame(height: 32)
             
-
             Button(action: { login() }, label: {
                 Text("LOGIN")
                     .font(.headline)
@@ -77,7 +80,16 @@ struct SignInView: View {
                     .background(Color.blue)
                     .cornerRadius(15)
             })
-            .shadow(radius: 15)
+            .shadow(radius: 5)
+           
+            Spacer()
+            Button(action: { self.requestReset() } ) {
+                Text("Forgot Your Password? ->")
+                    .foregroundColor(Color(UIColor.secondarySystemBackground))
+            }
+            
+
+           
             
             HStack {
                 Color(UIColor.secondarySystemBackground).frame(height: 1)

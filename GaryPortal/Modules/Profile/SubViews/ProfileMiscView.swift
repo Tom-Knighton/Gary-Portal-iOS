@@ -59,7 +59,7 @@ struct ProfileMiscView: View {
                 }
             }
         }
-        .frame(height: 170)
+        .frame(height: 190)
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(20)
         .shadow(radius: 15)
@@ -77,24 +77,25 @@ struct ProfileMiscViewCard: View {
     var body: some View {
         VStack {
             Text(self.datasource.headerText)
-                .font(.custom("Montserrat-SemiBold", size: 16))
+                .font(.title3).bold()
                 .shadow(radius: 3)
-                .padding(.horizontal, 2)
+                .padding()
                 .lineLimit(3)
-                .foregroundColor(self.datasource.textColor)
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+            
+                
             Spacer()
             Text(self.datasource.subText)
                 .padding(.all, 0)
-                .font(.custom("Montserrat-Light", size: 12))
+                .font(.subheadline)
                 .shadow(radius: 1)
-                .padding(.bottom)
-                .padding(.horizontal)
-                .foregroundColor(self.datasource.textColor)
-                .frame(maxWidth: .infinity)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .center)
+                .foregroundColor(.white)
+                .background(Color.black.opacity(0.4).cornerRadius(10).shadow(radius: 3))
         }
-        .frame(width: 150, height: 150)
+        .frame(width: 200, height: 180)
         .background(LinearGradient(gradient: Gradient(colors: self.datasource.backgroundColours), startPoint: .topLeading, endPoint: .bottomTrailing))
         .cornerRadius(10)
         .shadow(radius: 3)

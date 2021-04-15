@@ -199,7 +199,6 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
 
         textField.text = self.text
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        print("INIT TEXT TO \(text)")
         return textField
     }
 
@@ -209,7 +208,6 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         }
         uiView.text = self.text
         context.coordinator.limit = self.characterLimit
-        print("UPDATE TEXT TO \(text)")
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
     }
 

@@ -61,10 +61,11 @@ struct ProfileView: View {
                         .offset(y: geometry.frame(in: .global).minY > 0 ? -geometry.frame(in: .global).minY : 0)
                         .frame(height: (geometry.frame(in: .global).minY > 0 ? geometry.size.height + geometry.frame(in: .global).minY : geometry.size.height) + (edges?.top ?? 0))
                         .edgesIgnoringSafeArea(.all)
-                        
+
                 }
                 .frame(height: 16)
                 ProfileHeaderView(datasource: datasource)
+                    .redacted(reason: self.datasource.hasLoaded ? [] : .placeholder)
                 Spacer().frame(height: 16)
                 
                 if self.datasource.hasLoaded && GaryPortal.shared.currentUser?.userUUID != self.datasource.user?.userUUID {

@@ -65,7 +65,14 @@ class AnyGestureRecognizer: UIGestureRecognizer {
     }
 }
 
+struct VisualEffectView: UIViewRepresentable {
+    var effect: UIVisualEffect?
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIVisualEffectView { UIVisualEffectView() }
+    func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) { uiView.effect = effect }
+}
+
 extension View {
+    
     @ViewBuilder
     func `if`<Transform: View>(
         _ condition: Bool,
@@ -149,13 +156,3 @@ struct CornerRadiusStyle: ViewModifier {
             .clipShape(CornerRadiusShape(radius: radius, corners: corners))
     }
 }
-
-//public struct ListSeparatorStyleNoneModifier: ViewModifier {
-//    public func body(content: Content) -> some View {
-//        content.onAppear {
-//            UITableView.appearance().separatorStyle = .none
-//        }.onDisappear {
-//            UITableView.appearance().separatorStyle = .singleLine
-//        }
-//    }
-//}

@@ -76,9 +76,9 @@ struct GPTabBar: View {
     
     @ObservedObject var garyPortal = GaryPortal.shared
     @State var selectedTab = 1
-    @State var tabIcons = ["note", "person", "bubble.left"]
-    @State var selectedTabIcons = ["note", "person.fill", "bubble.left.fill"]
-    @State var tabNames = [0, 1, 2]
+    @State var tabIcons = ["note", "person", "bubble.left", "gamecontroller"]
+    @State var selectedTabIcons = ["note", "person.fill", "bubble.left.fill", "gamecontroller.fill"]
+    @State var tabNames = [0, 1, 2, 3]
     @State var edge = UIApplication.shared.windows.first?.safeAreaInsets
     
     @AppStorage("feedBadgeCount", store: UserDefaults(suiteName: GaryPortalConstants.UserDefaults.suiteName)) var feedBadge: Int?
@@ -95,7 +95,7 @@ struct GPTabBar: View {
             Spacer()
 
             HStack {
-                ForEach(0..<3) { index in
+                ForEach(0..<4) { index in
                     Button(action: { self.selectedTab = self.tabNames[index] }, label: {
                         Spacer()
                         Image(systemName: self.selectedTab == index ?  self.selectedTabIcons[index] : self.tabIcons[index])

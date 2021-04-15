@@ -103,6 +103,12 @@
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
 		E2CE5ACD2616626B00A43D7B /* ProfilePostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE5ACC2616626B00A43D7B /* ProfilePostsView.swift */; };
 		E2CE5AD0261674DC00A43D7B /* SingleFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE5ACF261674DC00A43D7B /* SingleFeedPost.swift */; };
+		E2D04C2C2624A6AC00233CCF /* GamesRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C2B2624A6AC00233CCF /* GamesRootView.swift */; };
+		E2D04C302624A80600233CCF /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C2F2624A80600233CCF /* Game.swift */; };
+		E2D04C332624A83600233CCF /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C322624A83600233CCF /* GameService.swift */; };
+		E2D04C372624A8A100233CCF /* GameTypeListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C362624A8A100233CCF /* GameTypeListDataSource.swift */; };
+		E2D04C3C2624B46000233CCF /* GarySweeperRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C3B2624B46000233CCF /* GarySweeperRoot.swift */; };
+		E2D04C412625B02D00233CCF /* GarySweeperModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C402625B02D00233CCF /* GarySweeperModels.swift */; };
 		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
@@ -157,8 +163,6 @@
 
 /* Begin PBXFileReference section */
 		E2059F8D261221E500729D8D /* CommandmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandmentsView.swift; sourceTree = "<group>"; };
-		E209AB7726133AEF00515E3B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
-		E209AB7926133AEF00515E3B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E209AB922613422000515E3B /* GaryPortalAccountWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GaryPortalAccountWidgetExtension.entitlements; sourceTree = "<group>"; };
 		E2155E5025F4155200E48DFA /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		E217755325B0AD730006B7CA /* Foundation+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+GaryPortal.swift"; sourceTree = "<group>"; };
@@ -259,6 +263,12 @@
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
 		E2CE5ACC2616626B00A43D7B /* ProfilePostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePostsView.swift; sourceTree = "<group>"; };
 		E2CE5ACF261674DC00A43D7B /* SingleFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFeedPost.swift; sourceTree = "<group>"; };
+		E2D04C2B2624A6AC00233CCF /* GamesRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesRootView.swift; sourceTree = "<group>"; };
+		E2D04C2F2624A80600233CCF /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		E2D04C322624A83600233CCF /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
+		E2D04C362624A8A100233CCF /* GameTypeListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTypeListDataSource.swift; sourceTree = "<group>"; };
+		E2D04C3B2624B46000233CCF /* GarySweeperRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarySweeperRoot.swift; sourceTree = "<group>"; };
+		E2D04C402625B02D00233CCF /* GarySweeperModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarySweeperModels.swift; sourceTree = "<group>"; };
 		E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamOverlay.swift; sourceTree = "<group>"; };
 		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
@@ -309,15 +319,6 @@
 			path = SubViews;
 			sourceTree = "<group>";
 		};
-		E209AB7626133AEF00515E3B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E209AB7726133AEF00515E3B /* WidgetKit.framework */,
-				E209AB7926133AEF00515E3B /* SwiftUI.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		E2249D6B2606974400969824 /* GPNotifcations */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +335,6 @@
 				E209AB922613422000515E3B /* GaryPortalAccountWidgetExtension.entitlements */,
 				E23100AB25AF6F8E00739E9E /* GaryPortal */,
 				E2249D6B2606974400969824 /* GPNotifcations */,
-				E209AB7626133AEF00515E3B /* Frameworks */,
 				E23100AA25AF6F8E00739E9E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -377,6 +377,7 @@
 		E23100C125AF6F9600739E9E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				E2D04C2A2624A6A100233CCF /* Games */,
 				E28DC01C25C7097500A6EBEB /* Chat */,
 				E2ABC7B825B0CE7400EB1B22 /* Profile */,
 				E23B907C25B9CB3300C0C201 /* Feed */,
@@ -437,6 +438,7 @@
 				E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */,
 				E26A68A625B2D08800CD0662 /* StaffService.swift */,
 				E26C628925B053BD00FC2D0D /* UserService.swift */,
+				E2D04C322624A83600233CCF /* GameService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -444,6 +446,7 @@
 		E25CC1B025AF701200B1FA55 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E2D04C3F2625B01F00233CCF /* Games */,
 				E25CC1B225AF702B00B1FA55 /* AppSettings.swift */,
 				E25CC1B425AF702B00B1FA55 /* Feed.swift */,
 				E25CC1B525AF702B00B1FA55 /* Rank.swift */,
@@ -572,6 +575,41 @@
 				E2A554E3260B96160086B66C /* SearchBar.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E2D04C2A2624A6A100233CCF /* Games */ = {
+			isa = PBXGroup;
+			children = (
+				E2D04C3A2624B44F00233CCF /* GarySweeper */,
+				E2D04C352624A89100233CCF /* DataSources */,
+				E2D04C2B2624A6AC00233CCF /* GamesRootView.swift */,
+				E2D04C362624A8A100233CCF /* GameTypeListDataSource.swift */,
+			);
+			path = Games;
+			sourceTree = "<group>";
+		};
+		E2D04C352624A89100233CCF /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		E2D04C3A2624B44F00233CCF /* GarySweeper */ = {
+			isa = PBXGroup;
+			children = (
+				E2D04C3B2624B46000233CCF /* GarySweeperRoot.swift */,
+			);
+			path = GarySweeper;
+			sourceTree = "<group>";
+		};
+		E2D04C3F2625B01F00233CCF /* Games */ = {
+			isa = PBXGroup;
+			children = (
+				E2D04C2F2624A80600233CCF /* Game.swift */,
+				E2D04C402625B02D00233CCF /* GarySweeperModels.swift */,
+			);
+			path = Games;
 			sourceTree = "<group>";
 		};
 		E2DB20B026091BD900F507AB /* Camera */ = {
@@ -768,6 +806,7 @@
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
 				E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
+				E2D04C412625B02D00233CCF /* GarySweeperModels.swift in Sources */,
 				E2CE5AD0261674DC00A43D7B /* SingleFeedPost.swift in Sources */,
 				E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */,
 				E22367A02614B873002D3B1A /* ProfileMiscView.swift in Sources */,
@@ -775,6 +814,7 @@
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
+				E2D04C372624A8A100233CCF /* GameTypeListDataSource.swift in Sources */,
 				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
 				E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
@@ -784,6 +824,7 @@
 				E2813AA026050B6D00E395E9 /* UIImageView+Haneke.swift in Sources */,
 				E2813A9726050B6D00E395E9 /* NSURLResponse+Haneke.swift in Sources */,
 				E2A554DA260B8E8D0086B66C /* AppService.swift in Sources */,
+				E2D04C2C2624A6AC00233CCF /* GamesRootView.swift in Sources */,
 				E2813A9D26050B6D00E395E9 /* UIButton+Haneke.swift in Sources */,
 				E2813AA526050B6D00E395E9 /* DiskCache.swift in Sources */,
 				E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */,
@@ -828,6 +869,7 @@
 				E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */,
 				E2813A9A26050B6D00E395E9 /* Format.swift in Sources */,
 				E278BF2225B0DD3700DE8D44 /* GPImageLoader.swift in Sources */,
+				E2D04C332624A83600233CCF /* GameService.swift in Sources */,
 				E23B908225BA048000C0C201 /* FeedService.swift in Sources */,
 				E26A68A425B2630D00CD0662 /* StaffRoomView.swift in Sources */,
 				E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */,
@@ -837,9 +879,11 @@
 				E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
+				E2D04C3C2624B46000233CCF /* GarySweeperRoot.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
 				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
 				E2059F8E261221E500729D8D /* CommandmentsView.swift in Sources */,
+				E2D04C302624A80600233CCF /* Game.swift in Sources */,
 				E25CC1B825AF702B00B1FA55 /* AppSettings.swift in Sources */,
 				E2A554E4260B96160086B66C /* SearchBar.swift in Sources */,
 				E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */,
