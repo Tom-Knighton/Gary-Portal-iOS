@@ -33,10 +33,12 @@ struct Chat: Codable {
     }
     
     func profilePicToDisplay(for uuid: String) -> some View {
-        if (self.chatMembers?.count ?? 0) >= 2 {
+        if self.chatIsProtected == true {
+            return AnyView(GPAvatarView(imageUrls: ["https://cdn.tomk.online/GaryPortal/AppLogo.png"]))
+        } else if (self.chatMembers?.count ?? 0) >= 2 {
             return AnyView(GPAvatarView(imageUrls: self.chatMembers?.filter({ $0.userUUID != uuid }).compactMap( { $0.userDTO?.userProfileImageUrl ?? "" }) ?? []))
         } else {
-            return AnyView(AsyncImage(url: "https://cdn.tomk.online/GaryPortal/lonely.png"))
+            return AnyView(GPAvatarView(imageUrls: ["https://cdn.tomk.online/GaryPortal/lonely.png"]))
         }
     }
     
