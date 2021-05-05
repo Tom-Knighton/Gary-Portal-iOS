@@ -36,6 +36,19 @@ extension APIResponse where Body == Data? {
     }
 }
 
+extension String {
+    func jsonDecode<BodyType: Decodable>(to type: BodyType.Type) -> BodyType? {
+        guard !self.isEmpty else { return nil }
+        
+        let decoder = JSONDecoder()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        let decoded = try? decoder.decode(BodyType.self, from: self.asData())
+        return decoded
+    }
+}
+
 enum HttpMethod: String {
     case get = "GET"
     case put = "PUT"

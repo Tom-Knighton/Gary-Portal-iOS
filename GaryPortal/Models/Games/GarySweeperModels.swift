@@ -7,204 +7,118 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
-//MARK: - Game
+//MARK: - GameManager
 
-class GSGame: ObservableObject {
+final class GSGameManager: ObservableObject {
+    @Published var gameMode: GSGameMode = .playing
+    @Published var cells: GSCells
+    private var cancellables: [AnyCancellable] = []
     
-    @Published var settings: GSGameSettings
-    @Published var board: [[GSCell]]
-    @Published var showResult: Bool = false
-    @Published var isWon = false
-    
-    init(from settings: GSGameSettings) {
-        self.settings = settings
-        self.board = Self.generateBoard(from: settings)
+    init(cellSize: Int) {
+        self.cells = GSCells(size: cellSize)
+        cells.objectWillChange.sink { (_) in
+            self.objectWillChange.send()
+        }
+        .store(in: &cancellables)
     }
     
-    func hasPlayerWon() -> Bool {
-        var result = true
-        for row in 0..<settings.numRows {
-            for column in 0..<settings.numColumns {
-                if self.board[row][column].status == .normal {
-                    result = false
-                }
+    func openCell(atIndex index: Int) {
+        guard case .closed = self.cells.board[index] else { return }
+        withAnimation {
+            if !self.cells.open(index: index) {
+                self.gameMode = .gameOver
+            } else if self.cells.restOfCell == self.cells.numberOfMines {
+                self.gameMode = .gameClear
             }
         }
-        return result
     }
     
-    func click(on cell: GSCell) {
-       
-        if case GSCell.GSCellStatus.exposed(_) = cell.status {
-            return
-        }
-        if cell.isFlagged {
-            return
-        }
-        
-        if cell.status == .bomb {
-            cell.isOpened = true
-            self.showResult = true
-            self.isWon = true
-        } else {
-            reveal(for: cell)
-        }
-        
-        if self.hasPlayerWon() {
-            self.showResult = true
-            self.isWon = true
-        }
-        self.objectWillChange.send()
+    func toggleFlag(atIndex index: Int) {
+        guard case .closed(let flag) = self.cells.board[index] else { return }
+        self.cells.board[index] = .closed(flag: !flag)
     }
     
-    func toggleFlag(on cell: GSCell) {
-        guard !cell.isOpened else { return }
-        
-        cell.isFlagged.toggle()
-        if hasPlayerWon() {
-            self.showResult = true
-            self.isWon = true
-        }
-        self.objectWillChange.send()
+    func restartGame() {
+        self.cells.reset()
+        self.gameMode = .playing
     }
     
-    func reset() {
-        self.board = Self.generateBoard(from: settings)
-        self.showResult = false
-        self.isWon = false
-    }
     
-    private func reveal(for cell: GSCell) {
-        guard !cell.isOpened, !cell.isFlagged, cell.status != .bomb else { return }
-        
-        let exposedCount = getExposedCount(for: cell)
-        if cell.status != .bomb {
-            cell.status = .exposed(exposedCount)
-            cell.isOpened = true
-        }
-        
-        if exposedCount == 0 {
-            let topCell = self.board[max(0, cell.row - 1)][cell.column]
-            let bottomCell = self.board[min(cell.row + 1, board.count - 1)][cell.column]
-            let leftCell = self.board[cell.row][max(0, cell.column - 1)]
-            let rightCell = self.board[cell.row][min(cell.column + 1, board[0].count - 1)]
-            self.reveal(for: topCell)
-            self.reveal(for: bottomCell)
-            self.reveal(for: leftCell)
-            self.reveal(for: rightCell)
-        }
-    }
-    
-    private func getExposedCount(for cell: GSCell) -> Int {
-        let row = cell.row
-        let col = cell.column
-        
-        let minRow = max(row - 1, 0)
-        let minCol = max(col - 1, 0)
-        let maxRow = min(row + 1, board.count - 1)
-        let maxCol = min(col + 1, board[0].count - 1)
-        
-        var totalMurrayCount = 0
-        for row in minRow...maxRow {
-            for col in minCol...maxCol {
-                if self.board[row][col].status == .bomb {
-                    totalMurrayCount += 1
-                }
-            }
-        }
-        return totalMurrayCount
-    }
-    
-    private static func generateBoard(from settings: GSGameSettings) -> [[GSCell]] {
-        var newBoard = [[GSCell]]()
-        
-        for row in 0..<settings.numRows {
-            var column = [GSCell]()
-            for col in 0..<settings.numColumns {
-                column.append(GSCell(row: row, column: col))
-            }
-            newBoard.append(column)
-        }
-        
-        var numberOfMurraysPlaced = 0
-        while numberOfMurraysPlaced < settings.numBombs {
-            let randomRow = Int.random(in: 0..<settings.numRows)
-            let randomCol = Int.random(in: 0..<settings.numColumns)
-            let currentRandomCellStatus = newBoard[randomRow][randomCol].status
-            if currentRandomCellStatus != .bomb {
-                newBoard[randomRow][randomCol].status = .bomb
-                numberOfMurraysPlaced += 1
-            }
-        }
-        return newBoard
-    }
-}
-
-//MARK: - Game Settings
-
-class GSGameSettings: ObservableObject {
-    
-    @Published var numRows = 10
-    @Published var numColumns = 10
-    @Published var numBombs = 10
-    
-    var tileSize: CGFloat {
-        max((UIScreen.main.bounds.width / CGFloat(numColumns)) - CGFloat(4), 30)
-    }
-    
-    init(rows: Int = 10, columns: Int = 10, bombs: Int = 10) {
-        self.numRows = rows
-        self.numColumns = columns
-        self.numBombs = bombs
+    enum GSGameMode {
+        case playing, gameOver, gameClear
     }
 }
 
 //MARK: - Cell
 
-class GSCell: ObservableObject {
+enum GSCell: Equatable {
+    case closed(flag: Bool = false), open(Open)
+    var unrevealed: Bool {
+        self == .closed(flag: false) || self == .closed(flag: true)
+    }
+    enum Open: Equatable {
+        case mine, empty, number(Int)
+    }
+}
+
+final class GSCells: ObservableObject {
+    let size: Int
+    @Published var board: [GSCell] = []
+    private(set) var mines: [Bool] = []
+    private(set) var numberOfMines = 0
     
-    var row: Int
-    var column: Int
-    @Published var status: GSCellStatus
-    @Published var isOpened: Bool
-    @Published var isFlagged: Bool
+    var restOfCell: Int {
+        board.filter { $0.unrevealed }.count
+    }
     
+    init(size: Int) {
+        self.size = size
+        reset()
+    }
     
-    var content: Text {
-        if !isOpened && isFlagged {
-            return Text("🚩")
+    func reset() {
+        self.board = Array(repeating: GSCell.closed(), count: size*size)
+        self.numberOfMines = Int(Double(size) * 1.5)
+        mines = (Array(repeating: true, count: numberOfMines) + Array(repeating: false, count: size*size-numberOfMines)).shuffled()
+    }
+    
+    @discardableResult
+    func open(index: Int, recursive: Bool = false) -> Bool {
+        guard case .closed = board[index] else { return true }
+        
+        if mines[index] {
+            if recursive { return true }
+            board[index] = .open(.mine)
+            return false
         }
         
-        switch self.status {
-        case .bomb:
-            if isOpened {
-                return Text("💥")
-            }
-            return Text("")
-        case .normal:
-            return Text("")
-        case .exposed(let total):
-            if !isOpened {
-                return Text("")
-            }
-            if total == 0 {
-                return Text("")
-            }
-            
-            return Text(String(describing: total))
+        let indices = self.indices(around: index)
+        let numMines = indices.filter { mines[$0] }.count
+        if numMines == 0 {
+            board[index] = .open(.empty)
+            indices.filter { board[$0].unrevealed }.forEach { open(index: $0, recursive: true) }
+        } else {
+            board[index] = .open(.number(numMines))
         }
+        return true
     }
     
-    enum GSCellStatus: Equatable {
-        case normal, exposed(Int), bomb
-    }
-    
-    init(row: Int, column: Int) {
-        self.row = row
-        self.column = column
-        self.status = .normal
-        self.isOpened = false
-        self.isFlagged = false
+    func indices(around index: Int) -> [Int] {
+        ((index % size == 0 ? [] : [
+            index - size - 1,
+            index - 1,
+            index + size - 1
+        ]) +
+        ((index + 1) % size == 0 ? [] : [
+            index - size + 1,
+            index + 1,
+            index + size + 1
+        ]) +
+        [
+            index - size,
+            index + size
+        ]).filter { 0 <= $0 && $0 <= self.board.count }
     }
 }

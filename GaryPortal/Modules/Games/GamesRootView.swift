@@ -27,7 +27,7 @@ fileprivate struct GamesListView: View {
                             .padding()
                             .onTapGesture {
                                 withAnimation(.spring()) {
-                                    self.datasource.currentGame = .GarySweeper
+                                    self.datasource.currentGame = GameTypeListDataSource.CurrentGame.fromName(name: game.gameName ?? "")
                                 }
                             }
                     }
@@ -37,6 +37,10 @@ fileprivate struct GamesListView: View {
         .sheet(item: $datasource.currentGame) { item in
             if item == .GarySweeper {
                 GarySweeperRoot()
+            } else if item == .SpaceGambito  {
+                TicTacGaryRoot()
+            } else if item == .TicTacGary {
+                TicTacGaryRoot()
             }
         }
         .onAppear {

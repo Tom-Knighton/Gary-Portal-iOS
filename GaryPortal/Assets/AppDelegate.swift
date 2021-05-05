@@ -7,7 +7,6 @@
 
 import UIKit
 import UserNotifications
-import Bugsnag
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 GaryPortal.shared.goToCommentsFromNotification(feedPostId: feedPostId)
             }
         }
-        Bugsnag.start()
         return true
     }
 

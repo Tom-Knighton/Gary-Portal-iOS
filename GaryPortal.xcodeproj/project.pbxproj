@@ -29,6 +29,7 @@
 		E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B907D25B9CB3E00C0C201 /* FeedView.swift */; };
 		E23B908225BA048000C0C201 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908125BA048000C0C201 /* FeedService.swift */; };
 		E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908425BB1DCB00C0C201 /* PlayerView.swift */; };
+		E23F4B2C2635F5D400CA4087 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = E23F4B2B2635F5D400CA4087 /* AlertToast */; };
 		E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */; };
 		E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E241B3FE25E02B3F00B15219 /* Bundle+GaryPortal.swift */; };
 		E249D96925D53DF50056B027 /* GPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D96825D53DF50056B027 /* GPCamera.swift */; };
@@ -88,6 +89,9 @@
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
+		E29D30AA262F6748004A8FBF /* TicTacGaryRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D30A9262F6748004A8FBF /* TicTacGaryRoot.swift */; };
+		E29D30AD262F853B004A8FBF /* GameHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D30AC262F853B004A8FBF /* GameHub.swift */; };
+		E29D30B0262F8A53004A8FBF /* TicTacGary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D30AF262F8A53004A8FBF /* TicTacGary.swift */; };
 		E2A554DA260B8E8D0086B66C /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554D9260B8E8D0086B66C /* AppService.swift */; };
 		E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554DC260B8EC80086B66C /* Sticker.swift */; };
 		E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E0260B90400086B66C /* StickerPickerView.swift */; };
@@ -109,7 +113,6 @@
 		E2D04C372624A8A100233CCF /* GameTypeListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C362624A8A100233CCF /* GameTypeListDataSource.swift */; };
 		E2D04C3C2624B46000233CCF /* GarySweeperRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C3B2624B46000233CCF /* GarySweeperRoot.swift */; };
 		E2D04C412625B02D00233CCF /* GarySweeperModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D04C402625B02D00233CCF /* GarySweeperModels.swift */; };
-		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
 		E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */; };
@@ -249,6 +252,9 @@
 		E2930CC025B6089700186364 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		E2930CC825B60C3400186364 /* toilet.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toilet.mp3; sourceTree = "<group>"; };
 		E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffManageUserViews.swift; sourceTree = "<group>"; };
+		E29D30A9262F6748004A8FBF /* TicTacGaryRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacGaryRoot.swift; sourceTree = "<group>"; };
+		E29D30AC262F853B004A8FBF /* GameHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHub.swift; sourceTree = "<group>"; };
+		E29D30AF262F8A53004A8FBF /* TicTacGary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacGary.swift; sourceTree = "<group>"; };
 		E2A554D9260B8E8D0086B66C /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
 		E2A554DC260B8EC80086B66C /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		E2A554E0260B90400086B66C /* StickerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerView.swift; sourceTree = "<group>"; };
@@ -296,9 +302,9 @@
 			files = (
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2F492F525D2BEED007A0775 /* Introspect in Frameworks */,
-				E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */,
 				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
+				E23F4B2C2635F5D400CA4087 /* AlertToast in Frameworks */,
 				E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
 			);
@@ -439,6 +445,7 @@
 				E26A68A625B2D08800CD0662 /* StaffService.swift */,
 				E26C628925B053BD00FC2D0D /* UserService.swift */,
 				E2D04C322624A83600233CCF /* GameService.swift */,
+				E29D30AC262F853B004A8FBF /* GameHub.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -530,6 +537,21 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		E29D309C262F0ADA004A8FBF /* SpaceGambito */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SpaceGambito;
+			sourceTree = "<group>";
+		};
+		E29D30A8262F673A004A8FBF /* TicTacGary */ = {
+			isa = PBXGroup;
+			children = (
+				E29D30A9262F6748004A8FBF /* TicTacGaryRoot.swift */,
+			);
+			path = TicTacGary;
+			sourceTree = "<group>";
+		};
 		E2ABC7B825B0CE7400EB1B22 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +602,8 @@
 		E2D04C2A2624A6A100233CCF /* Games */ = {
 			isa = PBXGroup;
 			children = (
+				E29D30A8262F673A004A8FBF /* TicTacGary */,
+				E29D309C262F0ADA004A8FBF /* SpaceGambito */,
 				E2D04C3A2624B44F00233CCF /* GarySweeper */,
 				E2D04C352624A89100233CCF /* DataSources */,
 				E2D04C2B2624A6AC00233CCF /* GamesRootView.swift */,
@@ -608,6 +632,7 @@
 			children = (
 				E2D04C2F2624A80600233CCF /* Game.swift */,
 				E2D04C402625B02D00233CCF /* GarySweeperModels.swift */,
+				E29D30AF262F8A53004A8FBF /* TicTacGary.swift */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -668,7 +693,7 @@
 				E2F492F925D2C62F007A0775 /* ActionClosurable */,
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
 				E2F4930225D2F140007A0775 /* SignalRClient */,
-				E2DB20AC2606A69900F507AB /* Bugsnag */,
+				E23F4B2B2635F5D400CA4087 /* AlertToast */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
@@ -707,7 +732,7 @@
 				E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
-				E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */,
+				E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -748,7 +773,7 @@
 		E241B40025E02BD300B15219 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -759,14 +784,14 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"----\"\necho \"Info.plist for target: ${PRODUCT_SETTINGS_PATH}\"\n\nbuildNum=$(/usr/libexec/Plistbuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\necho \"Current build #: $buildNum\"\n\nif [ -z \"$buildNum\" ]; then\necho \"No build number found in $PRODUCT_SETTINGS_PATH\"\nexit 2\nfi\n\nbuildNum=$(expr $buildNum + 1)\necho \"Build # incremented to: $buildNum\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNum\" \"$PRODUCT_SETTINGS_PATH\"\necho \"----\"\nexit 0 \n";
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 		E2BF2D34260D01FA0070E91F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -777,9 +802,9 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"----\"\necho \"Info.plist for target: ${PRODUCT_SETTINGS_PATH}\"\n\nbuildNum=$(/usr/libexec/Plistbuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\necho \"Current build #: $buildNum\"\n\nif [ -z \"$buildNum\" ]; then\necho \"No build number found in $PRODUCT_SETTINGS_PATH\"\nexit 2\nfi\n\nbuildNum=$(expr $buildNum + 1)\necho \"Build # incremented to: $buildNum\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNum\" \"$PRODUCT_SETTINGS_PATH\"\necho \"----\"\nexit 0 \n";
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -828,13 +853,16 @@
 				E2813A9D26050B6D00E395E9 /* UIButton+Haneke.swift in Sources */,
 				E2813AA526050B6D00E395E9 /* DiskCache.swift in Sources */,
 				E25C1DAE25B1AC360046EA6C /* ProfileSettingsView.swift in Sources */,
+				E29D30AD262F853B004A8FBF /* GameHub.swift in Sources */,
 				E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */,
 				E2813AA926050B6D00E395E9 /* NSFileManager+Haneke.swift in Sources */,
+				E29D30AA262F6748004A8FBF /* TicTacGaryRoot.swift in Sources */,
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,
 				E2813AA226050B6D00E395E9 /* UIView+Haneke.swift in Sources */,
 				E2CE5ACD2616626B00A43D7B /* ProfilePostsView.swift in Sources */,
 				E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */,
 				E22367992613A4C1002D3B1A /* ProfileHeaderView.swift in Sources */,
+				E29D30B0262F8A53004A8FBF /* TicTacGary.swift in Sources */,
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,
 				E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */,
 				E28DC01925C707E800A6EBEB /* Chat.swift in Sources */,
@@ -1187,20 +1215,20 @@
 				minimumVersion = 4.0.1;
 			};
 		};
+		E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.3;
+			};
+		};
 		E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.6.0;
-			};
-		};
-		E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bugsnag/bugsnag-cocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.8.0;
 			};
 		};
 		E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
@@ -1243,15 +1271,15 @@
 			package = E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
 			productName = SwiftKeychainWrapper;
 		};
+		E23F4B2B2635F5D400CA4087 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
 		E2BB737725B090C800CDB422 /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = CropViewController;
-		};
-		E2DB20AC2606A69900F507AB /* Bugsnag */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
-			productName = Bugsnag;
 		};
 		E2F492F425D2BEED007A0775 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;

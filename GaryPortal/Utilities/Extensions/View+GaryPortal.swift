@@ -43,6 +43,7 @@ extension UIView {
     }
 }
 
+
 class AnyGestureRecognizer: UIGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         if let touchedView = touches.first?.view, touchedView is UIControl {
@@ -87,6 +88,10 @@ extension View {
     
     func cornerRadius(radius: CGFloat, corners: UIRectCorner) -> some View {
         ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
+    }
+    
+    func customNavTitle(text: String = "", colour: Color = .primary) -> some View {
+        ModifiedContent(content: self, modifier: CustomNavTitle(titleColour: colour, text: text))
     }
     
     func onFirstAppear(perform: @escaping () -> Void) -> some View {
@@ -154,5 +159,80 @@ struct CornerRadiusStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .clipShape(CornerRadiusShape(radius: radius, corners: corners))
+    }
+}
+
+struct CustomNavTitle: ViewModifier {
+    var titleColour: Color = .primary
+    var text: String
+    
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    HStack {
+                        Text(text)
+                            .font(.largeTitle).bold()
+                            .foregroundColor(titleColour)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                    }
+                    
+                }
+            }
+    }
+}
+
+public struct ForEachWithIndex<Data: RandomAccessCollection, ID: Hashable, Content: View>: View {
+    public var data: Data
+    public var content: (_ index: Data.Index, _ element: Data.Element) -> Content
+    var id: KeyPath<Data.Element, ID>
+
+    public init(_ data: Data, id: KeyPath<Data.Element, ID>, content: @escaping (_ index: Data.Index, _ element: Data.Element) -> Content) {
+        self.data = data
+        self.id = id
+        self.content = content
+    }
+
+    public var body: some View {
+        ForEach(
+            zip(self.data.indices, self.data).map { index, element in
+                IndexInfo(
+                    index: index,
+                    id: self.id,
+                    element: element
+                )
+            },
+            id: \.elementID
+        ) { indexInfo in
+            self.content(indexInfo.index, indexInfo.element)
+        }
+    }
+}
+
+extension ForEachWithIndex where ID == Data.Element.ID, Content: View, Data.Element: Identifiable {
+    public init(_ data: Data, @ViewBuilder content: @escaping (_ index: Data.Index, _ element: Data.Element) -> Content) {
+        self.init(data, id: \.id, content: content)
+    }
+}
+
+extension ForEachWithIndex: DynamicViewContent where Content: View {
+}
+
+private struct IndexInfo<Index, Element, ID: Hashable>: Hashable {
+    let index: Index
+    let id: KeyPath<Element, ID>
+    let element: Element
+
+    var elementID: ID {
+        self.element[keyPath: self.id]
+    }
+
+    static func == (_ lhs: IndexInfo, _ rhs: IndexInfo) -> Bool {
+        lhs.elementID == rhs.elementID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        self.elementID.hash(into: &hasher)
     }
 }

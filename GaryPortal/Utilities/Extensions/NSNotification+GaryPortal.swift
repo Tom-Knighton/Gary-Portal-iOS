@@ -24,4 +24,10 @@ extension NSNotification.Name {
     
     static let addTextLabelPressed = Notification.Name("addTextLabelBtnPressed")
     static let addStickerLabelPressed = Notification.Name("addStickerBtnPressed")
+    
+    static let hostLeftLobby = Notification.Name("hostLeftLobby")
+    static let updateGameLobby = Notification.Name("updateGameLobby")
+    static let ttgGameStarted = Notification.Name("ttg:GameStarted")
+    static let ttgMovePlayed = Notification.Name("ttg:MovePlayed")
+    static let ttgGameWon = Notification.Name("ttg:GameWon")
 }

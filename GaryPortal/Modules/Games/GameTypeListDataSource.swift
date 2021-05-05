@@ -14,9 +14,22 @@ class GameTypeListDataSource: ObservableObject {
     @Published var currentGame: CurrentGame? = .none
     
     enum CurrentGame: Identifiable {
-        case GarySweeper
+        case GarySweeper, SpaceGambito, TicTacGary
         
         var id: String { return UUID().uuidString }
+        
+        static func fromName(name: String) -> CurrentGame {
+            switch name {
+            case "GarySweeper":
+                return .GarySweeper
+            case "Space Gambito":
+                return .SpaceGambito
+            case "Tic Tac Gary":
+                return .TicTacGary
+            default:
+                return .GarySweeper
+            }
+        }
     }
     
     func loadGameTypes(for teamId: Int = 0) {

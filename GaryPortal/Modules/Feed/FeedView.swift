@@ -58,7 +58,8 @@ struct FeedView: View {
                         }
                     }
                 }
-                VStack {
+                VStack(alignment: .leading) {
+                    
                     Spacer()
                     HStack {
                         Spacer()

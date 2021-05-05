@@ -6,34 +6,40 @@
 //
 
 import SwiftUI
+import Introspect
+import AlertToast
 
 let lightGreyColor = Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, opacity: 1.0)
 
 struct GradientBackground: View {
     
+    var image = "BackgroundGradient"
     var body: some View {
         GeometryReader { geometry in
-           Image("BackgroundGradient")
-               .resizable()
-               .aspectRatio(contentMode: .fill)
-               .edgesIgnoringSafeArea(.all)
-               .frame(width: geometry.size.width)
-       }
+            withAnimation(.easeInOut) {
+                Image(image)
+                    .resizable()
+                    .aspectRatio(geometry.size, contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+            }
+        }
+        .ignoresSafeArea(.keyboard, edges: .all)
     }
 }
 
 struct SignInNavigationHost: View {
-    
+
     var body: some View {
         NavigationView {
             ZStack {
-                GradientBackground()
-                    .blur(radius: 20, opaque: true)
                 SignInView().padding()
             }
-            .navigationTitle("Gary Portal")
+            .background(
+                GradientBackground(image: "groove")
+            )
+            .customNavTitle(text: "Gary Portal", colour: Color(UIColor.systemBackground))
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        
         .onAppear {
             UIApplication.shared.addTapGestureRecognizer()
         }
@@ -48,6 +54,7 @@ struct SignUpHost: View {
                 .blur(radius: 20, opaque: true)
             SignUpView().padding()
         }
+        
         .navigationTitle("Sign Up")
     }
 }
@@ -57,7 +64,7 @@ struct SignInView: View {
     @State var passwordText: String = ""
     
     @State var showingAlert = false
-    @State var alertContent: [String] = []
+    @State var alertContent: [String] = ["", ""]
     
     let emailCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_@-."
     let passCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.&!%$£*"
@@ -84,8 +91,12 @@ struct SignInView: View {
            
             Spacer()
             Button(action: { self.requestReset() } ) {
-                Text("Forgot Your Password? ->")
-                    .foregroundColor(Color(UIColor.secondarySystemBackground))
+                Text("Forgot Your Password? →")
+                    .foregroundColor(.white)
+                    .shadow(radius: 3)
+                    .frame(maxWidth: .infinity)
+                    .padding(8)
+                    .background(Color.black.opacity(0.3).cornerRadius(10))
             }
             
 
@@ -104,16 +115,18 @@ struct SignInView: View {
                     .font(.headline)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .overlay(
+                    .foregroundColor(.white)
+                    .shadow(radius: 3)
+                    .background(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(lineWidth: 3)
+                            .fill(Color.pink)
                             .shadow(radius: 15)
                     )
             }
         }
-        .alert(isPresented: $showingAlert, content: {
-            Alert(title: Text(self.alertContent[0]), message: Text(self.alertContent[1]), dismissButton: .default(Text("Ok")))
-        })
+        .toast(isPresenting: $showingAlert) {
+            AlertToast(displayMode: .alert, type: .error(.red), title: alertContent[0], subTitle: alertContent[1])
+        }
        
     }
     
@@ -144,7 +157,7 @@ struct SignInView: View {
     func requestReset() {
         let email = self.emailText.trim()
         if email.isEmptyOrWhitespace() {
-            self.alertContent = ["Error", "Please enter an email address to reset your password for"]
+            self.alertContent = ["Error", "Please enter the email address for your account to reset your password."]
             self.showingAlert = true
             return
         }
@@ -361,6 +374,7 @@ class SignUpViewModel: ObservableObject {
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInNavigationHost()
+            .preferredColorScheme(.dark)
         SignUpHost()
             .environment(\.colorScheme, .dark)
         

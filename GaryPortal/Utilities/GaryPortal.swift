@@ -33,6 +33,7 @@ class GaryPortal: NSObject, ObservableObject {
 
     var chatConnection: ChatConnection?
     var hubConnection: GaryPortalHub?
+    var gameConnection: GameHub?
 
     static let shared = GaryPortal()
     
@@ -60,6 +61,7 @@ class GaryPortal: NSObject, ObservableObject {
             
             self.chatConnection = ChatConnection()
             self.hubConnection = GaryPortalHub()
+            self.gameConnection = GameHub()
             
             if UserDefaults.standard.bool(forKey: GaryPortalConstants.hasSeenWhatsNew) == false {
                 self.notificationSheetDisplayMode = .whatsNew
@@ -162,6 +164,7 @@ struct GaryPortalConstants {
     static let APIBaseUrl = AppIsDev ? "https://api-dev-v5.garyportal.tomk.online/api/" : "https://api.garyportal.tomk.online/api/"
     static let APIChatHub = AppIsDev ? "https://api-dev-v5.garyportal.tomk.online/chathub/" : "https://api.garyportal.tomk.online/chathub/"
     static let APIMiscHub = AppIsDev ? "https://api-dev-v5.garyportal.tomk.online/apphub/" : "https://api.garyportal.tomk.online/apphub/"
+    static let APIGameHub = AppIsDev ? "https://766d58ce31d2.ngrok.io/gamehub" : "https://api.garyportal.tomk.online/gamehub/"
     static let AppReviewUrl = "https://apps.apple.com/app/id1346147876?action=write-review"
     
     static let hasSeenWhatsNew = "hasSeenv4_1Changelog"

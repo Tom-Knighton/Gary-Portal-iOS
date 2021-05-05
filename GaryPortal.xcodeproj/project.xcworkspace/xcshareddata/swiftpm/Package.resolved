@@ -11,12 +11,12 @@
         }
       },
       {
-        "package": "Bugsnag",
-        "repositoryURL": "https://github.com/bugsnag/bugsnag-cocoa",
+        "package": "AlertToast",
+        "repositoryURL": "https://github.com/elai950/AlertToast.git",
         "state": {
           "branch": null,
-          "revision": "3196f905d5933b4a90678ca9fd755616ea89dc84",
-          "version": "6.8.0"
+          "revision": "0d45a0959565801126ce4ed57e7c7090ac449c8d",
+          "version": "1.2.3"
         }
       },
       {
