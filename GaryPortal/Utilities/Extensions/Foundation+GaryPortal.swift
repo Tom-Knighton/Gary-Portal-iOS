@@ -69,6 +69,22 @@ extension String: Identifiable {
         }
         return false
     }
+    
+    func getUrls() -> [URL] {
+        let types: NSTextCheckingResult.CheckingType = .link
+
+        do {
+            let detector = try NSDataDetector(types: types.rawValue)
+
+            let matches = detector.matches(in: self, options: .reportCompletion, range: NSMakeRange(0, self.count))
+        
+            return matches.compactMap({$0.url})
+        } catch let error {
+            debugPrint(error.localizedDescription)
+        }
+
+        return []
+    }
 }
 
 extension Character {

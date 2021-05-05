@@ -99,6 +99,7 @@
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
 		E2D412522643280300D947B4 /* ChatMessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412512643280300D947B4 /* ChatMessageBar.swift */; };
 		E2D4125526432C7A00D947B4 /* GPAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125426432C7A00D947B4 /* GPAvatarView.swift */; };
+		E2D4125726433D8900D947B4 /* GPLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125626433D8900D947B4 /* GPLinkPreview.swift */; };
 		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
@@ -248,6 +249,7 @@
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
 		E2D412512643280300D947B4 /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
 		E2D4125426432C7A00D947B4 /* GPAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAvatarView.swift; sourceTree = "<group>"; };
+		E2D4125626433D8900D947B4 /* GPLinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPLinkPreview.swift; sourceTree = "<group>"; };
 		E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamOverlay.swift; sourceTree = "<group>"; };
 		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
@@ -535,6 +537,7 @@
 				E2A554E0260B90400086B66C /* StickerPickerView.swift */,
 				E2A554E3260B96160086B66C /* SearchBar.swift */,
 				E2D4125426432C7A00D947B4 /* GPAvatarView.swift */,
+				E2D4125626433D8900D947B4 /* GPLinkPreview.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */,
 				E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */,
 				E28084D225E96926008599B0 /* GPWhatsNew.swift in Sources */,
+				E2D4125726433D8900D947B4 /* GPLinkPreview.swift in Sources */,
 				E2813A9826050B6D00E395E9 /* String+Haneke.swift in Sources */,
 				E2813AA626050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift in Sources */,
 			);
