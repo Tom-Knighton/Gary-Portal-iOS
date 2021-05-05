@@ -33,13 +33,10 @@ struct Chat: Codable {
     }
     
     func profilePicToDisplay(for uuid: String) -> some View {
-        if (chatMembers?.count ?? 0) >= 3 || chatName?.hasPrefix("GP$AG_") == false {
-            return AnyView(Image("GroupChatCover").resizable())
-        } else if chatMembers?.count == 2 {
-            let url = chatMembers?.first(where: { $0.userUUID != uuid})?.userDTO?.userProfileImageUrl ?? ""
-            return AnyView(AsyncImage(url: url))
+        if (self.chatMembers?.count ?? 0) >= 2 {
+            return AnyView(GPAvatarView(imageUrls: self.chatMembers?.filter({ $0.userUUID != uuid }).compactMap( { $0.userDTO?.userProfileImageUrl ?? "" }) ?? []))
         } else {
-            return AnyView(Image("IconSprite"))
+            return AnyView(AsyncImage(url: "https://cdn.tomk.online/GaryPortal/lonely.png"))
         }
     }
     

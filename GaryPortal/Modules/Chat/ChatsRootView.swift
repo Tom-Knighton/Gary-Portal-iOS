@@ -10,15 +10,15 @@ import Combine
 import Introspect
 import ActionClosurable
 
-struct ChatRootView: View {
+struct ChatsRootView: View {
     
     var body: some View {
-        ChatListView()
+        ChatsListView()
             .navigationBarHidden(true)
     }
 }
 
-struct ChatListView: View {
+struct ChatsListView: View {
     
     @ObservedObject var dataSource: ChatListDataSource = ChatListDataSource()
     
@@ -30,11 +30,6 @@ struct ChatListView: View {
     
     @State var isShowingCreator = false
     @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
-
-    init() {
-        UITableView.appearance().backgroundColor = UIColor.clear
-        UITableViewCell.appearance().selectionStyle = .none
-    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -54,7 +49,7 @@ struct ChatListView: View {
                         LazyVStack {
                             ForEach(dataSource.getChatsFiltered(), id: \.chatUUID) { chat in
                                 NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
-                                    ChatListItem(chat: chat)
+                                    ChatsListItem(chat: chat)
                                         .contextMenu(menuItems: {
                                             if chat.chatIsProtected == false {
                                                 if chat.canRenameChat() {
@@ -63,7 +58,7 @@ struct ChatListView: View {
                                                         Image(systemName: "pencil")
                                                     })
                                                 }
-
+                                                
                                                 Button(action: { self.leaveChat(chat: chat) }, label: {
                                                     Text("Leave chat")
                                                     Image(systemName: "hand.wave.fill")
@@ -85,7 +80,7 @@ struct ChatListView: View {
                     }
                 }
                 
-
+                
                 VStack {
                     Spacer()
                     HStack {
@@ -107,26 +102,9 @@ struct ChatListView: View {
                 .sheet(isPresented: $isShowingCreator, onDismiss: { self.dataSource.loadChats() }, content: {
                     CreateChatView(chatDataSource: self.dataSource)
                 })
-                
-//                AZAlert(title: "New Chat Name", message: "Enter a new chat name for: \(self.selectedChat?.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "") ?? "")", isShown: $isShowingNameAlert, text: $newName) { (newName) in
-//                    let newName = newName.trim()
-//                    if !newName.isEmptyOrWhitespace() {
-//                        guard let selectedChat = self.selectedChat else { return }
-//
-//                        self.dataSource.changeChatName(chat: selectedChat, newName: newName)
-//                        GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
-//                    } else {
-//                        self.alertContent = ["Error", "Please enter a valid chat name"]
-//                        self.isShowingAlert = true
-//                    }
-//                }
             }
-            
-            
-
         }
         .navigationBarHidden(true)
-        
     }
     
     func beginEditChat(chat: Chat) {
@@ -152,7 +130,7 @@ struct ChatListView: View {
             guard let textField = alert.textFields?[0], let newName = textField.text?.trim() else { return }
             if !newName.isEmptyOrWhitespace() {
                 guard let selectedChat = self.selectedChat else { return }
-
+                
                 self.dataSource.changeChatName(chat: selectedChat, newName: newName)
                 GaryPortal.shared.chatConnection?.editChatName(selectedChat.chatUUID ?? "", to: newName)
             } else {
@@ -164,7 +142,7 @@ struct ChatListView: View {
     }
 }
 
-struct ChatListItem: View {
+struct ChatsListItem: View {
     
     var chat: Chat
     let unreadGradient = [Color(UIColor(hexString: "#5f2c82")), Color(UIColor(hexString: "#49a09d"))]
@@ -181,14 +159,13 @@ struct ChatListItem: View {
                             chat.profilePicToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? "")
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 50, height: 50)
-                                .clipShape(Circle())
                             
                             Spacer().frame(width: 16)
                             Text(chat.getTitleToDisplay(for: GaryPortal.shared.currentUser?.userUUID ?? ""))
                                 .font(.custom("Montserrat-SemiBold", size: 19))
                                 .foregroundColor(self.chat.chatIsProtected == false ? .primary : .white)
                             Spacer()
-                        
+                            
                             Spacer().frame(width: 16)
                         }
                         Spacer().frame(height: 8)
@@ -220,7 +197,5 @@ struct ChatListItem: View {
                 }
             }
         }
-        
-        
     }
 }

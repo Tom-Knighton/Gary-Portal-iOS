@@ -11,8 +11,11 @@ import UIKit
 class ChatListDataSource: ObservableObject {
     @Published var chats = [Chat]()
     @Published var isChatBanned = false
+    var uuid: String
 
-    init() {
+    init(uuid: String = GaryPortal.shared.currentUser?.userUUID ?? "", chats: [Chat] = []) {
+        self.uuid = uuid
+        self.chats = chats
         NotificationCenter.default.addObserver(self, selector: #selector(onNewMessage(_:)), name: .newChatMessage, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatNameChanged(_:)), name: .chatNameChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onChatMemberAdded(_:)), name: .newChatMember, object: nil)
@@ -31,7 +34,7 @@ class ChatListDataSource: ObservableObject {
     }
     
     func loadChats(callingMethod: String = #function ) {
-        ChatService.getChats(for: GaryPortal.shared.currentUser?.userUUID ?? "") { (newChats, error) in
+        ChatService.getChats(for: uuid) { (newChats, error) in
             DispatchQueue.main.async {
                 self.chats = newChats ?? []
                 if error == APIError.chatBan || GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 2) != nil {

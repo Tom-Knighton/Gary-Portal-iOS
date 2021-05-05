@@ -80,7 +80,7 @@
 		E2813AAC26050B6D00E395E9 /* DiskFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9626050B6D00E395E9 /* DiskFetcher.swift */; };
 		E28DC01925C707E800A6EBEB /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01825C707E800A6EBEB /* Chat.swift */; };
 		E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01A25C7090000A6EBEB /* ChatService.swift */; };
-		E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */; };
+		E28DC01E25C7097F00A6EBEB /* ChatsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatsRootView.swift */; };
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
@@ -97,6 +97,8 @@
 		E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737A25B0946F00CDB422 /* GaryPortal.swift */; };
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
+		E2D412522643280300D947B4 /* ChatMessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412512643280300D947B4 /* ChatMessageBar.swift */; };
+		E2D4125526432C7A00D947B4 /* GPAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125426432C7A00D947B4 /* GPAvatarView.swift */; };
 		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
@@ -228,7 +230,7 @@
 		E2813A9626050B6D00E395E9 /* DiskFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskFetcher.swift; sourceTree = "<group>"; };
 		E28DC01825C707E800A6EBEB /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		E28DC01A25C7090000A6EBEB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
-		E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRootView.swift; sourceTree = "<group>"; };
+		E28DC01D25C7097F00A6EBEB /* ChatsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsRootView.swift; sourceTree = "<group>"; };
 		E2930CC025B6089700186364 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		E2930CC825B60C3400186364 /* toilet.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toilet.mp3; sourceTree = "<group>"; };
 		E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffManageUserViews.swift; sourceTree = "<group>"; };
@@ -244,6 +246,8 @@
 		E2BB737A25B0946F00CDB422 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E2BB737D25B0951500CDB422 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
+		E2D412512643280300D947B4 /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
+		E2D4125426432C7A00D947B4 /* GPAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAvatarView.swift; sourceTree = "<group>"; };
 		E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamOverlay.swift; sourceTree = "<group>"; };
 		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
@@ -471,11 +475,11 @@
 		E28DC01C25C7097500A6EBEB /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				E28DC01D25C7097F00A6EBEB /* ChatRootView.swift */,
+				E2D412532643283300D947B4 /* Subviews */,
+				E28DC01D25C7097F00A6EBEB /* ChatsRootView.swift */,
 				E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */,
 				E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */,
-				E2E0FA1725D498620069E153 /* ChatMemberList.swift */,
-				E2C262FD25DECE99005DBCFA /* CreateChatView.swift */,
+				E2D412512643280300D947B4 /* ChatMessageBar.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -530,8 +534,18 @@
 				E2F3282125F6C10000F744E9 /* PinchToZoom.swift */,
 				E2A554E0260B90400086B66C /* StickerPickerView.swift */,
 				E2A554E3260B96160086B66C /* SearchBar.swift */,
+				E2D4125426432C7A00D947B4 /* GPAvatarView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E2D412532643283300D947B4 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				E2E0FA1725D498620069E153 /* ChatMemberList.swift */,
+				E2C262FD25DECE99005DBCFA /* CreateChatView.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		E2DB20B026091BD900F507AB /* Camera */ = {
@@ -727,7 +741,7 @@
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
 				E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */,
-				E28DC01E25C7097F00A6EBEB /* ChatRootView.swift in Sources */,
+				E28DC01E25C7097F00A6EBEB /* ChatsRootView.swift in Sources */,
 				E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
@@ -757,11 +771,13 @@
 				E278E1DC25DDC71000C16E18 /* ListSeparator.swift in Sources */,
 				E2E0FA1425D478B60069E153 /* Report.swift in Sources */,
 				E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */,
+				E2D412522643280300D947B4 /* ChatMessageBar.swift in Sources */,
 				E25CC1B925AF702B00B1FA55 /* User.swift in Sources */,
 				E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */,
 				E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */,
 				E25CC1BA25AF702B00B1FA55 /* Feed.swift in Sources */,
 				E2E0FA1625D47DAA0069E153 /* GPAlert.swift in Sources */,
+				E2D4125526432C7A00D947B4 /* GPAvatarView.swift in Sources */,
 				E2813AA326050B6D00E395E9 /* CryptoSwiftMD5.swift in Sources */,
 				E26A68A725B2D08800CD0662 /* StaffService.swift in Sources */,
 				E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */,
