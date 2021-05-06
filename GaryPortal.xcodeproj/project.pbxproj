@@ -27,6 +27,7 @@
 		E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B908425BB1DCB00C0C201 /* PlayerView.swift */; };
 		E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */; };
 		E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E241B3FE25E02B3F00B15219 /* Bundle+GaryPortal.swift */; };
+		E242BE59264453F100003E9B /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E242BE58264453F100003E9B /* ChatMessageView.swift */; };
 		E249D96925D53DF50056B027 /* GPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D96825D53DF50056B027 /* GPCamera.swift */; };
 		E249D98025D54B6C0056B027 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D97F25D54B6C0056B027 /* CameraService.swift */; };
 		E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */; };
@@ -100,6 +101,7 @@
 		E2D412522643280300D947B4 /* ChatMessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412512643280300D947B4 /* ChatMessageBar.swift */; };
 		E2D4125526432C7A00D947B4 /* GPAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125426432C7A00D947B4 /* GPAvatarView.swift */; };
 		E2D4125726433D8900D947B4 /* GPLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125626433D8900D947B4 /* GPLinkPreview.swift */; };
+		E2D412592644319900D947B4 /* GPReverseList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412582644319900D947B4 /* GPReverseList.swift */; };
 		E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = E2DB20AC2606A69900F507AB /* Bugsnag */; };
 		E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */; };
 		E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */; };
@@ -176,6 +178,7 @@
 		E23B908425BB1DCB00C0C201 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+GaryPortal.swift"; sourceTree = "<group>"; };
 		E241B3FE25E02B3F00B15219 /* Bundle+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+GaryPortal.swift"; sourceTree = "<group>"; };
+		E242BE58264453F100003E9B /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		E249D96825D53DF50056B027 /* GPCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamera.swift; sourceTree = "<group>"; };
 		E249D97F25D54B6C0056B027 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortalHub.swift; sourceTree = "<group>"; };
@@ -250,6 +253,7 @@
 		E2D412512643280300D947B4 /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
 		E2D4125426432C7A00D947B4 /* GPAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAvatarView.swift; sourceTree = "<group>"; };
 		E2D4125626433D8900D947B4 /* GPLinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPLinkPreview.swift; sourceTree = "<group>"; };
+		E2D412582644319900D947B4 /* GPReverseList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPReverseList.swift; sourceTree = "<group>"; };
 		E2DB20B126091BEA00F507AB /* GPCamOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamOverlay.swift; sourceTree = "<group>"; };
 		E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagesView.swift; sourceTree = "<group>"; };
 		E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModels.swift; sourceTree = "<group>"; };
@@ -538,6 +542,7 @@
 				E2A554E3260B96160086B66C /* SearchBar.swift */,
 				E2D4125426432C7A00D947B4 /* GPAvatarView.swift */,
 				E2D4125626433D8900D947B4 /* GPLinkPreview.swift */,
+				E2D412582644319900D947B4 /* GPReverseList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -547,6 +552,7 @@
 			children = (
 				E2E0FA1725D498620069E153 /* ChatMemberList.swift */,
 				E2C262FD25DECE99005DBCFA /* CreateChatView.swift */,
+				E242BE58264453F100003E9B /* ChatMessageView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -768,6 +774,7 @@
 				E249D98025D54B6C0056B027 /* CameraService.swift in Sources */,
 				E253732126094F5F00EF6247 /* GPCamTextView.swift in Sources */,
 				E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */,
+				E242BE59264453F100003E9B /* ChatMessageView.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
@@ -786,6 +793,7 @@
 				E2D4125726433D8900D947B4 /* GPLinkPreview.swift in Sources */,
 				E2813A9826050B6D00E395E9 /* String+Haneke.swift in Sources */,
 				E2813AA626050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift in Sources */,
+				E2D412592644319900D947B4 /* GPReverseList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

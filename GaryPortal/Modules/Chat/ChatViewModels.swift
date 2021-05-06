@@ -215,6 +215,7 @@ class ChatMessagesDataSource: ObservableObject {
                     }
                     
                     if !self.hasLoadedFirst { self.hasLoadedFirst = true }
+                    self.isLoadingPage = false
                 }
                 
             }
