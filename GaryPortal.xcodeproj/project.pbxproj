@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -658,7 +658,6 @@
 				E2249D662606974400969824 /* Sources */,
 				E2249D672606974400969824 /* Frameworks */,
 				E2249D682606974400969824 /* Resources */,
-				E2BF2D34260D01FA0070E91F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -675,7 +674,6 @@
 			buildPhases = (
 				E23100A525AF6F8E00739E9E /* Sources */,
 				E23100A625AF6F8E00739E9E /* Frameworks */,
-				E241B40025E02BD300B15219 /* ShellScript */,
 				E23100A725AF6F8E00739E9E /* Resources */,
 				E23B21DF25C354B5007E0629 /* Embed Frameworks */,
 				E22B7D7225E523A8004824F5 /* Embed App Extensions */,
@@ -955,7 +953,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 811;
+				CURRENT_PROJECT_VERSION = 825;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = GPNotifcations/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
@@ -979,7 +977,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 811;
+				CURRENT_PROJECT_VERSION = 825;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = GPNotifcations/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
@@ -1122,7 +1120,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 817;
+				CURRENT_PROJECT_VERSION = 811;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
@@ -1132,7 +1130,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.0;
+				MARKETING_VERSION = 4.1.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1152,7 +1150,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 817;
+				CURRENT_PROJECT_VERSION = 825;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;

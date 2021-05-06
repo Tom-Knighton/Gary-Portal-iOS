@@ -15,6 +15,7 @@ extension Encodable {
         let encoder = JSONEncoder()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         encoder.dateEncodingStrategy = .formatted(formatter)
         let encoded = try? encoder.encode(self)
         return encoded
@@ -29,6 +30,7 @@ extension APIResponse where Body == Data? {
         let decoder = JSONDecoder()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         let decoded = try decoder.decode(BodyType.self, from: data)
         return APIResponse<BodyType>(statusCode: self.statusCode, body: decoded)
