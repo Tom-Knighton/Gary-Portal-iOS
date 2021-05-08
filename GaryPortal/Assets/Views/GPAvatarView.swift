@@ -13,24 +13,30 @@ struct GPAvatarView: View {
     var body: some View {
         let totalImages = self.imageUrls.count
         let size: CGFloat = totalImages == 1 ? 50 : totalImages == 2 ? 40 : 30
-        HStack(alignment: .center, spacing: -15) {
-            ForEach(imageUrls.indices) { i in
-                let url = self.imageUrls[i]
-                if i <= 2 {
-                    AsyncImage(url: url)
+        VStack(spacing: -5) {
+            HStack(alignment: .center, spacing: -15) {
+                ForEach(imageUrls.prefix(3), id: \.self) { i in
+                    AsyncImage(url: i)
                         .frame(width: size, height: size)
                         .clipShape(Circle())
                         .overlay(Circle().stroke(lineWidth: 2).foregroundColor(Color("Section")))
                         .shadow(radius: 1)
-                } else if i == self.imageUrls.count - 1 {
+                }
+            }
+            HStack {
+                Spacer()
+                if totalImages > 3 {
                     Circle()
                         .fill(Color("Section"))
                         .frame(width: size, height: size)
                         .overlay(Text("+\(self.imageUrls.count - 3)"))
                         .shadow(radius: 1)
                 }
+                Spacer()
             }
+            
         }
+        
     }
 }
 

@@ -174,22 +174,24 @@ struct GPNumberField: View {
 }
 
 
-fileprivate struct UITextViewWrapper: UIViewRepresentable {
+struct UITextViewWrapper: UIViewRepresentable {
     typealias UIViewType = UITextView
 
     @Binding var text: String
     @Binding var calculatedHeight: CGFloat
+    var isEditable: Bool = true
     var onDone: (() -> Void)?
 
     func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> UITextView {
         let textField = UITextView()
         textField.delegate = context.coordinator
 
-        textField.isEditable = true
+        textField.isEditable = isEditable
         textField.font = UIFont.preferredFont(forTextStyle: .body)
         textField.isSelectable = true
         textField.isUserInteractionEnabled = true
         textField.backgroundColor = UIColor.clear
+        textField.dataDetectorTypes = .all
         if nil != onDone {
             textField.returnKeyType = .done
         }
@@ -202,6 +204,7 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         if uiView.text != self.text {
             uiView.text = self.text
         }
+        uiView.isEditable = isEditable
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
     }
 
@@ -283,5 +286,212 @@ struct MultilineTextField: View {
                     .padding(.top, 8)
             }
         }
+    }
+}
+
+fileprivate struct LinkColoredText: View {
+    
+    enum Component {
+        case text(String)
+        case link(String, URL?)
+    }
+    
+    let text: String
+    let components: [Component]
+    
+    init(_ text: String, matches: [HrefLink], regex: NSRegularExpression) {
+        var components: [Component] = []
+        let nsText = text as NSString
+        
+        var index = 0
+        for link in matches {
+            if link.clickableRange.location > index {
+                components.append(.text(nsText.substring(with: _NSRange(location: index, length: link.clickableRange.location - index))))
+            }
+            let location = link.result.range.upperBound - 4 - link.textToDisplay.count
+            components.append(.link(nsText.substring(with: NSRange(location: location, length: link.clickableRange.length)), link.url))
+            index = link.result.range.location + link.result.range.length
+        }
+        if index < nsText.length {
+            components.append(.text(nsText.substring(from: index)))
+        }
+        
+        self.text = text
+        self.components = components
+    }
+    
+    var body: some View {
+        components.map { component in
+            switch component {
+            case .text(let text):
+                return Text(verbatim: text)
+            case .link(let text, _):
+                return Text(text).foregroundColor(.accentColor).underline()
+            }
+        }.reduce(Text(""), +)
+    }
+}
+
+struct LinkedText: View {
+    let text: String
+    private let links: [HrefLink]
+    private let regex: NSRegularExpression?
+    
+    init(_ text: String) {
+        self.text = text
+        regex = try? NSRegularExpression(pattern: "(?i)<a([^>]+)>(.+?)</a>")
+        links = regex?.matches(in: text, range: NSRange(text.startIndex..., in: text)).map { HrefLink(text: text, result: $0)} ?? []
+    }
+    
+    var body: some View {
+        LinkColoredText(text, matches: links, regex: regex ?? NSRegularExpression())
+            .font(.body)
+            .overlay(LinkTapOverlay(text: text, links: links))
+    }
+}
+
+private struct HrefLink {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    /// The whole string where the links are contained in
+    private let text: String
+    /// The text checking result where the link is in the text
+    let result: NSTextCheckingResult
+    /// The Range which should be clickable later in the text
+    let clickableRange: NSRange
+    /// The URL that gets returned by clicking the link
+    let url: URL?
+    /// The text that gets displayed for the URL
+    let textToDisplay: String
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Life Cycle
+    
+    /// cTor for the HrefLink struct
+    /// - Parameters:
+    ///   - text: The whole string where the links is contained in
+    ///   - result: The text checking result where the link is in the text
+    init(text: String, result: NSTextCheckingResult) {
+        self.text = text
+        self.result = result
+        
+        let nsText = NSString(string: self.text)
+        let matched = nsText.substring(with: result.range)
+        let urlParts = matched.split(separator: "\"").map({ String($0) })
+        
+        self.textToDisplay = String(urlParts[2].dropFirst().dropLast(4))
+        self.clickableRange = NSRange(location: self.result.range.location, length: textToDisplay.count)
+        self.url = URL(string: urlParts[1])
+    }
+}
+
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - LinkTapOverlay -
+// /////////////////////////////////////////////////////////////////////////
+/// This `View` handles the detection on the `LinkText`, by calculating the index of the clicked Character and than iterating through its given links to open it if it finds one.
+private struct LinkTapOverlay: UIViewRepresentable {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    /// The whole string where the links are contained in
+    let text: String
+    /// The matched links
+    let links: [HrefLink]
+    
+    func makeUIView(context: Context) -> LinkTapOverlayView {
+        let view = LinkTapOverlayView()
+        view.textContainer = context.coordinator.textContainer
+        
+        view.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.didTapLabel(_:)))
+        tapGesture.delegate = context.coordinator
+        view.addGestureRecognizer(tapGesture)
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: LinkTapOverlayView, context: Context) {
+        let attributedString = NSAttributedString(string: text, attributes: [.font: UIFont.preferredFont(forTextStyle: .body)])
+        context.coordinator.textStorage = NSTextStorage(attributedString: attributedString)
+        context.coordinator.textStorage!.addLayoutManager(context.coordinator.layoutManager)
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        let overlay: LinkTapOverlay
+
+        let layoutManager = NSLayoutManager()
+        let textContainer = NSTextContainer(size: .zero)
+        var textStorage: NSTextStorage?
+        
+        init(_ overlay: LinkTapOverlay) {
+            self.overlay = overlay
+            
+            textContainer.lineFragmentPadding = 0
+            textContainer.lineBreakMode = .byWordWrapping
+            textContainer.maximumNumberOfLines = 0
+            layoutManager.addTextContainer(textContainer)
+        }
+        
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+            let location = touch.location(in: gestureRecognizer.view!)
+            let result = link(at: location)
+            return result != nil
+        }
+        
+        @objc func didTapLabel(_ gesture: UITapGestureRecognizer) {
+            let location = gesture.location(in: gesture.view!)
+            guard let result = link(at: location) else {
+                return
+            }
+
+            guard let url = result.url else {
+                return
+            }
+
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        
+        private func link(at point: CGPoint) -> HrefLink? {
+            guard !overlay.links.isEmpty else {
+                return nil
+            }
+
+            let indexOfCharacter = layoutManager.characterIndex(
+                for: point,
+                in: textContainer,
+                fractionOfDistanceBetweenInsertionPoints: nil
+            )
+
+            return overlay.links.first { $0.clickableRange.contains(indexOfCharacter) }
+        }
+    }
+}
+
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - LinkTapOverlayView -
+// /////////////////////////////////////////////////////////////////////////
+/// The UIKit representation of the `LinkTapOverlay` to be able to use `NSTextContainer`
+private class LinkTapOverlayView: UIView {
+    
+    /// The textContainer is used in the `LinkTapOverlay` to calculate the index of the clicked character
+    var textContainer: NSTextContainer!
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - UIView
+    // /////////////////////////////////////////////////////////////////////////
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        var newSize = bounds.size
+        newSize.height += 20 // need some extra space here to actually get the last line
+        self.textContainer.size = newSize
     }
 }

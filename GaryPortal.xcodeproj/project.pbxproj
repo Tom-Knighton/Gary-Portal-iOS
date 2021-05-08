@@ -28,6 +28,8 @@
 		E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */; };
 		E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E241B3FE25E02B3F00B15219 /* Bundle+GaryPortal.swift */; };
 		E242BE59264453F100003E9B /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E242BE58264453F100003E9B /* ChatMessageView.swift */; };
+		E244016A2645A5F100824E29 /* ChatHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24401692645A5F100824E29 /* ChatHome.swift */; };
+		E244016D2645A60700824E29 /* ChatV2ViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E244016C2645A60700824E29 /* ChatV2ViewModels.swift */; };
 		E249D96925D53DF50056B027 /* GPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D96825D53DF50056B027 /* GPCamera.swift */; };
 		E249D98025D54B6C0056B027 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E249D97F25D54B6C0056B027 /* CameraService.swift */; };
 		E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */; };
@@ -179,6 +181,8 @@
 		E240D3BE25C01CCD00618E0B /* NSNotification+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+GaryPortal.swift"; sourceTree = "<group>"; };
 		E241B3FE25E02B3F00B15219 /* Bundle+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+GaryPortal.swift"; sourceTree = "<group>"; };
 		E242BE58264453F100003E9B /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
+		E24401692645A5F100824E29 /* ChatHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHome.swift; sourceTree = "<group>"; };
+		E244016C2645A60700824E29 /* ChatV2ViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatV2ViewModels.swift; sourceTree = "<group>"; };
 		E249D96825D53DF50056B027 /* GPCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPCamera.swift; sourceTree = "<group>"; };
 		E249D97F25D54B6C0056B027 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortalHub.swift; sourceTree = "<group>"; };
@@ -395,6 +399,23 @@
 			path = Feed;
 			sourceTree = "<group>";
 		};
+		E24401682645A5E100824E29 /* ChatV2 */ = {
+			isa = PBXGroup;
+			children = (
+				E244016B2645A5FA00824E29 /* ViewModels */,
+				E24401692645A5F100824E29 /* ChatHome.swift */,
+			);
+			path = ChatV2;
+			sourceTree = "<group>";
+		};
+		E244016B2645A5FA00824E29 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E244016C2645A60700824E29 /* ChatV2ViewModels.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		E25CC1AF25AF700100B1FA55 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -481,6 +502,7 @@
 		E28DC01C25C7097500A6EBEB /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				E24401682645A5E100824E29 /* ChatV2 */,
 				E2D412532643283300D947B4 /* Subviews */,
 				E28DC01D25C7097F00A6EBEB /* ChatsRootView.swift */,
 				E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */,
@@ -714,6 +736,7 @@
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
+				E244016D2645A60700824E29 /* ChatV2ViewModels.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
 				E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */,
@@ -777,6 +800,7 @@
 				E242BE59264453F100003E9B /* ChatMessageView.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
+				E244016A2645A5F100824E29 /* ChatHome.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
 				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
 				E25CC1B825AF702B00B1FA55 /* AppSettings.swift in Sources */,

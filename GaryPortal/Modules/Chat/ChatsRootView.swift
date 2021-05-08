@@ -13,7 +13,7 @@ import ActionClosurable
 struct ChatsRootView: View {
     
     var body: some View {
-        ChatsListView()
+        ChatHome()
             .navigationBarHidden(true)
     }
 }
@@ -195,6 +195,28 @@ struct ChatsListItem: View {
                     .cornerRadius(20)
                     .shadow(radius: 10)
                 }
+            }
+        }
+    }
+}
+
+
+struct chatMessagePreviews: PreviewProvider {
+    
+    static let userDTO = UserDTO(userUUID: "1", userFullName: "Tom Knighton", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: true, userIsStaff: true)
+    static let textMessageType = ChatMessageType(chatMessageTypeId: 1, chatMessageTypeName: "Text", isProtected: false)
+    static let imageMessageType = ChatMessageType(chatMessageTypeId: 2, chatMessageTypeName: "Text", isProtected: false)
+    static let videoMessageType = ChatMessageType(chatMessageTypeId: 3, chatMessageTypeName: "Text", isProtected: false)
+    static var messages: [ChatMessage] = [
+        ChatMessage(chatMessageUUID: "1", chatUUID: "1", userUUID: "1", messageContent: "Hello world! https://tomk.online i am a super long message!!!!! HEre's some more information abouyt me: ", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: textMessageType),
+        ChatMessage(chatMessageUUID: "2", chatUUID: "1", userUUID: "1", messageContent: "https://cdn.tomk.online/GaryPortal/AppLogo.png", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: imageMessageType),
+    ]
+    
+    
+    static var previews: some View {
+        VStack {
+            ForEach(self.messages) { message in
+                ChatMessageView(chatMessage: message)
             }
         }
     }

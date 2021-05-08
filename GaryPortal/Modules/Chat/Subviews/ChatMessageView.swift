@@ -43,6 +43,7 @@ struct ChatMessageView: View {
                 
                 if chatMessage.isBotMessage() {
                     Divider()
+                    Divider()
                     HStack {
                         Spacer()
                         Text("Bot Message:")
@@ -137,7 +138,6 @@ struct ChatMessageView: View {
                 .if(chatMessage.isStickerMessage() == false) {
                     $0.clipShape(msgTail(mymsg: ownMessage, isWithinLastMessage: isWithinLastMessage))
                 }
-                .foregroundColor(.white)
                 .contextMenu(menuItems: {
                     if self.chatMessage.messageTypeId == 1 {
                         Button(action: { UIPasteboard.general.string = chatMessage.messageContent ?? "" }, label: {
@@ -229,6 +229,7 @@ struct ChatMessageView: View {
         }
     }
 
+    @State var redrawLinks = true
     @ViewBuilder
     func messageContent(input: String = "") -> some View {
         switch self.chatMessage.messageTypeId {
@@ -239,8 +240,17 @@ struct ChatMessageView: View {
                     .padding()
                     .font(.system(size: 50))
             } else {
-                Text(self.chatMessage.messageContent ?? "")
-                    .padding()
+                VStack(spacing: 2) {
+                    buildText(content: text)
+                        .padding()
+                    if text.getUrls().count > 0 {
+                        ForEach(text.getUrls(), id: \.self) { url in
+                            GPLinkPreview(previewUrl: url, redraw: $redrawLinks)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+                
             }
         case 2:
             AsyncImage(url: self.chatMessage.messageContent ?? "")
@@ -275,6 +285,11 @@ struct ChatMessageView: View {
             Text(self.chatMessage.messageContent ?? "")
                 .padding()
         }
+    }
+    
+    @ViewBuilder
+    func buildText(content: String) -> some View {
+        LinkedText(content)
     }
     
     func goToProfile() {
