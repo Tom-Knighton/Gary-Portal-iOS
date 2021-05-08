@@ -45,6 +45,7 @@ struct FeedView: View {
                                 .listRowBackground(Color.clear)
                         }
                         .frame(width: geometry.size.width, height: geometry.size.height)
+                        .listStyle(PlainListStyle())
                         .listSeparatorStyle(.none)
                         .introspectTableView { (tableView) in
                             tableView.refreshControl = UIRefreshControl { refreshControl in

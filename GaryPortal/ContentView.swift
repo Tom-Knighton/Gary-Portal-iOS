@@ -37,12 +37,13 @@ struct ContentView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
             } else {
-                GPNavigationController {
+                NavigationView {
                     GPTabBar()
                         .navigationTitle("")
                         .navigationBarTitleDisplayMode(.automatic)
                         .navigationBarHidden(true)
                 }
+                .navigationViewStyle(StackNavigationViewStyle())
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     UIApplication.shared.addTapGestureRecognizer()

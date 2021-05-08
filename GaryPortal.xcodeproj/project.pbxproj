@@ -92,7 +92,6 @@
 		E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E0260B90400086B66C /* StickerPickerView.swift */; };
 		E2A554E4260B96160086B66C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E3260B96160086B66C /* SearchBar.swift */; };
 		E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */; };
-		E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */; };
 		E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */; };
 		E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736B25B06DCD00CDB422 /* GPTextField.swift */; };
 		E2BB736F25B0897F00CDB422 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736E25B0897F00CDB422 /* ImagePicker.swift */; };
@@ -247,7 +246,6 @@
 		E2A554E0260B90400086B66C /* StickerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerView.swift; sourceTree = "<group>"; };
 		E2A554E3260B96160086B66C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPNavigation.swift; sourceTree = "<group>"; };
 		E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+GaryPortal.swift"; sourceTree = "<group>"; };
 		E2BB736B25B06DCD00CDB422 /* GPTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPTextField.swift; sourceTree = "<group>"; };
 		E2BB736E25B0897F00CDB422 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -549,7 +547,6 @@
 				E2DB20B026091BD900F507AB /* Camera */,
 				E2E0FA1525D47DAA0069E153 /* GPAlert.swift */,
 				E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */,
-				E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */,
 				E2BB736B25B06DCD00CDB422 /* GPTextField.swift */,
 				E28084D125E96926008599B0 /* GPWhatsNew.swift */,
 				E278BF2125B0DD3700DE8D44 /* GPImageLoader.swift */,
@@ -738,7 +735,6 @@
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E244016D2645A60700824E29 /* ChatV2ViewModels.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
-				E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */,
 				E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
 				E25CC1BB25AF702B00B1FA55 /* Rank.swift in Sources */,

@@ -9,18 +9,8 @@ import Foundation
 import Combine
 
 class ChatListViewModel: ObservableObject {
-    
-    static let userDTO = UserDTO(userUUID: "1", userFullName: "Tom Knighton", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: true, userIsStaff: true)
-    static let textMessageType = ChatMessageType(chatMessageTypeId: 1, chatMessageTypeName: "Text", isProtected: false)
-    static let imageMessageType = ChatMessageType(chatMessageTypeId: 2, chatMessageTypeName: "Text", isProtected: false)
-    static let videoMessageType = ChatMessageType(chatMessageTypeId: 3, chatMessageTypeName: "Text", isProtected: false)
-    static var messages: [ChatMessage] = [
-        ChatMessage(chatMessageUUID: "1", chatUUID: "1", userUUID: "1", messageContent: "Hello world! https://tomk.online i am a super long message!!!!! HEre's some more information abouyt me: ", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: textMessageType),
-        ChatMessage(chatMessageUUID: "2", chatUUID: "1", userUUID: "1", messageContent: "https://cdn.tomk.online/GaryPortal/AppLogo.png", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: imageMessageType),
-    ]
-    @Published var chats: [Chat] = [
-        Chat(chatUUID: "1", chatName: "CHat 1", chatIsProtected: false, chatIsPublic: false, chatIsDeleted: false, chatCreatedAt: Date(), chatMembers: [], chatMessages: [], lastChatMessage: messages[0])
-    ]
+    @Published var chats: [Chat] = []
+    @Published var hasLoaded: Bool = false
     
     private var cancellableBag = Set<AnyCancellable>()
     
@@ -33,23 +23,41 @@ class ChatListViewModel: ObservableObject {
             .store(in: &cancellableBag)
     }
     
-    
+    //MARK: Callable
     func loadChats(for userUUID: String) {
         ChatService.getChats(for: userUUID) { [weak self] chats, error  in
             DispatchQueue.main.async {
                 if let chats = chats {
                     self?.chats = chats
+                    self?.hasLoaded = true
                 }
             }
         }
     }
     
+    func addNewChat(_ chat: Chat) {
+        DispatchQueue.main.async {
+            self.chats.insert(chat, at: 0)
+            self.sortChats()
+        }
+    }
+    
+    func doesChatWithUsersExist(uuids: [String]) -> Bool {
+        let uuids = uuids.sorted()
+        return self.chats.contains { (chat) -> Bool in
+            let existing = chat.chatMembers?.compactMap { $0.userUUID }.sorted() ?? []
+            return existing.count == uuids.count && existing == uuids
+        }
+    }
+    
+    //MARK: Helper methods:
     private func sortChats() {
         self.chats.sort { a, b in
             a.lastChatMessage?.messageCreatedAt ?? a.chatCreatedAt ?? Date() > b.lastChatMessage?.messageCreatedAt ?? b.chatCreatedAt ?? Date()
         }
     }
     
+    //MARK: Notifications:
     private func onNewChatMessage(_ notification: NotificationCenter.Publisher.Output) {
         guard let messageUUID = notification.userInfo?["messageUUID"] as? String, let chatUUID = notification.userInfo?["chatUUID"] as? String else {
             return

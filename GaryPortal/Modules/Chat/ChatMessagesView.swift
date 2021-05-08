@@ -13,7 +13,6 @@ struct ChatView: View {
     
     @State var chat: Chat
     @StateObject var datasource: ChatMessagesDataSource = ChatMessagesDataSource()
-    @Environment(\.presentationMode) var presentationMode
     @State var textMessage: String = ""
     @State var paginate = false
     @State var showPaginate = true
@@ -30,10 +29,6 @@ struct ChatView: View {
                             .id(message.chatMessageUUID)
                             
                     }
-                }
-                .onAppear {
-                    self.datasource.loadMoreContent()
-                    reader.scrollTo(self.datasource.messages.last?.chatMessageUUID ?? "")
                 }
                 .onChange(of: self.datasource.lastMessageUUID) { newValue in
                     reader.scrollTo(newValue)

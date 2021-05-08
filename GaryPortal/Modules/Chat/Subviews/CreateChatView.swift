@@ -27,7 +27,7 @@ class CreateChatDataSource: ObservableObject {
 struct CreateChatView: View {
     
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var chatDataSource: ChatListDataSource
+    @ObservedObject var chatDataSource: ChatListViewModel
     @ObservedObject var datasource = CreateChatDataSource()
     @State var chatName = ""
     @State var toggledUUIDS: [String] = []
@@ -91,7 +91,7 @@ struct CreateChatView: View {
         
         self.toggledUUIDS.append(GaryPortal.shared.currentUser?.userUUID ?? "")
         
-        guard !self.chatDataSource.chatWithUsersExists(uuids: self.toggledUUIDS) else {
+        guard !self.chatDataSource.doesChatWithUsersExist(uuids: self.toggledUUIDS) else {
             self.alertContent = ["Error", "A chat with these users already exists"]
             self.isShowingAlert = true
             return
@@ -115,7 +115,7 @@ struct CreateChatView: View {
                 ChatService.postNewMessage(creationMessage, to: chat.chatUUID ?? "") { (message, error) in
                     if let message = message {
                         chat.lastChatMessage = message
-                        self.chatDataSource.addChat(chat: chat)
+                        self.chatDataSource.addNewChat(chat)
                         self.presentationMode.wrappedValue.dismiss()
                     }
                 }

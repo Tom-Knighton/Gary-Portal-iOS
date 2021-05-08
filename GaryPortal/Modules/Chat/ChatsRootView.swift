@@ -48,7 +48,7 @@ struct ChatsListView: View {
                     ScrollView {
                         LazyVStack {
                             ForEach(dataSource.getChatsFiltered(), id: \.chatUUID) { chat in
-                                NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
+                                NavigationLink(destination: ChatView(chat: chat)) {
                                     ChatsListItem(chat: chat)
                                         .contextMenu(menuItems: {
                                             if chat.chatIsProtected == false {
@@ -100,11 +100,11 @@ struct ChatsListView: View {
                     Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
                 }
                 .sheet(isPresented: $isShowingCreator, onDismiss: { self.dataSource.loadChats() }, content: {
-                    CreateChatView(chatDataSource: self.dataSource)
+//                    CreateChatView(chatDataSource: self.dataSource)
                 })
             }
         }
-        .navigationBarHidden(true)
+//        .navigationBarHidden(true)
     }
     
     func beginEditChat(chat: Chat) {

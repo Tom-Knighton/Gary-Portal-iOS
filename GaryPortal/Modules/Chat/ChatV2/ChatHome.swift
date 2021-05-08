@@ -10,23 +10,46 @@ import SwiftUI
 struct ChatHome: View {
     @ObservedObject var datasource = ChatListViewModel()
     @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
-
+    @State var isShowingChatCreator = false
+    
     var body: some View {
         GeometryReader { gr in
-            ScrollView {
-                LazyVStack {
-                    ForEach(self.datasource.chats, id: \.chatUUID) { chat in
-                        NavigationLink(destination: NavigationLazyView(ChatView(chat: chat))) {
-                            ChatListItem(chat: chat)
+            ScrollViewReader { sr in
+                ScrollView {
+                    HStack {
+                        Spacer()
+                        Button(action: { self.isShowingChatCreator.toggle() }) {
+                            HStack {
+                                Text("New Chat")
+                                    .fontWeight(.semibold)
+                                Image(systemName: "plus.circle")
+                            }
+                            .foregroundColor(.black)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background(Color.white)
+                            .clipShape(Capsule())
+                        }
+                        Spacer().frame(width: 16)
+                    }
+                    LazyVStack {
+                        ForEach(self.datasource.chats, id: \.chatUUID) { chat in
+                            NavigationLink(destination: ChatView(chat: chat)) {
+                                ChatListItem(chat: chat)
+                                    .id(chat.chatUUID)
+                            }
                         }
                     }
+                    .onAppear {
+                        self.datasource.loadChats(for: GaryPortal.shared.currentUser?.userUUID ?? "")
+                    }
+                    Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
                 }
-                .onAppear {
-                    self.datasource.loadChats(for: GaryPortal.shared.currentUser?.userUUID ?? "")
-                }
-                Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 70 : 30))
             }
         }
+        .sheet(isPresented: $isShowingChatCreator, content: {
+            CreateChatView(chatDataSource: self.datasource)
+        })
     }
 }
 
