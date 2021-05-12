@@ -34,7 +34,7 @@ struct ChatHome: View {
                     }
                     LazyVStack {
                         ForEach(self.datasource.chats, id: \.chatUUID) { chat in
-                            NavigationLink(destination: ChatView(chat: chat)) {
+                            NavigationLink(destination: ChatConversationView(chat: chat)) {
                                 ChatListItem(chat: chat)
                                     .id(chat.chatUUID)
                             }

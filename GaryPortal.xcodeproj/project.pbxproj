@@ -14,6 +14,8 @@
 		E217756525B0CCA80006B7CA /* GaryPortalSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */; };
 		E2249D6D2606974400969824 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2249D6C2606974400969824 /* NotificationService.swift */; };
 		E2249D712606974400969824 /* GPNotifcations.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2249D6A2606974400969824 /* GPNotifcations.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E227A59B264864BE0061446F /* ChatConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E227A59A264864BE0061446F /* ChatConversationView.swift */; };
+		E227A59E264866B30061446F /* ChatMessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E227A59D264866B30061446F /* ChatMessageBar.swift */; };
 		E22C032A25DC6FD2001E78BC /* FeedAditLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */; };
 		E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AC25AF6F8E00739E9E /* AppDelegate.swift */; };
 		E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */; };
@@ -99,7 +101,7 @@
 		E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737A25B0946F00CDB422 /* GaryPortal.swift */; };
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
-		E2D412522643280300D947B4 /* ChatMessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412512643280300D947B4 /* ChatMessageBar.swift */; };
+		E2D412522643280300D947B4 /* ChatMessageBarOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412512643280300D947B4 /* ChatMessageBarOld.swift */; };
 		E2D4125526432C7A00D947B4 /* GPAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125426432C7A00D947B4 /* GPAvatarView.swift */; };
 		E2D4125726433D8900D947B4 /* GPLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125626433D8900D947B4 /* GPLinkPreview.swift */; };
 		E2D412592644319900D947B4 /* GPReverseList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412582644319900D947B4 /* GPReverseList.swift */; };
@@ -164,6 +166,8 @@
 		E2249D6C2606974400969824 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E2249D6E2606974400969824 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2249D7626069EA400969824 /* GPNotifcations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GPNotifcations.entitlements; sourceTree = "<group>"; };
+		E227A59A264864BE0061446F /* ChatConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationView.swift; sourceTree = "<group>"; };
+		E227A59D264866B30061446F /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
 		E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAditLogView.swift; sourceTree = "<group>"; };
 		E23100A925AF6F8E00739E9E /* GaryPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaryPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23100AC25AF6F8E00739E9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -252,7 +256,7 @@
 		E2BB737A25B0946F00CDB422 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E2BB737D25B0951500CDB422 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
-		E2D412512643280300D947B4 /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
+		E2D412512643280300D947B4 /* ChatMessageBarOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBarOld.swift; sourceTree = "<group>"; };
 		E2D4125426432C7A00D947B4 /* GPAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAvatarView.swift; sourceTree = "<group>"; };
 		E2D4125626433D8900D947B4 /* GPLinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPLinkPreview.swift; sourceTree = "<group>"; };
 		E2D412582644319900D947B4 /* GPReverseList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPReverseList.swift; sourceTree = "<group>"; };
@@ -302,6 +306,14 @@
 				E2249D6E2606974400969824 /* Info.plist */,
 			);
 			path = GPNotifcations;
+			sourceTree = "<group>";
+		};
+		E227A59C264864C80061446F /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				E227A59D264866B30061446F /* ChatMessageBar.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		E23100A025AF6F8D00739E9E = {
@@ -400,8 +412,10 @@
 		E24401682645A5E100824E29 /* ChatV2 */ = {
 			isa = PBXGroup;
 			children = (
+				E227A59C264864C80061446F /* Subviews */,
 				E244016B2645A5FA00824E29 /* ViewModels */,
 				E24401692645A5F100824E29 /* ChatHome.swift */,
+				E227A59A264864BE0061446F /* ChatConversationView.swift */,
 			);
 			path = ChatV2;
 			sourceTree = "<group>";
@@ -505,7 +519,7 @@
 				E28DC01D25C7097F00A6EBEB /* ChatsRootView.swift */,
 				E2E0FA0F25D42E960069E153 /* ChatMessagesView.swift */,
 				E2E0FA1125D42E9F0069E153 /* ChatViewModels.swift */,
-				E2D412512643280300D947B4 /* ChatMessageBar.swift */,
+				E2D412512643280300D947B4 /* ChatMessageBarOld.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -734,6 +748,7 @@
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E244016D2645A60700824E29 /* ChatV2ViewModels.swift in Sources */,
+				E227A59E264866B30061446F /* ChatMessageBar.swift in Sources */,
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
@@ -758,7 +773,7 @@
 				E278E1DC25DDC71000C16E18 /* ListSeparator.swift in Sources */,
 				E2E0FA1425D478B60069E153 /* Report.swift in Sources */,
 				E2E0FA1225D42E9F0069E153 /* ChatViewModels.swift in Sources */,
-				E2D412522643280300D947B4 /* ChatMessageBar.swift in Sources */,
+				E2D412522643280300D947B4 /* ChatMessageBarOld.swift in Sources */,
 				E25CC1B925AF702B00B1FA55 /* User.swift in Sources */,
 				E217755425B0AD730006B7CA /* Foundation+GaryPortal.swift in Sources */,
 				E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */,
@@ -794,6 +809,7 @@
 				E253732126094F5F00EF6247 /* GPCamTextView.swift in Sources */,
 				E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */,
 				E242BE59264453F100003E9B /* ChatMessageView.swift in Sources */,
+				E227A59B264864BE0061446F /* ChatConversationView.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
 				E244016A2645A5F100824E29 /* ChatHome.swift in Sources */,

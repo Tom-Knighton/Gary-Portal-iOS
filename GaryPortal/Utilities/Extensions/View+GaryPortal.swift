@@ -16,7 +16,7 @@ extension UIView {
             print("Error! `superview` was nil – call `addSubview(view: UIView)` before calling `bindFrameToSuperviewBounds()` to fix this.")
             return
         }
-
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         self.topAnchor.constraint(equalTo: superview.topAnchor, constant: 0).isActive = true
         self.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: 0).isActive = true
@@ -127,6 +127,35 @@ extension View {
             .shadow(color: Color.black.opacity(0.5), radius: 3)
         }
     }
+    
+    func keyboardSensible(_ offsetValue: Binding<CGFloat>) -> some View {
+        
+        return self
+            .padding(.bottom, offsetValue.wrappedValue)
+            .animation(.spring())
+            .onAppear {
+                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+                    
+                    let keyWindow = UIApplication.shared.connectedScenes
+                        .filter({$0.activationState == .foregroundActive})
+                        .map({$0 as? UIWindowScene})
+                        .compactMap({$0})
+                        .first?.windows
+                        .filter({$0.isKeyWindow}).first
+                    
+                    let bottom = keyWindow?.safeAreaInsets.bottom ?? 0
+                    
+                    let value = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+                    let height = value.height
+                    
+                    offsetValue.wrappedValue = height - bottom
+                }
+                
+                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                    offsetValue.wrappedValue = 0
+                }
+            }
+    }
 }
 
 struct CornerRadiusStyle: ViewModifier {
@@ -149,13 +178,3 @@ struct CornerRadiusStyle: ViewModifier {
             .clipShape(CornerRadiusShape(radius: radius, corners: corners))
     }
 }
-
-//public struct ListSeparatorStyleNoneModifier: ViewModifier {
-//    public func body(content: Content) -> some View {
-//        content.onAppear {
-//            UITableView.appearance().separatorStyle = .none
-//        }.onDisappear {
-//            UITableView.appearance().separatorStyle = .singleLine
-//        }
-//    }
-//}
