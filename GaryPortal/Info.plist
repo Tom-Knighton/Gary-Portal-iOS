@@ -34,6 +34,7 @@
 	<string>Enables access to photo library</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>UniSans-Regular.otf</string>
 		<string>Montserrat-SemiBold.ttf</string>
 		<string>Montserrat-Light.ttf</string>
 		<string>Montserrat-ExtraLight.ttf</string>

@@ -8,6 +8,22 @@
 import Foundation
 import Combine
 
+struct ChatMessageDTO {
+    let messageUUID: String
+    let messageRawContent: String
+    let messageSender: UserDTO
+    let messageSentAt: Date
+    let messageTypeId: Int
+    
+    init(from chatMessage: ChatMessage) {
+        self.messageUUID = chatMessage.chatMessageUUID ?? ""
+        self.messageRawContent = chatMessage.messageContent ?? ""
+        self.messageSentAt = chatMessage.messageCreatedAt ?? Date()
+        self.messageTypeId = chatMessage.messageTypeId ?? 1
+        self.messageSender = chatMessage.userDTO ?? UserDTO(userUUID: "", userFullName: "Deleted User", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: false, userIsStaff: false)
+    }
+}
+
 class ChatListViewModel: ObservableObject {
     @Published var chats: [Chat] = []
     @Published var hasLoaded: Bool = false

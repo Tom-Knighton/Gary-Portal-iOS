@@ -89,6 +89,7 @@
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
+		E29E3529264C3F8C00956C46 /* ConversationMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29E3528264C3F8C00956C46 /* ConversationMessages.swift */; };
 		E2A554DA260B8E8D0086B66C /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554D9260B8E8D0086B66C /* AppService.swift */; };
 		E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554DC260B8EC80086B66C /* Sticker.swift */; };
 		E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E0260B90400086B66C /* StickerPickerView.swift */; };
@@ -245,6 +246,7 @@
 		E2930CC025B6089700186364 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		E2930CC825B60C3400186364 /* toilet.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = toilet.mp3; sourceTree = "<group>"; };
 		E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffManageUserViews.swift; sourceTree = "<group>"; };
+		E29E3528264C3F8C00956C46 /* ConversationMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMessages.swift; sourceTree = "<group>"; };
 		E2A554D9260B8E8D0086B66C /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
 		E2A554DC260B8EC80086B66C /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		E2A554E0260B90400086B66C /* StickerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerView.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				E227A59D264866B30061446F /* ChatMessageBar.swift */,
+				E29E3528264C3F8C00956C46 /* ConversationMessages.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -736,6 +739,7 @@
 				E25CC1B725AF702B00B1FA55 /* Team.swift in Sources */,
 				E2155E5125F4155200E48DFA /* ActivityView.swift in Sources */,
 				E2813AAC26050B6D00E395E9 /* DiskFetcher.swift in Sources */,
+				E29E3529264C3F8C00956C46 /* ConversationMessages.swift in Sources */,
 				E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
 				E2813A9F26050B6D00E395E9 /* UIImage+Haneke.swift in Sources */,

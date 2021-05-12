@@ -12,18 +12,35 @@ struct ChatConversationView: View {
     @State var chat: Chat
     @State var text: String = ""
     @State var keyboardOffset: CGFloat = 0.0
+    @State var messages: [ChatMessage] = []
+    @State var paginate = false
+    @State var showPaginate = true
 
     var body: some View {
         let uuid = GaryPortal.shared.currentUser?.userUUID ?? ""
-        VStack {
-            Text(text)
-            Spacer()
-            ChatMessageBar { result in
-                self.text = result.rawText
+        ZStack {
+            Color("Section").edgesIgnoringSafeArea(.all)
+            VStack {
+                ScrollViewReader { reader in
+                    GPReverseList(self.messages, reverseItemOrder: false, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
+                        ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message))
+                    }
+                }
+                ChatMessageBar { result in
+                    self.text = result.rawText
+                }
+            }
+
+        }
+        .navigationTitle(self.chat.getTitleToDisplay(for: uuid))
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            ChatService.getChatMessages(for: chat.chatUUID ?? "") { messages, _ in
+                if let messages = messages {
+                    self.messages = messages
+                }
             }
         }
-        .background(Color("Section").ignoresSafeArea())
-        .navigationTitle(self.chat.getTitleToDisplay(for: uuid))
     }
 }
 
