@@ -74,3 +74,8 @@ class ChatListViewModel: ObservableObject {
         }
     }
 }
+
+struct ChatMessageBarResult {
+    
+    let text: String
+}

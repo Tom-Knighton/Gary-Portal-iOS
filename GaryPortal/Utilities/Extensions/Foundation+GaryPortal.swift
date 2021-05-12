@@ -359,15 +359,27 @@ extension Date {
 }
 
 extension UIApplication {
+    
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
     func addTapGestureRecognizer() {
         guard let window = windows.first else { return }
-        let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.sendResignNotif(_:)))
         tapGesture.requiresExclusiveTouchType = false
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         window.addGestureRecognizer(tapGesture)
     }
     
+    @objc
+    func sendResignNotif(_ sender: AnyObject? = nil) {
+        guard let window = windows.first else { return }
+        NotificationCenter.default.post(Notification(name: .shouldEndEditing))
+        window.endEditing(true)
+    }
+        
     class func topViewController(base: UIViewController? = nil) -> UIViewController? {
         let keyWindow = UIApplication.shared.connectedScenes
             .filter({$0.activationState == .foregroundActive})

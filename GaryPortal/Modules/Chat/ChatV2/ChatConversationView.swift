@@ -16,15 +16,14 @@ struct ChatConversationView: View {
     var body: some View {
         let uuid = GaryPortal.shared.currentUser?.userUUID ?? ""
         VStack {
-            Text("hey")
+            Text(text)
             Spacer()
-            ChatMessageBar()
+            ChatMessageBar { result in
+                self.text = result.text
+            }
         }
         .background(Color("Section").ignoresSafeArea())
         .navigationTitle(self.chat.getTitleToDisplay(for: uuid))
-        .onAppear {
-            UINavigationBar.appearance().backgroundColor = UIColor(named: "Section")
-        }
     }
 }
 

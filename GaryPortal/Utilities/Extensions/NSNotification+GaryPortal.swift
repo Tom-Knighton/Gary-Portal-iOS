@@ -8,6 +8,8 @@
 import Foundation
 
 extension NSNotification.Name {
+    static let shouldEndEditing = Notification.Name("shouldEndEditing")
+    
     static let movedFromFeed = Notification.Name("movedFromFeed")
     static let goneToFeed = Notification.Name("goneBackToFeed")
     

@@ -32,11 +32,13 @@ struct StickerPickerView: View {
     @ObservedObject var datasource = StickerPickerDataSource()
     @State var filterText = ""
     @Environment(\.presentationMode) var presentationMode
+    var showCloseBtn: Bool
     
     var onSelectedSticker: (_ urlToSticker: String) -> ()
     
-    init(_ completion: @escaping (_ urlToSticker: String) -> ()) {
+    init(showBtn: Bool = true, _ completion: @escaping (_ urlToSticker: String) -> ()) {
         self.onSelectedSticker = completion
+        self.showCloseBtn = showBtn
         self.datasource.loadStickers()
     }
     
@@ -58,8 +60,16 @@ struct StickerPickerView: View {
                 }.padding(.horizontal, 12)
             }
             .navigationTitle("Stickers")
-            .navigationBarItems(leading: Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
-                Text("Close")
+            .toolbar(content: {
+                ToolbarItem(placement: .destructiveAction) {
+                    HStack {
+                        if self.showCloseBtn {
+                            Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                                Text("Close")
+                            }
+                        }
+                    }
+                }
             })
         }
     }
