@@ -77,5 +77,8 @@ class ChatListViewModel: ObservableObject {
 
 struct ChatMessageBarResult {
     
-    let text: String
+    let isVideoURL: Bool
+    let isImageURL: Bool
+    let isStickerURL: Bool
+    let rawText: String
 }

@@ -11,6 +11,7 @@ struct ChatMessageBar: View {
     
     @State var text: String = ""
     @State var showStickerView = false
+    @State var showCameraView = false
     
     var onSend: (_ result: ChatMessageBarResult) -> ()
     
@@ -46,7 +47,7 @@ struct ChatMessageBar: View {
                             .padding(14)
                             .background(Circle().fill(Color("Section")).shadow(radius: 2))
                     }
-                    Button(action: { self.toggleStickerView() }) {
+                    Button(action: { self.showCameraView.toggle() }) {
                         Image(systemName: "camera.on.rectangle.fill")
                             .padding(10)
                             .background(Circle().fill(Color("Section")).shadow(radius: 2))
@@ -79,21 +80,27 @@ struct ChatMessageBar: View {
             
             if self.showStickerView {
                 StickerPickerView(showBtn: false) { stickerURL in
-                    
+                    self.sendMessage(overrideText: stickerURL, isStickerURL: true)
                 }
                 .frame(maxHeight: 500)
+                .transition(.move(edge: .bottom))
+                .animation(.easeInOut)
             }
-            
         }
-
         .onReceive(NotificationCenter.default.publisher(for: .shouldEndEditing)) { _ in
             self.toggleStickerView(override: false)
+        }
+        .fullScreenCover(isPresented: $showCameraView) {
+            CameraView { success, isVideo, urlToAsset in
+                self.showCameraView = false
+                self.sendMessage(overrideText: urlToAsset?.absoluteString, isImageURL: !isVideo, isVideoURL: isVideo)
+            }
         }
         
     }
     
-    func sendMessage() {
-        self.onSend(ChatMessageBarResult(text: self.text))
+    func sendMessage(overrideText: String? = nil, isImageURL: Bool = false, isVideoURL: Bool = false, isStickerURL: Bool = false) {
+        self.onSend(ChatMessageBarResult(isVideoURL: isVideoURL, isImageURL: isImageURL, isStickerURL: isStickerURL, rawText: overrideText ?? self.text))
     }
     
     func toggleStickerView(override: Bool? = nil) {
