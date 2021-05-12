@@ -96,11 +96,13 @@ struct ChatMessageBar: View {
                 self.sendMessage(overrideText: urlToAsset?.absoluteString, isImageURL: !isVideo, isVideoURL: isVideo)
             }
         }
-        
     }
     
     func sendMessage(overrideText: String? = nil, isImageURL: Bool = false, isVideoURL: Bool = false, isStickerURL: Bool = false) {
         self.onSend(ChatMessageBarResult(isVideoURL: isVideoURL, isImageURL: isImageURL, isStickerURL: isStickerURL, rawText: overrideText ?? self.text))
+        if (overrideText == nil) {
+            self.text = ""
+        }
     }
     
     func toggleStickerView(override: Bool? = nil) {

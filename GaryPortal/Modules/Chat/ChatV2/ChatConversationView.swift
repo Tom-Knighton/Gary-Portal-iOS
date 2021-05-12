@@ -19,7 +19,7 @@ struct ChatConversationView: View {
             Text(text)
             Spacer()
             ChatMessageBar { result in
-                self.text = result.text
+                self.text = result.rawText
             }
         }
         .background(Color("Section").ignoresSafeArea())
