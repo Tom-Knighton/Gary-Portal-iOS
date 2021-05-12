@@ -63,9 +63,9 @@ struct ChatMessageBar: View {
                         Image(systemName: "paperplane.fill")
                             .padding(10)
                             .background(Circle().fill(Color("Section")).shadow(radius: 2))
-                            .transition(.move(edge: .trailing))
-                            .animation(.easeInOut)
                     }
+                    .transition(.move(edge: .trailing))
+                    .animation(.easeInOut)
                 }
                 Spacer()
             }
