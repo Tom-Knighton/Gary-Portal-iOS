@@ -91,6 +91,49 @@ class ChatListViewModel: ObservableObject {
     }
 }
 
+class ChatMessagesViewModel: ObservableObject {
+    
+    @Published var lastMessageUUID = ""
+    @Published var messages: [ChatMessage] = []
+    var isLoadingPage = false
+    var canLoadMore = true
+    var chatUUID = ""
+    var lastMessageDate = Date()
+    
+    func setup(for chatUUID: String) {
+        self.chatUUID = chatUUID
+        self.loadMoreContent()
+    }
+    
+    func loadMoreContent() {
+        guard !isLoadingPage, canLoadMore else {
+            print("isloading page or cant load any more")
+            return
+        }
+        
+        self.isLoadingPage = true
+        ChatService.getChatMessages(for: self.chatUUID, startingFrom: self.lastMessageDate, limit: 30) { newMessages, _ in
+            guard let newMessages = newMessages else { print("no messages"); return }
+            DispatchQueue.main.async {
+                var messagesToInsert: [ChatMessage] = []
+                newMessages.forEach { message in
+                    if self.messages.contains(where: { $0.chatMessageUUID == message.chatMessageUUID }) == false {
+                        messagesToInsert.append(message)
+                    }
+                }
+                self.messages.append(contentsOf: messagesToInsert)
+                self.lastMessageDate = newMessages.last?.messageCreatedAt ?? Date()
+                self.lastMessageUUID = newMessages.first?.chatMessageUUID ?? ""
+                print(newMessages.first?.messageContent ?? "")
+                if newMessages.count < 30 {
+                    self.canLoadMore = false
+                }
+                self.isLoadingPage = false
+            }
+        }
+    }
+}
+
 struct ChatMessageBarResult {
     
     let isVideoURL: Bool

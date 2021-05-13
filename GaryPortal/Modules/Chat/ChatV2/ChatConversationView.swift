@@ -10,9 +10,7 @@ import SwiftUI
 struct ChatConversationView: View {
     
     @State var chat: Chat
-    @State var text: String = ""
-    @State var keyboardOffset: CGFloat = 0.0
-    @State var messages: [ChatMessage] = []
+    @StateObject var datasource = ChatMessagesViewModel()
     @State var paginate = false
     @State var showPaginate = true
 
@@ -22,24 +20,31 @@ struct ChatConversationView: View {
             Color("Section").edgesIgnoringSafeArea(.all)
             VStack {
                 ScrollViewReader { reader in
-                    GPReverseList(self.messages, reverseItemOrder: false, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
+                    GPReverseList(self.datasource.messages, reverseItemOrder: false, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
                         ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message))
+                            .id(message.chatMessageUUID ?? "")
                     }
+                    .onChange(of: self.datasource.lastMessageUUID, perform: { value in
+                        print("scrolling to \(value)")
+                        reader.scrollTo(value, anchor: .bottom)
+                    })
                 }
                 ChatMessageBar { result in
-                    self.text = result.rawText
                 }
             }
-
         }
         .navigationTitle(self.chat.getTitleToDisplay(for: uuid))
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            ChatService.getChatMessages(for: chat.chatUUID ?? "") { messages, _ in
-                if let messages = messages {
-                    self.messages = messages
-                }
+        .onChange(of: paginate, perform: { value in
+            if value {
+                self.datasource.loadMoreContent()
             }
+        })
+        .onChange(of: self.datasource.canLoadMore, perform: { value in
+            self.showPaginate = value
+        })
+        .onAppear {
+            self.datasource.setup(for: self.chat.chatUUID ?? "")
         }
     }
 }
