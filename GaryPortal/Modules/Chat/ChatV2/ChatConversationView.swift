@@ -25,7 +25,6 @@ struct ChatConversationView: View {
                             .id(message.chatMessageUUID ?? "")
                     }
                     .onChange(of: self.datasource.lastMessageUUID, perform: { value in
-                        print("scrolling to \(value)")
                         reader.scrollTo(value, anchor: .bottom)
                     })
                 }

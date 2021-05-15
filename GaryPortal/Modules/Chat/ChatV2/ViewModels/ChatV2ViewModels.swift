@@ -15,12 +15,29 @@ struct ChatMessageDTO {
     let messageSentAt: Date
     let messageTypeId: Int
     
-    init(from chatMessage: ChatMessage) {
+    let previousSender: String?
+    let previousDate: Date?
+    
+    init(from chatMessage: ChatMessage, previousMessage: ChatMessageDTO? = nil) {
         self.messageUUID = chatMessage.chatMessageUUID ?? ""
         self.messageRawContent = chatMessage.messageContent ?? ""
         self.messageSentAt = chatMessage.messageCreatedAt ?? Date()
         self.messageTypeId = chatMessage.messageTypeId ?? 1
         self.messageSender = chatMessage.userDTO ?? UserDTO(userUUID: "", userFullName: "Deleted User", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: false, userIsStaff: false)
+        
+        if let previousMessage = previousMessage {
+            self.previousSender = previousMessage.messageSender.userUUID ?? ""
+            self.previousDate = previousMessage.messageSentAt
+        } else {
+            self.previousSender = nil
+            self.previousDate = nil
+        }
+    }
+    
+    func isMessageWithinPrevious() -> Bool {
+        guard let previousSender = self.previousSender, let previousDate = self.previousDate else { return false }
+        
+        return self.messageSender.userUUID ?? "" == previousSender && (Calendar.current.dateComponents([.minute], from: previousDate, to: self.messageSentAt).minute ?? 0) <= 7
     }
 }
 
@@ -93,7 +110,7 @@ class ChatListViewModel: ObservableObject {
 
 class ChatMessagesViewModel: ObservableObject {
     
-    @Published var lastMessageUUID = ""
+    @Published var lastMessageUUID: String = ""
     @Published var messages: [ChatMessage] = []
     var isLoadingPage = false
     var canLoadMore = true
@@ -124,12 +141,20 @@ class ChatMessagesViewModel: ObservableObject {
                 self.messages.append(contentsOf: messagesToInsert)
                 self.lastMessageDate = newMessages.last?.messageCreatedAt ?? Date()
                 self.lastMessageUUID = newMessages.first?.chatMessageUUID ?? ""
-                print(newMessages.first?.messageContent ?? "")
                 if newMessages.count < 30 {
                     self.canLoadMore = false
                 }
                 self.isLoadingPage = false
             }
+        }
+    }
+    
+    func getPreviousMessageInList(from messageUUID: String?) -> ChatMessageDTO? {
+        let index = self.messages.firstIndex(where: { $0.chatMessageUUID == messageUUID })
+        if let index = index, index < self.messages.count - 1, index != 0{
+            return ChatMessageDTO(from: self.messages[index - 1])
+        } else {
+            return nil
         }
     }
 }

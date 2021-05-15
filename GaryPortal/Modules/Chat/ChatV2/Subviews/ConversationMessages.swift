@@ -8,24 +8,36 @@
 import SwiftUI
 
 struct ConversationMessageView: View {
+    
     @State var chatMessageDTO: ChatMessageDTO
-    @Namespace var matchMedia
     
     var body: some View {
         ZStack {
+            let isWithinPrevious = self.chatMessageDTO.isMessageWithinPrevious()
             VStack {
+                if !isWithinPrevious {
+                    Spacer().frame(height: 8)
+                }
                 HStack(alignment: .top) {
                     Spacer().frame(width: 8)
-                    AsyncImage(url: chatMessageDTO.messageSender.userProfileImageUrl ?? "")
-                        .frame(width: 50, height: 50, alignment: .bottom)
-                        .clipShape(Circle())
+                    if !isWithinPrevious {
+                        AsyncImage(url: chatMessageDTO.messageSender.userProfileImageUrl ?? "")
+                            .frame(width: 50, height: 50, alignment: .bottom)
+                            .clipShape(Circle())
+                    } else {
+                        Spacer().frame(width: 58)
+                    }
+                   
                     VStack(spacing: 0) {
-                        Text(chatMessageDTO.messageSender.userFullName ?? "")
-                            .bold()
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                        if !isWithinPrevious {
+                            Text(chatMessageDTO.messageSender.userFullName ?? "")
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                        }
                         content
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .matchedGeometryEffect(id: chatMessageDTO.messageUUID, in: matchMedia)
+                            .padding(.vertical, 0)
+                            .padding(.top, isWithinPrevious ? 0 : 8)
                     }
                     .frame(maxWidth: .infinity, alignment: .top)
                     Spacer().frame(width: 8)
@@ -41,7 +53,6 @@ struct ConversationMessageView: View {
         case 1:
             Text(chatMessageDTO.messageRawContent)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 8)
         case 2:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .cornerRadius(10)
@@ -54,9 +65,10 @@ struct ConversationMessageView: View {
         default:
             Text(chatMessageDTO.messageRawContent)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 8)
         }
     }
+    
+    
 }
 
 struct ConversationMessageView_Previews: PreviewProvider {
