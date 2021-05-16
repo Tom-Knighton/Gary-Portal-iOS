@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Introspect
 
 struct ChatConversationView: View {
     
@@ -25,8 +26,14 @@ struct ChatConversationView: View {
                             .id(message.chatMessageUUID ?? "")
                     }
                     .onChange(of: self.datasource.lastMessageUUID, perform: { value in
-                        reader.scrollTo(value, anchor: .bottom)
+                        withAnimation(.easeInOut) {
+                            reader.scrollTo(value, anchor: .bottom)
+
+                        }
                     })
+                    .onChange(of: self.datasource.hasLoadedFirstMessages, perform: { value in
+                    })
+                    
                 }
                 ChatMessageBar { result in
                 }
