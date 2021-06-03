@@ -34,24 +34,24 @@ struct GPReverseList<Element, Content>: View where Element: Identifiable, Conten
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
-//                GeometryReader { topGeometry in
-//                    let frame = topGeometry.frame(in: .global)
-//                    let isVisible = geometry.frame(in: .global).contains(CGPoint(x: frame.midX, y: frame.midY))
-//                    
-//                    HStack {
-//                        Spacer()
-//                        ProgressView().progressViewStyle(CircularProgressViewStyle())
-//                        Spacer()
-//                    }
-//                    .preference(key: IsVisibleKey.self, value: isVisible)
-//                }
-//                .frame(height: 30)
-//                .onPreferenceChange(IsVisibleKey.self, perform: { value in
-//                    hasReachedTop = value
-//                })
-//                .if(!self.canShowPaginator) {
-//                    $0.hidden()
-//                }
+                GeometryReader { topGeometry in
+                    let frame = topGeometry.frame(in: .global)
+                    let isVisible = geometry.frame(in: .global).contains(CGPoint(x: frame.midX, y: frame.midY))
+                    
+                    HStack {
+                        Spacer()
+                        ProgressView().progressViewStyle(CircularProgressViewStyle())
+                        Spacer()
+                    }
+                    .preference(key: IsVisibleKey.self, value: isVisible)
+                }
+                .frame(height: 30)
+                .onPreferenceChange(IsVisibleKey.self, perform: { value in
+                    hasReachedTop = value
+                })
+                .if(!self.canShowPaginator) {
+                    $0.hidden()
+                }
                 LazyVStack(spacing: 0) {
                     ForEach(reverseOrder ? items : items.reversed()) { item in
                         self.viewForItem(item)

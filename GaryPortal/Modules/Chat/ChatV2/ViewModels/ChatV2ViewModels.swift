@@ -112,6 +112,7 @@ class ChatMessagesViewModel: ObservableObject {
     
     @Published var lastMessageUUID: String = ""
     @Published var messages: [ChatMessage] = []
+    @Published var hasLoadedFirstMessages = false
     var isLoadingPage = false
     var canLoadMore = true
     var chatUUID = ""

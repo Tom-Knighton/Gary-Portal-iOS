@@ -28,12 +28,11 @@ struct ChatConversationView: View {
                     .onChange(of: self.datasource.lastMessageUUID, perform: { value in
                         withAnimation(.easeInOut) {
                             reader.scrollTo(value, anchor: .bottom)
-
                         }
                     })
                     .onChange(of: self.datasource.hasLoadedFirstMessages, perform: { value in
+                        reader.scrollTo(self.datasource.lastMessageUUID, anchor: .bottom)
                     })
-                    
                 }
                 ChatMessageBar { result in
                 }
