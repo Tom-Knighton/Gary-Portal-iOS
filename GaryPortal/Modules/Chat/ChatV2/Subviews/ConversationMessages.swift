@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AttributedText
+import LinkPresentation
 
 struct ConversationMessageView: View {
     
@@ -48,12 +49,19 @@ struct ConversationMessageView: View {
         
     }
     
+    @State var previewToggle = false
     @ViewBuilder
     var content: some View {
         switch self.chatMessageDTO.messageTypeId {
         case 1:
-            AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack {
+                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
+                    URLPreview(previewURL: url, togglePreview: $previewToggle)
+                        .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                }
+            }            
         case 2:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .cornerRadius(10)
@@ -64,11 +72,33 @@ struct ConversationMessageView: View {
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .frame(width: 70, height: 70)
         default:
-            Text(chatMessageDTO.messageRawContent)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack {
+                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
+                    URLPreview(previewURL: url, togglePreview: $previewToggle)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 50)
+                }
+            }
         }
     }
 }
+
+struct URLPreview : UIViewRepresentable {
+    var previewURL:URL
+    //Add binding
+    @Binding var togglePreview: Bool
+
+    func makeUIView(context: Context) -> LPLinkView {
+        let view = LPLinkView(url: previewURL)
+        return view
+    }
+    
+    func updateUIView(_ uiView: LPLinkView, context: UIViewRepresentableContext<URLPreview>) {
+    }
+}
+
 
 struct ConversationMessageView_Previews: PreviewProvider {
     static let messageDTO = ChatMessageDTO(from: ChatMessage(chatMessageUUID: "0", chatUUID: "0", userUUID: "1", messageContent: "Seems CIV department for the Framework is missing on DEV", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil))

@@ -146,6 +146,7 @@ class ChatMessagesViewModel: ObservableObject {
                     self.canLoadMore = false
                 }
                 self.isLoadingPage = false
+                self.hasLoadedFirstMessages = true
             }
         }
     }
