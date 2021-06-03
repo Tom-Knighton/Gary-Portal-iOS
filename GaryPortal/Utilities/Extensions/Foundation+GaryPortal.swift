@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SwiftDate
 import ImageIO
+import AttributedText
 
 extension String: Identifiable {
     
@@ -84,6 +85,41 @@ extension String: Identifiable {
         }
 
         return []
+    }
+    
+    func convertToAttributedHyperlinks() -> NSAttributedString {
+        let urls = self.getUrls()
+        
+        let attributedString = NSMutableAttributedString(string: self)
+        for url in urls {
+            let range = attributedString.mutableString.range(of: url.absoluteString)
+            attributedString.addAttributes([.link: url], range: range)
+        }
+        
+        attributedString.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body)], range: attributedString.mutableString.range(of: self))
+        
+        return attributedString
+    }
+}
+
+extension UITextView {
+    func makeHyperLinks(originalText: String, hyperLink: String, urlString: String) {
+        let style = NSMutableParagraphStyle()
+            style.alignment = .left
+
+            let attributedOriginalText = NSMutableAttributedString(string: originalText)
+            let linkRange = attributedOriginalText.mutableString.range(of: hyperLink)
+            let fullRange = NSMakeRange(0, attributedOriginalText.length)
+            attributedOriginalText.addAttribute(NSAttributedString.Key.link, value: urlString, range: linkRange)
+            attributedOriginalText.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: fullRange)
+            attributedOriginalText.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 10), range: fullRange)
+
+            self.linkTextAttributes = [
+                kCTForegroundColorAttributeName: UIColor.blue,
+                kCTUnderlineStyleAttributeName: NSUnderlineStyle.single.rawValue,
+                ] as [NSAttributedString.Key : Any]
+
+            self.attributedText = attributedOriginalText
     }
 }
 

@@ -83,6 +83,7 @@
 		E2813AAA26050B6D00E395E9 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9426050B6D00E395E9 /* Data.swift */; };
 		E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9526050B6D00E395E9 /* CGSize+Swift.swift */; };
 		E2813AAC26050B6D00E395E9 /* DiskFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A9626050B6D00E395E9 /* DiskFetcher.swift */; };
+		E286874D26693AC200B684AD /* AttributedText in Frameworks */ = {isa = PBXBuildFile; productRef = E286874C26693AC200B684AD /* AttributedText */; };
 		E28DC01925C707E800A6EBEB /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01825C707E800A6EBEB /* Chat.swift */; };
 		E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01A25C7090000A6EBEB /* ChatService.swift */; };
 		E28DC01E25C7097F00A6EBEB /* ChatsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28DC01D25C7097F00A6EBEB /* ChatsRootView.swift */; };
@@ -290,6 +291,7 @@
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2F492F525D2BEED007A0775 /* Introspect in Frameworks */,
 				E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */,
+				E286874D26693AC200B684AD /* AttributedText in Frameworks */,
 				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
 				E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */,
@@ -648,6 +650,7 @@
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
 				E2F4930225D2F140007A0775 /* SignalRClient */,
 				E2DB20AC2606A69900F507AB /* Bugsnag */,
+				E286874C26693AC200B684AD /* AttributedText */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
@@ -687,6 +690,7 @@
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 				E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */,
+				E286874B26693AC200B684AD /* XCRemoteSwiftPackageReference "AttributedText" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -1118,6 +1122,14 @@
 				minimumVersion = 4.0.1;
 			};
 		};
+		E286874B26693AC200B684AD /* XCRemoteSwiftPackageReference "AttributedText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/AttributedText";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 		E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
@@ -1173,6 +1185,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
 			productName = SwiftKeychainWrapper;
+		};
+		E286874C26693AC200B684AD /* AttributedText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E286874B26693AC200B684AD /* XCRemoteSwiftPackageReference "AttributedText" */;
+			productName = AttributedText;
 		};
 		E2BB737725B090C800CDB422 /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;

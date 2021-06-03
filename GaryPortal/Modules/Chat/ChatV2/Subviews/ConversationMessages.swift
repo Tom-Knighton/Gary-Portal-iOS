@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AttributedText
 
 struct ConversationMessageView: View {
     
@@ -51,14 +52,14 @@ struct ConversationMessageView: View {
     var content: some View {
         switch self.chatMessageDTO.messageTypeId {
         case 1:
-            Text(chatMessageDTO.messageRawContent)
+            AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
                 .frame(maxWidth: .infinity, alignment: .leading)
         case 2:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .cornerRadius(10)
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 400)
-                .cornerRadius(10)
+                .cornerRadius(10)   
         case 8:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .frame(width: 70, height: 70)
@@ -67,8 +68,6 @@ struct ConversationMessageView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
-    
-    
 }
 
 struct ConversationMessageView_Previews: PreviewProvider {

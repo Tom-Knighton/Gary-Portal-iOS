@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "AttributedText",
+        "repositoryURL": "https://github.com/gonzalezreal/AttributedText",
+        "state": {
+          "branch": null,
+          "revision": "bf076de48dbb2172525486936d512e1bba062642",
+          "version": "0.3.0"
+        }
+      },
+      {
         "package": "Bugsnag",
         "repositoryURL": "https://github.com/bugsnag/bugsnag-cocoa",
         "state": {
