@@ -61,13 +61,18 @@ struct ConversationMessageView: View {
         switch self.chatMessageDTO.messageTypeId {
         case 1:
             VStack {
-                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
-                    URLPreview(previewURL: url, togglePreview: $previewToggle)
-                        .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                if self.chatMessageDTO.messageRawContent.containsOnlyEmojis() && self.chatMessageDTO.messageRawContent.count <= 5 {
+                    Text(self.chatMessageDTO.messageRawContent)
+                        .font(.system(size: 40))
+                } else {
+                    AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
+                        URLPreview(previewURL: url, togglePreview: $previewToggle)
+                            .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                    }
                 }
-            }            
+            }
         case 2:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .cornerRadius(10)
