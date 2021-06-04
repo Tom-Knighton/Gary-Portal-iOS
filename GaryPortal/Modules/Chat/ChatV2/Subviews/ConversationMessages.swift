@@ -32,9 +32,15 @@ struct ConversationMessageView: View {
                    
                     VStack(spacing: 0) {
                         if !isWithinPrevious {
-                            Text(chatMessageDTO.messageSender.userFullName ?? "")
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                            HStack {
+                                Text(chatMessageDTO.messageSender.userFullName ?? "")
+                                    .bold()
+                                Text(chatMessageDTO.messageSentAt.niceDateAndTime())
+                                    .font(.caption)
+                                    .frame(alignment: .center)
+                                Spacer()
+                            }
+                            
                         }
                         content
                             .frame(maxWidth: .infinity, alignment: .leading)
