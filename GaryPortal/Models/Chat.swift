@@ -134,6 +134,7 @@ struct ChatMessage: Codable, Identifiable, Equatable {
     let user: User?
     let userDTO: UserDTO?
     let chatMessageType: ChatMessageType?
+    let ReplyingToDTO: ChatMessageReplyDTO?
     
     var id: String { get { return chatMessageUUID ?? "" }}
     
@@ -170,6 +171,16 @@ struct ChatMessage: Codable, Identifiable, Equatable {
     func isMediaMessage() -> Bool {
         return messageTypeId == 2 || messageTypeId == 3 || messageTypeId == 4
     }
+}
+
+struct ChatMessageReplyDTO: Codable {
+    let chatMessageUUID: String?
+    let userUUID: String?
+    let messageContent: String?
+    let messageTypeId: Int?
+    let messageIsDeleted: Bool?
+    
+    let userDTO: UserDTO?
 }
 
 struct ChatMessageType: Codable {
