@@ -8,6 +8,7 @@
 import SwiftUI
 import AttributedText
 import LinkPresentation
+import AVKit
 
 struct ConversationMessageView: View {
     
@@ -79,7 +80,18 @@ struct ConversationMessageView: View {
                 .cornerRadius(10)
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 400)
-                .cornerRadius(10)   
+                .cornerRadius(10)
+        case 3:
+            if let url = URL(string: self.chatMessageDTO.messageRawContent) {
+                VideoPlayer(player: AVPlayer(url: url))
+                    .cornerRadius(10)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 400)
+                    .cornerRadius(10)
+            } else {
+                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
         case 8:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .frame(width: 70, height: 70)
