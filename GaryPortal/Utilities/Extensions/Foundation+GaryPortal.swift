@@ -73,17 +73,17 @@ extension String: Identifiable {
     
     func getUrls() -> [URL] {
         let types: NSTextCheckingResult.CheckingType = .link
-
+        
         do {
             let detector = try NSDataDetector(types: types.rawValue)
-
+            
             let matches = detector.matches(in: self, options: .reportCompletion, range: NSMakeRange(0, self.count))
-        
+            
             return matches.compactMap({$0.url})
         } catch let error {
             debugPrint(error.localizedDescription)
         }
-
+        
         return []
     }
     
@@ -97,29 +97,8 @@ extension String: Identifiable {
         }
         
         attributedString.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body)], range: attributedString.mutableString.range(of: self))
-        
+        attributedString.addAttributes([.foregroundColor: UIColor.label], range: attributedString.mutableString.range(of: self))
         return attributedString
-    }
-}
-
-extension UITextView {
-    func makeHyperLinks(originalText: String, hyperLink: String, urlString: String) {
-        let style = NSMutableParagraphStyle()
-            style.alignment = .left
-
-            let attributedOriginalText = NSMutableAttributedString(string: originalText)
-            let linkRange = attributedOriginalText.mutableString.range(of: hyperLink)
-            let fullRange = NSMakeRange(0, attributedOriginalText.length)
-            attributedOriginalText.addAttribute(NSAttributedString.Key.link, value: urlString, range: linkRange)
-            attributedOriginalText.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: fullRange)
-            attributedOriginalText.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 10), range: fullRange)
-
-            self.linkTextAttributes = [
-                kCTForegroundColorAttributeName: UIColor.blue,
-                kCTUnderlineStyleAttributeName: NSUnderlineStyle.single.rawValue,
-                ] as [NSAttributedString.Key : Any]
-
-            self.attributedText = attributedOriginalText
     }
 }
 
@@ -301,7 +280,7 @@ extension UIImageView {
                 let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
                 let data = data, error == nil,
                 let image = UIImage(data: data)
-                else { return }
+            else { return }
             DispatchQueue.main.async() { [weak self] in
                 self?.image = image
             }
@@ -376,18 +355,18 @@ extension Date {
             let dayAgo = calendar.date(byAdding: .day, value: -1, to: Date()),
             let weekAgo = calendar.date(byAdding: .day, value: -7, to: Date())
         else { return "" }
-
+        
         if minuteAgo < self {
-           return "Now"
+            return "Now"
         } else if hourAgo < self {
-           let diff = Calendar.current.dateComponents([.minute], from: self, to: Date()).minute ?? 0
-           return "\(diff)m"
+            let diff = Calendar.current.dateComponents([.minute], from: self, to: Date()).minute ?? 0
+            return "\(diff)m"
         } else if dayAgo < self {
-           let diff = Calendar.current.dateComponents([.hour], from: self, to: Date()).hour ?? 0
-           return "\(diff)h"
+            let diff = Calendar.current.dateComponents([.hour], from: self, to: Date()).hour ?? 0
+            return "\(diff)h"
         } else if weekAgo < self {
-           let diff = Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
-           return "\(diff)d"
+            let diff = Calendar.current.dateComponents([.day], from: self, to: Date()).day ?? 0
+            return "\(diff)d"
         }
         let diff = Calendar.current.dateComponents([.weekOfYear], from: self, to: Date()).weekOfYear ?? 0
         return "\(diff)w"
@@ -415,7 +394,7 @@ extension UIApplication {
         NotificationCenter.default.post(Notification(name: .shouldEndEditing))
         window.endEditing(true)
     }
-        
+    
     class func topViewController(base: UIViewController? = nil) -> UIViewController? {
         let keyWindow = UIApplication.shared.connectedScenes
             .filter({$0.activationState == .foregroundActive})
