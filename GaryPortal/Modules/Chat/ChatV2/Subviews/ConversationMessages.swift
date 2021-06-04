@@ -56,6 +56,7 @@ struct ConversationMessageView: View {
     }
     
     @State var previewToggle = false
+    @State var playingVideo = false
     @ViewBuilder
     var content: some View {
         switch self.chatMessageDTO.messageTypeId {
@@ -112,7 +113,7 @@ struct URLPreview : UIViewRepresentable {
 
 
 struct ConversationMessageView_Previews: PreviewProvider {
-    static let messageDTO = ChatMessageDTO(from: ChatMessage(chatMessageUUID: "0", chatUUID: "0", userUUID: "1", messageContent: "Seems CIV department for the Framework is missing on DEV", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil))
+    static let messageDTO = ChatMessageDTO(from: ChatMessage(chatMessageUUID: "0", chatUUID: "0", userUUID: "1", messageContent: "Seems CIV department for the Framework is missing on DEV", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil))
     static var previews: some View {
         VStack {
             ConversationMessageView(chatMessageDTO: messageDTO)

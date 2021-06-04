@@ -134,7 +134,7 @@ struct ChatMessage: Codable, Identifiable, Equatable {
     let user: User?
     let userDTO: UserDTO?
     let chatMessageType: ChatMessageType?
-    let ReplyingToDTO: ChatMessageReplyDTO?
+    let replyingToDTO: ChatMessageReplyDTO?
     
     var id: String { get { return chatMessageUUID ?? "" }}
     

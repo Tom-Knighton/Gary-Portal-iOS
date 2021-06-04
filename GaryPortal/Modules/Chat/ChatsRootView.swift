@@ -208,8 +208,8 @@ struct chatMessagePreviews: PreviewProvider {
     static let imageMessageType = ChatMessageType(chatMessageTypeId: 2, chatMessageTypeName: "Text", isProtected: false)
     static let videoMessageType = ChatMessageType(chatMessageTypeId: 3, chatMessageTypeName: "Text", isProtected: false)
     static var messages: [ChatMessage] = [
-        ChatMessage(chatMessageUUID: "1", chatUUID: "1", userUUID: "1", messageContent: "Hello world! https://tomk.online i am a super long message!!!!! HEre's some more information abouyt me: ", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: textMessageType),
-        ChatMessage(chatMessageUUID: "2", chatUUID: "1", userUUID: "1", messageContent: "https://cdn.tomk.online/GaryPortal/AppLogo.png", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: imageMessageType),
+        ChatMessage(chatMessageUUID: "1", chatUUID: "1", userUUID: "1", messageContent: "Hello world! https://tomk.online i am a super long message!!!!! HEre's some more information abouyt me: ", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: textMessageType, replyingToDTO: nil),
+        ChatMessage(chatMessageUUID: "2", chatUUID: "1", userUUID: "1", messageContent: "https://cdn.tomk.online/GaryPortal/AppLogo.png", messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: userDTO, chatMessageType: imageMessageType, replyingToDTO: nil),
     ]
     
     
