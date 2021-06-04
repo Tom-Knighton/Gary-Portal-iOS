@@ -34,6 +34,18 @@ struct ChatMessageDTO {
         }
     }
     
+    init?(from chatMessage: ChatMessage?) {
+        guard let chatMessage = chatMessage else { return nil }
+        
+        self.messageUUID = chatMessage.chatMessageUUID ?? ""
+        self.messageRawContent = chatMessage.messageContent ?? ""
+        self.messageSentAt = chatMessage.messageCreatedAt ?? Date()
+        self.messageTypeId = chatMessage.messageTypeId ?? 1
+        self.messageSender = chatMessage.userDTO ?? UserDTO(userUUID: "", userFullName: "Deleted User", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: false, userIsStaff: false)
+        self.previousSender = nil
+        self.previousDate = nil
+    }
+    
     func isMessageWithinPrevious() -> Bool {
         guard let previousSender = self.previousSender, let previousDate = self.previousDate else { return false }
         

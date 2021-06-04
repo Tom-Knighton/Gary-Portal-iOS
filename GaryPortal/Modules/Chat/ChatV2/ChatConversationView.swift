@@ -22,8 +22,12 @@ struct ChatConversationView: View {
             VStack {
                 ScrollViewReader { reader in
                     GPReverseList(self.datasource.messages, reverseItemOrder: false, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
-                        ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message))
-                            .id(message.chatMessageUUID ?? "")
+                        Group {
+                            let previousMessage = self.datasource.messages.after(message)
+                            let previousDTO: ChatMessageDTO? = ChatMessageDTO(from: previousMessage)
+                            ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message, previousMessage: previousDTO))
+                                .id(message.chatMessageUUID ?? "")
+                        }
                     }
                     .onChange(of: self.datasource.lastMessageUUID, perform: { value in
                         withAnimation(.easeInOut) {

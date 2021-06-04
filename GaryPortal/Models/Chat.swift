@@ -116,7 +116,11 @@ struct ChatMember: Codable {
     let userDTO: UserDTO?
 }
 
-struct ChatMessage: Codable, Identifiable {
+struct ChatMessage: Codable, Identifiable, Equatable {
+    
+    static func == (lhs: ChatMessage, rhs: ChatMessage) -> Bool {
+        return lhs.chatMessageUUID == rhs.chatMessageUUID
+    }
 
     let chatMessageUUID: String?
     let chatUUID: String?
