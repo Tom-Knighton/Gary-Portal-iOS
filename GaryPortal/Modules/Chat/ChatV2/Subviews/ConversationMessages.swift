@@ -47,6 +47,7 @@ struct ConversationMessageView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.vertical, 0)
                             .padding(.top, isWithinPrevious ? 0 : 8)
+//                        Text(self.chatMessageDTO.messageRawContent)
                     }
                     .frame(maxWidth: .infinity, alignment: .top)
                     Spacer().frame(width: 8)
@@ -62,6 +63,7 @@ struct ConversationMessageView: View {
     var content: some View {
         switch self.chatMessageDTO.messageTypeId {
         case 1:
+            // Text Message
             VStack {
                 if self.chatMessageDTO.messageRawContent.containsOnlyEmojis() && self.chatMessageDTO.messageRawContent.count <= 5 {
                     Text(self.chatMessageDTO.messageRawContent)
@@ -76,12 +78,14 @@ struct ConversationMessageView: View {
                 }
             }
         case 2:
+            // Image Message
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .cornerRadius(10)
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 400)
                 .cornerRadius(10)
         case 3:
+            // Video Message
             if let url = URL(string: self.chatMessageDTO.messageRawContent) {
                 VideoPlayer(player: AVPlayer(url: url))
                     .cornerRadius(10)
@@ -92,6 +96,24 @@ struct ConversationMessageView: View {
                 AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+        case 4:
+            // File Message
+            EmptyView()
+        case 5:
+            // Bot Message
+            VStack {
+                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
+                    URLPreview(previewURL: url, togglePreview: $previewToggle)
+                        .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                }
+                Text("BOT MESSAGE")
+            }
+            .cornerRadius(10)
+            .padding()
+            .background(Color("Section").shadow(radius: 3).cornerRadius(10))
+            .shadow(radius: 3)
         case 8:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .frame(width: 70, height: 70)

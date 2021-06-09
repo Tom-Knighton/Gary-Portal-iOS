@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-struct ChatMessageDTO {
+struct ChatMessageDTO: Codable, Hashable, Equatable {
     let messageUUID: String
     let messageRawContent: String
     let messageSender: UserDTO
