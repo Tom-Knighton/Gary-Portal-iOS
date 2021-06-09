@@ -69,6 +69,15 @@ extension String: Identifiable {
         }
         return false
     }
+    
+    func getUrlIPTCKeywords() -> [String] {
+        guard let url = URL(string: self),
+              let imageSrc = CGImageSourceCreateWithURL(url as NSURL, nil)
+        else { return [] }
+        
+        let imgProperties = CGImageSourceCopyPropertiesAtIndex(imageSrc, 0, nil) as Dictionary?
+        return (imgProperties?[kCGImagePropertyIPTCDictionary]?[kCGImagePropertyIPTCKeywords]) as? [String] ?? []
+    }
 }
 
 extension Character {
