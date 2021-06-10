@@ -42,16 +42,24 @@ struct ChatMessageBar: View {
                         .onTapGesture {
                             self.showStickerView = false
                         }
-                    Button(action: { self.toggleStickerView() }) {
-                        Image(systemName: "mustache.fill")
-                            .padding(14)
-                            .background(Circle().fill(Color("Section")).shadow(radius: 2))
+                    
+                    if self.text.isEmptyOrWhitespace() {
+                        Button(action: { self.toggleStickerView() }) {
+                            Image(systemName: "mustache.fill")
+                                .padding(14)
+                                .background(Circle().fill(Color("Section")).shadow(radius: 2))
+                        }
+                        .transition(.move(edge: .bottom))
+                        .animation(.easeInOut)
                     }
+                    
                     Button(action: { self.showCameraView.toggle() }) {
                         Image(systemName: "camera.on.rectangle.fill")
                             .padding(10)
                             .background(Circle().fill(Color("Section")).shadow(radius: 2))
                     }
+                    .transition(.move(edge: .trailing))
+                    .animation(.easeInOut)
                 }
                 .padding(6)
                 .background(Color.clear)
