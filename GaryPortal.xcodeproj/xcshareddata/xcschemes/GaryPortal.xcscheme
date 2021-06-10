@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E23100A825AF6F8E00739E9E"
-               BuildableName = "GaryPortal.app"
+               BuildableName = "Gary Portal.app"
                BlueprintName = "GaryPortal"
                ReferencedContainer = "container:GaryPortal.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E23100A825AF6F8E00739E9E"
-            BuildableName = "GaryPortal.app"
+            BuildableName = "Gary Portal.app"
             BlueprintName = "GaryPortal"
             ReferencedContainer = "container:GaryPortal.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E23100A825AF6F8E00739E9E"
-            BuildableName = "GaryPortal.app"
+            BuildableName = "Gary Portal.app"
             BlueprintName = "GaryPortal"
             ReferencedContainer = "container:GaryPortal.xcodeproj">
          </BuildableReference>
