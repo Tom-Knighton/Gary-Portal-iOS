@@ -57,7 +57,10 @@ struct Chat: Codable {
         case 5, 6:
             return "Bot Message"
         case 7:
-            return "-- ADMIN MESSAGE --"
+            return """
+                    --ADMIN MESSAGE--
+                    \(lastMessage.messageContent ?? "")
+                    """
         case 8:
             return "\(senderName) sent a sticker"
         default:

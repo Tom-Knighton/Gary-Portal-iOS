@@ -60,10 +60,11 @@ struct ConversationMessageView: View {
     @ViewBuilder
     var nameToDisplay: some View {
         let isBot = self.chatMessageDTO.messageTypeId == 5
+        let isAdmin = self.chatMessageDTO.messageTypeId == 7
         let name = !isBot ? self.chatMessageDTO.messageSender.userFullName ?? "[Deleted User]" : "Gary Portal Bot"
         Text(name)
             .bold()
-            .foregroundColor(isBot ? .orange : .primary)
+            .foregroundColor(isBot ? .orange : isAdmin ? .red : .primary)
     }
     
     
@@ -130,6 +131,20 @@ struct ConversationMessageView: View {
             .padding()
             .background(Color("Section").shadow(radius: 3).cornerRadius(10))
             .shadow(radius: 3)
+        case 7:
+            // Admin Message
+            VStack {
+                LinkedText(self.chatMessageDTO.messageRawContent)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
+                    URLPreview(previewURL: url, togglePreview: $previewToggle)
+                        .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                }
+            }
+            .cornerRadius(10)
+            .padding()
+            .background(Color("Section").shadow(radius: 3).cornerRadius(10).padding(.top, 4))
+            .shadow(color: .red, radius: 3)
         case 8:
             AsyncImage(url: chatMessageDTO.messageRawContent)
                 .frame(width: 70, height: 70)

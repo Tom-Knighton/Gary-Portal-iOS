@@ -53,8 +53,8 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
     func isMessageWithinPrevious() -> Bool {
         guard let previousSender = self.previousSender,
               let previousDate = self.previousDate,
-              self.messageTypeId != 5,
-              self.previousTypeId != 5
+              self.messageTypeId != 5 && self.messageTypeId != 7,
+              self.previousTypeId != 5 && self.previousTypeId != 7
               else { return false }
         
         return self.messageSender.userUUID ?? "" == previousSender && (Calendar.current.dateComponents([.minute], from: previousDate, to: self.messageSentAt).minute ?? 0) <= 7
