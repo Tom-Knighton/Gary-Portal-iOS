@@ -12,6 +12,7 @@ struct ChatMessageBar: View {
     @State var text: String = ""
     @State var showStickerView = false
     @State var showCameraView = false
+    @State var previousValueWasEmpty = true
     
     var onSend: (_ result: ChatMessageBarResult) -> ()
     
@@ -41,6 +42,16 @@ struct ChatMessageBar: View {
                         .cornerRadius(5)
                         .onTapGesture {
                             self.showStickerView = false
+                        }
+                        .onChange(of: self.text) { value in
+                            if previousValueWasEmpty && !self.text.isEmptyOrWhitespace(){
+                                self.previousValueWasEmpty = false
+                                NotificationCenter.default.post(name: .textFieldStartedEditing, object: nil)
+                            }
+                            
+                            else if self.text.isEmptyOrWhitespace() {
+                                self.previousValueWasEmpty = true
+                            }
                         }
                     
                     if self.text.isEmptyOrWhitespace() {

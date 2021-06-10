@@ -36,6 +36,11 @@ struct ChatConversationView: View {
                     .onChange(of: self.datasource.canLoadMore) { newValue in
                         self.showPaginate = newValue
                     }
+                    .onReceive(NotificationCenter.default.publisher(for: .textFieldStartedEditing)) { notification in
+                        withAnimation(.easeInOut) {
+                            reader.scrollTo(self.datasource.messages.last?.chatMessageUUID ?? "")
+                        }
+                    }
                 }
                 ChatMessageBar { result in
                 }
