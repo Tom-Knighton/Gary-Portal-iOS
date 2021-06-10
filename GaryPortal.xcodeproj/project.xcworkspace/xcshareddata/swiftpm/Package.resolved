@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "ActionClosurable",
+        "repositoryURL": "https://github.com/takasek/ActionClosurable.git",
+        "state": {
+          "branch": null,
+          "revision": "a1a589cd4189768c0ac7a49da7296d95a7f4f914",
+          "version": "2.1.0"
+        }
+      },
+      {
         "package": "AlertToast",
         "repositoryURL": "https://github.com/elai950/AlertToast.git",
         "state": {

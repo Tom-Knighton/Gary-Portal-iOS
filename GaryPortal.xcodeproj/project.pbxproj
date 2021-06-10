@@ -96,7 +96,7 @@
 		E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554DC260B8EC80086B66C /* Sticker.swift */; };
 		E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E0260B90400086B66C /* StickerPickerView.swift */; };
 		E2A554E4260B96160086B66C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E3260B96160086B66C /* SearchBar.swift */; };
-		E2A78A242650350C0023E922 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2A78A232650350C0023E922 /* ActionClosurable */; };
+		E2A78A242650350C0023E922 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */; };
 		E2AFE8EF25C7391E00C513D5 /* GPNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AFE8EE25C7391E00C513D5 /* GPNavigation.swift */; };
 		E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */; };
@@ -122,6 +122,7 @@
 		E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E0FA1725D498620069E153 /* ChatMemberList.swift */; };
 		E2E1FA9B25B10E7200DE3B3C /* PrayerRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9A25B10E7200DE3B3C /* PrayerRoomView.swift */; };
 		E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */; };
+		E2F21A5026725CFF000B6F5B /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2F21A4F26725CFF000B6F5B /* ActionClosurable */; };
 		E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F3282125F6C10000F744E9 /* PinchToZoom.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
@@ -302,11 +303,12 @@
 			files = (
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2F492F525D2BEED007A0775 /* Introspect in Frameworks */,
+				E2F21A5026725CFF000B6F5B /* ActionClosurable in Frameworks */,
 				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
 				E23F4B2C2635F5D400CA4087 /* AlertToast in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
-				E2A78A242650350C0023E922 /* ActionClosurable in Frameworks */,
+				E2A78A242650350C0023E922 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,6 +695,7 @@
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
 				E2F4930225D2F140007A0775 /* SignalRClient */,
 				E23F4B2B2635F5D400CA4087 /* AlertToast */,
+				E2F21A4F26725CFF000B6F5B /* ActionClosurable */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */;
@@ -731,6 +734,7 @@
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 				E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				E2F21A4E26725CFF000B6F5B /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -1231,6 +1235,14 @@
 				minimumVersion = 2.6.0;
 			};
 		};
+		E2F21A4E26725CFF000B6F5B /* XCRemoteSwiftPackageReference "ActionClosurable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/takasek/ActionClosurable.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 		E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
@@ -1272,6 +1284,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = CropViewController;
+		};
+		E2F21A4F26725CFF000B6F5B /* ActionClosurable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2F21A4E26725CFF000B6F5B /* XCRemoteSwiftPackageReference "ActionClosurable" */;
+			productName = ActionClosurable;
 		};
 		E2F492F425D2BEED007A0775 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
