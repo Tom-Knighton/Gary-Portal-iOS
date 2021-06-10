@@ -17,17 +17,14 @@ struct ConversationMessageView: View {
         VStack {
             HStack(alignment: .top) {
                 if !isWithinPrevious {
-                    AsyncImage(url: self.chatMessageDTO.messageSender.userProfileImageUrl ?? "")
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
+                    profileImage
                 } else {
                     Spacer().frame(width: 58)
                 }
                 VStack(spacing: 0) {
                     if !isWithinPrevious {
                         HStack {
-                            Text(self.chatMessageDTO.messageSender.userFullName ?? "[Deleted User]")
-                                .bold()
+                            nameToDisplay
                             Text(self.chatMessageDTO.messageSentAt.niceDateAndTime())
                                 .font(.caption)
                                 .frame(alignment: .center)
@@ -44,6 +41,31 @@ struct ConversationMessageView: View {
         .padding(.top, isWithinPrevious ? 0 : 12)
         .padding(.horizontal, 8)
     }
+    
+    @ViewBuilder
+    var profileImage: some View {
+        let isBot = self.chatMessageDTO.messageTypeId == 5
+        if isBot {
+            Image("bot")
+                .resizable()
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+        } else {
+            AsyncImage(url: self.chatMessageDTO.messageSender.userProfileImageUrl ?? "")
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+        }
+    }
+    
+    @ViewBuilder
+    var nameToDisplay: some View {
+        let isBot = self.chatMessageDTO.messageTypeId == 5
+        let name = !isBot ? self.chatMessageDTO.messageSender.userFullName ?? "[Deleted User]" : "Gary Portal Bot"
+        Text(name)
+            .bold()
+            .foregroundColor(isBot ? .orange : .primary)
+    }
+    
     
     @State var previewToggle = false
     @State var playingVideo = false
@@ -96,7 +118,6 @@ struct ConversationMessageView: View {
                     URLPreview(previewURL: url, togglePreview: $previewToggle)
                         .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
                 }
-                Text("BOT MESSAGE")
             }
             .cornerRadius(10)
             .padding()

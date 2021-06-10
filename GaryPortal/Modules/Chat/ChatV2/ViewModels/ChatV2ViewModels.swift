@@ -17,6 +17,7 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
     
     let previousSender: String?
     let previousDate: Date?
+    let previousTypeId: Int?
     
     init(from chatMessage: ChatMessage, previousMessage: ChatMessageDTO? = nil) {
         self.messageUUID = chatMessage.chatMessageUUID ?? ""
@@ -28,9 +29,11 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
         if let previousMessage = previousMessage {
             self.previousSender = previousMessage.messageSender.userUUID ?? ""
             self.previousDate = previousMessage.messageSentAt
+            self.previousTypeId = previousMessage.messageTypeId
         } else {
             self.previousSender = nil
             self.previousDate = nil
+            self.previousTypeId = nil
         }
     }
     
@@ -44,10 +47,15 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
         self.messageSender = chatMessage.userDTO ?? UserDTO(userUUID: "", userFullName: "Deleted User", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: false, userIsStaff: false)
         self.previousSender = nil
         self.previousDate = nil
+        self.previousTypeId = nil
     }
     
     func isMessageWithinPrevious() -> Bool {
-        guard let previousSender = self.previousSender, let previousDate = self.previousDate else { return false }
+        guard let previousSender = self.previousSender,
+              let previousDate = self.previousDate,
+              self.messageTypeId != 5,
+              self.previousTypeId != 5
+              else { return false }
         
         return self.messageSender.userUUID ?? "" == previousSender && (Calendar.current.dateComponents([.minute], from: previousDate, to: self.messageSentAt).minute ?? 0) <= 7
     }
