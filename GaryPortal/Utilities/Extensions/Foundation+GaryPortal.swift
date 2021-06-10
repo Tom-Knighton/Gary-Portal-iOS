@@ -86,20 +86,6 @@ extension String: Identifiable {
         
         return []
     }
-    
-    func convertToAttributedHyperlinks() -> NSAttributedString {
-        let urls = self.getUrls()
-        
-        let attributedString = NSMutableAttributedString(string: self)
-        for url in urls {
-            let range = attributedString.mutableString.range(of: url.absoluteString)
-            attributedString.addAttributes([.link: url], range: range)
-        }
-        
-        attributedString.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body)], range: attributedString.mutableString.range(of: self))
-        attributedString.addAttributes([.foregroundColor: UIColor.label], range: attributedString.mutableString.range(of: self))
-        return attributedString
-    }
 }
 
 extension Character {

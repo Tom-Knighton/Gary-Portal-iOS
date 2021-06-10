@@ -21,12 +21,21 @@ struct ChatConversationView: View {
             Color("Section").edgesIgnoringSafeArea(.all)
             VStack(spacing: 0) {
                 ScrollViewReader { reader in
-                    GPChatListView(messages: self.datasource.messages, isLoading: self.datasource.canLoadMore, onScrolledToTop: self.datasource.loadMoreContent)
-                    .onChange(of: self.datasource.messages.count, perform: { _ in
-                        if let lastMessage = self.datasource.messages.first {
-                            reader.scrollTo(lastMessage.chatMessageUUID ?? "", anchor: .bottom)
+                    GPReverseList(self.datasource.messages, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
+                        VStack {
+                            let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
+                            let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
+                            ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message, previousMessage: ChatMessageDTO(from: lastMessage)))
+                                .id(message.chatMessageUUID)
+                                .padding(.bottom, message.chatMessageUUID == self.datasource.messages.last?.chatMessageUUID ? 8 : 0)
                         }
-                    })
+                    }
+                    .onChange(of: self.datasource.lastMessageUUID) { newValue in
+                        reader.scrollTo(newValue)
+                    }
+                    .onChange(of: self.datasource.canLoadMore) { newValue in
+                        self.showPaginate = newValue
+                    }
                 }
                 ChatMessageBar { result in
                 }
@@ -53,16 +62,17 @@ struct GPChatListView: View {
     let messages: [ChatMessage]
     let isLoading: Bool
     let onScrolledToTop: () -> Void
-    
+
     var body: some View {
         ScrollView {
             LazyVStack {
                 ForEach(self.messages.reversed(), id: \.chatMessageUUID) { message in
-                    let previousMessage = self.messages.after(message)
-                    let previousDTO: ChatMessageDTO? = ChatMessageDTO(from: previousMessage)
-                    ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message, previousMessage: previousDTO))
+//                    let previousMessage = self.messages.after(message)
+//                    let previousDTO: ChatMessageDTO? = ChatMessageDTO(from: previousMessage)
+                    ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message))
                         .onAppear {
                             if self.messages.last == message {
+                                print("scrolled to top")
                                 self.onScrolledToTop()
                             }
                         }

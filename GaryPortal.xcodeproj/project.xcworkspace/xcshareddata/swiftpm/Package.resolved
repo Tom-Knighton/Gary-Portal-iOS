@@ -11,21 +11,12 @@
         }
       },
       {
-        "package": "AttributedText",
-        "repositoryURL": "https://github.com/gonzalezreal/AttributedText",
-        "state": {
-          "branch": null,
-          "revision": "bf076de48dbb2172525486936d512e1bba062642",
-          "version": "0.3.0"
-        }
-      },
-      {
         "package": "Bugsnag",
         "repositoryURL": "https://github.com/bugsnag/bugsnag-cocoa",
         "state": {
           "branch": null,
-          "revision": "981cc251cc8006b1291533258293e3431d620ae1",
-          "version": "6.9.1"
+          "revision": "ca5cdd3bfb65ca8d437968ed3c38d0c9384d973a",
+          "version": "6.9.5"
         }
       },
       {

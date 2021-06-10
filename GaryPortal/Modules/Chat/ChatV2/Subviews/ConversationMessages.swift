@@ -6,55 +6,43 @@
 //
 
 import SwiftUI
-import AttributedText
 import LinkPresentation
 import AVKit
 
 struct ConversationMessageView: View {
     
     @State var chatMessageDTO: ChatMessageDTO
-    
     var body: some View {
-        ZStack {
-            let isWithinPrevious = self.chatMessageDTO.isMessageWithinPrevious()
-            VStack {
+        let isWithinPrevious = self.chatMessageDTO.isMessageWithinPrevious()
+        VStack {
+            HStack(alignment: .top) {
                 if !isWithinPrevious {
-                    Spacer().frame(height: 8)
+                    AsyncImage(url: self.chatMessageDTO.messageSender.userProfileImageUrl ?? "")
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+                } else {
+                    Spacer().frame(width: 58)
                 }
-                HStack(alignment: .top) {
-                    Spacer().frame(width: 8)
+                VStack(spacing: 0) {
                     if !isWithinPrevious {
-                        AsyncImage(url: chatMessageDTO.messageSender.userProfileImageUrl ?? "")
-                            .frame(width: 50, height: 50, alignment: .bottom)
-                            .clipShape(Circle())
-                    } else {
-                        Spacer().frame(width: 58)
-                    }
-                   
-                    VStack(spacing: 0) {
-                        if !isWithinPrevious {
-                            HStack {
-                                Text(chatMessageDTO.messageSender.userFullName ?? "")
-                                    .bold()
-                                Text(chatMessageDTO.messageSentAt.niceDateAndTime())
-                                    .font(.caption)
-                                    .frame(alignment: .center)
-                                Spacer()
-                            }
-                            
+                        HStack {
+                            Text(self.chatMessageDTO.messageSender.userFullName ?? "[Deleted User]")
+                                .bold()
+                            Text(self.chatMessageDTO.messageSentAt.niceDateAndTime())
+                                .font(.caption)
+                                .frame(alignment: .center)
+                            Spacer()
                         }
-                        content
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, 0)
-                            .padding(.top, isWithinPrevious ? 0 : 8)
-//                        Text(self.chatMessageDTO.messageRawContent)
                     }
-                    .frame(maxWidth: .infinity, alignment: .top)
-                    Spacer().frame(width: 8)
+                    content
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(.vertical, 0)
                 }
+                .frame(maxWidth: .infinity)
             }
         }
-        
+        .padding(.top, isWithinPrevious ? 0 : 12)
+        .padding(.horizontal, 8)
     }
     
     @State var previewToggle = false
@@ -69,7 +57,7 @@ struct ConversationMessageView: View {
                     Text(self.chatMessageDTO.messageRawContent)
                         .font(.system(size: 40))
                 } else {
-                    AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                    LinkedText(self.chatMessageDTO.messageRawContent)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
                         URLPreview(previewURL: url, togglePreview: $previewToggle)
@@ -93,7 +81,7 @@ struct ConversationMessageView: View {
                     .frame(maxHeight: 400)
                     .cornerRadius(10)
             } else {
-                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                LinkedText(self.chatMessageDTO.messageRawContent)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         case 4:
@@ -102,7 +90,7 @@ struct ConversationMessageView: View {
         case 5:
             // Bot Message
             VStack {
-                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                LinkedText(self.chatMessageDTO.messageRawContent)
                     .frame(maxWidth: .infinity, alignment: .center)
                 ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
                     URLPreview(previewURL: url, togglePreview: $previewToggle)
@@ -119,7 +107,7 @@ struct ConversationMessageView: View {
                 .frame(width: 70, height: 70)
         default:
             VStack {
-                AttributedText(self.chatMessageDTO.messageRawContent.convertToAttributedHyperlinks())
+                LinkedText(self.chatMessageDTO.messageRawContent)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
                     URLPreview(previewURL: url, togglePreview: $previewToggle)

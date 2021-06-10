@@ -148,10 +148,10 @@ class ChatMessagesViewModel: ObservableObject {
                 var messagesToInsert: [ChatMessage] = []
                 newMessages.forEach { message in
                     if self.messages.contains(where: { $0.chatMessageUUID == message.chatMessageUUID }) == false {
-                        messagesToInsert.append(message)
+                        messagesToInsert.insert(message, at: 0)
                     }
                 }
-                self.messages.append(contentsOf: messagesToInsert)
+                self.messages.insert(contentsOf: messagesToInsert, at: 0)
                 self.lastMessageDate = newMessages.last?.messageCreatedAt ?? Date()
                 self.lastMessageUUID = newMessages.first?.chatMessageUUID ?? ""
                 if newMessages.count < 30 {

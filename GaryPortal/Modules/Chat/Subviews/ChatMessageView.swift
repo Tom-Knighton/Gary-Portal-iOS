@@ -289,7 +289,7 @@ struct ChatMessageView: View {
     
     @ViewBuilder
     func buildText(content: String) -> some View {
-        LinkedText(content)
+        Text(content)
     }
     
     func goToProfile() {
