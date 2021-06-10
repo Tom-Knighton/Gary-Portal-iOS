@@ -31,7 +31,7 @@ struct ChatConversationView: View {
                         }
                     }
                     .onChange(of: self.datasource.lastMessageUUID) { newValue in
-                        reader.scrollTo(newValue)
+                        reader.scrollTo(newValue, anchor: .bottom)
                     }
                     .onChange(of: self.datasource.canLoadMore) { newValue in
                         self.showPaginate = newValue
