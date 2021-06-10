@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import SwiftDate
 import ImageIO
-import AttributedText
 
 extension String: Identifiable {
     

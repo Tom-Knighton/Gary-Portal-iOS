@@ -112,12 +112,19 @@ struct ConversationMessageView: View {
         case 5:
             // Bot Message
             VStack {
-                LinkedText(self.chatMessageDTO.messageRawContent)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
-                    URLPreview(previewURL: url, togglePreview: $previewToggle)
-                        .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                if self.chatMessageDTO.messageRawContent.trim().hasSuffix(".gif") {
+                    GIFView(gifUrl: self.chatMessageDTO.messageRawContent)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(maxWidth: 250, maxHeight: 400)
+                } else {
+                    LinkedText(self.chatMessageDTO.messageRawContent)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    ForEach(self.chatMessageDTO.messageRawContent.getUrls(), id: \.self) { url in
+                        URLPreview(previewURL: url, togglePreview: $previewToggle)
+                            .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                    }
                 }
+                
             }
             .cornerRadius(10)
             .padding()
