@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -94,6 +94,7 @@
 		E2A554DD260B8EC80086B66C /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554DC260B8EC80086B66C /* Sticker.swift */; };
 		E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E0260B90400086B66C /* StickerPickerView.swift */; };
 		E2A554E4260B96160086B66C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A554E3260B96160086B66C /* SearchBar.swift */; };
+		E2A78A242650350C0023E922 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2A78A232650350C0023E922 /* ActionClosurable */; };
 		E2ABC7BA25B0CE7F00EB1B22 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ABC7B925B0CE7F00EB1B22 /* ProfileView.swift */; };
 		E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736625B062DA00CDB422 /* View+GaryPortal.swift */; };
 		E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB736B25B06DCD00CDB422 /* GPTextField.swift */; };
@@ -118,7 +119,6 @@
 		E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F3282125F6C10000F744E9 /* PinchToZoom.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
-		E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F925D2C62F007A0775 /* ActionClosurable */; };
 		E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492FF25D2D08C007A0775 /* SwiftDate */; };
 		E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = E2F4930225D2F140007A0775 /* SignalRClient */; };
 		E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4930425D2F1C7007A0775 /* ChatHub.swift */; };
@@ -170,7 +170,7 @@
 		E227A59A264864BE0061446F /* ChatConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationView.swift; sourceTree = "<group>"; };
 		E227A59D264866B30061446F /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
 		E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAditLogView.swift; sourceTree = "<group>"; };
-		E23100A925AF6F8E00739E9E /* GaryPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaryPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gary Portal - Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23100AC25AF6F8E00739E9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E23100B025AF6F8E00739E9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -292,8 +292,8 @@
 				E2DB20AD2606A69900F507AB /* Bugsnag in Frameworks */,
 				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
-				E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
+				E2A78A242650350C0023E922 /* ActionClosurable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,7 +331,7 @@
 		E23100AA25AF6F8E00739E9E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E23100A925AF6F8E00739E9E /* GaryPortal.app */,
+				E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */,
 				E2249D6A2606974400969824 /* GPNotifcations.appex */,
 			);
 			name = Products;
@@ -614,6 +614,7 @@
 				E2249D662606974400969824 /* Sources */,
 				E2249D672606974400969824 /* Frameworks */,
 				E2249D682606974400969824 /* Resources */,
+				E2274B7E26724ECA003D6278 /* Bump Bundle Version Script */,
 			);
 			buildRules = (
 			);
@@ -631,6 +632,7 @@
 				E23100A525AF6F8E00739E9E /* Sources */,
 				E23100A625AF6F8E00739E9E /* Frameworks */,
 				E23100A725AF6F8E00739E9E /* Resources */,
+				E2274B7D26724E91003D6278 /* Bump Bundle Version Script */,
 				E23B21DF25C354B5007E0629 /* Embed Frameworks */,
 				E22B7D7225E523A8004824F5 /* Embed App Extensions */,
 			);
@@ -644,13 +646,13 @@
 				E2BB737725B090C800CDB422 /* CropViewController */,
 				E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */,
 				E2F492F425D2BEED007A0775 /* Introspect */,
-				E2F492F925D2C62F007A0775 /* ActionClosurable */,
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
 				E2F4930225D2F140007A0775 /* SignalRClient */,
 				E2DB20AC2606A69900F507AB /* Bugsnag */,
+				E2A78A232650350C0023E922 /* ActionClosurable */,
 			);
 			productName = GaryPortal;
-			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
+			productReference = E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -683,10 +685,10 @@
 				E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
-				E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 				E2DB20AB2606A69900F507AB /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */,
+				E2A78A222650350C0023E922 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -722,6 +724,47 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E2274B7D26724E91003D6278 /* Bump Bundle Version Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bump Bundle Version Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
+		E2274B7E26724ECA003D6278 /* Bump Bundle Version Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bump Bundle Version Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E2249D662606974400969824 /* Sources */ = {
@@ -874,7 +917,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 4.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.GPNotifcations;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.dev.GPNotifcations;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -1025,7 +1068,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1041,8 +1084,8 @@
 				);
 				MARKETING_VERSION = 4.1.2;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.dev;
+				PRODUCT_NAME = "Gary Portal - Beta";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1070,7 +1113,7 @@
 				MARKETING_VERSION = 4.1.2;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Gary Portal";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1118,6 +1161,14 @@
 				minimumVersion = 4.0.1;
 			};
 		};
+		E2A78A222650350C0023E922 /* XCRemoteSwiftPackageReference "ActionClosurable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/takasek/ActionClosurable.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 		E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
@@ -1140,14 +1191,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.1.2;
-			};
-		};
-		E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:takasek/ActionClosurable.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.0;
 			};
 		};
 		E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
@@ -1174,6 +1217,11 @@
 			package = E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
 			productName = SwiftKeychainWrapper;
 		};
+		E2A78A232650350C0023E922 /* ActionClosurable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2A78A222650350C0023E922 /* XCRemoteSwiftPackageReference "ActionClosurable" */;
+			productName = ActionClosurable;
+		};
 		E2BB737725B090C800CDB422 /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
@@ -1188,11 +1236,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		E2F492F925D2C62F007A0775 /* ActionClosurable */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */;
-			productName = ActionClosurable;
 		};
 		E2F492FF25D2D08C007A0775 /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;

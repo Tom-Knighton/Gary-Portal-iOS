@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "ActionClosurable",
-        "repositoryURL": "git@github.com:takasek/ActionClosurable.git",
+        "repositoryURL": "https://github.com/takasek/ActionClosurable.git",
         "state": {
           "branch": null,
           "revision": "a1a589cd4189768c0ac7a49da7296d95a7f4f914",
