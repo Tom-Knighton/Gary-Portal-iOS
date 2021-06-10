@@ -124,7 +124,6 @@
 		E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F3282125F6C10000F744E9 /* PinchToZoom.swift */; };
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
-		E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F925D2C62F007A0775 /* ActionClosurable */; };
 		E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492FF25D2D08C007A0775 /* SwiftDate */; };
 		E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = E2F4930225D2F140007A0775 /* SignalRClient */; };
 		E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4930425D2F1C7007A0775 /* ChatHub.swift */; };
@@ -305,7 +304,6 @@
 				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
 				E23F4B2C2635F5D400CA4087 /* AlertToast in Frameworks */,
-				E2F492FA25D2C62F007A0775 /* ActionClosurable in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -688,7 +686,6 @@
 				E2BB737725B090C800CDB422 /* CropViewController */,
 				E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */,
 				E2F492F425D2BEED007A0775 /* Introspect */,
-				E2F492F925D2C62F007A0775 /* ActionClosurable */,
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
 				E2F4930225D2F140007A0775 /* SignalRClient */,
 				E23F4B2B2635F5D400CA4087 /* AlertToast */,
@@ -727,7 +724,6 @@
 				E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
-				E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 				E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */,
@@ -766,45 +762,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		E241B40025E02BD300B15219 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
-		};
-		E2BF2D34260D01FA0070E91F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E2249D662606974400969824 /* Sources */ = {
@@ -1237,14 +1194,6 @@
 				minimumVersion = 0.1.2;
 			};
 		};
-		E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:takasek/ActionClosurable.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.0;
-			};
-		};
 		E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/malcommac/SwiftDate";
@@ -1283,11 +1232,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		E2F492F925D2C62F007A0775 /* ActionClosurable */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2F492F825D2C62F007A0775 /* XCRemoteSwiftPackageReference "ActionClosurable" */;
-			productName = ActionClosurable;
 		};
 		E2F492FF25D2D08C007A0775 /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;

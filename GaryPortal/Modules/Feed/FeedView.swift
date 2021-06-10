@@ -47,14 +47,14 @@ struct FeedView: View {
                         .listStyle(PlainListStyle())
                         .listSeparatorStyle(.none)
                         .introspectTableView { (tableView) in
-                            tableView.refreshControl = UIRefreshControl { refreshControl in
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                    self.datasource.reset()
-                                    self.datasource.loadAditLogs()
-                                    self.datasource.loadMoreContent()
-                                    refreshControl.endRefreshing()
-                                }
-                            }
+//                            tableView.refreshControl = UIRefreshControl { refreshControl in
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                                    self.datasource.reset()
+//                                    self.datasource.loadAditLogs()
+//                                    self.datasource.loadMoreContent()
+//                                    refreshControl.endRefreshing()
+//                                }
+//                            }
                         }
                     }
                 }
