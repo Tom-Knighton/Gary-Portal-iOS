@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -159,7 +159,7 @@
 		E2249D6E2606974400969824 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2249D7626069EA400969824 /* GPNotifcations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GPNotifcations.entitlements; sourceTree = "<group>"; };
 		E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAditLogView.swift; sourceTree = "<group>"; };
-		E23100A925AF6F8E00739E9E /* GaryPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GaryPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gary Portal - Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23100AC25AF6F8E00739E9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E23100B025AF6F8E00739E9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 		E23100AA25AF6F8E00739E9E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E23100A925AF6F8E00739E9E /* GaryPortal.app */,
+				E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */,
 				E2249D6A2606974400969824 /* GPNotifcations.appex */,
 			);
 			name = Products;
@@ -555,6 +555,7 @@
 				E2249D662606974400969824 /* Sources */,
 				E2249D672606974400969824 /* Frameworks */,
 				E2249D682606974400969824 /* Resources */,
+				E2274B7E26724ECA003D6278 /* Bump Bundle Version Script */,
 			);
 			buildRules = (
 			);
@@ -572,6 +573,7 @@
 				E23100A525AF6F8E00739E9E /* Sources */,
 				E23100A625AF6F8E00739E9E /* Frameworks */,
 				E23100A725AF6F8E00739E9E /* Resources */,
+				E2274B7D26724E91003D6278 /* Bump Bundle Version Script */,
 				E23B21DF25C354B5007E0629 /* Embed Frameworks */,
 				E22B7D7225E523A8004824F5 /* Embed App Extensions */,
 			);
@@ -591,7 +593,7 @@
 				E2A78A232650350C0023E922 /* ActionClosurable */,
 			);
 			productName = GaryPortal;
-			productReference = E23100A925AF6F8E00739E9E /* GaryPortal.app */;
+			productReference = E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -663,6 +665,47 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E2274B7D26724E91003D6278 /* Bump Bundle Version Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bump Bundle Version Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
+		E2274B7E26724ECA003D6278 /* Bump Bundle Version Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bump Bundle Version Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E2249D662606974400969824 /* Sources */ = {
@@ -806,7 +849,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 4.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.GPNotifcations;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.dev.GPNotifcations;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -957,7 +1000,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -973,8 +1016,8 @@
 				);
 				MARKETING_VERSION = 4.1.2;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray.dev;
+				PRODUCT_NAME = "Gary Portal - Beta";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1002,7 +1045,7 @@
 				MARKETING_VERSION = 4.1.2;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aroundme.AlMurray;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Gary Portal";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
