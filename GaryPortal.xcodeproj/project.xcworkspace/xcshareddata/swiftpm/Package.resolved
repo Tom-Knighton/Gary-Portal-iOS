@@ -11,7 +11,7 @@
         }
       },
       {
-        "package": "Bugsnag",
+        "package": "bugsnag-cocoa",
         "repositoryURL": "https://github.com/bugsnag/bugsnag-cocoa",
         "state": {
           "branch": null,
@@ -20,7 +20,7 @@
         }
       },
       {
-        "package": "SignalRClient",
+        "package": "SignalR-Client-Swift",
         "repositoryURL": "https://github.com/moozzyk/SignalR-Client-Swift",
         "state": {
           "branch": null,
@@ -47,7 +47,7 @@
         }
       },
       {
-        "package": "Introspect",
+        "package": "SwiftUI-Introspect",
         "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect.git",
         "state": {
           "branch": null,
