@@ -57,45 +57,6 @@ struct ChatConversationView: View {
     }
 }
 
-struct GPChatListView: View {
-    
-    let messages: [ChatMessage]
-    let isLoading: Bool
-    let onScrolledToTop: () -> Void
-
-    var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(self.messages.reversed(), id: \.chatMessageUUID) { message in
-//                    let previousMessage = self.messages.after(message)
-//                    let previousDTO: ChatMessageDTO? = ChatMessageDTO(from: previousMessage)
-                    ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message))
-                        .onAppear {
-                            if self.messages.last == message {
-                                print("scrolled to top")
-                                self.onScrolledToTop()
-                            }
-                        }
-                        .id(message.chatMessageUUID)
-                }
-            }
-        }
-    }
-}
-
-struct Spinner: UIViewRepresentable {
-    let style: UIActivityIndicatorView.Style
-    
-    func makeUIView(context: Context) -> UIActivityIndicatorView {
-        let spinner = UIActivityIndicatorView(style: style)
-            spinner.hidesWhenStopped = true
-            spinner.startAnimating()
-            return spinner
-        }
-        
-        func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {}
-}
-
 struct convpreview: PreviewProvider {
     
     static var previews: some View {
