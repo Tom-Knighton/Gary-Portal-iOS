@@ -12,6 +12,7 @@ import Photos
 struct ContentView: View {
     
     @ObservedObject var garyPortal = GaryPortal.shared
+    let drawerManager = PartialSheetManager()
     
     var body: some View {
        
@@ -45,6 +46,7 @@ struct ContentView: View {
                 }
                 .navigationViewStyle(StackNavigationViewStyle())
                 .edgesIgnoringSafeArea(.all)
+                .addPartialSheet()
                 .onAppear {
                     UIApplication.shared.addTapGestureRecognizer()
                 }
@@ -69,6 +71,7 @@ struct ContentView: View {
                 }
             }
         }
+        .environmentObject(drawerManager)
     }
 }
 

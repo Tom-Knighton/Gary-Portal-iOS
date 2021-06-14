@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ChatMessageBar: View {
     
+    @EnvironmentObject var partialSheetManager: PartialSheetManager
+
     @State var text: String = ""
     @State var showStickerView = false
     @State var showCameraView = false
@@ -96,15 +98,6 @@ struct ChatMessageBar: View {
             .onAppear {
                 UITextView.appearance().backgroundColor = .clear
             }
-            
-            if self.showStickerView {
-                StickerPickerView(showBtn: false) { stickerURL in
-                    self.sendMessage(overrideText: stickerURL, isStickerURL: true)
-                }
-                .frame(maxHeight: 500)
-                .transition(.move(edge: .bottom))
-                .animation(.easeInOut)
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .shouldEndEditing)) { _ in
             self.toggleStickerView(override: false)
@@ -114,6 +107,15 @@ struct ChatMessageBar: View {
                 self.showCameraView = false
                 self.sendMessage(overrideText: urlToAsset?.absoluteString, isImageURL: !isVideo, isVideoURL: isVideo)
             }
+        }
+        .partialSheet(isPresented: $showStickerView) {
+            StickersView { url in
+                self.sendMessage(overrideText: url, isImageURL: false, isVideoURL: false, isStickerURL: true)
+                withAnimation {
+                    self.partialSheetManager.closePartialSheet()
+                }
+            }
+            .frame(maxHeight: 500)
         }
     }
     

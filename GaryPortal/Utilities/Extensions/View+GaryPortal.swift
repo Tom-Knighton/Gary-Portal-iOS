@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 import UIKit
+import Introspect
 
 extension UIView {
     func bindFrameToSuperviewBounds(percentageMultiplier: CGFloat = 1) {
@@ -155,6 +156,15 @@ extension View {
                     offsetValue.wrappedValue = 0
                 }
             }
+    }
+    
+    func introspectTextView(customize: @escaping (UITextView) -> ()) -> some View {
+        return inject(UIKitIntrospectionView(selector: { introspectionView in
+            guard let viewHost = Introspect.findViewHost(from: introspectionView) else {
+               return nil
+           }
+           return Introspect.previousSibling(containing: UITextView.self, from: viewHost)
+        }, customize: customize))
     }
 }
 

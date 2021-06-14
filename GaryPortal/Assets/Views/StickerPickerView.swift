@@ -29,8 +29,7 @@ class StickerPickerDataSource: ObservableObject {
 }
 
 struct StickerPickerView: View {
-    @ObservedObject var datasource = StickerPickerDataSource()
-    @State var filterText = ""
+
     @Environment(\.presentationMode) var presentationMode
     var showCloseBtn: Bool
     
@@ -39,26 +38,13 @@ struct StickerPickerView: View {
     init(showBtn: Bool = true, _ completion: @escaping (_ urlToSticker: String) -> ()) {
         self.onSelectedSticker = completion
         self.showCloseBtn = showBtn
-        self.datasource.loadStickers()
     }
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                SearchBar(text: $filterText)
-                LazyVGrid(columns: [
-                    GridItem(.flexible(minimum: 100, maximum: 150)),
-                    GridItem(.flexible(minimum: 100, maximum: 150)),
-                    GridItem(.flexible(minimum: 100, maximum: 150)),
-                ], spacing: 12) {
-                    ForEach(datasource.filteredStickers(filter: self.filterText), id: \.self) { sticker in
-                        Button(action: { self.onSelectedSticker(sticker.stickerURL ?? "") }) {
-                            AsyncImage(url: sticker.stickerURL ?? "")
-                                .aspectRatio(contentMode: .fit)
-                        }
-                    }
-                }.padding(.horizontal, 12)
-            }
+            StickersView({ urlSticker in
+                self.onSelectedSticker(urlSticker)
+            })
             .navigationTitle("Stickers")
             .toolbar(content: {
                 ToolbarItem(placement: .destructiveAction) {
@@ -71,6 +57,36 @@ struct StickerPickerView: View {
                     }
                 }
             })
+        }
+    }
+}
+
+struct StickersView: View {
+    
+    @ObservedObject var datasource = StickerPickerDataSource()
+    @State var filterText = ""
+    
+    var onSelectedSticker: (_ urlToSticker: String) -> ()
+    init(_ completion: @escaping (_ urlToSticker: String) -> ()) {
+        self.onSelectedSticker = completion
+        self.datasource.loadStickers()
+    }
+    
+    var body: some View {
+        ScrollView {
+            SearchBar(text: $filterText)
+            LazyVGrid(columns: [
+                GridItem(.flexible(minimum: 100, maximum: 150)),
+                GridItem(.flexible(minimum: 100, maximum: 150)),
+                GridItem(.flexible(minimum: 100, maximum: 150)),
+            ], spacing: 12) {
+                ForEach(datasource.filteredStickers(filter: self.filterText), id: \.self) { sticker in
+                    Button(action: { self.onSelectedSticker(sticker.stickerURL ?? "") }) {
+                        AsyncImage(url: sticker.stickerURL ?? "")
+                            .aspectRatio(contentMode: .fit)
+                    }
+                }
+            }.padding(.horizontal, 12)
         }
     }
 }

@@ -61,6 +61,12 @@
 		E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */; };
 		E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1D925DD636A00C16E18 /* Merge.swift */; };
 		E278E1DC25DDC71000C16E18 /* ListSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E278E1DB25DDC71000C16E18 /* ListSeparator.swift */; };
+		E27A2894267543B500AC3A94 /* PartialSheetViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27A288D267543B500AC3A94 /* PartialSheetViewModifier.swift */; };
+		E27A2895267543B500AC3A94 /* BlurEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27A288E267543B500AC3A94 /* BlurEffectView.swift */; };
+		E27A2896267543B500AC3A94 /* PartialSheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27A288F267543B500AC3A94 /* PartialSheetManager.swift */; };
+		E27A2897267543B500AC3A94 /* PartialSheetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27A2890267543B500AC3A94 /* PartialSheetStyle.swift */; };
+		E27A2898267543B500AC3A94 /* View+PartialSheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27A2891267543B500AC3A94 /* View+PartialSheetModifier.swift */; };
+		E27A2899267543B500AC3A94 /* View+IfDeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27A2892267543B500AC3A94 /* View+IfDeviceType.swift */; };
 		E28084D225E96926008599B0 /* GPWhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28084D125E96926008599B0 /* GPWhatsNew.swift */; };
 		E2813A7E2605084100E395E9 /* FeedDataSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A7D2605084100E395E9 /* FeedDataSources.swift */; };
 		E2813A9726050B6D00E395E9 /* NSURLResponse+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2813A8026050B6C00E395E9 /* NSURLResponse+Haneke.swift */; };
@@ -217,6 +223,12 @@
 		E278E1D725DD5ABB00C16E18 /* UploadFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFeedView.swift; sourceTree = "<group>"; };
 		E278E1D925DD636A00C16E18 /* Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merge.swift; sourceTree = "<group>"; };
 		E278E1DB25DDC71000C16E18 /* ListSeparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSeparator.swift; sourceTree = "<group>"; };
+		E27A288D267543B500AC3A94 /* PartialSheetViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialSheetViewModifier.swift; sourceTree = "<group>"; };
+		E27A288E267543B500AC3A94 /* BlurEffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurEffectView.swift; sourceTree = "<group>"; };
+		E27A288F267543B500AC3A94 /* PartialSheetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialSheetManager.swift; sourceTree = "<group>"; };
+		E27A2890267543B500AC3A94 /* PartialSheetStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialSheetStyle.swift; sourceTree = "<group>"; };
+		E27A2891267543B500AC3A94 /* View+PartialSheetModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+PartialSheetModifier.swift"; sourceTree = "<group>"; };
+		E27A2892267543B500AC3A94 /* View+IfDeviceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+IfDeviceType.swift"; sourceTree = "<group>"; };
 		E28084D125E96926008599B0 /* GPWhatsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPWhatsNew.swift; sourceTree = "<group>"; };
 		E2813A7D2605084100E395E9 /* FeedDataSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataSources.swift; sourceTree = "<group>"; };
 		E2813A8026050B6C00E395E9 /* NSURLResponse+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURLResponse+Haneke.swift"; sourceTree = "<group>"; };
@@ -378,6 +390,7 @@
 		E23100C225AF6F9C00739E9E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E27A28892675439E00AC3A94 /* Partial Sheet */,
 				E2813A7F26050B6500E395E9 /* Cache */,
 				E2BB736525B062CC00CDB422 /* Extensions */,
 				E217756425B0CCA80006B7CA /* GaryPortalSwipeController.swift */,
@@ -484,6 +497,19 @@
 				E26C629325B0569900FC2D0D /* Montserrat-SemiBold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		E27A28892675439E00AC3A94 /* Partial Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				E27A288D267543B500AC3A94 /* PartialSheetViewModifier.swift */,
+				E27A288E267543B500AC3A94 /* BlurEffectView.swift */,
+				E27A288F267543B500AC3A94 /* PartialSheetManager.swift */,
+				E27A2890267543B500AC3A94 /* PartialSheetStyle.swift */,
+				E27A2891267543B500AC3A94 /* View+PartialSheetModifier.swift */,
+				E27A2892267543B500AC3A94 /* View+IfDeviceType.swift */,
+			);
+			path = "Partial Sheet";
 			sourceTree = "<group>";
 		};
 		E2813A7F26050B6500E395E9 /* Cache */ = {
@@ -799,6 +825,7 @@
 				E240D3BF25C01CCD00618E0B /* NSNotification+GaryPortal.swift in Sources */,
 				E2813A9B26050B6D00E395E9 /* Fetch.swift in Sources */,
 				E25C1DAB25B1AAC90046EA6C /* AdminService.swift in Sources */,
+				E27A2895267543B500AC3A94 /* BlurEffectView.swift in Sources */,
 				E25CC1BB25AF702B00B1FA55 /* Rank.swift in Sources */,
 				E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */,
 				E2E0FA1825D498620069E153 /* ChatMemberList.swift in Sources */,
@@ -831,10 +858,12 @@
 				E26A68A725B2D08800CD0662 /* StaffService.swift in Sources */,
 				E23B908525BB1DCB00C0C201 /* PlayerView.swift in Sources */,
 				E253732526095AF100EF6247 /* GPColourPicker.swift in Sources */,
+				E27A2898267543B500AC3A94 /* View+PartialSheetModifier.swift in Sources */,
 				E2813AA126050B6D00E395E9 /* Log.swift in Sources */,
 				E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */,
 				E23B907925B9C4AF00C0C201 /* Misc.swift in Sources */,
 				E2813AA826050B6D00E395E9 /* Fetcher.swift in Sources */,
+				E27A2897267543B500AC3A94 /* PartialSheetStyle.swift in Sources */,
 				E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */,
 				E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */,
 				E25CC1C025AF724400B1FA55 /* ZeroPage.swift in Sources */,
@@ -853,12 +882,15 @@
 				E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */,
 				E2813AA726050B6D00E395E9 /* Cache.swift in Sources */,
 				E249D98025D54B6C0056B027 /* CameraService.swift in Sources */,
+				E27A2899267543B500AC3A94 /* View+IfDeviceType.swift in Sources */,
 				E253732126094F5F00EF6247 /* GPCamTextView.swift in Sources */,
 				E278E1DA25DD636A00C16E18 /* Merge.swift in Sources */,
 				E242BE59264453F100003E9B /* ChatMessageView.swift in Sources */,
 				E227A59B264864BE0061446F /* ChatConversationView.swift in Sources */,
 				E217755B25B0BC4D0006B7CA /* HostController.swift in Sources */,
 				E26A68A125B22C5C00CD0662 /* SafariView.swift in Sources */,
+				E27A2894267543B500AC3A94 /* PartialSheetViewModifier.swift in Sources */,
+				E27A2896267543B500AC3A94 /* PartialSheetManager.swift in Sources */,
 				E244016A2645A5F100824E29 /* ChatHome.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
 				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
