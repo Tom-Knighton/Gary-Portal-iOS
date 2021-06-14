@@ -40,7 +40,6 @@ struct PartialSheet: ViewModifier {
         
         let calculatedTop =
             presenterContentRect.height +
-            topSafeArea +
             bottomSafeArea -
             sheetContentRect.height -
             handlerSectionHeight
@@ -251,8 +250,10 @@ extension PartialSheet {
                     Spacer()
                 }
                 .onPreferenceChange(SheetPreferenceKey.self, perform: { (prefData) in
-                    withAnimation(manager.defaultAnimation) {
-                        self.sheetContentRect = prefData.first?.bounds ?? .zero
+                    DispatchQueue.main.async {
+                        withAnimation(manager.defaultAnimation) {
+                            self.sheetContentRect = prefData.first?.bounds ?? .zero
+                        }
                     }
                 })
                 .frame(width: UIScreen.main.bounds.width)
@@ -406,15 +407,8 @@ struct PartialSheetAddView<Base: View, InnerContent: View>: View {
     @State var model = Model()
 
     var body: some View {
-        if #available(iOS 14.0, *) {
-            return AnyView(base
-                .onChange(of: isPresented, perform: {_ in updateContent() }))
-        } else {
-            if model.update(value: isPresented) {
-                DispatchQueue.main.async(execute: updateContent)
-            }
-            return AnyView(base)
-        }
+        base
+            .onChange(of: isPresented, perform: {_ in updateContent() })
     }
     
     func updateContent() {
@@ -437,5 +431,14 @@ struct PartialSheetAddView<Base: View, InnerContent: View>: View {
 public extension View {
     func partialSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
         PartialSheetAddView(isPresented: isPresented, content: content, base: self)
+    }
+    func partialSheet<Item, Content>(item: Binding<Item?>, @ViewBuilder content: @escaping (Item?) -> Content) -> some View where Item: Identifiable, Content: View {
+        PartialSheetAddView(isPresented: Binding(get: {
+            item.wrappedValue != nil
+        }, set: {
+            if $0 == false {
+                item.wrappedValue = nil
+            }
+        }), content: { content(item.wrappedValue) }, base: self)
     }
 }
