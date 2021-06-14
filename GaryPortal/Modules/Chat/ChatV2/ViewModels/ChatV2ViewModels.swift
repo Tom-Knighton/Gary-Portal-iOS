@@ -143,15 +143,15 @@ class ChatMessagesViewModel: ObservableObject {
         self.loadMoreContent()
     }
     
+    //MARK: Callable
     func loadMoreContent() {
         guard !isLoadingPage, canLoadMore else {
-            print("isloading page or cant load any more")
             return
         }
         
         self.isLoadingPage = true
         ChatService.getChatMessages(for: self.chatUUID, startingFrom: self.lastMessageDate, limit: 30) { newMessages, _ in
-            guard let newMessages = newMessages else { print("no messages"); return }
+            guard let newMessages = newMessages else { return }
             DispatchQueue.main.async {
                 var messagesToInsert: [ChatMessage] = []
                 newMessages.forEach { message in
@@ -179,12 +179,27 @@ class ChatMessagesViewModel: ObservableObject {
             return nil
         }
     }
+    
+    //MARK: SEND MESSAGE
+    func sendMessage(messageText: String, messageTypeId: Int) {
+        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chatUUID, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: messageText, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: messageTypeId, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+        ChatService.postNewMessage(message, to: self.chatUUID) { newMessage, error in
+            DispatchQueue.main.async {
+                guard let newMessage = newMessage,
+                      error == nil else {
+                    GaryPortal.shared.showNotification(data: GPNotificationData(title: "Error", subtitle: "An error occurred sending this message", image: "xmark.octagon", imageColor: .red, onTap:{}))
+                    return
+                }
+                self.messages.append(newMessage)
+                GaryPortal.shared.chatConnection?.sendMessage(newMessage.chatMessageUUID ?? "", to: self.chatUUID, from: newMessage.userUUID ?? "")
+                ChatService.postNotification(to: self.chatUUID, from: newMessage.userUUID ?? "", content: messageTypeId == 8 ? "sent a sticker" : messageTypeId == 1 ? "sent an image" : messageTypeId == 2 ? "sent a video" : newMessage.messageContent ?? "")
+            }
+        }
+    }
 }
 
 struct ChatMessageBarResult {
     
-    let isVideoURL: Bool
-    let isImageURL: Bool
-    let isStickerURL: Bool
+    let messageTypeId: Int
     let rawText: String
 }

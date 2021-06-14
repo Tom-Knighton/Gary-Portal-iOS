@@ -120,7 +120,8 @@ struct ChatMessageBar: View {
     }
     
     func sendMessage(overrideText: String? = nil, isImageURL: Bool = false, isVideoURL: Bool = false, isStickerURL: Bool = false) {
-        self.onSend(ChatMessageBarResult(isVideoURL: isVideoURL, isImageURL: isImageURL, isStickerURL: isStickerURL, rawText: overrideText ?? self.text))
+        let messageTypeId = isImageURL ? 2 : isVideoURL ? 3 : isStickerURL ? 8 : 1
+        self.onSend(ChatMessageBarResult(messageTypeId: messageTypeId, rawText: overrideText ?? self.text))
         if (overrideText == nil) {
             self.text = ""
         }

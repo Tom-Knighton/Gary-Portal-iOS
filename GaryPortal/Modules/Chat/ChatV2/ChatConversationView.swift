@@ -14,7 +14,7 @@ struct ChatConversationView: View {
     @StateObject var datasource = ChatMessagesViewModel()
     @State var paginate = false
     @State var showPaginate = true
-
+    
     var body: some View {
         let uuid = GaryPortal.shared.currentUser?.userUUID ?? ""
         ZStack {
@@ -43,6 +43,7 @@ struct ChatConversationView: View {
                     }
                 }
                 ChatMessageBar { result in
+                    self.datasource.sendMessage(messageText: result.rawText, messageTypeId: result.messageTypeId)
                 }
             }
         }
@@ -61,11 +62,3 @@ struct ChatConversationView: View {
         }
     }
 }
-
-struct convpreview: PreviewProvider {
-    
-    static var previews: some View {
-        ChatConversationView(chat: Chat(chatUUID: "0", chatName: "Test", chatIsProtected: false, chatIsPublic: false, chatIsDeleted: false, chatCreatedAt: Date(), chatMembers: [], chatMessages: [], lastChatMessage: nil))
-    }
-}
-

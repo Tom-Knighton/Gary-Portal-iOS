@@ -230,6 +230,7 @@ class ChatMessagesDataSource: ObservableObject {
                 self.messages.append(newMessage)
                 self.lastMessageUUID = newMessage.chatMessageUUID ?? ""
                 GaryPortal.shared.chatConnection?.sendMessage(newMessage.chatMessageUUID ?? "", to: newMessage.chatUUID ?? "", from: newMessage.userUUID ?? "")
+                    
             }
         }
     }
