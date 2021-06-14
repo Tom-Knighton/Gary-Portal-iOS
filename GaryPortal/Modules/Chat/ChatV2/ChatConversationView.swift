@@ -15,6 +15,8 @@ struct ChatConversationView: View {
     @State var paginate = false
     @State var showPaginate = true
     
+    @State var selectedMessage: ChatMessage? = nil
+        
     var body: some View {
         let uuid = GaryPortal.shared.currentUser?.userUUID ?? ""
         ZStack {
@@ -28,6 +30,9 @@ struct ChatConversationView: View {
                             ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message, previousMessage: ChatMessageDTO(from: lastMessage)))
                                 .id(message.chatMessageUUID)
                                 .padding(.bottom, message.chatMessageUUID == self.datasource.messages.last?.chatMessageUUID ? 8 : 0)
+                        }
+                        .onLongPressGesture {
+                            self.showMessageOptions(for: message)
                         }
                     }
                     .onChange(of: self.datasource.lastMessageUUID) { newValue in
@@ -65,5 +70,28 @@ struct ChatConversationView: View {
         .onAppear {
             self.datasource.setup(for: self.chat.chatUUID ?? "")
         }
+        .partialSheet(item: $selectedMessage) { message in
+            GPSheetOptionsView {
+                VStack {
+                    if message?.userUUID == GaryPortal.shared.currentUser?.userUUID {
+                        GPSheetOption(imageName: "pencil.circle", title: "Edit Message", isDestructive: false, action: {} )
+                    }
+                    GPSheetOption(imageName: "arrowshape.turn.up.left.2.circle", title: "Reply", isDestructive: false, action: {} )
+                    GPSheetOption(imageName: "doc.on.doc", title: "Copy Message Text", isDestructive: false, action: {} )
+                    if message?.userUUID == GaryPortal.shared.currentUser?.userUUID {
+                        GPSheetOption(imageName: "trash.circle", title: "Delete Message", isDestructive: true, action: {} )
+                    }
+                    GPSheetOption(imageName: "flag.circle", title: "Report Message", isDestructive: true, action: {} )
+                    GPSheetOption(title: "Dinosaur Game", isDestructive: false, action: {} )
+                }
+            }
+            .frame(minHeight: self.selectedMessage?.userUUID == GaryPortal.shared.currentUser?.userUUID ? 300 : 200)
+        }
+    }
+    
+    func showMessageOptions(for message: ChatMessage) {
+        self.selectedMessage = message
+        self.showOptionsSheet = true
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 }
