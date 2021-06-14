@@ -94,42 +94,48 @@ struct GPNotificationData {
     var subtitle: String
     var isChat: Bool = false
     var isFeed: Bool = false
+    var image: String? = nil
+    var imageColor: Color? = .primary
     var onTap: () -> ()
 }
 
 struct GPNotification: View {
     
+    @Environment(\.colorScheme) var colorScheme
     var data: GPNotificationData
     
     var body: some View {
         VStack {
-            HStack {
-                Spacer().frame(width: 8)
-                HStack {
-                    VStack(alignment: .center) {
-                        if !data.title.isEmptyOrWhitespace() {
-                            Text(data.title)
-                                .lineLimit(1)
-                                .font(.headline)
-                        }
-                        
-                        if !data.subtitle.isEmptyOrWhitespace() {
-                            Text(data.subtitle)
-                                .lineLimit(1)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                    }.padding(.horizontal)
+            HStack(spacing: 16) {
+                if let image = data.image {
+                    Image(systemName: image)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(data.imageColor)
+                        .frame(width: 28, height: 28)
                 }
-                .frame(minHeight: 56)
-                .padding(.horizontal, 8)
-                .background(Color("Section"))
-                .cornerRadius(28)
-                .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
-                Spacer().frame(width: 8)
+                        
+                VStack(alignment: .center) {
+                    Text(data.title)
+                        .lineLimit(1)
+                        .font(.headline)
+                        
+                    if let subtitle = data.subtitle {
+                        Text(subtitle)
+                            .lineLimit(1)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(data.image == nil ? .horizontal : .trailing)
             }
+            .padding(.horizontal)
+            .frame(height: 56)
+            .background(Color(colorScheme == .dark ? UIColor.secondarySystemBackground : UIColor.systemBackground))
+            .cornerRadius(28)
+            .shadow(color: Color(UIColor.black.withAlphaComponent(0.08)), radius: 8, x: 0, y: 4)
             .animation(.interactiveSpring())
+            .transition(.slide)
             .gesture(
                 TapGesture()
                     .onEnded {
@@ -141,9 +147,9 @@ struct GPNotification: View {
                                 GaryPortal.shared.hideNotification()
                             })
             )
-            
             Spacer()
         }
-        
+       
+            
     }
 }
