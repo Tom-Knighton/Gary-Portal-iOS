@@ -67,7 +67,6 @@ class ChatListViewModel: ObservableObject {
     
     private var cancellableBag = Set<AnyCancellable>()
     
-    
     init() {
         NotificationCenter.default.publisher(for: .newChatMessage)
             .sink { [weak self] notification in
@@ -131,12 +130,24 @@ class ChatListViewModel: ObservableObject {
 class ChatMessagesViewModel: ObservableObject {
     
     @Published var lastMessageUUID: String = ""
+    @Published var newMessageUUID: String = ""
     @Published var messages: [ChatMessage] = []
     @Published var hasLoadedFirstMessages = false
     var isLoadingPage = false
     var canLoadMore = true
     var chatUUID = ""
     var lastMessageDate = Date()
+    
+    private var cancellableBag = Set<AnyCancellable>()
+    
+    init() {
+        NotificationCenter.default.publisher(for: .newChatMessage)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] notification in
+                self?.onReceiveChatMessage(notification)
+            }
+            .store(in: &cancellableBag)
+    }
     
     func setup(for chatUUID: String) {
         self.chatUUID = chatUUID
@@ -190,9 +201,24 @@ class ChatMessagesViewModel: ObservableObject {
                     GaryPortal.shared.showNotification(data: GPNotificationData(title: "Error", subtitle: "An error occurred sending this message", image: "xmark.octagon", imageColor: .red, onTap:{}))
                     return
                 }
-                self.messages.append(newMessage)
                 GaryPortal.shared.chatConnection?.sendMessage(newMessage.chatMessageUUID ?? "", to: self.chatUUID, from: newMessage.userUUID ?? "")
                 ChatService.postNotification(to: self.chatUUID, from: newMessage.userUUID ?? "", content: messageTypeId == 8 ? "sent a sticker" : messageTypeId == 1 ? "sent an image" : messageTypeId == 2 ? "sent a video" : newMessage.messageContent ?? "")
+            }
+        }
+    }
+    
+    //MARK: OnReceive
+    private func onReceiveChatMessage(_ notification: Notification) {
+        guard let messageUUID = notification.userInfo?["messageUUID"] as? String else {
+            return
+        }
+        
+        ChatService.getChatMessage(by: messageUUID) { [weak self] message, error in
+            if let message = message {
+                DispatchQueue.main.async {
+                    self?.messages.append(message)
+                    self?.newMessageUUID = message.chatMessageUUID ?? ""
+                }
             }
         }
     }
