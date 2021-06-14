@@ -91,7 +91,6 @@ struct ChatConversationView: View {
     
     func showMessageOptions(for message: ChatMessage) {
         self.selectedMessage = message
-        self.showOptionsSheet = true
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 }
