@@ -16,6 +16,15 @@
 		E2249D712606974400969824 /* GPNotifcations.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E2249D6A2606974400969824 /* GPNotifcations.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E227A59B264864BE0061446F /* ChatConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E227A59A264864BE0061446F /* ChatConversationView.swift */; };
 		E227A59E264866B30061446F /* ChatMessageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E227A59D264866B30061446F /* ChatMessageBar.swift */; };
+		E229364B267A65E00099ACB2 /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E229364A267A65E00099ACB2 /* VideoViewModel.swift */; };
+		E2293658267A65EE0099ACB2 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E229364E267A65ED0099ACB2 /* VideoPlayerControlsView.swift */; };
+		E2293659267A65EE0099ACB2 /* VideoPlayerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E229364F267A65ED0099ACB2 /* VideoPlayerControl.swift */; };
+		E229365A267A65EE0099ACB2 /* VideoPlayerControlType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2293650267A65ED0099ACB2 /* VideoPlayerControlType.swift */; };
+		E229365B267A65EE0099ACB2 /* VideoPlayerContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2293651267A65ED0099ACB2 /* VideoPlayerContainerView.swift */; };
+		E229365C267A65EE0099ACB2 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2293653267A65ED0099ACB2 /* VideoPlayerView.swift */; };
+		E229365D267A65EE0099ACB2 /* VideoPlayerUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2293654267A65ED0099ACB2 /* VideoPlayerUIView.swift */; };
+		E229365F267A65EE0099ACB2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2293656267A65EE0099ACB2 /* ActivityIndicatorView.swift */; };
+		E2293660267A65EE0099ACB2 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2293657267A65EE0099ACB2 /* VideoView.swift */; };
 		E22C032A25DC6FD2001E78BC /* FeedAditLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */; };
 		E23100AD25AF6F8E00739E9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AC25AF6F8E00739E9E /* AppDelegate.swift */; };
 		E23100AF25AF6F8E00739E9E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23100AE25AF6F8E00739E9E /* SceneDelegate.swift */; };
@@ -176,6 +185,15 @@
 		E2249D7626069EA400969824 /* GPNotifcations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GPNotifcations.entitlements; sourceTree = "<group>"; };
 		E227A59A264864BE0061446F /* ChatConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationView.swift; sourceTree = "<group>"; };
 		E227A59D264866B30061446F /* ChatMessageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBar.swift; sourceTree = "<group>"; };
+		E229364A267A65E00099ACB2 /* VideoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
+		E229364E267A65ED0099ACB2 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
+		E229364F267A65ED0099ACB2 /* VideoPlayerControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerControl.swift; sourceTree = "<group>"; };
+		E2293650267A65ED0099ACB2 /* VideoPlayerControlType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlType.swift; sourceTree = "<group>"; };
+		E2293651267A65ED0099ACB2 /* VideoPlayerContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerContainerView.swift; sourceTree = "<group>"; };
+		E2293653267A65ED0099ACB2 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		E2293654267A65ED0099ACB2 /* VideoPlayerUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerUIView.swift; sourceTree = "<group>"; };
+		E2293656267A65EE0099ACB2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		E2293657267A65EE0099ACB2 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		E22C032925DC6FD2001E78BC /* FeedAditLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAditLogView.swift; sourceTree = "<group>"; };
 		E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gary Portal - Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E23100AC25AF6F8E00739E9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -331,6 +349,54 @@
 				E29E3528264C3F8C00956C46 /* ConversationMessages.swift */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		E2293648267A65C90099ACB2 /* Video Player */ = {
+			isa = PBXGroup;
+			children = (
+				E2293656267A65EE0099ACB2 /* ActivityIndicatorView.swift */,
+				E229364C267A65ED0099ACB2 /* Video Player */,
+				E2293657267A65EE0099ACB2 /* VideoView.swift */,
+				E2293649267A65E00099ACB2 /* View Models */,
+			);
+			path = "Video Player";
+			sourceTree = "<group>";
+		};
+		E2293649267A65E00099ACB2 /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				E229364A267A65E00099ACB2 /* VideoViewModel.swift */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
+		E229364C267A65ED0099ACB2 /* Video Player */ = {
+			isa = PBXGroup;
+			children = (
+				E229364D267A65ED0099ACB2 /* Video Player Controls */,
+				E2293651267A65ED0099ACB2 /* VideoPlayerContainerView.swift */,
+				E2293652267A65ED0099ACB2 /* Video Player View */,
+			);
+			path = "Video Player";
+			sourceTree = "<group>";
+		};
+		E229364D267A65ED0099ACB2 /* Video Player Controls */ = {
+			isa = PBXGroup;
+			children = (
+				E229364E267A65ED0099ACB2 /* VideoPlayerControlsView.swift */,
+				E229364F267A65ED0099ACB2 /* VideoPlayerControl.swift */,
+				E2293650267A65ED0099ACB2 /* VideoPlayerControlType.swift */,
+			);
+			path = "Video Player Controls";
+			sourceTree = "<group>";
+		};
+		E2293652267A65ED0099ACB2 /* Video Player View */ = {
+			isa = PBXGroup;
+			children = (
+				E2293653267A65ED0099ACB2 /* VideoPlayerView.swift */,
+				E2293654267A65ED0099ACB2 /* VideoPlayerUIView.swift */,
+			);
+			path = "Video Player View";
 			sourceTree = "<group>";
 		};
 		E23100A025AF6F8D00739E9E = {
@@ -589,6 +655,7 @@
 		E2BB736A25B06DC000CDB422 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E2293648267A65C90099ACB2 /* Video Player */,
 				E2DB20B026091BD900F507AB /* Camera */,
 				E2E0FA1525D47DAA0069E153 /* GPAlert.swift */,
 				E2E1FA9D25B1137100DE3B3C /* GPGradientButton.swift */,
@@ -814,14 +881,17 @@
 				E29E3529264C3F8C00956C46 /* ConversationMessages.swift in Sources */,
 				E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
+				E2293660267A65EE0099ACB2 /* VideoView.swift in Sources */,
 				E2813A9F26050B6D00E395E9 /* UIImage+Haneke.swift in Sources */,
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,
 				E2813AAB26050B6D00E395E9 /* CGSize+Swift.swift in Sources */,
 				E28DC01E25C7097F00A6EBEB /* ChatsRootView.swift in Sources */,
 				E2813AA426050B6D00E395E9 /* NetworkFetcher.swift in Sources */,
+				E229365A267A65EE0099ACB2 /* VideoPlayerControlType.swift in Sources */,
 				E2E0FA1025D42E960069E153 /* ChatMessagesView.swift in Sources */,
 				E2930CC125B6089700186364 /* Sounds.swift in Sources */,
+				E229365D267A65EE0099ACB2 /* VideoPlayerUIView.swift in Sources */,
 				E2F3282225F6C10000F744E9 /* PinchToZoom.swift in Sources */,
 				E244016D2645A60700824E29 /* ChatV2ViewModels.swift in Sources */,
 				E227A59E264866B30061446F /* ChatMessageBar.swift in Sources */,
@@ -842,6 +912,7 @@
 				E2813AA926050B6D00E395E9 /* NSFileManager+Haneke.swift in Sources */,
 				E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */,
 				E2813AA226050B6D00E395E9 /* UIView+Haneke.swift in Sources */,
+				E229364B267A65E00099ACB2 /* VideoViewModel.swift in Sources */,
 				E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */,
 				E26A68AA25B2D0C200CD0662 /* StaffRoomAnnouncement.swift in Sources */,
 				E28DC01B25C7090000A6EBEB /* ChatService.swift in Sources */,
@@ -867,11 +938,13 @@
 				E23B907925B9C4AF00C0C201 /* Misc.swift in Sources */,
 				E2813AA826050B6D00E395E9 /* Fetcher.swift in Sources */,
 				E27A2897267543B500AC3A94 /* PartialSheetStyle.swift in Sources */,
+				E229365B267A65EE0099ACB2 /* VideoPlayerContainerView.swift in Sources */,
 				E24D8B7425E1A11900E38F0B /* GaryPortalHub.swift in Sources */,
 				E2BB736C25B06DCD00CDB422 /* GPTextField.swift in Sources */,
 				E25CC1C025AF724400B1FA55 /* ZeroPage.swift in Sources */,
 				E25CC1BC25AF702B00B1FA55 /* UserAuthentication.swift in Sources */,
 				E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */,
+				E229365F267A65EE0099ACB2 /* ActivityIndicatorView.swift in Sources */,
 				E2813AAA26050B6D00E395E9 /* Data.swift in Sources */,
 				E278E1D825DD5ABB00C16E18 /* UploadFeedView.swift in Sources */,
 				E26C628A25B053BD00FC2D0D /* UserService.swift in Sources */,
@@ -883,6 +956,7 @@
 				E23B908225BA048000C0C201 /* FeedService.swift in Sources */,
 				E26A68A425B2630D00CD0662 /* StaffRoomView.swift in Sources */,
 				E2DB20B226091BEA00F507AB /* GPCamOverlay.swift in Sources */,
+				E2293659267A65EE0099ACB2 /* VideoPlayerControl.swift in Sources */,
 				E2813AA726050B6D00E395E9 /* Cache.swift in Sources */,
 				E249D98025D54B6C0056B027 /* CameraService.swift in Sources */,
 				E27A2899267543B500AC3A94 /* View+IfDeviceType.swift in Sources */,
@@ -896,6 +970,7 @@
 				E27A2896267543B500AC3A94 /* PartialSheetManager.swift in Sources */,
 				E24909742677D67A007FE1C1 /* GPOptionsSheet.swift in Sources */,
 				E244016A2645A5F100824E29 /* ChatHome.swift in Sources */,
+				E229365C267A65EE0099ACB2 /* VideoPlayerView.swift in Sources */,
 				E23B907E25B9CB3E00C0C201 /* FeedView.swift in Sources */,
 				E249D96925D53DF50056B027 /* GPCamera.swift in Sources */,
 				E25CC1B825AF702B00B1FA55 /* AppSettings.swift in Sources */,
@@ -913,6 +988,7 @@
 				E2813A9826050B6D00E395E9 /* String+Haneke.swift in Sources */,
 				E2813AA626050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift in Sources */,
 				E2D412592644319900D947B4 /* GPReverseList.swift in Sources */,
+				E2293658267A65EE0099ACB2 /* VideoPlayerControlsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

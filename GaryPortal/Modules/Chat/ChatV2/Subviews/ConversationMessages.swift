@@ -69,7 +69,7 @@ struct ConversationMessageView: View {
     
     
     @State var previewToggle = false
-    @State var playingVideo = false
+    
     @ViewBuilder
     var content: some View {
         switch self.chatMessageDTO.messageTypeId {
@@ -95,13 +95,13 @@ struct ConversationMessageView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 400)
                 .cornerRadius(10)
+                
         case 3:
             // Video Message
             if let url = URL(string: self.chatMessageDTO.messageRawContent) {
-                VideoPlayer(player: AVPlayer(url: url))
+                VideoPlayerContainerView(viewModel: VideoViewModel(video: Video(url: url)))
                     .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 400)
+                    .frame(height: 400)
                     .cornerRadius(10)
             } else {
                 LinkedText(self.chatMessageDTO.messageRawContent)

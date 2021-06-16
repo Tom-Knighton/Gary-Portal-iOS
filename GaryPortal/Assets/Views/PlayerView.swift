@@ -72,7 +72,6 @@ class PlayerUIView: UIView {
     
 }
 
-
 public enum PlayerViewGravity {
     case fit
     case fill
@@ -109,5 +108,4 @@ struct PlayerView: UIViewRepresentable {
         playerview.setup(url: url, gravity: gravity)
         return playerview
     }
-
 }
