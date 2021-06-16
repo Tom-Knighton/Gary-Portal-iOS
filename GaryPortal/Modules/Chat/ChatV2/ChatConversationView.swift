@@ -10,6 +10,8 @@ import Introspect
 
 struct ChatConversationView: View {
     
+    @EnvironmentObject var partialSheetManager: PartialSheetManager
+    
     @State var chat: Chat
     @StateObject var datasource = ChatMessagesViewModel()
     @State var paginate = false
@@ -24,6 +26,7 @@ struct ChatConversationView: View {
             VStack(spacing: 0) {
                 ScrollViewReader { reader in
                     GPReverseList(self.datasource.messages, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
+                        
                         VStack {
                             let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
                             let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
@@ -34,6 +37,7 @@ struct ChatConversationView: View {
                         .onLongPressGesture {
                             self.showMessageOptions(for: message)
                         }
+                        
                     }
                     .onChange(of: self.datasource.lastMessageUUID) { newValue in
                         reader.scrollTo(newValue, anchor: .bottom)
@@ -74,15 +78,15 @@ struct ChatConversationView: View {
             GPSheetOptionsView {
                 VStack {
                     if message?.userUUID == GaryPortal.shared.currentUser?.userUUID {
-                        GPSheetOption(imageName: "pencil.circle", title: "Edit Message", isDestructive: false, action: {} )
+                        GPSheetOption(imageName: "pencil.circle", title: "Edit Message", isDestructive: false, action: { self.editMessage(messageUUID: message?.chatMessageUUID ?? "") } )
                     }
-                    GPSheetOption(imageName: "arrowshape.turn.up.left.2.circle", title: "Reply", isDestructive: false, action: {} )
-                    GPSheetOption(imageName: "doc.on.doc", title: "Copy Message Text", isDestructive: false, action: {} )
+                    GPSheetOption(imageName: "arrowshape.turn.up.left.2.circle", title: "Reply", isDestructive: false, action: { self.replyToMessage(messageUUID: message?.chatMessageUUID ?? "") } )
+                    GPSheetOption(imageName: "doc.on.doc", title: "Copy Message Text", isDestructive: false, action: { self.copyMessageText(messageText: message?.messageContent ?? "") } )
                     if message?.userUUID == GaryPortal.shared.currentUser?.userUUID {
-                        GPSheetOption(imageName: "trash.circle", title: "Delete Message", isDestructive: true, action: {} )
+                        GPSheetOption(imageName: "trash.circle", title: "Delete Message", isDestructive: true, action: { self.deleteMessage(messageUUID: message?.chatMessageUUID ?? "") } )
                     }
-                    GPSheetOption(imageName: "flag.circle", title: "Report Message", isDestructive: true, action: {} )
-                    GPSheetOption(title: "Dinosaur Game", isDestructive: false, action: {} )
+                    GPSheetOption(imageName: "flag.circle", title: "Report Message", isDestructive: true, action: { self.reportMessage(messageUUID: message?.chatMessageUUID ?? "") } )
+                    GPSheetOption(title: "Dinosaur Game", isDestructive: false, action: { self.openDinoGame() } )
                 }
             }
             .frame(minHeight: self.selectedMessage?.userUUID == GaryPortal.shared.currentUser?.userUUID ? 300 : 200)
@@ -92,5 +96,40 @@ struct ChatConversationView: View {
     func showMessageOptions(for message: ChatMessage) {
         self.selectedMessage = message
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+    
+    //MARK: - Message Options
+    
+    func editMessage(messageUUID: String) {
+        //TODO: Scroll to message, send notification to message bar to start editing, save message (new endpoint)
+    }
+    
+    func replyToMessage(messageUUID: String) {
+        //TODO: Send notification that message bar should show replying status, add replyMessage to result bar
+    }
+    
+    func copyMessageText(messageText: String) {
+        UIPasteboard.general.string = messageText
+        GaryPortal.shared.showNotification(data: GPNotificationData(title: "Success", subtitle: "Copied message text", image: "doc.on.doc.fill", imageColor: .primary, onTap: {}))
+        withAnimation {
+            self.partialSheetManager.closePartialSheet()
+        }
+    }
+    
+    func deleteMessage(messageUUID: String) {
+        //TODO: Delete message and propogate
+    }
+    
+    func reportMessage(messageUUID: String) {
+        //TODO: Report options
+    }
+    
+    func openDinoGame() {
+        withAnimation {
+            self.partialSheetManager.closePartialSheet()
+        }
+        let safariView = UIHostingController(rootView: SafariView(url: GaryPortalConstants.URLs.DinoGameURL))
+        UIApplication.topViewController()?.present(safariView, animated: true, completion: nil)
+        
     }
 }
