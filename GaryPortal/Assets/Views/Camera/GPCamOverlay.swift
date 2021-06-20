@@ -159,7 +159,6 @@ class CamTextView: UIView {
                 let imageView: UIImageView = view is UIImageView ? (view as! UIImageView) : UIImageView(image: view.asImage())
                 
                 if imageView.alphaAtPoint(location) > 0 {
-                    print(view.description)
                     self.panningView = view
                     break
                 }

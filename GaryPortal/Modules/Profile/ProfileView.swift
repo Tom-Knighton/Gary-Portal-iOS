@@ -88,7 +88,6 @@ struct ProfileView: View {
         }
         .onAppear {
             self.datasource.setup(for: uuid)
-            print("on appear profile")
         }
         .alert(isPresented: $isShowingAlert, content: {
             Alert(title: Text(alertContent[0]), message: Text(alertContent[1]), dismissButton: .default(Text("Ok")))
