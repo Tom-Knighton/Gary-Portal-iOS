@@ -157,15 +157,6 @@ extension View {
                 }
             }
     }
-    
-    func introspectTextView(customize: @escaping (UITextView) -> ()) -> some View {
-        return inject(UIKitIntrospectionView(selector: { introspectionView in
-            guard let viewHost = Introspect.findViewHost(from: introspectionView) else {
-               return nil
-           }
-           return Introspect.previousSibling(containing: UITextView.self, from: viewHost)
-        }, customize: customize))
-    }
 }
 
 struct CornerRadiusStyle: ViewModifier {

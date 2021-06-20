@@ -18,6 +18,7 @@ struct ChatConversationView: View {
     @State var showPaginate = true
     
     @State var selectedMessage: ChatMessage? = nil
+    @State var reportMessageUUID: String? = nil
         
     var body: some View {
         let uuid = GaryPortal.shared.currentUser?.userUUID ?? ""
@@ -26,7 +27,7 @@ struct ChatConversationView: View {
             VStack(spacing: 0) {
                 ScrollViewReader { reader in
                     GPReverseList(self.datasource.messages, hasReachedTop: $paginate, canShowPaginator: $showPaginate) { message in
-                        
+
                         VStack {
                             let index = datasource.messages.firstIndex(where: { $0.chatMessageUUID == message.chatMessageUUID })
                             let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
@@ -37,7 +38,7 @@ struct ChatConversationView: View {
                         .onLongPressGesture {
                             self.showMessageOptions(for: message)
                         }
-                        
+
                     }
                     .onChange(of: self.datasource.lastMessageUUID) { newValue in
                         reader.scrollTo(newValue, anchor: .bottom)
@@ -61,6 +62,9 @@ struct ChatConversationView: View {
                 }
             }
         }
+        .fullScreenCover(item: $reportMessageUUID, content: { messageUUID in
+            GPReportView(reportType: .ChatMessage, toReportId: messageUUID)
+        })
         .navigationTitle(self.chat.getTitleToDisplay(for: uuid))
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: paginate, perform: { value in
@@ -121,7 +125,10 @@ struct ChatConversationView: View {
     }
     
     func reportMessage(messageUUID: String) {
-        //TODO: Report options
+        self.reportMessageUUID = messageUUID
+        withAnimation {
+            self.partialSheetManager.closePartialSheet()
+        }
     }
     
     func openDinoGame() {

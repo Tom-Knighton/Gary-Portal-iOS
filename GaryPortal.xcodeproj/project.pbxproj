@@ -677,6 +677,7 @@
 				E2D4125626433D8900D947B4 /* GPLinkPreview.swift */,
 				E2D412582644319900D947B4 /* GPReverseList.swift */,
 				E24909732677D67A007FE1C1 /* GPOptionsSheet.swift */,
+				E2293661267A82DD0099ACB2 /* GPReportView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -991,6 +992,7 @@
 				E2813AA626050B6D00E395E9 /* NSHTTPURLResponse+Haneke.swift in Sources */,
 				E2D412592644319900D947B4 /* GPReverseList.swift in Sources */,
 				E2293658267A65EE0099ACB2 /* VideoPlayerControlsView.swift in Sources */,
+				E2293663267A840C0099ACB2 /* GPReportView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1303,8 +1305,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.2;
+				branch = master;
+				kind = branch;
 			};
 		};
 		E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
