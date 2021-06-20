@@ -27,6 +27,5 @@ extension VideoPlayerView {
     }
     
     func updateUIView(_ uiView: VideoPlayerUIView, context: Context) {
-        
     }
 }

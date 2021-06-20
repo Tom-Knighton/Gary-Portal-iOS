@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/bugsnag/bugsnag-cocoa",
         "state": {
           "branch": null,
-          "revision": "ca5cdd3bfb65ca8d437968ed3c38d0c9384d973a",
-          "version": "6.9.5"
+          "revision": "981cc251cc8006b1291533258293e3431d620ae1",
+          "version": "6.9.1"
         }
       },
       {
@@ -50,9 +50,9 @@
         "package": "Introspect",
         "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect.git",
         "state": {
-          "branch": null,
-          "revision": "36ecf80429d00a4cd1e81fbfe4655b1d99ebd651",
-          "version": "0.1.2"
+          "branch": "master",
+          "revision": "72a509c93166540c0adf8323fd2652daade7f9f6",
+          "version": null
         }
       },
       {

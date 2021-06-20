@@ -12,6 +12,7 @@ import SwiftUI
 struct VideoPlayerContainerView: View {
     @ObservedObject var viewModel: VideoViewModel
     
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -54,8 +55,3 @@ struct VideoPlayerContainerView: View {
     }
 }
 
-struct VideoPlayerContainerView_Previews: PreviewProvider {
-    static var previews: some View {
-        VideoPlayerContainerView(viewModel: VideoViewModel(video: Video.sintel))
-    }
-}

@@ -20,25 +20,4 @@ struct Video {
     let url: URL?
 }
 
-struct VideoView: View {
-    @ObservedObject var viewModel = VideoViewModel(video: .sintel)
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            if self.viewModel.isExpanded {
-                VideoPlayerContainerView(viewModel: self.viewModel)
-            }
-            else {
-                VideoPlayerContainerView(viewModel: self.viewModel)
-                    .aspectRatio(1242.0 / 529.0, contentMode: .fit)
-            }
-        }
-        .statusBar(hidden: self.viewModel.isExpanded)
-    }
-}
 
-struct VideoView_Previews: PreviewProvider {
-    static var previews: some View {
-        VideoView()
-    }
-}

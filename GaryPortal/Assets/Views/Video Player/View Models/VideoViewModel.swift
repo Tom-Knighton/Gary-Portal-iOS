@@ -27,7 +27,7 @@ class VideoViewModel: ObservableObject {
     private var timeObserver: Any?
     private var controlTimer: Timer? = nil
     private var cancellables = Set<AnyCancellable>()
-    
+        
     init(video: Video) {
         self.video = video
         
@@ -40,6 +40,7 @@ class VideoViewModel: ObservableObject {
         self.subscribeToStatusPublisher()
         self.subscribeToTimeControlStatusPublisher()
         self.subscribeToIsMutedPublisher()
+        self.subscribeToDissapearPublisher()
     }
     
     deinit {
@@ -104,6 +105,15 @@ extension VideoViewModel {
             .sink { [weak self] isMuted in
                 self?.objectWillChange.send()
                 self?.startControlTimer()
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func subscribeToDissapearPublisher() {
+        NotificationCenter.default.publisher(for: .movedFromFeed)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.player.pause()
             }
             .store(in: &self.cancellables)
     }

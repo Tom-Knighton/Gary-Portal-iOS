@@ -16,11 +16,12 @@ struct FeedView: View {
     @State var isShowingCreator = false
     @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
 
-    init(){
-        UITableView.appearance().backgroundColor = .clear
-        UITableView.appearance().separatorStyle = .none
-        UITableViewCell.appearance().backgroundColor = .clear
-    }
+//    init(){
+//
+//        UITableView.appearance(whenContainedInInstancesOf: [UIHostingController(rootView: FeedView()).self]).backgroundColor = .clear
+//        UITableView.appearance().separatorStyle = .none
+//        UITableViewCell.appearance().backgroundColor = .clear
+//    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -35,30 +36,15 @@ struct FeedView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
             } else {
-                ZStack {
-                    VStack {
-                        List {
-                            AditLogView(datasource: datasource)
-                                .listRowBackground(Color.clear)
-                            FeedPostTable(dataSource: datasource)
-                            Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 100 : 30))
-                                .listRowBackground(Color.clear)
-                        }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .listStyle(PlainListStyle())
-                        .listSeparatorStyle(.none)
-                        .introspectTableView { (tableView) in
-                            tableView.refreshControl = UIRefreshControl { refreshControl in
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                    self.datasource.reset()
-                                    self.datasource.loadAditLogs()
-                                    self.datasource.loadMoreContent()
-                                    refreshControl.endRefreshing()
-                                }
-                            }
-                        }
+                ScrollView {
+                    LazyVStack {
+                        AditLogView(datasource: datasource)
+                        FeedPostTable(dataSource: datasource)
+                        Spacer().frame(height: (edges?.bottom ?? 0) + (edges?.bottom == 0 ? 100 : 30))
                     }
+                    .padding(.horizontal, 8)
                 }
+
                 VStack {
                     Spacer()
                     HStack {
@@ -130,7 +116,6 @@ struct AditLogView: View {
             }
         }
         .frame(maxHeight: 110)
-        .listRowBackground(Color.clear)
     }
     
     func uploadAditLog(isVideo: Bool, url: URL?) {
@@ -262,14 +247,12 @@ struct FeedPostTable: View {
                 }
             }
         }
-        .listRowBackground(Color.clear)
     }
 }
 
 struct PostMediaView: View {
     
     var post: FeedMediaPost
-    @State var isPlaying = false
     
     let disapperPub = NotificationCenter.default.publisher(for: .movedFromFeed)
     let appearPub = NotificationCenter.default.publisher(for: .goneToFeed)
@@ -279,35 +262,14 @@ struct PostMediaView: View {
             PostHeaderView(post: post)
             
             if post.isVideo == true {
-                PlayerView(url: post.postUrl ?? "", play: $isPlaying, gravity: .fit)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity, minHeight: 50, maxHeight: .infinity)
-                    .cornerRadius(15)
-                    .padding(8)
-                    .shadow(radius: 3)
-                    .onTapGesture {
-                        self.isPlaying = !self.isPlaying
-                    }
-                    .onAppear {
-                        self.isPlaying = false
-                    }
-                    .overlay(
-                        VStack {
-                            if !self.isPlaying {
-                                HStack {
-                                    Text(Image(systemName: "play.circle")) + Text("  Paused")
-                                }
-                                .foregroundColor(.white)
-                                .padding(.all, 8)
-                                .background(Color.black.opacity(0.4))
-                                .cornerRadius(10)
-                                .shadow(radius: 3)
-                            }
-                        }
-                    )
-                    .onDisappear {
-                        self.isPlaying = false
-                    }
+                if let url = URL(string: post.postUrl ?? "") {
+                    VideoPlayerContainerView(viewModel: VideoViewModel(video: Video(url: url)))
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity, minHeight: 50, maxHeight: .infinity)
+                        .cornerRadius(15)
+                        .padding(8)
+                        .shadow(radius: 3)
+                }
             } else {
                 AsyncImage(url: post.postUrl ?? "")
                     .aspectRatio(contentMode: .fit)
@@ -328,12 +290,6 @@ struct PostMediaView: View {
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(15)
-        .onReceive(disapperPub, perform: { _ in
-            self.isPlaying = false
-        })
-        .onReceive(appearPub, perform: { _ in
-            self.isPlaying = false
-        })
     }
     
     func getDescText() -> String {
