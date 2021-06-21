@@ -35,6 +35,7 @@ struct ChatConversationView: View {
                                 .id(message.chatMessageUUID)
                                 .padding(.bottom, message.chatMessageUUID == self.datasource.messages.last?.chatMessageUUID ? 8 : 0)
                         }
+                        .onTapGesture{ }
                         .onLongPressGesture {
                             self.showMessageOptions(for: message)
                         }
