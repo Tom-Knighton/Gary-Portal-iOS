@@ -119,7 +119,6 @@
 		E2BB737B25B0946F00CDB422 /* GaryPortal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737A25B0946F00CDB422 /* GaryPortal.swift */; };
 		E2BB737E25B0951500CDB422 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BB737D25B0951500CDB422 /* AuthService.swift */; };
 		E2C262FE25DECE99005DBCFA /* CreateChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C262FD25DECE99005DBCFA /* CreateChatView.swift */; };
-		E2C3D401267FC8EE00E03209 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C3D400267FC8EE00E03209 /* VideoView.swift */; };
 		E2D412522643280300D947B4 /* ChatMessageBarOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D412512643280300D947B4 /* ChatMessageBarOld.swift */; };
 		E2D4125526432C7A00D947B4 /* GPAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125426432C7A00D947B4 /* GPAvatarView.swift */; };
 		E2D4125726433D8900D947B4 /* GPLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4125626433D8900D947B4 /* GPLinkPreview.swift */; };
@@ -291,7 +290,6 @@
 		E2BB737A25B0946F00CDB422 /* GaryPortal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaryPortal.swift; sourceTree = "<group>"; };
 		E2BB737D25B0951500CDB422 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E2C262FD25DECE99005DBCFA /* CreateChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChatView.swift; sourceTree = "<group>"; };
-		E2C3D400267FC8EE00E03209 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		E2D412512643280300D947B4 /* ChatMessageBarOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBarOld.swift; sourceTree = "<group>"; };
 		E2D4125426432C7A00D947B4 /* GPAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAvatarView.swift; sourceTree = "<group>"; };
 		E2D4125626433D8900D947B4 /* GPLinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPLinkPreview.swift; sourceTree = "<group>"; };
@@ -357,7 +355,6 @@
 			isa = PBXGroup;
 			children = (
 				E2293656267A65EE0099ACB2 /* ActivityIndicatorView.swift */,
-				E2C3D400267FC8EE00E03209 /* VideoView.swift */,
 				E229364C267A65ED0099ACB2 /* Video Player */,
 				E2293649267A65E00099ACB2 /* View Models */,
 			);
@@ -884,7 +881,6 @@
 				E29E3529264C3F8C00956C46 /* ConversationMessages.swift in Sources */,
 				E2A554E1260B90400086B66C /* StickerPickerView.swift in Sources */,
 				E2BB736725B062DA00CDB422 /* View+GaryPortal.swift in Sources */,
-				E2C3D401267FC8EE00E03209 /* VideoView.swift in Sources */,
 				E2813A9F26050B6D00E395E9 /* UIImage+Haneke.swift in Sources */,
 				E241B3FF25E02B3F00B15219 /* Bundle+GaryPortal.swift in Sources */,
 				E2E1FA9E25B1137100DE3B3C /* GPGradientButton.swift in Sources */,

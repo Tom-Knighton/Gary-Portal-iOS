@@ -16,7 +16,7 @@ class VideoViewModel: ObservableObject {
     
     // MARK: Properties
     
-    @Published var video: Video
+    @Published var videoURL: URL
     @Published var player: AVPlayer
     @Published var timeControlStatus: AVPlayer.TimeControlStatus = .waitingToPlayAtSpecifiedRate
     @Published var isExpanded: Bool = false
@@ -28,14 +28,20 @@ class VideoViewModel: ObservableObject {
     private var controlTimer: Timer? = nil
     private var cancellables = Set<AnyCancellable>()
         
-    init(video: Video) {
-        self.video = video
+    init(videoURL: URL) {
+        self.videoURL = videoURL
         
-        let asset = AVAsset(url: video.url!)
+        let asset = AVAsset(url: videoURL)
         let playerItem = AVPlayerItem(asset: asset)
         
         self.player = AVPlayer(playerItem: playerItem)
-        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+        }
+        catch {
+            print("Setting category to AVAudioSessionCategoryPlayback failed.")
+        }
+        self.player.isMuted = false
         self.addTimeObserver()
         self.subscribeToStatusPublisher()
         self.subscribeToTimeControlStatusPublisher()

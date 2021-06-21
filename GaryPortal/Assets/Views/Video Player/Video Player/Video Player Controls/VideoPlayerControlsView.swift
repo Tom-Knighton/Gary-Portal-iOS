@@ -133,9 +133,3 @@ struct VideoPlayerControlsView: View {
         self.viewModel.player.seek(to: newTime, completionHandler: completionHandler)
     }
 }
-
-struct VideoPlayerControlsView_Previews: PreviewProvider {
-    static var previews: some View {
-        VideoPlayerControlsView(viewModel: VideoViewModel(video: Video.sintel))
-    }
-}

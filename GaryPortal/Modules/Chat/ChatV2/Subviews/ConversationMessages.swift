@@ -99,7 +99,7 @@ struct ConversationMessageView: View {
         case 3:
             // Video Message
             if let url = URL(string: self.chatMessageDTO.messageRawContent) {
-                VideoPlayerContainerView(viewModel: VideoViewModel(video: Video(url: url)))
+                VideoPlayerContainerView(viewModel: VideoViewModel(videoURL: url))
                     .cornerRadius(10)
                     .frame(height: 400)
                     .cornerRadius(10)

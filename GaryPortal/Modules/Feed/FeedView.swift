@@ -263,7 +263,7 @@ struct PostMediaView: View {
             
             if post.isVideo == true {
                 if let url = URL(string: post.postUrl ?? "") {
-                    VideoPlayerContainerView(viewModel: VideoViewModel(video: Video(url: url)))
+                    VideoPlayerContainerView(viewModel: VideoViewModel(videoURL: url))
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity, minHeight: 50, maxHeight: .infinity)
                         .cornerRadius(15)
