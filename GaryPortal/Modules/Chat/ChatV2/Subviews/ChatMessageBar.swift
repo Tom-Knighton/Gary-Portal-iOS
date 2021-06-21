@@ -105,7 +105,9 @@ struct ChatMessageBar: View {
         .fullScreenCover(isPresented: $showCameraView) {
             CameraView { success, isVideo, urlToAsset in
                 self.showCameraView = false
-                self.sendMessage(overrideText: urlToAsset?.absoluteString, isImageURL: !isVideo, isVideoURL: isVideo)
+                if success {
+                    self.sendMessage(overrideText: urlToAsset?.absoluteString, isImageURL: !isVideo, isVideoURL: isVideo)
+                }
             }
         }
         .partialSheet(isPresented: $showStickerView) {
