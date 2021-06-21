@@ -122,7 +122,11 @@ struct ChatConversationView: View {
     }
     
     func deleteMessage(messageUUID: String) {
-        //TODO: Delete message and propogate
+        self.datasource.deleteMessage(messageUUID)
+        withAnimation {
+            GaryPortal.shared.showNotification(data: GPNotificationData(title: "Success", subtitle: "The message was deleted", onTap: {}))
+            self.partialSheetManager.closePartialSheet()
+        }
     }
     
     func reportMessage(messageUUID: String) {

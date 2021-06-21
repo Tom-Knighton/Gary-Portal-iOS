@@ -147,6 +147,13 @@ class ChatMessagesViewModel: ObservableObject {
                 self?.onReceiveChatMessage(notification)
             }
             .store(in: &cancellableBag)
+        
+        NotificationCenter.default.publisher(for: .deleteChatMessage)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] notification in
+                self?.onMessageDeleted(notification)
+            }
+            .store(in: &cancellableBag)
     }
     
     func setup(for chatUUID: String) {
@@ -191,6 +198,11 @@ class ChatMessagesViewModel: ObservableObject {
         }
     }
     
+    func deleteMessage(_ messageUUID: String) {
+        ChatService.markMessageAsDeleted(messageUUID: messageUUID)
+        GaryPortal.shared.chatConnection?.deleteMessage(messageUUID, to: self.chatUUID)
+    }
+    
     //MARK: SEND MESSAGE
     func sendMessage(messageText: String, messageTypeId: Int) {
         let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chatUUID, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: messageText, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: messageTypeId, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
@@ -221,6 +233,14 @@ class ChatMessagesViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    private func onMessageDeleted(_ notification: Notification) {
+        guard let messageUUID = notification.userInfo?["messageUUID"] as? String else {
+            return
+        }
+        
+        self.messages.removeAll(where: { $0.chatMessageUUID == messageUUID })
     }
 }
 
