@@ -34,7 +34,7 @@ struct ChatConversationView: View {
                             let lastMessage = index == 0 ? nil : self.datasource.messages[(index ?? 0) - 1]
                             ConversationMessageView(chatMessageDTO: ChatMessageDTO(from: message, previousMessage: ChatMessageDTO(from: lastMessage)))
                                 .id(message.chatMessageUUID)
-                                .padding(.bottom, message.chatMessageUUID == self.datasource.messages.last?.chatMessageUUID ? 8 : 0)
+                                .padding(.bottom, message.chatMessageUUID == self.datasource.messages.last?.chatMessageUUID ? 32 : 0)
                         }
                         .onTapGesture{ }
                         .onLongPressGesture {
