@@ -412,9 +412,9 @@ struct PartialSheetAddView<Base: View, InnerContent: View>: View {
     }
     
     func updateContent() {
-        UIApplication.shared.endEditing()
         partialSheetManager.updatePartialSheet(isPresented: isPresented, content: content, onDismiss: {
             self.isPresented = false
+            UIApplication.shared.endEditing()
         })
     }
     

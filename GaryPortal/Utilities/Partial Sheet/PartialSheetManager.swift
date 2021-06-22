@@ -92,6 +92,9 @@ public class PartialSheetManager: ObservableObject {
         if let isPresented = isPresented {
             withAnimation(defaultAnimation) {
                 self.isPresented = isPresented
+                if isPresented {
+                    UIApplication.shared.endEditing()
+                }
             }
         }
     }
