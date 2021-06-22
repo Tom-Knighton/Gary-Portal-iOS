@@ -52,6 +52,7 @@ public class PartialSheetManager: ObservableObject {
      - parameter onDismiss: This code will be runned when the sheet is dismissed.
      */
     public func showPartialSheet<T>(_ onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> T) where T: View {
+        UIApplication.shared.endEditing()
         guard !isPresented else {
             withAnimation(defaultAnimation) {
                 updatePartialSheet(
