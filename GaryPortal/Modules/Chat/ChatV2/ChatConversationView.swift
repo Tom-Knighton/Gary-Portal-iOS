@@ -60,6 +60,7 @@ struct ChatConversationView: View {
                     }
                 }
                 ChatMessageBar(isReplying: $replyingMessageUUID) { result in
+                    self.replyingMessageUUID = nil
                     self.datasource.sendMessage(messageText: result.rawText, messageTypeId: result.messageTypeId, replyingToUUID: self.replyingMessageUUID)
                 }
             }
@@ -115,6 +116,7 @@ struct ChatConversationView: View {
         self.replyingMessageUUID = messageUUID
         withAnimation {
             self.partialSheetManager.closePartialSheet()
+            NotificationCenter.default.post(name: .chatMessageBarForceStartEditing, object: nil)
         }
     }
     

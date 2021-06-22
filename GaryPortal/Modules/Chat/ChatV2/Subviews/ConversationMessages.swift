@@ -15,6 +15,25 @@ struct ConversationMessageView: View {
     var body: some View {
         let isWithinPrevious = self.chatMessageDTO.isMessageWithinPrevious()
         VStack {
+            if self.chatMessageDTO.replyingToDTO != nil {
+                HStack {
+                    Spacer().frame(width: 16)
+                    Group {
+                        Image("reply-arrow")
+                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        Text("@\(self.chatMessageDTO.replyingToDTO?.userDTO?.userFullName ?? ""): ")
+                            .font(.system(size: 13))
+                            .bold()
+                            +
+                        Text(self.chatMessageDTO.messageRawContent)
+                            .font(.system(size: 13))
+                    }
+                    .lineLimit(2)
+                    .opacity(0.5)
+                    
+                    Spacer()
+                }
+            }
             HStack(alignment: .top) {
                 if !isWithinPrevious {
                     profileImage

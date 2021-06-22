@@ -9,6 +9,10 @@ import Foundation
 import Combine
 
 struct ChatMessageDTO: Codable, Hashable, Equatable {
+    static func == (lhs: ChatMessageDTO, rhs: ChatMessageDTO) -> Bool {
+        lhs.messageUUID == rhs.messageUUID
+    }
+    
     let messageUUID: String
     let messageRawContent: String
     let messageSender: UserDTO
@@ -18,6 +22,7 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
     let previousSender: String?
     let previousDate: Date?
     let previousTypeId: Int?
+    let replyingToDTO: ChatMessageReplyDTO?
     
     init(from chatMessage: ChatMessage, previousMessage: ChatMessageDTO? = nil) {
         self.messageUUID = chatMessage.chatMessageUUID ?? ""
@@ -25,6 +30,7 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
         self.messageSentAt = chatMessage.messageCreatedAt ?? Date()
         self.messageTypeId = chatMessage.messageTypeId ?? 1
         self.messageSender = chatMessage.userDTO ?? UserDTO(userUUID: "", userFullName: "Deleted User", userProfileImageUrl: "https://cdn.tomk.online/GaryPortal/AppLogo.png", userIsAdmin: false, userIsStaff: false)
+        self.replyingToDTO = chatMessage.replyingToDTO
         
         if let previousMessage = previousMessage {
             self.previousSender = previousMessage.messageSender.userUUID ?? ""
@@ -48,13 +54,15 @@ struct ChatMessageDTO: Codable, Hashable, Equatable {
         self.previousSender = nil
         self.previousDate = nil
         self.previousTypeId = nil
+        self.replyingToDTO = chatMessage.replyingToDTO
     }
     
     func isMessageWithinPrevious() -> Bool {
         guard let previousSender = self.previousSender,
               let previousDate = self.previousDate,
               self.messageTypeId != 5 && self.messageTypeId != 7,
-              self.previousTypeId != 5 && self.previousTypeId != 7
+              self.previousTypeId != 5 && self.previousTypeId != 7,
+              self.replyingToDTO == nil
               else { return false }
         
         return self.messageSender.userUUID ?? "" == previousSender && (Calendar.current.dateComponents([.minute], from: previousDate, to: self.messageSentAt).minute ?? 0) <= 7

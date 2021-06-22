@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ChatMessageBar: View {
     
@@ -18,6 +19,8 @@ struct ChatMessageBar: View {
     
     @Binding var replyingMessageUUID: String?
     
+    @State var shouldBecomeFirstResponder = false
+
     var onSend: (_ result: ChatMessageBarResult) -> ()
     
     init(isReplying: Binding<String?>, _ result: @escaping (_ result: ChatMessageBarResult) -> ()) {
@@ -62,6 +65,12 @@ struct ChatMessageBar: View {
                                 }
                             }
                         )
+                        .introspectTextView(customize: { textView in
+                            if self.shouldBecomeFirstResponder {
+                                textView.becomeFirstResponder()
+                                self.shouldBecomeFirstResponder = false
+                            }
+                        })
                         .cornerRadius(5)
                         .onTapGesture {
                             self.showStickerView = false
@@ -124,6 +133,9 @@ struct ChatMessageBar: View {
         .onReceive(NotificationCenter.default.publisher(for: .shouldEndEditing)) { _ in
             self.toggleStickerView(override: false)
         }
+        .onReceive(NotificationCenter.default.publisher(for: .chatMessageBarForceStartEditing), perform: { _ in
+            self.shouldBecomeFirstResponder = true
+        })
         .fullScreenCover(isPresented: $showCameraView) {
             CameraView { success, isVideo, urlToAsset in
                 self.showCameraView = false

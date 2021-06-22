@@ -27,4 +27,6 @@ extension NSNotification.Name {
     static let addTextLabelPressed = Notification.Name("addTextLabelBtnPressed")
     static let addStickerLabelPressed = Notification.Name("addStickerBtnPressed")
     static let textFieldStartedEditing = Notification.Name("textFieldStartedEditing")
+    
+    static let chatMessageBarForceStartEditing = Notification.Name("chatMessageBarForceStartEditing")
 }

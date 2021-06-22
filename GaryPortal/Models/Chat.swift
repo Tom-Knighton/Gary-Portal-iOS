@@ -177,7 +177,7 @@ struct ChatMessage: Codable, Identifiable, Equatable {
     }
 }
 
-struct ChatMessageReplyDTO: Codable {
+struct ChatMessageReplyDTO: Codable, Hashable {
     let chatMessageUUID: String?
     let userUUID: String?
     let messageContent: String?
