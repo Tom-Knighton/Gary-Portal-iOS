@@ -18,6 +18,7 @@ struct ChatConversationView: View {
     @State var showPaginate = true
     
     @State var selectedMessage: ChatMessage? = nil
+    @State var replyingMessageUUID: String? = nil
     @State var reportMessageUUID: String? = nil
         
     var body: some View {
@@ -58,8 +59,8 @@ struct ChatConversationView: View {
                         }
                     }
                 }
-                ChatMessageBar { result in
-                    self.datasource.sendMessage(messageText: result.rawText, messageTypeId: result.messageTypeId)
+                ChatMessageBar(isReplying: $replyingMessageUUID) { result in
+                    self.datasource.sendMessage(messageText: result.rawText, messageTypeId: result.messageTypeId, replyingToUUID: self.replyingMessageUUID)
                 }
             }
         }
@@ -107,10 +108,14 @@ struct ChatConversationView: View {
     
     func editMessage(messageUUID: String) {
         //TODO: Scroll to message, send notification to message bar to start editing, save message (new endpoint)
+        
     }
     
     func replyToMessage(messageUUID: String) {
-        //TODO: Send notification that message bar should show replying status, add replyMessage to result bar
+        self.replyingMessageUUID = messageUUID
+        withAnimation {
+            self.partialSheetManager.closePartialSheet()
+        }
     }
     
     func copyMessageText(messageText: String) {

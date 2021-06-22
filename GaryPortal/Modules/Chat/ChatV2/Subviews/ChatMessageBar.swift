@@ -16,14 +16,35 @@ struct ChatMessageBar: View {
     @State var showCameraView = false
     @State var previousValueWasEmpty = true
     
+    @Binding var replyingMessageUUID: String?
+    
     var onSend: (_ result: ChatMessageBarResult) -> ()
     
-    init(_ result: @escaping (_ result: ChatMessageBarResult) -> ()) {
+    init(isReplying: Binding<String?>, _ result: @escaping (_ result: ChatMessageBarResult) -> ()) {
+        self._replyingMessageUUID = isReplying
         self.onSend = result
     }
 
     var body: some View {
         VStack {
+            if self.replyingMessageUUID?.trim().isEmptyOrWhitespace() == false {
+                HStack {
+                    Spacer().frame(width: 8)
+                    Image(systemName: "xmark")
+                        .padding(8)
+                        .onTapGesture {
+                            self.replyingMessageUUID = nil
+                        }
+                    Text("Replying...")
+                    Spacer()
+                }
+                .transition(.opacity)
+                .animation(.easeInOut)
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: 1)
+                    .background(Color.black)
+            }
+            
             HStack {
                 Spacer().frame(width: 16)
                 HStack {
@@ -90,14 +111,15 @@ struct ChatMessageBar: View {
                 }
                 Spacer()
             }
-            .frame(maxWidth: .infinity, minHeight: 55)
-            .padding(.vertical, 8)
-            .background(Color("Section"))
-            .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
-            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: -6)
-            .onAppear {
-                UITextView.appearance().backgroundColor = .clear
-            }
+            
+        }
+        .frame(maxWidth: .infinity, minHeight: 55)
+        .padding(.vertical, 8)
+        .background(Color("Section"))
+        .cornerRadius(radius: 10, corners: [.topLeft, .topRight])
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: -6)
+        .onAppear {
+            UITextView.appearance().backgroundColor = .clear
         }
         .onReceive(NotificationCenter.default.publisher(for: .shouldEndEditing)) { _ in
             self.toggleStickerView(override: false)

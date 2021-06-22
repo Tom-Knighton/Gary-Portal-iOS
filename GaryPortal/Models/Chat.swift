@@ -133,6 +133,7 @@ struct ChatMessage: Codable, Identifiable, Equatable {
     let messageHasBeenEdited: Bool?
     let messageTypeId: Int?
     let messageIsDeleted: Bool?
+    let replyingToUUID: String?
     
     let user: User?
     let userDTO: UserDTO?

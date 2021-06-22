@@ -204,8 +204,8 @@ class ChatMessagesViewModel: ObservableObject {
     }
     
     //MARK: SEND MESSAGE
-    func sendMessage(messageText: String, messageTypeId: Int) {
-        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chatUUID, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: messageText, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: messageTypeId, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+    func sendMessage(messageText: String, messageTypeId: Int, replyingToUUID: String? = nil) {
+        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chatUUID, userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: messageText, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: messageTypeId, messageIsDeleted: false, replyingToUUID: replyingToUUID, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
         ChatService.postNewMessage(message, to: self.chatUUID) { newMessage, error in
             DispatchQueue.main.async {
                 guard let newMessage = newMessage,
