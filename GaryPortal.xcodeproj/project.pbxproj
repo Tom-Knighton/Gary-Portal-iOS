@@ -728,9 +728,9 @@
 				E23100A525AF6F8E00739E9E /* Sources */,
 				E23100A625AF6F8E00739E9E /* Frameworks */,
 				E23100A725AF6F8E00739E9E /* Resources */,
-				E2274B7D26724E91003D6278 /* Bump Bundle Version Script */,
 				E23B21DF25C354B5007E0629 /* Embed Frameworks */,
 				E22B7D7225E523A8004824F5 /* Embed App Extensions */,
+				E2274B7D26724E91003D6278 /* Bump Bundle Version Script */,
 			);
 			buildRules = (
 			);
@@ -858,7 +858,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1019,7 +1019,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 825;
+				CURRENT_PROJECT_VERSION = 1108;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = GPNotifcations/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
@@ -1042,7 +1042,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 825;
+				CURRENT_PROJECT_VERSION = 1108;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = GPNotifcations/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
@@ -1184,7 +1184,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 825;
+				CURRENT_PROJECT_VERSION = 1108;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
@@ -1212,7 +1212,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GaryPortal/GaryPortal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 825;
+				CURRENT_PROJECT_VERSION = 1108;
 				DEVELOPMENT_ASSET_PATHS = "\"GaryPortal/Preview Content\"";
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				ENABLE_PREVIEWS = YES;
