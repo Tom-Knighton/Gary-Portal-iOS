@@ -90,7 +90,7 @@ struct ChatView: View {
             if let imageURL = imageURL {
                 ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", photoURL: imageURL) { (url, error) in
                     if let url = url {
-                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 2, messageIsDeleted: false, replyingToUUID: nil, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
                         self.datasource.postNewMessage(message: assetMessage)
                         self.datasource.postNotification(for: "sent an image")
                     }
@@ -99,7 +99,7 @@ struct ChatView: View {
             if let videoURL = videoURL {
                 ChatService.uploadAttachment(to: self.chat.chatUUID ?? "", videoURL: videoURL) { (url, error) in
                     if let url = url {
-                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+                        let assetMessage = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: url, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 3, messageIsDeleted: false, replyingToUUID: nil, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
                         self.datasource.postNewMessage(message: assetMessage)
                         self.datasource.postNotification(for: "sent a video")
                     }
@@ -108,10 +108,10 @@ struct ChatView: View {
         }
 
         if !text.isEmptyOrWhitespace() || stickerURL != nil {
-            var message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+            var message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: self.textMessage.trim(), messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 1, messageIsDeleted: false, replyingToUUID: nil, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
 
             if hasMedia, let stickerURL = stickerURL {
-                message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: stickerURL, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 8, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+                message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: stickerURL, messageCreatedAt: Date(), messageHasBeenEdited: false, messageTypeId: 8, messageIsDeleted: false, replyingToUUID: nil, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
             }
 
             self.datasource.postNewMessage(message: message)
@@ -120,7 +120,7 @@ struct ChatView: View {
             if text.first == "?" {
                 ChatService.getBotMessageResponse(for: text) { (response, error) in
                     if let response = response {
-                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
+                        let message = ChatMessage(chatMessageUUID: "", chatUUID: self.chat.chatUUID ?? "", userUUID: GaryPortal.shared.currentUser?.userUUID ?? "", messageContent: response, messageCreatedAt: Date() + 1.seconds, messageHasBeenEdited: false, messageTypeId: 5, messageIsDeleted: false, replyingToUUID: nil, user: nil, userDTO: nil, chatMessageType: nil, replyingToDTO: nil)
                         self.datasource.postNewMessage(message: message)
                     }
                 }
