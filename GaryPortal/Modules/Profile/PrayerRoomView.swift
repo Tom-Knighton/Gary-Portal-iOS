@@ -35,7 +35,7 @@ struct PrayerRoomView: View {
                 
                 Spacer()
                 
-                if self.datasource.user?.userIsAdmin == true {
+                if self.datasource.user?.HasUserFlag(flagName: "Role.Admin") == true {
                     GPGradientButton(action: { adminClearPrayers() }, buttonText: "ADMIN: Clear All Prayers", gradientColours: adminGradient)
                 }
             }

@@ -44,7 +44,7 @@ class ProfileViewDataSource: ObservableObject {
 struct ProfileView: View {
     
     @Binding var uuid: String
-    @ObservedObject var datasource = ProfileViewDataSource()
+    @StateObject var datasource = ProfileViewDataSource()
     @State var edges = UIApplication.shared.windows.first?.safeAreaInsets
     
     @State var alertContent: [String] = []
@@ -209,5 +209,11 @@ struct ProfileView: View {
                 }
             }
         }
+    }
+}
+
+struct ProfilePreview: PreviewProvider {
+    static var previews: some View {
+        ProfileView(uuid: .constant(""))
     }
 }

@@ -66,7 +66,7 @@ struct ChatView: View {
                 }
             }
             
-            if (self.chat.chatIsProtected == true && GaryPortal.shared.currentUser?.userIsAdmin == true) || self.chat.chatIsProtected == false {
+            if (self.chat.chatIsProtected == true && GaryPortal.shared.currentUser?.HasUserFlag(flagName: "Role.Admin") == true) || self.chat.chatIsProtected == false {
                 ChatMessageBarView(content: $textMessage) { text, hasMedia, imageURL, videoURL, stickerURL in
                     
                     if hasMedia {
@@ -357,7 +357,7 @@ struct ChatMessageView: View {
                             .cornerRadius(10)
                         Spacer()
                     }
-                    .if(GaryPortal.shared.currentUser?.userIsStaff == true) {
+                    .if(GaryPortal.shared.currentUser?.HasUserFlag(flagName: "Role.Staff") == true) {
                         $0.contextMenu(menuItems: {
                             Button("Delete Bot Message") { self.deleteMessage() }
                         })

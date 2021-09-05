@@ -73,7 +73,7 @@ struct StaffRoomHome: View {
                             UserList(teamId: garyportal.currentUser?.userTeam?.teamId ?? 0)
                         })
                     
-                    if garyportal.currentUser?.userIsAdmin ?? true {
+                    if garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") ?? true {
                         GPGradientButton(action: { self.isShowingQueueList = true }, buttonText: "Manage Queue ➜", gradientColours: queueGradient)
                             .padding()
                             .sheet(isPresented: $isShowingQueueList, content: {
@@ -144,7 +144,7 @@ struct UserList: View {
                                 }, content: { (tappedUser) in
                                     EditUserView(editingUser: tappedUser)
                                 })
-                                .disabled((user.userIsAdmin ?? false) && garyportal.currentUser?.userIsAdmin == false)
+                                .disabled((user.userIsAdmin ?? false) && garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == false)
                         }
                     }
                     .padding()
@@ -160,7 +160,7 @@ struct UserList: View {
     }
     
     func loadView(queued: Bool = false) {
-        if garyportal.currentUser?.userIsAdmin == true {
+        if garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == true {
             self.teamId = 0
         }
         if queued {
@@ -239,7 +239,7 @@ struct AnnouncementsView: View {
                             Text("Copy Announcement")
                             Image(systemName: "doc.on.doc")
                         }
-                        if GaryPortal.shared.currentUser?.userIsAdmin == true {
+                        if GaryPortal.shared.currentUser?.HasUserFlag(flagName: "Role.Admin") == true {
                             Button(action: { self.deleteAnnouncement(announcementId: announcement.announcementId ?? 0) }) {
                                 Text("Delete Announcement")
                                 Image(systemName: "trash")

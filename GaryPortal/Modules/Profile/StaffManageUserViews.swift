@@ -108,11 +108,11 @@ struct EditUserView: View {
                             Text($0.teamName ?? "").tag(Optional($0))
                         }
                     }
-                    .foregroundColor(garyportal.currentUser?.userIsAdmin == true ? Color.blue : Color.red)
-                    .disabled(garyportal.currentUser?.userIsAdmin == false)
+                    .foregroundColor(garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == true ? Color.blue : Color.red)
+                    .disabled(garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == false)
                 }
                 
-                if garyportal.currentUser?.userIsAdmin == true {
+                if garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == true {
                     Section {
                         Toggle("Is User Queued: ", isOn: $isQueued)
                     }
@@ -149,8 +149,8 @@ struct EditUserView: View {
                         }
                     }
                 }
-                .foregroundColor(garyportal.currentUser?.userIsAdmin == true ? Color.blue : Color.red)
-                .disabled(garyportal.currentUser?.userIsAdmin == false)
+                .foregroundColor(garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == true ? Color.blue : Color.red)
+                .disabled(garyportal.currentUser?.HasUserFlag(flagName: "Role.Admin") == false)
                 
                 Section {
                     NavigationLink(destination: ManageUserBans(user: oldUser)) {
@@ -194,7 +194,7 @@ struct EditUserView: View {
             self.chosenTeam = self.oldUser?.userTeam?.team
             self.selectedAmigoRank = self.oldUser?.userRanks?.amigoRank
             self.selectedPositivityRank = self.oldUser?.userRanks?.positivityRank
-            self.isQueued = self.oldUser?.isQueued == true
+            self.isQueued = self.oldUser?.HasUserFlag(flagName: "IsInQueue") == true
         }
     }
     
@@ -219,7 +219,7 @@ struct EditUserView: View {
         let sameTeam = (oldUser?.userTeam?.teamId ?? 0) == chosenTeam?.teamId ?? 0
         let sameAmigoRank = (oldUser?.userRanks?.amigoRankId ?? 0) == selectedAmigoRank?.rankId ?? 0
         let samePositiveRank = (oldUser?.userRanks?.positivityRankId ?? 0) == selectedPositivityRank?.rankId ?? 0
-        let sameQueued = (oldUser?.isQueued == self.isQueued)
+        let sameQueued = (oldUser?.HasUserFlag(flagName: "IsInQueue") == self.isQueued)
 
         if sameUsername && sameSpanishName && sameAmigoPoints && samePositivePoints && sameTeam && sameAmigoRank && samePositiveRank && !tempUser.hasChosenImage && sameQueued {
             self.presentationMode.wrappedValue.dismiss()

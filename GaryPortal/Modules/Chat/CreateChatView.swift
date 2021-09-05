@@ -11,7 +11,7 @@ class CreateChatDataSource: ObservableObject {
     @Published var users: [UserDTO] = []
     
     func load() {
-        let teamId = GaryPortal.shared.currentUser?.userIsAdmin == true ? 0 : GaryPortal.shared.currentUser?.userTeam?.teamId ?? 0
+        let teamId = GaryPortal.shared.currentUser?.HasUserFlag(flagName: "Role.Admin") == true ? 0 : GaryPortal.shared.currentUser?.userTeam?.teamId ?? 0
         UserService.getAllUsers(for: teamId) { (users, error) in
             DispatchQueue.main.async {
                 self.users = (users?.compactMap { $0.ConvertToDTO() }) ?? []

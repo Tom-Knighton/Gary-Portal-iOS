@@ -54,14 +54,10 @@ class User: Codable, ObservableObject {
     let userQuote: String?
     var userBio: String?
     let userGender: String?
-    let userIsStaff: Bool?
-    let userIsAdmin: Bool?
     let userStanding: String?
     let userCreatedAt: Date?
     let userDateOfBirth: Date?
     let isDeleted: Bool?
-    let isQueued: Bool?
-    var notificationsMuted: Bool?
 
     let userAuthTokens: UserAuthenticationTokens?
     let userAuthentication: UserAuthentication?
@@ -72,8 +68,10 @@ class User: Codable, ObservableObject {
     var userBans: [UserBan]?
     var blockedUsers: [UserBlock]?
     
+    var userFlags: [UserFlag]?
+    
     public func ConvertToDTO() -> UserDTO {
-        return UserDTO(userUUID: self.userUUID, userFullName: self.userFullName, userProfileImageUrl: self.userProfileImageUrl, userIsAdmin: self.userIsAdmin, userIsStaff: self.userIsStaff)
+        return UserDTO(userUUID: self.userUUID, userFullName: self.userFullName, userProfileImageUrl: self.userProfileImageUrl, userIsAdmin: HasUserFlag(flagName: "Role.Admin"), userIsStaff: HasUserFlag(flagName: "Role.Staff"))
     }
 
     public func RemoveBan(banId: Int) {
@@ -87,6 +85,10 @@ class User: Codable, ObservableObject {
     public func getFirstBanOfType(banTypeId: Int) -> UserBan? {
         return self.userBans?.first(where: { $0.banTypeId == banTypeId && ($0.banExpires ?? Date()) > Date()})
     }
+    
+    public func HasUserFlag(flagName: String) -> Bool {
+        return userFlags?.contains(where: { $0.flag?.flagName?.lowercased() == flagName.lowercased()}) == true
+    }
 }
 
 struct UserTeam: Codable {
@@ -94,6 +96,21 @@ struct UserTeam: Codable {
     let userUUID: String?
     let teamId: Int?
     let team: Team?
+}
+
+struct Flag: Codable {
+    let flagId: Int?
+    let flagName: String?
+    let flagAccessLevel: Int?
+    let flagIsDeleted: Bool?
+}
+
+struct UserFlag: Codable {
+    let userUUID: String?
+    let flagId: Int?
+    let flagEnabled: Bool?
+    
+    let flag: Flag?
 }
 
 struct UserRanks: Codable {

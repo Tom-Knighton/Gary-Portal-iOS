@@ -65,7 +65,7 @@ struct ProfileSettingsView: View {
     }
     
     func saveSettings() {
-        guard let oldUsername = self.datasource.user?.userName, let oldEmail = self.datasource.user?.userAuthentication?.userEmail, let oldFullName = self.datasource.user?.userFullName, let oldMute = self.datasource.user?.notificationsMuted else { return }
+        guard let oldUsername = self.datasource.user?.userName, let oldEmail = self.datasource.user?.userAuthentication?.userEmail, let oldFullName = self.datasource.user?.userFullName, let oldMute = self.datasource.user?.HasUserFlag(flagName: "NotificationsMuted") else { return }
         
         if oldUsername != usernameText || oldEmail != emailText || oldFullName != fullNameText || hasChosenNewImage || oldMute != notificationsMuted {
             AuthService.isEmailFree(email: emailText.trim()) { (isEmailFree) in
@@ -336,7 +336,7 @@ struct AppSettingsView: View {
         .frame(maxWidth: .infinity)
         .background(Color("Section"))
         .onAppear {
-            self.notifications = datasource.user?.notificationsMuted ?? false
+            self.notifications = datasource.user?.HasUserFlag(flagName: "NotificationsMuted") ?? false
         }
         .sheet(item: $sheetDisplayMode) { item in
             if item == .rate {

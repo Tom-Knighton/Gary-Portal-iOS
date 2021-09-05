@@ -26,7 +26,7 @@ struct ContentView: View {
                         .padding()
                         .edgesIgnoringSafeArea(.all)
                 }
-            } else if self.garyPortal.currentUser?.isQueued == true {
+            } else if self.garyPortal.currentUser?.HasUserFlag(flagName: "IsInQueue") == true {
                 ZStack {
                     GradientBackground().edgesIgnoringSafeArea(.all)
                     Text("You are still in the queue, your account will be created by an admin shortly, hang in there!")

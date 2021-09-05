@@ -46,6 +46,8 @@ struct ProfileMiscView: View {
                     Button(action: { self.openSheet(.commandments) }) {
                         ProfileMiscViewCard(datasource: ProfileMiscCardData(headerText: "Commandments", subText: "Observe and follow the Gary Commandments, from Al Himself.", backgroundColours: [Color(UIColor(hexString: "#EB5757")), Color(UIColor(hexString: "#000000"))], textColor: .white))
                     }
+                    .isHidden(datasource.user?.HasUserFlag(flagName: "RestrictSilliness") == true, remove: true)
+                    
                     Button(action: { self.openSheet(.book) }) {
                         ProfileMiscViewCard(datasource: ProfileMiscCardData(headerText: "Computer Dating", subText: "Re-read the original prophecy", backgroundColours: [Color(UIColor(hexString: "#4568DC")), Color(UIColor(hexString: "#B06AB3"))], textColor: .white))
                     }

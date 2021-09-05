@@ -69,7 +69,7 @@ struct ProfileHeaderView: View {
 
             Spacer().frame(height: 8)
             if GaryPortal.shared.currentUser?.userUUID == datasource.user?.userUUID {
-                if GaryPortal.shared.currentUser?.userIsAdmin == true || GaryPortal.shared.currentUser?.userIsStaff == true {
+                if GaryPortal.shared.currentUser?.HasUserFlag(flagName: "Role.Admin") == true || GaryPortal.shared.currentUser?.HasUserFlag(flagName: "Role.Staff") == true {
                     GPGradientButton(action: { self.datasource.activeSheet = .staff }, buttonText: "Staff Panel", gradientColours: privilegedGradient)
                 } else {
                     GPGradientButton(action: { self.datasource.activeSheet = .website }, buttonText: "Visit Website", gradientColours: websiteGradient)
