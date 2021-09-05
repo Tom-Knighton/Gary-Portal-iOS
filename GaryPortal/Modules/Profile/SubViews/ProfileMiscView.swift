@@ -49,7 +49,7 @@ struct ProfileMiscView: View {
                     .isHidden(datasource.user?.HasUserFlag(flagName: "RestrictSilliness") == true, remove: true)
                     
                     Button(action: { self.openSheet(.book) }) {
-                        ProfileMiscViewCard(datasource: ProfileMiscCardData(headerText: "Computer Dating", subText: "Re-read the original prophecy", backgroundColours: [Color(UIColor(hexString: "#4568DC")), Color(UIColor(hexString: "#B06AB3"))], textColor: .white))
+                        ProfileMiscViewCard(datasource: ProfileMiscCardData(headerText: "Computer Dating", subText: "Re-read the  \(self.datasource.user?.HasUserFlag(flagName: "RestrictedSilliness") == true ? "book, you know the one." : "original prophecy.")", backgroundColours: [Color(UIColor(hexString: "#4568DC")), Color(UIColor(hexString: "#B06AB3"))], textColor: .white))
                     }
                     Button(action: {}) {
                         ProfileMiscViewCard(datasource: ProfileMiscCardData(headerText: "Calendar", subText: "What's happening? Who knows. The calendar probably does.", backgroundColours: [Color(UIColor(hexString: "#0B486B")), Color(UIColor(hexString: "#F56217"))], textColor: .white))
