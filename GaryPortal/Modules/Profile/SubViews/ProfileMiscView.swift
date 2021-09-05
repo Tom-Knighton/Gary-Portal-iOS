@@ -35,7 +35,7 @@ struct ProfileMiscView: View {
     var body: some View {
         HStack {
             ScrollView(.horizontal) {
-                LazyHStack {
+                LazyHStack(spacing: 8) {
                     Spacer().frame(width: 8)
                     Button(action: { self.openSheet(.prayer) }) {
                         ProfileMiscViewCard(datasource: ProfileMiscCardData(headerText: "Al Appreciation Centre", subText: "For all your appreciation needs", backgroundColours: [Color(UIColor(hexString: "#8E2DE2")), Color(UIColor(hexString: "#4A00E0"))], textColor: .white))
@@ -59,9 +59,10 @@ struct ProfileMiscView: View {
                     }
                     Spacer().frame(width: 8)
                 }
+                .padding()
             }
         }
-        .frame(height: 190)
+        .frame(height: 212)
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(20)
         .shadow(radius: 15)
