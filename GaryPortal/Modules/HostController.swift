@@ -134,7 +134,7 @@ extension HostController: GPSwipeControllerDataSource {
         profileView.view.backgroundColor = .clear
         newFeedView.view.backgroundColor = .clear
         gameView.view.backgroundColor = .clear
-        return [feedView, profileView, newFeedView, gameView]
+        return [feedView, profileView, newFeedView, /* gameView */]
     }
     
 }
