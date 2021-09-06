@@ -15,7 +15,7 @@ struct ProfileStatisticsView: View {
         let user = self.datasource.user
         ScrollView(.horizontal, showsIndicators: true) {
             VStack {
-                LazyHStack(spacing: 16) {
+                HStack(spacing: 16) {
                     ProfileStatisticCard(statisticName: "Amigo Points", statistic: String(describing: user?.userPoints?.amigoPoints ?? 0))
                     ProfileStatisticCard(statisticName: "Positive Points", statistic: String(describing: user?.userPoints?.positivityPoints ?? 0))
                     ProfileStatisticCard(statisticName: "Amigo Rank", statistic: user?.userRanks?.amigoRank?.rankName ?? "")
