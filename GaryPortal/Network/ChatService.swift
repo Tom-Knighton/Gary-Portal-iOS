@@ -11,12 +11,22 @@ import UIKit
 struct ChatService {
     
     static func getChats(for userUUID: String, completion: @escaping(([Chat]?, APIError?) -> Void)) {
+        let cache = Shared.JSONCache
+        cache.fetch(key: "usersChats").onSuccess { json in
+            if let cachedChats = try? json.decode(to: [Chat].self) {
+                completion(cachedChats, nil)
+            }
+        }
+        
         let request = APIRequest(method: .get, path: "chat/chats/\(userUUID)")
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):
                 if let response = try? response.decode(to: [Chat].self) {
                     completion(response.body, nil)
+                    if let chatsJson = response.body.encodeToJSONObject() {
+                        cache.set(value: chatsJson, key: "usersChats")
+                    }
                 } else {
                     completion(nil, .codingFailure)
                 }
