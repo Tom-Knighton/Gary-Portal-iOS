@@ -967,7 +967,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 825;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = GPNotifcations/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
@@ -991,7 +991,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = GPNotifcations/GPNotifcations.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 825;
+				CURRENT_PROJECT_VERSION = 1000;
 				DEVELOPMENT_TEAM = 8H3J46CN24;
 				INFOPLIST_FILE = GPNotifcations/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;

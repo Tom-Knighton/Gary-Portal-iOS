@@ -76,26 +76,46 @@ class FeedPostsDataSource: ObservableObject {
         guard !isLoadingPage, canLoadMore else {
             return
         }
-        
         isLoadingPage = true
+
+        let cache = Shared.JSONCache
+        
+        if isFirstLoad {
+            self.posts.removeAll()
+            cache.fetch(key: "firstFeedPosts").onSuccess { json in
+                if let cachedPosts = try? json.decode(to: [ClassWrapper<FeedFamily, FeedPost>].self) {
+                    cachedPosts.compactMap({ $0.object }).forEach { post in
+                        self.posts.append(post)
+                    }
+                }
+            }
+        }
         FeedService.getFeedPosts(startingFrom: lastDateFrom, limit: 10, teamId: GaryPortal.shared.currentUser?.userTeam?.teamId ?? 0) { (newPosts, error) in
             if error == nil && GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 3) == nil {
                 DispatchQueue.main.async {
+                    
+                    if self.isFirstLoad {
+                        self.posts.removeAll()
+                    }
+                    
                     newPosts?.forEach({ (newPost) in
                         if !self.posts.contains(where: { $0.postId == newPost.postId }) {
                             self.posts.append(newPost)
                         }
                     })
                     self.lastDateFrom = newPosts?.last?.postCreatedAt ?? Date()
-                    self.isLoadingPage = false
                     if (newPosts?.count ?? 0) < 9 {
                         self.canLoadMore = false
                     }
                     
                     if self.isFirstLoad {
-                        NotificationCenter.default.post(name: .movedFromFeed, object: nil)
                         self.isFirstLoad = false
+                        NotificationCenter.default.post(name: .movedFromFeed, object: nil)
+                        if let postsJson = newPosts?.encodeToJSONObject() {
+                            cache.set(value: postsJson, key: "firstFeedPosts")
+                        }
                     }
+                    self.isLoadingPage = false
                 }
             } else {
                 if error == APIError.feedBan || GaryPortal.shared.currentUser?.getFirstBanOfType(banTypeId: 3) != nil {
@@ -105,6 +125,7 @@ class FeedPostsDataSource: ObservableObject {
                 }
             }
         }
+        
     }
     
     @objc

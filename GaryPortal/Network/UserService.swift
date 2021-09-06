@@ -46,7 +46,16 @@ struct UserService {
     }
     
     static func getCurrentUser(completion: @escaping ((User?, APIError?) -> Void)) {
+        let cache = Shared.JSONCache
+        cache.fetch(key: "currentUser").onSuccess { json in
+            if let cacheUser = try? json.decode(to: User.self) {
+                completion(cacheUser, nil)
+            }
+        }
         UserService.getUser(with: KeychainWrapper.standard.string(forKey: "UUID") ?? "") { (user, error) in
+            if let user = user, let userJSON = user.encodeToJSONObject() {
+                cache.set(value: userJSON, key: "currentUser")
+            }
             completion(user, error)
         }
     }

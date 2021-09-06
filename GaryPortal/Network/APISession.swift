@@ -20,6 +20,26 @@ extension Encodable {
         let encoded = try? encoder.encode(self)
         return encoded
     }
+    
+    func encodeToJSONObject() -> JSON? {
+        guard let data = self.jsonEncode() else { return nil }
+        
+        return JSON.convertFromData(data)
+    }
+}
+
+extension JSON {
+    func decode<BodyType: Decodable>(to type: BodyType.Type) throws -> BodyType? {
+        guard let data = self.asData() else { return nil; }
+        
+        let decoder = JSONDecoder()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        let decoded = try decoder.decode(BodyType.self, from: data)
+        return decoded
+    }
 }
 
 extension APIResponse where Body == Data? {
