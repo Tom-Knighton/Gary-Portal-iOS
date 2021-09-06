@@ -29,8 +29,8 @@ class GameHub: HubConnectionDelegate {
             self.ttgStartGame()
         }
         
-        connection.on(method: "TTG_MovePlayed") { (uuid: String, row: Int, col: Int) in
-            self.ttgMovePlayed(uuid, row, col)
+        connection.on(method: "TTG_MovePlayed") { (uuid: String, cellId: String, symbol: String) in
+            self.ttgMovePlayed(uuid, cellId, symbol)
         }
         
         connection.on(method: "TTG_GameWon") { (uuid: String) in
@@ -92,8 +92,8 @@ class GameHub: HubConnectionDelegate {
         }
     }
     
-    func ttgPlayMove(code: String, uuid: String, row: Int, col: Int) {
-        self.connection.invoke(method: "TTGMakeMove", code, uuid, row, col) { (error) in
+    func ttgPlayMove(code: String, uuid: String, cellId: String) {
+        self.connection.invoke(method: "TTGMakeMove", code, uuid, cellId) { (error) in
             if let error = error { print(error.localizedDescription) }
         }
     }
@@ -112,8 +112,8 @@ class GameHub: HubConnectionDelegate {
         NotificationCenter.default.post(Notification(name: .ttgGameStarted))
     }
     
-    private func ttgMovePlayed(_ uuid: String, _ row: Int, _ col: Int) {
-        NotificationCenter.default.post(name: .ttgMovePlayed, object: self, userInfo: ["uuid": uuid, "row": row, "col": col])
+    private func ttgMovePlayed(_ uuid: String, _ cellId: String, _ symbol: String) {
+        NotificationCenter.default.post(name: .ttgMovePlayed, object: self, userInfo: ["uuid": uuid, "cellId": cellId, "symbol": symbol])
     }
     
     private func ttgGameWon(_ uuid: String) {

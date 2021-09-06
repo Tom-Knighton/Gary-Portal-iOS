@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SwiftDate
 import ImageIO
+import AVFoundation
 
 extension String: Identifiable {
     
@@ -77,6 +78,27 @@ extension String: Identifiable {
         
         let imgProperties = CGImageSourceCopyPropertiesAtIndex(imageSrc, 0, nil) as Dictionary?
         return (imgProperties?[kCGImagePropertyIPTCDictionary]?[kCGImagePropertyIPTCKeywords]) as? [String] ?? []
+    }
+    
+    func getThumbnailFromStringAsUrl(completion: @escaping ((UIImage?) -> Void)) {
+        guard let url = URL(string: self) else { completion(nil); return; }
+
+        DispatchQueue.global().async {
+            let asset = AVAsset(url: url)
+            let assetImgGenerate : AVAssetImageGenerator = AVAssetImageGenerator(asset: asset)
+            assetImgGenerate.appliesPreferredTrackTransform = true
+            let time = CMTimeMake(value: 1, timescale: 2)
+            let img = try? assetImgGenerate.copyCGImage(at: time, actualTime: nil)
+            DispatchQueue.main.async {
+                if let img = img {
+                    completion(UIImage(cgImage: img))
+                    return
+                } else {
+                    completion(nil)
+                    return
+                }
+            }
+        }
     }
 }
 
@@ -258,7 +280,7 @@ extension UIImageView {
                 let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
                 let data = data, error == nil,
                 let image = UIImage(data: data)
-                else { return }
+            else { return }
             DispatchQueue.main.async() { [weak self] in
                 self?.image = image
             }

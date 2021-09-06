@@ -89,6 +89,7 @@
 		E2930CC125B6089700186364 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CC025B6089700186364 /* Sounds.swift */; };
 		E2930CC925B60C3400186364 /* toilet.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2930CC825B60C3400186364 /* toilet.mp3 */; };
 		E2930CCD25B75BD400186364 /* StaffManageUserViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2930CCC25B75BD400186364 /* StaffManageUserViews.swift */; };
+		E2963A3F26E62D360033E809 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = E2963A3E26E62D360033E809 /* SignalRClient */; };
 		E29D30AA262F6748004A8FBF /* TicTacGaryRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D30A9262F6748004A8FBF /* TicTacGaryRoot.swift */; };
 		E29D30AD262F853B004A8FBF /* GameHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D30AC262F853B004A8FBF /* GameHub.swift */; };
 		E29D30B0262F8A53004A8FBF /* TicTacGary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D30AF262F8A53004A8FBF /* TicTacGary.swift */; };
@@ -127,7 +128,6 @@
 		E2F492F525D2BEED007A0775 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492F425D2BEED007A0775 /* Introspect */; };
 		E2F492F725D2C193007A0775 /* RefreshScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F492F625D2C193007A0775 /* RefreshScrollView.swift */; };
 		E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E2F492FF25D2D08C007A0775 /* SwiftDate */; };
-		E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = E2F4930225D2F140007A0775 /* SignalRClient */; };
 		E2F4930525D2F1C7007A0775 /* ChatHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4930425D2F1C7007A0775 /* ChatHub.swift */; };
 /* End PBXBuildFile section */
 
@@ -304,8 +304,8 @@
 				E217755825B0B3C30006B7CA /* SwiftKeychainWrapper in Frameworks */,
 				E2F492F525D2BEED007A0775 /* Introspect in Frameworks */,
 				E2F21A5026725CFF000B6F5B /* ActionClosurable in Frameworks */,
-				E2F4930325D2F140007A0775 /* SignalRClient in Frameworks */,
 				E2F4930025D2D08C007A0775 /* SwiftDate in Frameworks */,
+				E2963A3F26E62D360033E809 /* SignalRClient in Frameworks */,
 				E23F4B2C2635F5D400CA4087 /* AlertToast in Frameworks */,
 				E2BB737825B090C800CDB422 /* CropViewController in Frameworks */,
 				E2A78A242650350C0023E922 /* (null) in Frameworks */,
@@ -436,18 +436,16 @@
 		E25CC1AF25AF700100B1FA55 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E2963A4026E62D470033E809 /* HubClients */,
 				E26C628625B053B400FC2D0D /* APISession.swift */,
 				E25C1DAA25B1AAC90046EA6C /* AdminService.swift */,
 				E2A554D9260B8E8D0086B66C /* AppService.swift */,
 				E2BB737D25B0951500CDB422 /* AuthService.swift */,
-				E2F4930425D2F1C7007A0775 /* ChatHub.swift */,
 				E28DC01A25C7090000A6EBEB /* ChatService.swift */,
 				E23B908125BA048000C0C201 /* FeedService.swift */,
-				E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */,
 				E26A68A625B2D08800CD0662 /* StaffService.swift */,
 				E26C628925B053BD00FC2D0D /* UserService.swift */,
 				E2D04C322624A83600233CCF /* GameService.swift */,
-				E29D30AC262F853B004A8FBF /* GameHub.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -537,6 +535,16 @@
 				E2930CC825B60C3400186364 /* toilet.mp3 */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		E2963A4026E62D470033E809 /* HubClients */ = {
+			isa = PBXGroup;
+			children = (
+				E2F4930425D2F1C7007A0775 /* ChatHub.swift */,
+				E24D8B7325E1A11900E38F0B /* GaryPortalHub.swift */,
+				E29D30AC262F853B004A8FBF /* GameHub.swift */,
+			);
+			path = HubClients;
 			sourceTree = "<group>";
 		};
 		E29D309C262F0ADA004A8FBF /* SpaceGambito */ = {
@@ -693,9 +701,9 @@
 				E217755725B0B3C30006B7CA /* SwiftKeychainWrapper */,
 				E2F492F425D2BEED007A0775 /* Introspect */,
 				E2F492FF25D2D08C007A0775 /* SwiftDate */,
-				E2F4930225D2F140007A0775 /* SignalRClient */,
 				E23F4B2B2635F5D400CA4087 /* AlertToast */,
 				E2F21A4F26725CFF000B6F5B /* ActionClosurable */,
+				E2963A3E26E62D360033E809 /* SignalRClient */,
 			);
 			productName = GaryPortal;
 			productReference = E23100A925AF6F8E00739E9E /* Gary Portal - Beta.app */;
@@ -732,9 +740,9 @@
 				E217755625B0B3C30006B7CA /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				E2F492F325D2BEED007A0775 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */,
-				E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 				E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				E2F21A4E26725CFF000B6F5B /* XCRemoteSwiftPackageReference "ActionClosurable" */,
+				E2963A3D26E62D360033E809 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
 			);
 			productRefGroup = E23100AA25AF6F8E00739E9E /* Products */;
 			projectDirPath = "";
@@ -1228,6 +1236,14 @@
 				minimumVersion = 1.2.3;
 			};
 		};
+		E2963A3D26E62D360033E809 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/moozzyk/SignalR-Client-Swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		E2BB737625B090C800CDB422 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
@@ -1260,14 +1276,6 @@
 				minimumVersion = 6.3.1;
 			};
 		};
-		E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/moozzyk/SignalR-Client-Swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.8.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1280,6 +1288,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E23F4B2A2635F5D400CA4087 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
+		};
+		E2963A3E26E62D360033E809 /* SignalRClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2963A3D26E62D360033E809 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */;
+			productName = SignalRClient;
 		};
 		E2BB737725B090C800CDB422 /* CropViewController */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1300,11 +1313,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E2F492FE25D2D08C007A0775 /* XCRemoteSwiftPackageReference "SwiftDate" */;
 			productName = SwiftDate;
-		};
-		E2F4930225D2F140007A0775 /* SignalRClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2F4930125D2F140007A0775 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */;
-			productName = SignalRClient;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

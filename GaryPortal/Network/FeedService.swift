@@ -44,9 +44,9 @@ struct FeedService {
         }
     }
     
-    static func getFeedDTOs(for uuid: String? = nil, _ completion: @escaping(([FeedPostDTO]?) -> Void)) {
+    static func getFeedDTOs(for uuid: String? = nil, limit: Int = -1, _ completion: @escaping(([FeedPostDTO]?) -> Void)) {
         let request = APIRequest(method: .get, path: "feed/GetPostDTOs")
-        request.queryItems = [URLQueryItem(name: "uuid", value: uuid)]
+        request.queryItems = [URLQueryItem(name: "uuid", value: uuid), URLQueryItem(name: "limit", value: String(describing: limit))]
         APIClient.shared.perform(request) { (result) in
             switch result {
             case .success(let response):

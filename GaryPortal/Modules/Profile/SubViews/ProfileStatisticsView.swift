@@ -12,16 +12,31 @@ struct ProfileStatisticsView: View {
     @ObservedObject var datasource: ProfileViewDataSource
     
     var body: some View {
-        
         let user = self.datasource.user
         ScrollView(.horizontal, showsIndicators: true) {
-            HStack(spacing: 16) {
-                ProfileStatisticCard(statisticName: "Amigo\nPoints", statistic: String(describing: user?.userPoints?.amigoPoints ?? 0))
-                ProfileStatisticCard(statisticName: "Positive\nPoints", statistic: String(describing: user?.userPoints?.positivityPoints ?? 0))
-                ProfileStatisticCard(statisticName: "Amigo Rank", statistic: user?.userRanks?.amigoRank?.rankName ?? "")
-                ProfileStatisticCard(statisticName: "Positive Rank", statistic: user?.userRanks?.positivityRank?.rankName ?? "")
+            VStack {
+                LazyHStack(spacing: 16) {
+                    ProfileStatisticCard(statisticName: "Amigo Points", statistic: String(describing: user?.userPoints?.amigoPoints ?? 0))
+                    ProfileStatisticCard(statisticName: "Positive Points", statistic: String(describing: user?.userPoints?.positivityPoints ?? 0))
+                    ProfileStatisticCard(statisticName: "Amigo Rank", statistic: user?.userRanks?.amigoRank?.rankName ?? "")
+                    ProfileStatisticCard(statisticName: "Positive Rank", statistic: user?.userRanks?.positivityRank?.rankName ?? "")
+                    Rectangle().fill(Color.clear).frame(width: 50)
+                }
             }
+            Spacer().frame(height: 8)
+
         }
+        .mask(LinearGradient(gradient:
+                                Gradient(colors:
+                                            [Color.black,
+                                             Color.black,
+                                             Color.black,
+                                             Color.black,
+                                             Color.clear]),
+                               startPoint: .leading,
+                               endPoint: .trailing)
+                    .transition(.opacity)
+                    .animation(.easeInOut))
     }
 }
 
@@ -40,13 +55,14 @@ struct ProfileStatisticCard: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .fixedSize(horizontal: false, vertical: true)
-
+            
             Text(statisticName)
                 .font(Font.custom("Montserrat-Regular", size: 22))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .fixedSize(horizontal: false, vertical: true)
         }
+        .frame(height: 112)
         .padding(12)
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(10)
