@@ -3,6 +3,8 @@
 
 Gary Portal is a social media application that mimicks popular features from top iOS apps, as well as introducing fun unique features for Gary Portal members. 
 
+![img](https://cdn.tomk.online/tomk/gppromo.png)
+
 # Version 4 update info:
 
   - Vast and significant codebase improvements
@@ -20,6 +22,7 @@ Gary Portal is a social media application that mimicks popular features from top
  - Profile view
  - 'Feed' including user-uploaded image and video posts, polls and short logs that exist for 24 hours
  - Chat system
+ - Custom Camera component
 
 ### Dependencies
 
