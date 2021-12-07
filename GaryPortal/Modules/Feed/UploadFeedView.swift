@@ -145,7 +145,7 @@ struct UploadPostView: View {
             Image(systemName: "plus.circle")
                 .padding(.horizontal, 100)
         } else if isVideo {
-            PlayerView(url: self.mediaURL, play: .constant(true), gravity: .fit)
+//            PlayerView(url: self.mediaURL, play: .constant(true), gravity: .fit)
         } else {
             AsyncImage(url: self.mediaURL)
         }

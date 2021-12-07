@@ -10,59 +10,49 @@ import SwiftUI
 import AVKit
 
 class PlayerUIView: UIView {
-    var isPlaying = false
-    var url = ""
-    
-    var avPlayer: AVPlayer? {
-        get {
-            return playerLayer.player
-        }
-        set {
-            playerLayer.player = newValue
-        }
-    }
-    
-    var playerLayer: AVPlayerLayer {
-        return layer as! AVPlayerLayer
-    }
-    
-    override static var layerClass: AnyClass {
-        return AVPlayerLayer.self
-    }
-    
-    init() {
-        super.init(frame: .zero)
-    }
-    
-    func setup(url: String, gravity: PlayerViewGravity? = .fit) {
-        self.url = url
-        if let url = URL(string: url) {
-            self.avPlayer = AVPlayer(url: url)
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playback, options: .mixWithOthers)
-            } catch let error {
-                print(error.localizedDescription)
-            }
-            self.avPlayer?.isMuted = false
-            
-            _ = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.avPlayer?.currentItem, queue: nil) { _ in
-                self.avPlayer?.seek(to: CMTime.zero)
-                self.avPlayer?.play()
-            }
-            
-            self.playerLayer.player = self.avPlayer
-            self.playerLayer.videoGravity = gravity?.avGravity ?? .resizeAspect
-        }
-    }
+    private let playerLayer = AVPlayerLayer()
+    private var playerLooper: AVPlayerLooper?
+    private var player = AVQueuePlayer()
+    private var url = ""
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func togglePlay(play: Bool) {
-        self.avPlayer?.seek(to: CMTime.zero)
-        play ? self.avPlayer?.play() : self.avPlayer?.pause()
-        self.isPlaying = play
+    init(with player: AVQueuePlayer, url: String) {
+        super.init(frame: .zero)
+        self.player = player
+        self.url = url
+        self.setup()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    func setup() {
+        
+        guard let url = URL(string: self.url) else { return }
+        // Load the resource
+        let asset = AVAsset(url: url)
+        let item = AVPlayerItem(asset: asset)
+        
+        // Setup the player
+        playerLayer.player = player
+        playerLayer.videoGravity = .resizeAspectFill
+        layer.addSublayer(playerLayer)
+        
+        // Create a new player looper with the queue player and template item
+        playerLooper = AVPlayerLooper(player: player, templateItem: item)
+        
+        // Start the movie
+//        player.play()
+        
+    }
+    
+    @objc
+    func playerItemDidReachEnd(notification: Notification) {
+        playerLayer.player?.seek(to: CMTime.zero)
     }
     
     override func layoutSubviews() {
@@ -70,44 +60,56 @@ class PlayerUIView: UIView {
         playerLayer.frame = bounds
     }
     
-}
-
-
-public enum PlayerViewGravity {
-    case fit
-    case fill
-    case stretch
+    func togglePlay(play: Bool) {
+        play ? self.player.play() : self.player.pause()
+    }
     
-    var avGravity: AVLayerVideoGravity {
-        switch self {
-        case .fit:
-            return .resizeAspect
-        case .fill:
-            return .resizeAspectFill
-        case .stretch:
-            return .resize
-        }
+    func toggleMute(mute: Bool) {
+        self.player.isMuted = mute
+        print("setting mute to \(mute )")
+    }
+    
+    public func dismantle() {
+        self.playerLayer.player?.replaceCurrentItem(with: nil)
+        self.playerLayer.player?.pause()
+        self.playerLayer.player = nil
+        self.player.pause()
+        self.player = AVQueuePlayer()
+        self.playerLayer.removeFromSuperlayer()
+        self.playerLooper?.disableLooping()
     }
 }
 
 struct PlayerView: UIViewRepresentable {
-    var url: String
-    @Binding var play: Bool
-    var gravity: PlayerViewGravity = .fill
     
-    func updateUIView(_ uiView: PlayerUIView, context: UIViewRepresentableContext<PlayerView>) {
-        if play != uiView.isPlaying {
-            uiView.togglePlay(play: play)
-        }
-        if url != uiView.url {
-            uiView.setup(url: url, gravity: gravity)
-        }
+    typealias UIViewType = PlayerUIView
+    
+    
+    private var player: AVQueuePlayer
+    @Binding private var play: Bool
+    @Binding private var isMuted: Bool
+    private var url: String
+    
+    init(player: AVQueuePlayer, url: String, play: Binding<Bool>, isMuted: Binding<Bool>) {
+        self.player = player
+        self._play = play
+        self._isMuted = isMuted
+        self.url = url
     }
     
     func makeUIView(context: Context) -> PlayerUIView {
-        let playerview = PlayerUIView()
-        playerview.setup(url: url, gravity: gravity)
-        return playerview
+        let player = PlayerUIView(with: player, url: url)
+        return player
+        
     }
-
+    
+    static func dismantleUIView(_ uiView: PlayerUIView, coordinator: ()) {
+        uiView.dismantle()
+    }
+    
+    func updateUIView(_ uiView: PlayerUIView, context: Context)
+    {
+        uiView.toggleMute(mute: isMuted)
+        uiView.togglePlay(play: play)
+    }
 }

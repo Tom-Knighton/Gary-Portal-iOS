@@ -122,7 +122,7 @@ struct TicTacGaryLobby: View {
     var body: some View {
         ZStack {
             GradientBackground()
-            NavigationLink(destination: TicTacGaryGameView(game: self.game), isActive: $isShowingGame) { EmptyView() }
+            NavigationLink(destination: TicTacGaryGameView(gameModel: TicTacGameObservable(game: self.game)), isActive: $isShowingGame) { EmptyView() }
             VStack {
                 Text("Tic Tac Gary")
                     .font(.largeTitle).bold()
@@ -197,7 +197,7 @@ struct TicTacGaryLobby: View {
             })
             .onReceive(NotificationCenter.default.publisher(for: .hostLeftLobby)) { (_) in
                 guard !self.isShowingGame else { return }
-                print("LEFT")
+                print("LEFT")	
                 self.alertContent = ["Uh Oh", "The host of this lobby left, as a result the lobby was destroyed. Please rest assured they will be punished"]
                 self.isShowingAlert = true
             }
@@ -213,7 +213,7 @@ struct TicTacGaryLobby: View {
             .fullScreenCover(isPresented: $isShowingGame, onDismiss: {
                 self.presentationMode.wrappedValue.dismiss()
             }) {
-                TicTacGaryGameView(game: self.game)
+                TicTacGaryGameView(gameModel: TicTacGameObservable(game: self.game))
             }
         }
         
@@ -231,60 +231,61 @@ struct TicTacGaryLobby: View {
     }
 }
 
+class TicTacGameObservable: ObservableObject {
+    
+    @Published var gameMatrix: [[TTGCell]] = [[]]
+    var game: TicTacGaryGame
+    
+    init(game: TicTacGaryGame) {
+        self.game = game
+        self.gameMatrix = game.gameMatrix ?? [[]]
+    }
+    
+    func updateCell(with cellId: String, from uuid: String) {
+        DispatchQueue.main.async {
+            let sign = uuid == self.game.firstPlayerUUID ? "X" : "O"
+            let col = cellId.split(separator: ",")[0]; let row = cellId.split(separator: ",")[1]
+            self.gameMatrix[Int(col)!][Int(row)!] = TTGCell(id: cellId, content: sign)
+        }
+    }
+    
+    func updateGame(game: TicTacGaryGame) {
+        DispatchQueue.main.async {
+            self.game = game
+            self.gameMatrix = game.gameMatrix ?? [[]]
+        }
+    }
+}
+
 struct TicTacGaryGameView: View {
     
     @Environment(\.presentationMode) var presentationMode
-    @State var game: TicTacGaryGame
+    @ObservedObject var gameModel: TicTacGameObservable
     @State var isMyGo = false
     @State var alertContent = ["", ""]
     @State var isShowingAlert = false
     
+    @State var gameColumns: [GridItem] = []
+
     var body: some View {
         ZStack {
             GradientBackground()
             VStack {
-                Button(action: { self.leaveGame() }) { Text("Leave") }
-                VStack {
-//                    ForEach(Array(self.game.gameMatrix?.enumerated() ?? []), id: \.offset) { rowIndex, row in
-//                        HStack {
-//                            ForEach(game.gameMatrix?[rowIndex].indices ?? Range(0...0), id: \.self) { colIndex in
-//                                let move = game.gameMatrix?[rowIndex][colIndex]
-//                                TTGCard(size: game.gameSize ?? 3, move: "\(rowIndex), \(colIndex) (\(move)")
-//                                    .onTapGesture {
-//                                        let _ = print(":::: \(rowIndex), \(colIndex)")
-//                                        self.playMove(row: rowIndex, col: colIndex)
-//                                    }
-//                                    .id(UUID().uuidString)
-//                            }
-//                            .id(UUID().uuidString)
-//                        }
-//                    }.id(UUID().uuidString)
-                    ForEachWithIndex(game.gameMatrix ?? [[]], id: \.self) { colIndex, row in
-                        HStack {
-                            ForEachWithIndex(row, id: \.id) { rowIndex, col in
-                                TTGCard(size: game.gameSize ?? 3, move: "\(rowIndex), \(colIndex) (\(col.content))")
-                                    .rotation3DEffect(
-                                        .init(degrees: col.content?.isEmptyOrWhitespace() == false ? 180 : 0),
-                                        axis: (x: 0.0, y: 1.0, z: 0.0),
-                                        anchor: .center,
-                                        anchorZ: 0.0,
-                                        perspective: 1.0
-                                    )
-                                    .onTapGesture {
-                                        let _ = print("::::: \(rowIndex) \(colIndex)")
-                                        self.playMove(row: rowIndex, col: colIndex)
-                                    }
-                            }
+                ForEach(gameModel.gameMatrix, id: \.self) { row in
+                    HStack {
+                        ForEach(row, id: \.self) { cell in
+                            TTGCard(size: gameModel.game.gameSize ?? 3, move: "\(cell.content ?? "")")
+                                .onTapGesture {
+                                    playMove(cellId: cell.id ?? "0,0")
+                                }
                         }
-
                     }
                 }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .updateGameLobby), perform: { obj in
             if let info = obj.userInfo, let json = info["json"] as? String, let updatedGame = json.jsonDecode(to: TicTacGaryGame.self) {
-                self.game = updatedGame
-                self.game.gameMatrix = updatedGame.gameMatrix
+                self.gameModel.updateGame(game: updatedGame)
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: .hostLeftLobby)) { (_) in
@@ -292,11 +293,14 @@ struct TicTacGaryGameView: View {
             self.isShowingAlert = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .ttgMovePlayed), perform: { obj in
-            if let info = obj.userInfo, let uuid = info["uuid"] as? String, let row = info["row"] as? Int, let col = info["col"] as? Int {
-                print("hey bby, updating at \(row) \(col)")
-                let sign = uuid == self.game.firstPlayerUUID ? "X" : "O"
-                self.game.gameMatrix?[row][col].content = sign
-                
+            if let info = obj.userInfo, let uuid = info["uuid"] as? String, let cellId = info["cellId"] as? String, let _ = info["symbol"] as? String {
+                self.gameModel.updateCell(with: cellId, from: uuid)
+            }
+        })
+        .onReceive(NotificationCenter.default.publisher(for: .ttgGameWon), perform: { obj in
+            if let info = obj.userInfo, let uuid = info["uuid"] as? String {
+                self.alertContent = ["Woohoo!", "\(uuid) won the game!"]
+                self.isShowingAlert = true
             }
         })
         .toast(isPresenting: $isShowingAlert) {
@@ -305,12 +309,12 @@ struct TicTacGaryGameView: View {
     }
     
     func leaveGame() {
-        GaryPortal.shared.gameConnection?.ttgLeaveGame(uuid: GaryPortal.shared.currentUser?.userUUID ?? "", gameCode: self.game.gameCode ?? "")
+        GaryPortal.shared.gameConnection?.ttgLeaveGame(uuid: GaryPortal.shared.currentUser?.userUUID ?? "", gameCode: self.gameModel.game.gameCode ?? "")
         self.presentationMode.wrappedValue.dismiss()
     }
     
-    func playMove(row: Int, col: Int) {
-        GaryPortal.shared.gameConnection?.ttgPlayMove(code: self.game.gameCode ?? "", uuid: GaryPortal.shared.currentUser?.userUUID ?? "", row: row, col: col)
+    func playMove(cellId: String) {
+        GaryPortal.shared.gameConnection?.ttgPlayMove(code: self.gameModel.game.gameCode ?? "", uuid: GaryPortal.shared.currentUser?.userUUID ?? "", cellId: cellId)
     }
 }
 
@@ -325,6 +329,9 @@ fileprivate struct TTGCard: View {
             .frame(width: getWidth(), height: getWidth())
             .overlay(
                 Text(self.move ?? "")
+                    .font(.title)
+                    .bold()
+                    .shadow(radius: 3)
             )
     }
     

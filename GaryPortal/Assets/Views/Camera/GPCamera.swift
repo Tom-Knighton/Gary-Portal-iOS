@@ -237,9 +237,9 @@ struct MediaEditor: View {
             ZStack(alignment: .top) {
                 Color.black.edgesIgnoringSafeArea(.all)
                 if isVideo {
-                    PlayerView(url: videoURL?.absoluteString ?? "", play: $play, gravity: self.wasFromLibrary ? .fit : .fill)
-                        .if(self.cameraUsed == .front) { $0.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0)) }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
+//                    PlayerView(url: videoURL?.absoluteString ?? "", play: $play, gravity: self.wasFromLibrary ? .fit : .fill)
+//                        .if(self.cameraUsed == .front) { $0.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0)) }
+//                        .frame(width: geometry.size.width, height: geometry.size.height)
                 } else {
                     if let photoData = self.photoData {
                         Image(uiImage: UIImage(data: photoData) ?? UIImage())

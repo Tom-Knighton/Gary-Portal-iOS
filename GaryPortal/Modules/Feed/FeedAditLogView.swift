@@ -20,9 +20,9 @@ struct FeedAditLogView: View {
             GeometryReader { geometry in
                 
                 if current?.isVideo == true {
-                    PlayerView(url: current?.aditLogUrl ?? "", play: .constant(true), gravity: .fill)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .aspectRatio(contentMode: .fill)
+//                    PlayerView(url: current?.aditLogUrl ?? "", play: .constant(true), gravity: .fill)
+//                        .frame(width: geometry.size.width, height: geometry.size.height)
+//                        .aspectRatio(contentMode: .fill)
                 } else {
                     AsyncImage(url: current?.aditLogUrl ?? "")
                         .frame(width: geometry.size.width, height: geometry.size.height)

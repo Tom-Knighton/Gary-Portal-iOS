@@ -10,6 +10,13 @@ import AVKit
 import Photos
 
 struct ContentView: View {
+    var body: some View {
+        ContentView_Old()
+        //TODO: Replace naming after completing Feed
+    }
+}
+
+struct ContentView_Old: View {
     
     @ObservedObject var garyPortal = GaryPortal.shared
     
@@ -51,7 +58,7 @@ struct ContentView: View {
                     if item == .chat, let chat = garyPortal.viewingNotificationChat {
                         ChatView(chat: chat)
                     } else if item == .feedComments, let post = garyPortal.viewingNotificationPost {
-                        CommentsView(post: .constant(post))
+//                        CommentsView(post: .constant(post))
                     } else if item == .whatsNew {
                         GPWhatsNew()
                     }

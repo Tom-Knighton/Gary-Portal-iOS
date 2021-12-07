@@ -202,14 +202,14 @@ struct ChatMessageBarView: View {
                             }
                     }
                     if self.videoURL != nil {
-                        PlayerView(url: self.videoURL ?? "", play: $play)
-                            .cornerRadius(10)
-                            .frame(width: 80, height: 80)
-                            .aspectRatio(contentMode: .fill)
-                            .onTapGesture {
-                                self.hasMedia = false
-                                self.videoURL = nil
-                            }
+//                        PlayerView(url: self.videoURL ?? "", play: $play)
+//                            .cornerRadius(10)
+//                            .frame(width: 80, height: 80)
+//                            .aspectRatio(contentMode: .fill)
+//                            .onTapGesture {
+//                                self.hasMedia = false
+//                                self.videoURL = nil
+//                            }
                     }
                    
                     Spacer()
